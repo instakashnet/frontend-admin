@@ -1,0 +1,201 @@
+body {
+  font-size: 15px;
+  color: #fff;
+  font-family: "Open Sans", sans-serif !important;
+}
+
+.apexcharts-theme-light {
+  color: #a6b0cf;
+}
+
+.noti-icon .badge {
+  left: 23px;
+}
+.mt-2 {
+  margin-top: 20px !important;
+}
+
+.dataTables_filter,
+.dataTables_paginate {
+  float: right;
+}
+
+.rdw-editor-main {
+  border: 1px solid #eeeef5;
+  height: 239px;
+}
+.dz-message {
+  text-align: center;
+  padding: 100px;
+}
+.fcYNFc {
+  background-color: #ffffff !important;
+}
+.task-box {
+  border: 1px solid #e1e1e6;
+}
+.react-datepicker-wrapper {
+  width: 100% !important;
+}
+
+.ReactModal__Overlay {
+  z-index: 1001 !important;
+}
+
+.fc-event .fc-content {
+  padding: 5px;
+  color: #fff;
+}
+.chat-conversation .right .conversation-list {
+  margin-right: 15px;
+}
+
+.external-event {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.border-0 {
+  border: 0px !important;
+}
+
+.base-bg-color {
+  background-color: #028090;
+}
+
+.btn-primary {
+  background-color: #00ad97;
+  border-color: #00ad97;
+  color: #fff;
+
+  &:hover {
+    background-color: darken($color: #00ad97, $amount: 5);
+    border-color: #00ad97;
+  }
+}
+
+.btn-blue {
+  background-color: #556ee6;
+  color: #fff;
+}
+
+.text-blue {
+  color: #556ee6;
+}
+
+/* Material table styles */
+.main-content {
+  .MuiPaper-root {
+    background-color: transparent;
+    color: #a6b0cf;
+  }
+
+  .MuiIcon-root {
+    color: #a6b0cf;
+  }
+
+  .MuiTableCell-body {
+    color: #fff;
+  }
+
+  .MTableToolbar-title-9 {
+    display: none;
+  }
+
+  .MuiTableSortLabel-root:hover,
+  .MuiTableSortLabel-root.MuiTableSortLabel-active,
+  .MuiTableSortLabel-root.MuiTableSortLabel-active .MuiTableSortLabel-icon {
+    color: darken($color: #a6b0cf, $amount: 10) !important;
+  }
+
+  .MuiTableCell-root {
+    border: none;
+  }
+
+  .MuiTablePagination-toolbar span,
+  .MuiTablePagination-select,
+  .MuiTextField-root button,
+  .MuiTypography-root.MuiTypography-caption,
+  .MuiTablePagination-selectIcon {
+    color: #a6b0cf !important;
+  }
+}
+
+.MuiTableCell-root {
+  font-family: "Open Sans", sans-serif;
+}
+
+.status-color {
+  height: 15px;
+  width: 35px;
+  border-radius: 5px;
+  display: block;
+}
+
+.dropzone {
+  max-height: 130px;
+  min-height: auto;
+}
+
+.dropzone .dz-message {
+  padding: 15px;
+}
+
+.dropzone .dz-message h4 {
+  font-size: 1rem;
+}
+
+.alert {
+  font-size: 0.85rem;
+}
+
+.custom-button {
+  background-color: transparent;
+  border: none;
+}
+
+.apexcharts-menu {
+  background-color: #2a3042;
+  border: 1px solid rgba(166, 176, 207, 0.3);
+}
+
+.apexcharts-menu-item:hover {
+  background-color: lighten($color: #2a3042, $amount: 5);
+}
+
+.transacion-details {
+  h5 {
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}
+
+.btn-label {
+  padding-left: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.btn-label .label-icon {
+  position: absolute;
+  width: 32px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: hsla(0, 0%, 100%, 0.1);
+  border-right: 1px solid hsla(0, 0%, 100%, 0.1);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-alert {
+  position: fixed;
+  bottom: 35px;
+  z-index: 9999;
+  right: 35px;
+}

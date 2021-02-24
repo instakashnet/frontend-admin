@@ -1,0 +1,8 @@
+export const GET_STATUS = "GET_STATUS";
+export const GET_STATUS_SUCCESS = "GET_STATUS_SUCCESS";
+
+export const EDIT_STATUS = "EDIT_STATUS";
+export const EDIT_STATUS_SUCCESS = "EDIT_STATUS_SUCCESS";
+
+export const CLEAR_ALERT = "STATUS_CLEAR_ALERT";
+export const API_ERROR = "STATUS_API_ERROR";

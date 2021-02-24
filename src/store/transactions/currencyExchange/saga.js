@@ -1,0 +1,176 @@
+import { all, call, takeEvery, put, fork, delay, select } from "redux-saga/effects";
+import * as actions from "./actions";
+import * as actionTypes from "./actionTypes";
+import Swal from "sweetalert2";
+import { exchangeInstance } from "../../../helpers/AuthType/axios";
+import { getClientExchanges } from "../../settings/clients/actions";
+
+function* getExchangeDetails({ id }) {
+  try {
+    const res = yield exchangeInstance.get(`/order/admin/${id}`);
+    if (res.status === 200) {
+      yield put(actions.getExchangeDetailsSuccess(res.data));
+      yield put(getClientExchanges(res.data.userId));
+    }
+  } catch (error) {
+    yield put(actions.apiError(error.message));
+    yield delay(4000);
+    yield put(actions.clearAlert());
+  }
+}
+
+function* validateExchange({ orderId, history }) {
+  const token = yield select((state) => state.Login.token);
+  const socket = yield select((state) => state.Socket.socket);
+
+  try {
+    const result = yield Swal.fire({
+      title: `¿Deseas validar esta operación?`,
+      text: "Al continuar no podrás revertir este estado.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: `Si, continuar`,
+      cancelButtonText: "No, cancelar",
+      cancelButtonColor: "#f46a6a",
+    });
+
+    if (result.isConfirmed) {
+      const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 4 });
+      if (res.status === 201) {
+        yield call(getExchangeDetails, { id: orderId });
+        socket.emit("getOrders", {
+          type: "PUBLISH",
+          token,
+          id: orderId,
+        });
+        yield put(actions.approveExchangeSuccess());
+        yield Swal.fire("Exitoso", `La operación fue validada correctamente.`, "success");
+        yield history.push("/currency-exchanges");
+      }
+    } else yield put(actions.apiError());
+  } catch (error) {
+    yield put(actions.apiError("Ha ocurrido un error validando la operación. Por favor contacta a soporte."));
+  }
+}
+
+function* approveExchange({ orderId }) {
+  const token = yield select((state) => state.Login.token);
+  const socket = yield select((state) => state.Socket.socket);
+
+  try {
+    const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 6 });
+    if (res.status === 201) {
+      socket.emit("getOrders", {
+        type: "PUBLISH",
+        token,
+        id: orderId,
+      });
+      yield put(actions.approveExchangeSuccess());
+      yield call(getExchangeDetails, { id: orderId });
+      yield put(actions.createInvoice(orderId));
+      yield Swal.fire("Exitoso", `La operación fue aprobada correctamente.`, "success");
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* declineExchange({ orderId, history }) {
+  const token = yield select((state) => state.Login.token);
+  const socket = yield select((state) => state.Socket.socket);
+
+  try {
+    const result = yield Swal.fire({
+      title: `¿Deseas cancelar esta operación?`,
+      text: "Al continuar no podrás revertir este estado.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: `Si, continuar.`,
+      cancelButtonText: "No, cancelar.",
+      cancelButtonColor: "#f46a6a",
+    });
+
+    if (result.isConfirmed) {
+      const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 5 });
+      if (res.status === 201) {
+        yield call(getExchangeDetails, { id: orderId });
+        socket.emit("getOrders", {
+          type: "PUBLISH",
+          token,
+          id: orderId,
+        });
+        yield put(actions.declineExchangeSuccess());
+        yield Swal.fire("Exitoso", "La operación fue cancelada correctamente.", "success");
+        yield history.push("/currency-exchanges");
+      }
+    } else put(actions.apiError());
+  } catch (error) {
+    yield put(actions.apiError(error.message));
+  }
+}
+
+function* uploadVoucher({ orderId, values, closeModal }) {
+  const formData = new FormData();
+  formData.append("file", values.file);
+
+  try {
+    const result = yield Swal.fire({
+      title: `¿Deseas aprobar esta operación?`,
+      text: "Al continuar no podrás revertir este estado.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: `Si, continuar`,
+      cancelButtonText: "No, cancelar",
+      cancelButtonColor: "#f46a6a",
+    });
+
+    if (result.isConfirmed) {
+      const res = yield exchangeInstance.post(`/bills/admin/order/attach-voucher/${orderId}`, formData);
+      if (res.status === 201) {
+        yield call(approveExchange, { orderId });
+        yield call(closeModal);
+      }
+    } else yield put(actions.apiError());
+  } catch (error) {
+    yield put(actions.apiError("Ha ocurrido un error aprobando la orden. Por favor contacta a soporte."));
+  }
+}
+
+function* editExchange({ payload }) {}
+
+function* createInvoice({ orderId }) {
+  try {
+    const res = yield exchangeInstance.post(`/bills/admin/order/${orderId}`);
+    console.log(res);
+  } catch (error) {
+    yield put(actions.apiError("Ha ocurrido un error generando la factura. Por favor contacta a soporte."));
+  }
+}
+
+export function* watchEditExchange() {
+  yield takeEvery(actionTypes.EDIT_EXCHANGE, editExchange);
+}
+
+export function* watchExchangeDetails() {
+  yield takeEvery(actionTypes.GET_EXCHANGE_DETAILS, getExchangeDetails);
+}
+
+export function* watchValidateExchange() {
+  yield takeEvery(actionTypes.VALIDATE_EXCHANGE, validateExchange);
+}
+
+export function* watchApproveExchange() {
+  yield takeEvery(actionTypes.APPROVE_EXCHANGE, uploadVoucher);
+}
+
+export function* watchDeclineExchange() {
+  yield takeEvery(actionTypes.DECLINE_EXCHANGE, declineExchange);
+}
+
+export function* watchCreateInvoice() {
+  yield takeEvery(actionTypes.CREATE_INVOICE, createInvoice);
+}
+
+export default function* () {
+  yield all([fork(watchExchangeDetails), fork(watchApproveExchange), fork(watchValidateExchange), fork(watchDeclineExchange), fork(watchEditExchange), fork(watchCreateInvoice)]);
+}
