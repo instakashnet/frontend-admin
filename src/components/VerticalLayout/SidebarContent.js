@@ -95,7 +95,7 @@ const SidebarContent = (props) => {
             </>
           ) : null}
 
-          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_OPERATOR" || user.role === "ROLE_ANALYST") ? (
+          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER" || user.role === "ROLE_OPERATOR" || user.role === "ROLE_ANALYST") ? (
             <>
               <li className='menu-title'>{props.t("Cambios de divisa")}</li>
 
@@ -133,7 +133,7 @@ const SidebarContent = (props) => {
             </>
           ) : null}
 
-          {user && (user.role === "ROLE_ADMIN" || user.idRol === 4) ? (
+          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_MANAGER") ? (
             <>
               <li className='menu-title'>{props.t("Configuraciones generales")}</li>
 
