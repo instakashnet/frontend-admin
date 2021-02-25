@@ -7,7 +7,7 @@ import Login from "../pages/Authentication/Login";
 // Dashboard
 import Dashboard from "../pages/Dashboard/index";
 
-import Pages404 from "../pages/Utility/pages-404";
+import Pages404 from "../pages/Utility/404";
 
 // LAZY IMPORTS
 

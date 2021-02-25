@@ -1,7 +1,8 @@
 import * as actionTypes from "./actionTypes";
 
-export const getCurrencyBarChart = () => ({
+export const getCurrencyBarChart = (type) => ({
   type: actionTypes.GET_CURRENCY_BAR_CHART,
+  chartType: type,
 });
 
 export const getCurrencyBarChartSuccess = (data) => ({

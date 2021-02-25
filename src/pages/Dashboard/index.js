@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Container, Row, Col, Card, CardBody, CardTitle } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 
 //import Charts
 import StackedColumnChart from "./StackedColumnChart";
@@ -19,7 +19,7 @@ import { withNamespaces } from "react-i18next";
 
 const Dashboard = (props) => {
   const user = useSelector((state) => state.Login.user);
-  const { currencyBarData, advanceBarData } = useSelector((state) => state.Charts);
+  const { currencyBarData } = useSelector((state) => state.Charts);
 
   return (
     <React.Fragment>
@@ -40,16 +40,10 @@ const Dashboard = (props) => {
             ) : null}
           </Row>
           <Row>
-            <Col xl='6'>
-              <Card>
-                <CardBody>
-                  <CardTitle className='mb-4 float-sm-left'>Cambios de divisa (por mes)</CardTitle>
-
-                  <StackedColumnChart data={currencyBarData} />
-                </CardBody>
-              </Card>
+            <Col xl='12'>
+              <StackedColumnChart data={currencyBarData} title='Movimiento cambios de divisa' />
             </Col>
-            <Col xl='6'>
+            {/* <Col xl='6'>
               <Card>
                 <CardBody>
                   <CardTitle className='mb-4 float-sm-left'>Avances de efectivo (por mes)</CardTitle>
@@ -57,7 +51,7 @@ const Dashboard = (props) => {
                   <StackedColumnChart data={advanceBarData} />
                 </CardBody>
               </Card>
-            </Col>
+            </Col> */}
           </Row>
 
           <Row>

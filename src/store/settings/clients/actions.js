@@ -9,9 +9,9 @@ export const getClientsSuccess = (clients) => ({
   clients,
 });
 
-export const getClientDetails = (id) => ({
+export const getClientDetails = (userId) => ({
   type: actionTypes.GET_CLIENT_DETAILS,
-  payload: { id },
+  userId,
 });
 
 export const getClientDetailsSuccess = (data) => ({

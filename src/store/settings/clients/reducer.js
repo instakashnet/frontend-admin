@@ -14,7 +14,7 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case actionTypes.GET_CLIENTS_SUCCESS:
-      return { ...state, clients: action.clients };
+      return { ...state, clients: action.clients, isLoading: false };
 
     case actionTypes.GET_CLIENT_DETAILS_SUCCESS:
       return { ...state, details: payload.data, isLoading: false };

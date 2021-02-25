@@ -39,7 +39,7 @@ const UsersTable = (props) => {
         field: "action",
         width: 150,
         render: (rowData) => (
-          <Link to={"#!"} className='btn-rounded waves-effect waves-light btn btn-blue btn-sm font-size-13'>
+          <Link to={`/registered-users/${rowData.id}`} className='btn-rounded waves-effect waves-light btn btn-blue btn-sm font-size-13'>
             Ver detalles
           </Link>
         ),
@@ -68,7 +68,12 @@ const UsersTable = (props) => {
         <Col className='col-12'>
           <Card>
             <CardBody>
-              <Table columns={data.columns} rows={data.rows} options={{ loadingType: "linear", exportButton: true, pageSize: 10, pageSizeOptions: [10, 25, 100] }} />
+              <Table
+                columns={data.columns}
+                rows={data.rows}
+                isLoading={props.isLoading}
+                options={{ loadingType: "linear", exportButton: true, pageSize: 10, pageSizeOptions: [10, 25, 100] }}
+              />
             </CardBody>
           </Card>
         </Col>

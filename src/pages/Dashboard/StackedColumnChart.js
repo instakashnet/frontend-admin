@@ -1,10 +1,26 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getCurrencyBarChart } from "../../store/charts/actions";
 import ReactApexChart from "react-apexcharts";
+import { Button, Card, CardBody, CardTitle } from "reactstrap";
 
 const StackedColumnChart = (props) => {
+  const dispatch = useDispatch();
   const { soles, dolares } = props.data;
+  const [type, setType] = useState("week");
+  const [categories, setCategories] = useState(["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]);
 
-  const [options] = useState({
+  useEffect(() => {
+    dispatch(getCurrencyBarChart(type));
+  }, [dispatch, type]);
+
+  useEffect(() => {
+    type === "week"
+      ? setCategories(["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"])
+      : setCategories(["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]);
+  }, [type]);
+
+  const options = {
     chart: {
       toolbar: {
         show: false,
@@ -28,7 +44,7 @@ const StackedColumnChart = (props) => {
 
     colors: ["#34c38f", "#556ee6", "#f46a6a"],
     xaxis: {
-      categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      categories,
     },
     yaxis: {
       title: {
@@ -46,7 +62,7 @@ const StackedColumnChart = (props) => {
         return `<div style="padding: 7px">${seriesIndex === 1 ? "$ " : "s/. "} ${series[seriesIndex][dataPointIndex]}</div>`;
       },
     },
-  });
+  };
 
   const [series, setSeries] = useState([]);
 
@@ -65,7 +81,20 @@ const StackedColumnChart = (props) => {
     }
   }, [soles, dolares]);
 
-  return <ReactApexChart options={options} series={series} type='bar' height='359' />;
+  return (
+    <Card>
+      <CardBody>
+        <div className='d-flex justify-content-end'>
+          <CardTitle className='mb-4 mr-auto float-sm-left'>{props.title}</CardTitle>
+          <Button className='mr-3' onClick={() => setType("week")}>
+            Semana
+          </Button>
+          <Button onClick={() => setType("month")}>Mes</Button>
+        </div>
+        <ReactApexChart options={options} series={series} type='bar' height='359' />
+      </CardBody>
+    </Card>
+  );
 };
 
 export default React.memo(StackedColumnChart);

@@ -25,7 +25,6 @@ import Charts from "./charts/reducer";
 
 // Authentication
 import Login from "./auth/login/reducer";
-import Account from "./auth/register/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -34,7 +33,6 @@ const rootReducer = combineReducers({
   Socket,
   // private
   Data,
-  Account,
   AdminUsers,
   Banks,
   CurrencyExchange,

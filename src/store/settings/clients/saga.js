@@ -12,14 +12,14 @@ function* getClients() {
   }
 }
 
-function* getClientDetails({ payload }) {
-  // const { id } = payload;
-  // try {
-  //   const res = yield axios.get(`/Cliente/ObtenerCliente?Id=${id}`);
-  //   if (res.status === 200) yield put(actions.getClientDetailsSuccess(res.data));
-  // } catch (error) {
-  //   yield put(actions.apiError(error.message));
-  // }
+function* getClientDetails({ userId }) {
+  try {
+    const res = yield authInstance.get(`/admin/users/${userId}`);
+    console.log(res);
+    if (res.status === 200) yield put(actions.getClientDetailsSuccess(res.data));
+  } catch (error) {
+    yield put(actions.apiError(error.message));
+  }
 }
 
 function* getClientExchanges({ userId }) {

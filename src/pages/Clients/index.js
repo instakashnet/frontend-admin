@@ -7,7 +7,7 @@ import UsersTable from "./ClientsTable";
 
 const Users = () => {
   const dispatch = useDispatch();
-  const clients = useSelector((state) => state.Clients.clients);
+  const { clients, isLoading } = useSelector((state) => state.Clients);
 
   useEffect(() => {
     dispatch(getClientsInit());
@@ -18,7 +18,7 @@ const Users = () => {
       <Container fluid>
         <Row>
           <Col lg='12'>
-            <UsersTable clients={clients} />
+            <UsersTable clients={clients} isLoading={isLoading} />
           </Col>
         </Row>
       </Container>
