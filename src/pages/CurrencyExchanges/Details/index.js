@@ -28,7 +28,7 @@ const ExchangeDetails = (props) => {
     setModal(true);
   };
   const onDeclineExchange = () => dispatch(declineExchange(details.id, history));
-  const onApproveExchange = (values) => dispatch(approveExchange(id, values, toggleModal));
+  const onApproveExchange = (values) => dispatch(approveExchange(id, values, toggleModal, history));
   const onCreateInvoice = () => dispatch(createInvoice(id));
 
   useEffect(() => {

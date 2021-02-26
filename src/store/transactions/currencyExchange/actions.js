@@ -25,11 +25,12 @@ export const validateExchangeSuccess = () => ({
   type: actionTypes.VALIDATE_EXCHANGE_SUCCESS,
 });
 
-export const approveExchange = (orderId, values, closeModal) => ({
+export const approveExchange = (orderId, values, closeModal, history) => ({
   type: actionTypes.APPROVE_EXCHANGE,
   orderId,
   values,
   closeModal,
+  history,
 });
 
 export const approveExchangeSuccess = () => ({
