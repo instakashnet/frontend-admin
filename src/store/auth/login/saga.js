@@ -57,7 +57,7 @@ function* logoutUser({ payload }) {
   const { history } = payload;
 
   yield localStorage.removeItem("authUser");
-  yield history && history.push("/login");
+  yield history && history.push("/");
   yield put(actions.logoutUserSuccess());
 
   try {

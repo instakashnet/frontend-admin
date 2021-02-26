@@ -37,12 +37,14 @@ const styles = {
   },
 };
 
-const ValueOption = (props) => (
-  <SingleValue {...props}>
-    <img style={{ width: "30px", display: "inline-block" }} src={`${process.env.PUBLIC_URL}/assets/images/flags/USDPEN.svg`} alt='flag' />
-    <span className='ml-2'>{props.children}</span>
-  </SingleValue>
-);
+const ValueOption = (props) => {
+  return (
+    <SingleValue {...props}>
+      <img style={{ width: "30px", display: "inline-block" }} src={props.data.image} alt='flag' />
+      <span className='ml-2'>{props.children}</span>
+    </SingleValue>
+  );
+};
 
 // const CustomValueContainer = ({ children, ...props }) => {
 //   console.log(props);

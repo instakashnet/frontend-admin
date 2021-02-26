@@ -14,7 +14,7 @@ const Forex = () => {
   const [forex, setForex] = useState(null);
   const dispatch = useDispatch();
   const { forexTypes, activeRates, allRates, isLoading } = useSelector((state) => state.Forex);
-  const forexOptions = forexTypes.length > 0 ? forexTypes.map((type) => ({ label: "USD/PEN", value: type.id, image: require(`../../assets/images/flags/USDPEN.svg`) })) : [];
+  const forexOptions = forexTypes.length > 0 ? forexTypes.map((type) => ({ label: "USD/PEN", value: type.id, image: `${process.env.PUBLIC_URL}/images/flags/USDPEN.svg` })) : [];
 
   useEffect(() => {
     dispatch(getForexInit());

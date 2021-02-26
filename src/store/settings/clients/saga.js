@@ -15,8 +15,7 @@ function* getClients() {
 function* getClientDetails({ userId }) {
   try {
     const res = yield authInstance.get(`/admin/users/${userId}`);
-    console.log(res);
-    if (res.status === 200) yield put(actions.getClientDetailsSuccess(res.data));
+    if (res.status === 200) yield put(actions.getClientDetailsSuccess(res.data.user[0]));
   } catch (error) {
     yield put(actions.apiError(error.message));
   }
