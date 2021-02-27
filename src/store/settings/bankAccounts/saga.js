@@ -35,7 +35,12 @@ function* addAcbAccount({ values, setState }) {
 function* editCbAccount({ values, setState }) {
   try {
     const res = yield accountsInstance.put("/admin/accounts", values);
-    console.log(res);
+    if (res.status === 200) {
+      yield put(actions.editCbAccountSuccess());
+      yield call(getCbAccounts);
+      yield call(setState, false);
+      yield Swal.fire("Cuenta editada", "Los datos de la cuenta fueron editados correctamente.", "success");
+    }
   } catch (error) {
     yield put(actions.apiError("Ha ocurrido un error editar la cuenta. Por favor contacta a soporte"));
     yield delay(3000);

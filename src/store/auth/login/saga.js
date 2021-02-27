@@ -61,7 +61,7 @@ function* logoutUser({ payload }) {
   yield put(actions.logoutUserSuccess());
 
   try {
-    yield authInstance.post("/logout");
+    yield authInstance.post("/auth/logout");
   } catch (error) {
     console.log(error);
   }
