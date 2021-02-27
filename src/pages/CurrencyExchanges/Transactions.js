@@ -51,6 +51,12 @@ const Transactions = (props) => {
         width: 100,
       },
       {
+        title: "F",
+        field: "invoice",
+        render: (rowData) => <span className={`${rowData.invoice ? "text-success" : "text-warning"}`}>{rowData.invoice ? "SI" : "NO"}</span>,
+        width: 100,
+      },
+      {
         title: "Estado",
         field: "status",
         width: 100,
@@ -80,10 +86,11 @@ const Transactions = (props) => {
             user: order.firstName + " " + order.lastName,
             amountSent: ` ${order.currencySent === "PEN" ? "S/." : "$"} ${order.amountSent.toFixed(2)}`,
             amountReceived: `${order.currencyReceived === "PEN" ? "S/." : "$"} ${order.amountReceived.toFixed(2)}`,
-            originBank: order.accFromBankName,
+            originBank: order.bankFromName,
             destinationBank: order.accToBankName,
             statusName: order.stateName,
             statusColor: order.stateColor,
+            invoice: order.billAssigned,
           }))
         : [],
   };

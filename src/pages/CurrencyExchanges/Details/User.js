@@ -18,10 +18,10 @@ const User = (props) => {
             </div>
             <Media body className='align-self-center'>
               <div className='text-muted'>
-                <h5>{props.details.firstName + " " + props.details.lastName}</h5>
-                <p className='mb-1'>{props.details.email}</p>
+                <h5>{details.firstName + " " + details.lastName}</h5>
+                <p className='mb-1'>{details.email}</p>
                 <p className='mb-1'>
-                  <b>Documento:</b> CI 123456789
+                  <b>Documento:</b> {`${details.document_type} ${details.document_identification}`}
                 </p>
                 <p className='mb-0'>
                   <b>Teléofno:</b> {props.details.phone}

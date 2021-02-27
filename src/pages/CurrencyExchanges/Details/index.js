@@ -10,6 +10,7 @@ import Received from "./Received";
 import Sent from "./Sent";
 import Transactions from "./OldTransactions";
 import TransferInvoice from "./TransferInvoice";
+import EditTransaction from "./EditTransaction";
 import Alert from "../../../components/UI/Alert";
 
 const ExchangeDetails = (props) => {
@@ -17,9 +18,12 @@ const ExchangeDetails = (props) => {
   const history = useHistory();
   const { id } = props.match.params;
   const [modal, setModal] = useState(false);
+  const [edit, setEdit] = useState(false);
   const { details, isLoading, isProcessing, error } = useSelector((state) => state.CurrencyExchange);
 
   const { exchanges, isLoading: dataLoading } = useSelector((state) => state.Clients);
+
+  const editStateHandler = () => setEdit((prev) => !prev);
 
   const toggleModal = () => setModal((prev) => !prev);
 
@@ -28,7 +32,7 @@ const ExchangeDetails = (props) => {
     setModal(true);
   };
   const onDeclineExchange = () => dispatch(declineExchange(details.id, history));
-  const onApproveExchange = (values) => dispatch(approveExchange(id, values, toggleModal, history));
+  const onApproveExchange = (values) => dispatch(approveExchange(id, values, toggleModal));
   const onCreateInvoice = () => dispatch(createInvoice(id));
 
   useEffect(() => {
@@ -49,11 +53,11 @@ const ExchangeDetails = (props) => {
               <div>
                 {details && (details.stateId === 3 || details.stateId === 4) && (
                   <>
-                    <button type='button' disabled={isProcessing} onClick={changeStatusHandler} className='btn btn-primary waves-effect btn-label mr-3 waves-light'>
-                      <i className='fas fa-check label-icon'></i> {details.stateId === 3 ? "Validar" : "Aprobar"}
-                    </button>
-                    <button type='button' disabled={isProcessing} onClick={onDeclineExchange} className='btn btn-danger waves-effect btn-label waves-light'>
+                    <button type='button' disabled={isProcessing} onClick={onDeclineExchange} className='btn btn-danger waves-effect btn-label mr-3 waves-light'>
                       <i className='fas fa-times label-icon'></i> Cancelar
+                    </button>
+                    <button type='button' disabled={isProcessing} onClick={changeStatusHandler} className='btn btn-primary waves-effect btn-label waves-light'>
+                      <i className='fas fa-check label-icon'></i> {details.stateId === 3 ? "Validar" : "Aprobar"}
                     </button>
                   </>
                 )}
@@ -66,7 +70,6 @@ const ExchangeDetails = (props) => {
             </div>
             <User details={details} isLoading={isLoading} />
           </Col>
-          {/* <Col lg='4'></Col> */}
         </Row>
         <Row className='mb-3'>
           <Col lg='10' xl='8' className='d-flex justify-content-end'>
@@ -79,11 +82,16 @@ const ExchangeDetails = (props) => {
         </Row>
         <Row>
           <Col lg='5' xl='4'>
-            <Sent details={details} isLoading={isLoading} />
+            <Sent details={details} onEdiState={editStateHandler} isLoading={isLoading} />
           </Col>
           <Col lg='5' xl='4'>
             <Received details={details} isLoading={isLoading} />
           </Col>
+          {edit && (
+            <Col lg='4'>
+              <EditTransaction details={details} setEditState={setEdit} />
+            </Col>
+          )}
         </Row>
         <Row>
           <Col lg='10' xl='8'>

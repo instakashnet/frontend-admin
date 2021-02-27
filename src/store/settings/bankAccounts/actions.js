@@ -19,10 +19,21 @@ export const addCbAccountSuccess = () => ({
   type: actionTypes.ADD_CB_ACCOUNT_SUCCESS,
 });
 
-export const editCbBalance = (values, reset) => ({
+export const editCbAccount = (values, setState) => ({
+  type: actionTypes.EDIT_CB_ACCOUNT,
+  values,
+  setState,
+});
+
+export const editCbAccountSuccess = () => ({
+  type: actionTypes.EDIT_CB_ACCOUNT_SUCCESS,
+});
+
+export const editCbBalance = (values, accountId, setState) => ({
   type: actionTypes.EDIT_CB_BALANCE,
   values,
-  reset,
+  accountId,
+  setState,
 });
 
 export const editCbBalanceSuccess = () => ({

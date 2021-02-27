@@ -61,7 +61,7 @@ const AccountsTable = (props) => {
                     icon: "edit",
                     iconProps: { style: { color: "#f1b44c" } },
                     tooltip: "Editar cuenta",
-                    onClick: (e, rowData) => console.log(rowData),
+                    onClick: (e, rowData) => props.onEdit(rowData),
                   },
                   {
                     icon: () => <AccountBalanceWallet htmlColor='#f1b44c' />,

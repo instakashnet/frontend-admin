@@ -28,21 +28,37 @@ const Sent = (props) => {
       </CardBody>
       <CardBody>
         {!isLoading && details && (
-          <Row>
-            <Col sm='6'>
-              <div>
-                <p className='text-muted mb-2'>Monto a enviar</p>
-                <h5>{`${details.currencyReceived === "PEN" ? "S/." : "$"} ${details.amountReceived.toFixed(2)}`}</h5>
-              </div>
-            </Col>
-            <Col sm='6'>
-              <div className='text-sm-right mt-4 mt-sm-0'>
-                <p className='text-muted mb-2'>Cuenta no.</p>
-                <h5>{details.accountToRaw}</h5>
-                <small className='text-danger'>{interplaza && "* Parece que esta cuenta es interplaza. Por favor contactar al cliente"}</small>
-              </div>
-            </Col>
-          </Row>
+          <>
+            <Row>
+              <Col sm='6'>
+                <div>
+                  <p className='text-muted mb-2'>Tasa ofrecida</p>
+                  <h5>{details.rate}</h5>
+                </div>
+              </Col>
+              <Col sm='6'>
+                <div className='text-sm-right mt-4 mt-sm-0'>
+                  <p className='text-muted mb-2'>Factura generada</p>
+                  <h5 className={`${details.billAssigned ? "text-success" : "text-warning"}`}>{details.billAssigned ? "Generada" : "No generada"}</h5>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm='6'>
+                <div>
+                  <p className='text-muted mb-2'>Monto a enviar</p>
+                  <h5>{`${details.currencyReceived === "PEN" ? "S/." : "$"} ${details.amountReceived.toFixed(2)}`}</h5>
+                </div>
+              </Col>
+              <Col sm='6'>
+                <div className='text-sm-right mt-4 mt-sm-0'>
+                  <p className='text-muted mb-2'>Cuenta no.</p>
+                  <h5>{details.accountToRaw}</h5>
+                  <small className='text-danger'>{interplaza && "* Parece que esta cuenta es interplaza. Por favor contactar al cliente"}</small>
+                </div>
+              </Col>
+            </Row>
+          </>
         )}
       </CardBody>
     </Card>

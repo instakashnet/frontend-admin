@@ -5,10 +5,12 @@ import { Container, Col, Row, Alert } from "reactstrap";
 
 import AccountsTable from "./AccountsTable";
 import AddAccount from "./AddAccount";
+import EditAccount from "./EditAccount";
 import EditBalance from "./EditBalance";
 
 const BankAccounts = () => {
   const [addState, setAddState] = useState(false);
+  const [editState, setEditState] = useState(false);
   const [addBalance, setAddBalance] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const dispatch = useDispatch();
@@ -19,10 +21,17 @@ const BankAccounts = () => {
     setAddState(true);
   };
 
-  const addBalanceHandler = (accountData) => {
+  const addBalanceHandler = (accData) => {
     setAddState(false);
-    setSelectedAccount(accountData);
+    setSelectedAccount(accData);
     setAddBalance(true);
+  };
+
+  const editAccountHandler = (accData) => {
+    setAddState(false);
+    setAddBalance(false);
+    setSelectedAccount(accData);
+    setEditState(true);
   };
 
   useEffect(() => {
@@ -36,12 +45,13 @@ const BankAccounts = () => {
       <Container fluid>
         <Row>
           <Col lg='8'>
-            <AccountsTable isLoading={isLoading} accounts={accounts} onAdd={addAccountHandler} onAddBalance={addBalanceHandler} />
+            <AccountsTable isLoading={isLoading} accounts={accounts} onAdd={addAccountHandler} onAddBalance={addBalanceHandler} onEdit={editAccountHandler} />
           </Col>
           <Col lg='4'>
             {error && <Alert color='danger'>{error}</Alert>}
             {addState && <AddAccount setAddState={setAddState} />}
-            {addBalance && <EditBalance {...selectedAccount} isProcessing={isProcessing} />}
+            {editState && <EditAccount setEditState={setEditState} account={selectedAccount} isProcessing={isProcessing} />}
+            {addBalance && <EditBalance setAddState={setAddBalance} accId={selectedAccount.id} isProcessing={isProcessing} />}
           </Col>
         </Row>
       </Container>

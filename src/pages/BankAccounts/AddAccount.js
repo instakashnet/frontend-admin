@@ -25,7 +25,7 @@ const AddAccounts = (props) => {
 
   return (
     <div className='container-fluid'>
-      <Breadcrumbs title='Cuentas' breadcrumbItem={`${props.data ? "Editar" : "Agregar"} cuenta`} />
+      <Breadcrumbs title='Cuentas' breadcrumbItem='Agregar cuenta' />
       <Card>
         <CardBody>
           <form onSubmit={formik.handleSubmit}>

@@ -25,7 +25,7 @@ const CustomUpload = (props) => {
 
   return (
     <>
-      <Dropzone onDrop={onDropHandler} multiple={false}>
+      <Dropzone onDrop={onDropHandler} multiple={false} accept='application/pdf'>
         {({ getRootProps, getInputProps }) => (
           <div className='dropzone'>
             <div className='dz-message needsclick' {...getRootProps()}>

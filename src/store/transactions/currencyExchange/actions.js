@@ -25,12 +25,11 @@ export const validateExchangeSuccess = () => ({
   type: actionTypes.VALIDATE_EXCHANGE_SUCCESS,
 });
 
-export const approveExchange = (orderId, values, closeModal, history) => ({
+export const approveExchange = (orderId, values, closeModal) => ({
   type: actionTypes.APPROVE_EXCHANGE,
   orderId,
   values,
   closeModal,
-  history,
 });
 
 export const approveExchangeSuccess = () => ({
@@ -55,14 +54,15 @@ export const declineExchangeCancel = () => ({
   type: actionTypes.DECLINE_EXCHANGE_CANCELED,
 });
 
-export const editExchange = (id, details, values, update) => ({
+export const editExchange = (id, values, setState) => ({
   type: actionTypes.EDIT_EXCHANGE,
-  payload: { id, details, values, update },
+  id,
+  values,
+  setState,
 });
 
-export const editExchangeSuccess = (msg) => ({
+export const editExchangeSuccess = () => ({
   type: actionTypes.EDIT_EXCHANGE_SUCCESS,
-  payload: msg,
 });
 
 export const createInvoice = (orderId) => ({
