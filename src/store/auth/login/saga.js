@@ -45,8 +45,12 @@ function* loginUser({ payload }) {
     yield call([localStorage, "setItem"], "authUser", JSON.stringify(userObj));
     yield put(actions.loadUser(history));
   } catch (error) {
-    let message;
-    error.status === 404 ? (message = "usuario y/o contraseña incorrectos.") : (message = error.message);
+    let message = error.message;
+
+    if (error.status !== 500) {
+      message = "Las credenciales de acceso no son correctas.";
+    }
+
     yield put(actions.apiError(message));
     yield delay(5000);
     yield put(actions.clearAlert());

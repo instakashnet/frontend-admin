@@ -71,7 +71,15 @@ const Login = (props) => {
                       </div>
 
                       <div className='form-group'>
-                        <AvField name='password' label='Contraseña' type='password' required placeholder='Ingresa tu contraseña' errorMessage='La contraseña es inválida' />
+                        <AvField
+                          name='password'
+                          autoComplete='password'
+                          label='Contraseña'
+                          type='password'
+                          required
+                          placeholder='Ingresa tu contraseña'
+                          errorMessage='La contraseña es inválida'
+                        />
                       </div>
                       {/* 
                       <div className='custom-control custom-checkbox'>
