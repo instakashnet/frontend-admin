@@ -39,7 +39,7 @@ const resInterceptor = (instance) =>
   );
 
 const authInstance = axios.create({
-  baseURL: "https://auth-service-instakash.herokuapp.com/api/v1",
+  baseURL: process.env.NODE_ENV !== "production" ? process.env.REACT_APP_TEST_AUTH_API : process.env.REACT_APP_AUTH_API,
   timeout,
   withCredentials: false,
 });
@@ -47,7 +47,7 @@ reqInterceptor(authInstance);
 resInterceptor(authInstance);
 
 const exchangeInstance = axios.create({
-  baseURL: "https://instakash-exchange-service.herokuapp.com/api/v1",
+  baseURL: process.env.NODE_ENV !== "production" ? process.env.REACT_APP_TEST_EXCHANGE_API : process.env.REACT_APP_EXCHANGE_API,
   timeout,
   withCredentials: false,
 });
@@ -55,7 +55,7 @@ reqInterceptor(exchangeInstance);
 resInterceptor(exchangeInstance);
 
 const accountsInstance = axios.create({
-  baseURL: "https://instakash-accounts-service.herokuapp.com/api/v1",
+  baseURL: process.env.NODE_ENV !== "production" ? process.env.REACT_APP_TEST_ACCOUNTS_API : process.env.REACT_APP_ACCOUNTS_API,
   timeout,
   withCredentials: true,
 });
