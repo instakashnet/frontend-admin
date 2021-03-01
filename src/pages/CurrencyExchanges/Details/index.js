@@ -20,6 +20,7 @@ const ExchangeDetails = (props) => {
   const [modal, setModal] = useState(false);
   const [edit, setEdit] = useState(false);
   const { details, isLoading, isProcessing, error } = useSelector((state) => state.CurrencyExchange);
+  const user = useSelector((state) => state.Login.user);
 
   const { exchanges, isLoading: dataLoading } = useSelector((state) => state.Clients);
 
@@ -51,15 +52,15 @@ const ExchangeDetails = (props) => {
                 <i className='fas fa-arrow-left label-icon'></i> Regresar
               </button>
               <div>
+                {details && (details.stateId === 3 || details.stateId === 4) && user.role !== "ROLE_OPERATOR" && (
+                  <button type='button' disabled={isProcessing} onClick={onDeclineExchange} className='btn btn-danger waves-effect btn-label mr-3 waves-light'>
+                    <i className='fas fa-times label-icon'></i> Cancelar
+                  </button>
+                )}
                 {details && (details.stateId === 3 || details.stateId === 4) && (
-                  <>
-                    <button type='button' disabled={isProcessing} onClick={onDeclineExchange} className='btn btn-danger waves-effect btn-label mr-3 waves-light'>
-                      <i className='fas fa-times label-icon'></i> Cancelar
-                    </button>
-                    <button type='button' disabled={isProcessing} onClick={changeStatusHandler} className='btn btn-primary waves-effect btn-label waves-light'>
-                      <i className='fas fa-check label-icon'></i> {details.stateId === 3 ? "Validar" : "Aprobar"}
-                    </button>
-                  </>
+                  <button type='button' disabled={isProcessing} onClick={changeStatusHandler} className='btn btn-primary waves-effect btn-label waves-light'>
+                    <i className='fas fa-check label-icon'></i> {details.stateId === 3 ? "Validar" : "Aprobar"}
+                  </button>
                 )}
                 {details && details.stateId === 6 && !details.billAssigned && (
                   <button type='button' disabled={isProcessing} onClick={onCreateInvoice} className='btn btn-primary waves-effect btn-label waves-light'>

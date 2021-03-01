@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const timeout = 4000;
+const timeout = 8000;
 const requestLog = (config) => (process.env.NODE_ENV !== "production" ? console.log(`Request sent to ${config.url}`) : false);
 
 const reqInterceptor = (instance) =>

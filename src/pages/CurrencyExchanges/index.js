@@ -18,7 +18,10 @@ const CurrencyExchanges = () => {
       socket.emit("getOrders", { token, type: "SUBSCRIBE" });
     });
 
-    return () => socket.emit("disconnect", { data: token });
+    return () => {
+      socket.emit("leaveGroup", { data: token });
+      socket.emit("disconnect", { data: token });
+    };
   }, [socket, token]);
 
   useEffect(() => {
