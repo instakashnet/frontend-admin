@@ -1,9 +1,7 @@
 import React from "react";
 import { Card, CardBody, Badge } from "reactstrap";
 import { useHistory } from "react-router-dom";
-// import { convertHexToRGBA } from "../../helpers/functions";
 import moment from "moment-timezone";
-// import history from "../../helpers/history";
 
 //Components
 import Breadcrumbs from "../../components/Common/Breadcrumb";

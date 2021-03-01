@@ -3,9 +3,12 @@ import { Card, CardBody, Media } from "reactstrap";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 import Male from "../../../assets/images/profile-male.svg";
+import CopyButton from "../../../components/UI/CopyButton";
 
 const User = (props) => {
   const { isLoading, details } = props;
+
+  console.log(details);
 
   return (
     <Card>
@@ -24,17 +27,17 @@ const User = (props) => {
                   <b>Documento:</b> {`${details.document_type} ${details.document_identification}`}
                 </p>
                 <p className='mb-0'>
-                  <b>Teléofno:</b> {props.details.phone}
+                  <b>Teléofno:</b> {details.phone} <CopyButton textToCopy={details.phone} />
                 </p>
               </div>
             </Media>
-            {props.details.type === "company" && (
+            {details.type === "juridica" && (
               <Media body className='align-self-center'>
                 <div className='text-muted'>
                   <h5>Empresa</h5>
-                  <p className='mb-1'>Instakash SAC</p>
+                  <p className='mb-1'>{details.razon_social}</p>
                   <p className='mb-0'>
-                    <b>RUC:</b> 20704234231
+                    <b>RUC:</b> {details.ruc}
                   </p>
                 </div>
               </Media>

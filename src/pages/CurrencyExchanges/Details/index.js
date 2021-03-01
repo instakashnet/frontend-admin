@@ -96,7 +96,7 @@ const ExchangeDetails = (props) => {
         </Row>
         <Row>
           <Col lg='10' xl='8'>
-            <Transactions isLoading={dataLoading} orders={exchanges} />
+            <Transactions isLoading={dataLoading} details={details} orders={exchanges} />
           </Col>
         </Row>
       </Container>
