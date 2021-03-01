@@ -27,7 +27,7 @@ const CurrencyExchanges = () => {
   useEffect(() => {
     socket.on("ordersTo", (orders) => {
       let ordersArray = [];
-      if (orders && orders.length > 0) ordersArray = orders;
+      if (orders && orders.length > 0) ordersArray = orders.sort((a, b) => new Date(a.created) - new Date(b.created));
 
       dispatch(getExchangesSuccess(ordersArray.reverse()));
 

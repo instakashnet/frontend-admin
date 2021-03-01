@@ -82,7 +82,7 @@ const Transactions = (props) => {
         ? props.orders.map((order) => ({
             id: order.id,
             pedidoId: order.uuid,
-            date: moment(order.created).format("DD/MM/YYY hh:mm a"),
+            date: moment(order.created).format("DD/MM/YY hh:mm a"),
             user: order.firstName + " " + order.lastName,
             amountSent: ` ${order.currencySent === "PEN" ? "S/." : "$"} ${order.amountSent.toFixed(2)}`,
             amountReceived: `${order.currencyReceived === "PEN" ? "S/." : "$"} ${order.amountReceived.toFixed(2)}`,

@@ -3,6 +3,8 @@ import { Card, CardBody, Row, Col } from "reactstrap";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import moment from "moment-timezone";
 
+import CopyButton from "../../../components/UI/CopyButton";
+
 const Received = (props) => {
   const { isLoading, details } = props;
 
@@ -16,7 +18,9 @@ const Received = (props) => {
               <Col sm='8'>
                 <div>
                   <div>
-                    <h5>Pedido {details.uuid}</h5>
+                    <h5>
+                      Pedido {details.uuid} <CopyButton textToCopy={details.uuid} />
+                    </h5>
                     <p className='text-muted mb-1'>{moment(details.created).format("DD/MM/YYYY HH:mm a")}</p>
                     {details.fundsOrigin && <p className='text-muted mb-0'>Origen de fondos: {details.fundsOrigin}</p>}
                   </div>
@@ -39,7 +43,9 @@ const Received = (props) => {
             <Col sm='6'>
               <div>
                 <p className='text-muted mb-2'>Nro. de transferencia</p>
-                <h5>{details.transactionCode || "Sin nro. de transferencia"}</h5>
+                <h5>
+                  {details.transactionCode || "Sin nro. de transferencia"} {details.transactionCode && <CopyButton textToCopy={details.transactionCode} />}
+                </h5>
               </div>
             </Col>
           </Row>

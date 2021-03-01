@@ -3,6 +3,8 @@ import { Card, CardBody, Row, Col } from "reactstrap";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { checkInterplaza } from "../../../helpers/functions";
 
+import CopyButton from "../../../components/UI/CopyButton";
+
 const Sent = (props) => {
   const { details, isLoading } = props;
   let interplaza;
@@ -20,7 +22,7 @@ const Sent = (props) => {
               <div className='mb-2'>
                 <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankSent}.svg`} alt={details.bankSent} width={20} />
                 <span className='ml-2 text-muted'>{`${details.bankSent} ${details.currencyReceive === "USD" ? "$" : "S/."}`} - </span>
-                <span className='ml-2 text-muted'>Cuenta corriente</span>
+                <span className='ml-2 text-muted'>{details.accTypeTo === "savings" ? "Ahorros" : "Corriente"}</span>
               </div>
             </div>
           </div>
@@ -47,13 +49,17 @@ const Sent = (props) => {
               <Col sm='6'>
                 <div>
                   <p className='text-muted mb-2'>Monto a enviar</p>
-                  <h5>{`${details.currencyReceived === "PEN" ? "S/." : "$"} ${details.amountReceived.toFixed(2)}`}</h5>
+                  <h5>
+                    {`${details.currencyReceived === "PEN" ? "S/." : "$"} ${details.amountReceived.toFixed(2)}`} <CopyButton textToCopy={details.amountReceived.toFixed(2)} />
+                  </h5>
                 </div>
               </Col>
               <Col sm='6'>
                 <div className='text-sm-right mt-4 mt-sm-0'>
                   <p className='text-muted mb-2'>Cuenta no.</p>
-                  <h5>{details.accountToRaw}</h5>
+                  <h5>
+                    {details.accountToRaw} <CopyButton textToCopy={details.accountToRaw} />
+                  </h5>
                   <small className='text-danger'>{interplaza && "* Parece que esta cuenta es interplaza. Por favor contactar al cliente"}</small>
                 </div>
               </Col>
