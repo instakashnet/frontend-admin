@@ -25,7 +25,8 @@ const CurrencyExchanges = () => {
     socket.on("ordersTo", (orders) => {
       let ordersArray = [];
       if (orders && orders.length > 0) ordersArray = orders;
-      dispatch(getExchangesSuccess(ordersArray));
+
+      dispatch(getExchangesSuccess(ordersArray.reverse()));
 
       setIsLoading(false);
     });
