@@ -23,8 +23,9 @@ const CurrencyExchanges = () => {
 
   useEffect(() => {
     socket.on("ordersTo", (orders) => {
-      console.log(orders);
-      dispatch(getExchangesSuccess(orders));
+      let ordersArray = [];
+      if (orders && orders.length > 0) ordersArray = orders;
+      dispatch(getExchangesSuccess(ordersArray));
 
       setIsLoading(false);
     });
