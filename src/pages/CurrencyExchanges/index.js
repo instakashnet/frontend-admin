@@ -23,6 +23,7 @@ const CurrencyExchanges = () => {
 
   useEffect(() => {
     socket.on("ordersTo", (orders) => {
+      console.log(orders);
       dispatch(getExchangesSuccess(orders));
 
       setIsLoading(false);

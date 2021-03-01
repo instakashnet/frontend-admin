@@ -8,7 +8,7 @@ import { changeLayout, changeSidebarTheme, changeSidebarType, toggleRightSidebar
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
-import Rightbar from "../CommonForBoth/Rightbar";
+// import Rightbar from "../CommonForBoth/Rightbar";
 
 class Layout extends Component {
   constructor(props) {
@@ -96,7 +96,7 @@ class Layout extends Component {
           <div className='main-content'>{this.props.children}</div>
           <Footer />
         </div>
-        <Rightbar />
+        {/* <Rightbar /> */}
       </React.Fragment>
     );
   }

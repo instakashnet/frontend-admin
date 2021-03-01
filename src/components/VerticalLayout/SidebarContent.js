@@ -95,7 +95,8 @@ const SidebarContent = (props) => {
             </>
           ) : null}
 
-          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER" || user.role === "ROLE_OPERATOR" || user.role === "ROLE_ANALYST") ? (
+          {user &&
+          (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER" || user.role === "ROLE_OPERATOR" || user.role === "ROLE_ANALYST" || user.role === "ROLE_MANAGER") ? (
             <>
               <li className='menu-title'>{props.t("Cambios de divisa")}</li>
 
@@ -115,14 +116,14 @@ const SidebarContent = (props) => {
               </li> */}
 
               <li className='menu-title'>{props.t("Avances de efectivo")}</li>
-
+              {/* 
               <li>
                 <Link to='/cash-advances' className=' waves-effect'>
                   <i className='bx bx-bar-chart-square'></i>
-                  {/* <span className='badge badge-pill badge-warning float-right'>{props.t("4")}</span> */}
+                  <span className='badge badge-pill badge-warning float-right'>{props.t("4")}</span>
                   <span>{props.t("Transacciones")}</span>
                 </Link>
-              </li>
+              </li> */}
               {/* 
               <li>
                 <Link to='/advance-transaction-limits?type=cashAdvance' className=' waves-effect'>
@@ -133,7 +134,7 @@ const SidebarContent = (props) => {
             </>
           ) : null}
 
-          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_MANAGER") ? (
+          {user && user.role === "ROLE_ADMIN" ? (
             <>
               <li className='menu-title'>{props.t("Configuraciones generales")}</li>
 
