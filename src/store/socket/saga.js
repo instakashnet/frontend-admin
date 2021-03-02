@@ -1,6 +1,7 @@
 import { call, all, fork, apply, take, put } from "redux-saga/effects";
 import { eventChannel } from "redux-saga";
 import * as types from "./types";
+import { GET_ORDERS } from "../transactions/currencyExchange/actionTypes";
 import { getExchangesSuccess } from "../transactions/currencyExchange/actions";
 import io from "socket.io-client";
 
@@ -37,12 +38,13 @@ function* changeOrderState(socket, token, orderId) {
   yield apply(socket, socket.emit, ["getOrders", { type: "PUBLISH", token, id: orderId }]);
 }
 
-function* onJoinedGroup(socket, token) {
+function* onJoinedGroup(socket) {
   const groupChannel = yield call(createSocketChannel, socket, "joinedGroup");
 
   while (true) {
     try {
       yield take(groupChannel);
+      const { token } = yield take(GET_ORDERS);
       yield fork(getOrders, socket, token);
     } catch (error) {
       console.log("group error: " + error);
@@ -68,7 +70,7 @@ function* listenSocketSaga() {
     const socket = yield call(connect);
     const { token } = yield take(types.JOIN_GROUP);
     yield fork(joinGroup, socket, token);
-    yield fork(onJoinedGroup, socket, token);
+    yield fork(onJoinedGroup, socket);
     yield fork(onGetOrders, socket);
 
     while (true) {
