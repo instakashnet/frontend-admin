@@ -13,7 +13,8 @@ export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case actionTypes.GET_EXCHANGES_SUCCESS:
+    case actionTypes.GET_ORDERS_SUCCESS:
+      console.log(action.orders);
       return { ...state, orders: action.orders, isLoading: false };
 
     case actionTypes.VALIDATE_EXCHANGE:

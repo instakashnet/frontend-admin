@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { Switch, BrowserRouter as Router } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getCountriesInit, loadUser, setSocket } from "./store/actions";
+import { getCountriesInit, loadUser, joinGroup } from "./store/actions";
 import history from "./helpers/history";
-import socket from "./socketconnection";
 
 // Import Routes
 import { authProtectedRoutes, publicRoutes } from "./routes/";
@@ -18,16 +17,15 @@ import NonAuthLayout from "./components/NonAuthLayout";
 import "./assets/scss/theme.scss";
 import "./assets/scss/custom.scss";
 
-const App = (props) => {
+const App = () => {
   const { isLoading, token } = useSelector((state) => state.Login);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setSocket(socket));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (token) dispatch(getCountriesInit());
+    if (token) {
+      dispatch(getCountriesInit());
+      dispatch(joinGroup(token));
+    }
   }, [token, dispatch]);
 
   useEffect(() => {
