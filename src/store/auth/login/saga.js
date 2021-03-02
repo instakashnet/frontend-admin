@@ -22,7 +22,7 @@ function* loadUser({ history }) {
 
   try {
     const res = yield authInstance.get("/users/session");
-    console.log(res);
+
     yield call([sessionStorage, "setItem"], "session", JSON.stringify(res.data.activityUser));
     yield put(actions.loginSuccess(user, accessToken));
     yield history && history.push("/dashboard");

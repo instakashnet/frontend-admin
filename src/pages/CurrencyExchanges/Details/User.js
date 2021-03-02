@@ -8,8 +8,6 @@ import CopyButton from "../../../components/UI/CopyButton";
 const User = (props) => {
   const { isLoading, details } = props;
 
-  console.log(details);
-
   return (
     <Card>
       <CardBody>

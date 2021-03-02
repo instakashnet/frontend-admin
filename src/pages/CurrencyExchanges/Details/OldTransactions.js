@@ -18,7 +18,7 @@ const OldTransactions = (props) => {
         render: (rowData) => (
           <div className='d-flex align-items-center'>
             <span className='mr-2'>{rowData.amountSent}</span>
-            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankSent}.svg`} width={20} alt='banco' />
+            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankReceive}.svg`} width={20} alt='banco' />
           </div>
         ),
       },
@@ -29,7 +29,7 @@ const OldTransactions = (props) => {
         render: (rowData) => (
           <div className='d-flex align-items-center'>
             <span className='mr-2'>{rowData.amountReceived}</span>
-            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankReceive}.svg`} width={20} alt='banco' />
+            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankSent}.svg`} width={20} alt='banco' />
           </div>
         ),
       },
@@ -47,7 +47,9 @@ const OldTransactions = (props) => {
   };
 
   if (props.orders.length > 0) {
-    data.rows = props.orders.map((order) => ({
+    const filteredOrders = props.orders.filter((order) => order.id !== props.details.id);
+
+    data.rows = filteredOrders.map((order) => ({
       date: moment(order.created).format("DD/MM/YYYY HH:mm a"),
       bankSent: order.bankSent,
       bankReceive: order.bankReceive,

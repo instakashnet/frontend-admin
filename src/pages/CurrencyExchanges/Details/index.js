@@ -19,7 +19,7 @@ const ExchangeDetails = (props) => {
   const { id } = props.match.params;
   const [modal, setModal] = useState(false);
   const [edit, setEdit] = useState(false);
-  const { details, isLoading, isProcessing, error } = useSelector((state) => state.CurrencyExchange);
+  const { details, isLoading, isProcessing, error, success } = useSelector((state) => state.CurrencyExchange);
   const user = useSelector((state) => state.Login.user);
 
   const { exchanges, isLoading: dataLoading } = useSelector((state) => state.Clients);
@@ -44,6 +44,7 @@ const ExchangeDetails = (props) => {
     <div className='page-content'>
       <Container fluid>
         {error && <Alert color='danger' error={error} />}
+        {success && <Alert color='success' error={success} />}
         <Breadcrumbs title='Detalles del cambio' breadcrumbItem='Detalles del cambio de divisa' />
         <Row>
           <Col lg='10' xl='8'>

@@ -4,6 +4,7 @@ const initialState = {
   orders: [],
   details: null,
   error: "",
+  success: "",
   isLoading: true,
   isProcessing: false,
 };
@@ -32,8 +33,10 @@ export default function (state = initialState, action) {
     case actionTypes.APPROVE_EXCHANGE_SUCCESS:
     case actionTypes.DECLINE_EXCHANGE_SUCCESS:
     case actionTypes.EDIT_EXCHANGE_SUCCESS:
-    case actionTypes.CREATE_INVOICE_SUCCESS:
       return { ...state, isProcessing: false };
+
+    case actionTypes.CREATE_INVOICE_SUCCESS:
+      return { ...state, isProcessing: false, success: action.msg };
 
     case actionTypes.CLEAR_ALERT:
       return { ...state, error: "", success: "" };

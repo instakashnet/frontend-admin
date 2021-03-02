@@ -103,7 +103,7 @@ const Transactions = (props) => {
             columns={data.columns}
             isLoading={props.isLoading}
             rows={data.rows}
-            options={{ sorting: true, loadingType: "overlay", pageSize: 50, pageSizeOptions: [50, 100, 200] }}
+            options={{ sorting: true, loadingType: "overlay", pageSize: 100, pageSizeOptions: [50, 100, 200] }}
           />
         </CardBody>
       </Card>

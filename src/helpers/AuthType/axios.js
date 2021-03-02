@@ -22,6 +22,7 @@ const resInterceptor = (instance) =>
     (res) => res,
     (error) => {
       console.log(error);
+      console.log(error.config);
       console.warn("Error status", error.response ? error.response.status : error.code);
 
       let message = "Ha ocurrido un error inesperado, por favor intenta más tarde, si el problema persiste contacte a soporte.";

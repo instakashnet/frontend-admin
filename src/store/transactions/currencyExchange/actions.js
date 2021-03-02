@@ -70,8 +70,9 @@ export const createInvoice = (orderId) => ({
   orderId,
 });
 
-export const createInvoiceSuccess = () => ({
+export const createInvoiceSuccess = (msg) => ({
   type: actionTypes.CREATE_INVOICE_SUCCESS,
+  msg,
 });
 
 export const clearAlert = () => ({

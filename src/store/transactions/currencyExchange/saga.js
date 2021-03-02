@@ -30,7 +30,7 @@ function* editExchange({ id, values, setState }) {
     }
   } catch (error) {
     yield put(actions.apiError("Ha ocurrido un error editando la transacción, Por favor contacte a soporte."));
-    yield delay(3000);
+    yield delay(4000);
     yield put(actions.clearAlert());
   }
 }
@@ -66,6 +66,8 @@ function* validateExchange({ orderId, history }) {
     } else yield put(actions.apiError());
   } catch (error) {
     yield put(actions.apiError("Ha ocurrido un error validando la operación. Por favor contacta a soporte."));
+    yield delay(4000);
+    yield put(actions.clearAlert());
   }
 }
 
@@ -122,6 +124,8 @@ function* declineExchange({ orderId, history }) {
     } else put(actions.apiError());
   } catch (error) {
     yield put(actions.apiError(error.message));
+    yield delay(4000);
+    yield put(actions.clearAlert());
   }
 }
 
@@ -149,8 +153,8 @@ function* uploadVoucher({ orderId, values, closeModal }) {
     } else yield put(actions.apiError());
   } catch (error) {
     yield put(actions.apiError("Ha ocurrido un error aprobando la orden. Por favor contacta a soporte."));
-    yield delay(3000);
-    yield;
+    yield delay(4000);
+    yield put(actions.clearAlert());
   }
 }
 
@@ -158,11 +162,12 @@ function* createInvoice({ orderId }) {
   try {
     const res = yield exchangeInstance.post(`/bills/admin/order/${orderId}`);
     if (res.status === 201) {
-      yield put(actions.createInvoiceSuccess());
+      yield put(actions.createInvoiceSuccess("Factura generada correctamente."));
       yield call(getExchangeDetails, { id: orderId });
     }
   } catch (error) {
     yield put(actions.apiError(error.data ? error.data.message : "Ha ocurrido un error generando la factura. Por favor contacta a soporte."));
+  } finally {
     yield delay(4000);
     yield put(actions.clearAlert());
   }
