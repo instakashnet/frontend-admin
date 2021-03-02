@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 
 // Front
 import Layout from "./layout/reducer";
-import Socket from "./socket/reducer";
+// import Socket from "./socket/reducer";
 
 // Settings
 import AdminUsers from "./settings/users/reducer";
@@ -30,7 +30,7 @@ const rootReducer = combineReducers({
   // public
   Layout,
   Login,
-  Socket,
+  // Socket,
   // private
   Data,
   AdminUsers,

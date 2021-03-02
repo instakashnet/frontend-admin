@@ -1,1 +1,2 @@
-export const SET_SOCKET = "SET_SOCKET";
+export const JOIN_GROUP = "JOIN_GROUP";
+export const CHANGE_ORDER_STATE = "CHANGE_ORDER_STATE";

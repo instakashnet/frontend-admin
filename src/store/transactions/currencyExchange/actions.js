@@ -1,7 +1,12 @@
 import * as actionTypes from "./actionTypes";
 
+export const getExchanges = (token) => ({
+  type: actionTypes.GET_ORDERS,
+  token,
+});
+
 export const getExchangesSuccess = (orders) => ({
-  type: actionTypes.GET_EXCHANGES_SUCCESS,
+  type: actionTypes.GET_ORDERS_SUCCESS,
   orders,
 });
 

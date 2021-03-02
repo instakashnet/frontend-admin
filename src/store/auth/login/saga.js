@@ -21,6 +21,7 @@ function* loadUser({ history }) {
   if (expTime <= new Date()) return yield put(actions.logoutUser(history));
 
   try {
+    yield delay(1000);
     const res = yield authInstance.get("/users/session");
 
     yield call([sessionStorage, "setItem"], "session", JSON.stringify(res.data.activityUser));
@@ -61,15 +62,15 @@ function* loginUser({ payload }) {
 function* logoutUser({ payload }) {
   const { history } = payload;
 
-  yield localStorage.removeItem("authUser");
-  yield history && history.push("/");
-  yield put(actions.logoutUserSuccess());
-
   try {
     yield authInstance.post("/auth/logout");
   } catch (error) {
     console.log(error);
   }
+
+  yield localStorage.removeItem("authUser");
+  yield history && history.push("/");
+  yield put(actions.logoutUserSuccess());
 }
 
 export function* watchLoadUser() {

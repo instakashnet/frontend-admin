@@ -5,6 +5,7 @@ import AuthSaga from "./auth/login/saga";
 import LayoutSaga from "./layout/saga";
 import BanksSaga from "./settings/banks/saga";
 import DataSaga from "./settings/data/saga";
+import SocketSaga from "./socket/saga";
 
 // private
 import AdminUsersSaga from "./settings/users/saga";
@@ -23,6 +24,7 @@ export default function* rootSaga() {
   yield all([
     //public
     AuthSaga(),
+    SocketSaga(),
     //private
     DataSaga(),
     AdminUsersSaga(),

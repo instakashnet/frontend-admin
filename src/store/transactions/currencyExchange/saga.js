@@ -1,6 +1,7 @@
 import { all, call, takeEvery, put, fork, delay, select } from "redux-saga/effects";
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
+import { changeOrderState } from "../../socket/actions";
 import Swal from "sweetalert2";
 import { exchangeInstance } from "../../../helpers/AuthType/axios";
 import { getClientExchanges } from "../../settings/clients/actions";
@@ -37,7 +38,6 @@ function* editExchange({ id, values, setState }) {
 
 function* validateExchange({ orderId, history }) {
   const token = yield select((state) => state.Login.token);
-  const socket = yield select((state) => state.Socket.socket);
 
   try {
     const result = yield Swal.fire({
@@ -53,12 +53,8 @@ function* validateExchange({ orderId, history }) {
     if (result.isConfirmed) {
       const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 4 });
       if (res.status === 201) {
+        yield put(changeOrderState(token, orderId));
         yield call(getExchangeDetails, { id: orderId });
-        socket.emit("getOrders", {
-          type: "PUBLISH",
-          token,
-          id: orderId,
-        });
         yield put(actions.approveExchangeSuccess());
         yield Swal.fire("Exitoso", `La operación fue validada correctamente.`, "success");
         yield history.push("/currency-exchanges");
@@ -73,16 +69,11 @@ function* validateExchange({ orderId, history }) {
 
 function* approveExchange({ orderId }) {
   const token = yield select((state) => state.Login.token);
-  const socket = yield select((state) => state.Socket.socket);
 
   try {
     const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 6 });
     if (res.status === 201) {
-      socket.emit("getOrders", {
-        type: "PUBLISH",
-        token,
-        id: orderId,
-      });
+      yield put(changeOrderState(token, orderId));
       yield put(actions.approveExchangeSuccess());
       yield call(getExchangeDetails, { id: orderId });
       yield put(actions.createInvoice(orderId));
@@ -95,7 +86,6 @@ function* approveExchange({ orderId }) {
 
 function* declineExchange({ orderId, history }) {
   const token = yield select((state) => state.Login.token);
-  const socket = yield select((state) => state.Socket.socket);
 
   try {
     const result = yield Swal.fire({
@@ -111,12 +101,8 @@ function* declineExchange({ orderId, history }) {
     if (result.isConfirmed) {
       const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 5 });
       if (res.status === 201) {
+        yield put(changeOrderState(token, orderId));
         yield call(getExchangeDetails, { id: orderId });
-        socket.emit("getOrders", {
-          type: "PUBLISH",
-          token,
-          id: orderId,
-        });
         yield put(actions.declineExchangeSuccess());
         yield Swal.fire("Exitoso", "La operación fue cancelada correctamente.", "success");
         yield history.push("/currency-exchanges");

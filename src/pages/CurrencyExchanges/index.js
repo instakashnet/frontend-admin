@@ -1,39 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Container, Row, Col } from "reactstrap";
-import { useSelector, useDispatch } from "react-redux";
-import { getExchangesSuccess } from "../../store/actions";
+import { useSelector } from "react-redux";
 
 import Transactions from "./Transactions";
 
 const CurrencyExchanges = () => {
-  const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
-  const orders = useSelector((state) => state.CurrencyExchange.orders);
-  const token = useSelector((state) => state.Login.token);
-  const socket = useSelector((state) => state.Socket.socket);
-
-  useEffect(() => {
-    socket.emit("joinGroup", { data: token });
-    socket.on("joinedGroup", () => {
-      socket.emit("getOrders", { token, type: "SUBSCRIBE" });
-    });
-
-    return () => {
-      socket.emit("leaveGroup", { data: token });
-      socket.emit("disconnect", { data: token });
-    };
-  }, [socket, token]);
-
-  useEffect(() => {
-    socket.on("ordersTo", (orders) => {
-      let ordersArray = [];
-      if (orders && orders.length > 0) ordersArray = orders.sort((a, b) => new Date(a.created) - new Date(b.created));
-
-      dispatch(getExchangesSuccess(ordersArray.reverse()));
-
-      setIsLoading(false);
-    });
-  }, [socket, dispatch]);
+  const { orders, isLoading } = useSelector((state) => state.CurrencyExchange);
 
   return (
     <div className='page-content'>
