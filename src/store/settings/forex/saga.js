@@ -2,7 +2,7 @@ import { fork, all, put, takeEvery, call, delay, takeLatest } from "redux-saga/e
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
 import { exchangeInstance } from "../../../helpers/AuthType/axios";
-import axios from "axios";
+// import axios from "axios";
 
 function* getForex() {
   try {
@@ -31,14 +31,14 @@ function* getforexRates({ forexId }) {
   }
 }
 
-function* addDolarPrice({ values }) {
-  const token = yield localStorage.getItem("dolarAuth");
+// function* addDolarPrice({ values }) {
+//   const token = yield localStorage.getItem("dolarAuth");
 
-  if (!token) {
-    const res = yield axios.post("https://api.cuantoestaeldolar.pe/Api/Dolar/auth", { email: "update@instakash.net", password: "=qAX*96Ec" });
-    console.log(res);
-  }
-}
+//   if (!token) {
+//     const res = yield axios.post("https://api.cuantoestaeldolar.pe/Api/Dolar/auth", { email: "update@instakash.net", password: "=qAX*96Ec" });
+//     console.log(res);
+//   }
+// }
 
 function* addCurrencyPrice({ values }) {
   try {
@@ -46,7 +46,7 @@ function* addCurrencyPrice({ values }) {
     if (res.status === 201) {
       yield call(getforexRates, { forexId: values.forexId });
       yield call(getAllRates);
-      yield call(addDolarPrice, values);
+      // yield call(addDolarPrice, values);
       yield put(actions.addCurrencyPriceSuccess("Precio actualizado correctamente!"));
       yield delay(4000);
       yield put(actions.clearAlert());
