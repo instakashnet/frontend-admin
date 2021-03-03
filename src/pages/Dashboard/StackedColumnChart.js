@@ -6,7 +6,8 @@ import { Button, Card, CardBody, CardTitle } from "reactstrap";
 
 const StackedColumnChart = (props) => {
   const dispatch = useDispatch();
-  const { soles, dolares } = props.data;
+  const { pen, usd } = props.data;
+
   const [type, setType] = useState("week");
   const [categories, setCategories] = useState(["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]);
 
@@ -67,19 +68,19 @@ const StackedColumnChart = (props) => {
   const [series, setSeries] = useState([]);
 
   useEffect(() => {
-    if (soles || dolares) {
+    if (pen || usd) {
       setSeries([
         {
           name: "Soles",
-          data: soles || [],
+          data: pen || [],
         },
         {
           name: "Dólares",
-          data: dolares || [],
+          data: usd || [],
         },
       ]);
     }
-  }, [soles, dolares]);
+  }, [pen, usd]);
 
   return (
     <Card>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getUsersChart } from "../../store/actions";
 import { useSelector, useDispatch } from "react-redux";
+import { Card, CardBody, CardTitle } from "reactstrap";
 import ReactApexChart from "react-apexcharts";
 
 const UsersChart = () => {
@@ -16,7 +17,6 @@ const UsersChart = () => {
     colors: ["#556ee6", "#34c38f"],
     dataLabels: { enabled: !0 },
     stroke: { width: [3, 3], curve: "straight" },
-    title: { text: "Usuarios registrados (por mes)", align: "left" },
     grid: { row: { colors: ["transparent", "transparent"], opacity: 0.2 }, borderColor: "#f1f1f1" },
     markers: { style: "inverted", size: 6 },
     xaxis: { categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"], title: { text: "Mes" } },
@@ -29,7 +29,14 @@ const UsersChart = () => {
     if (data.length > 0) setSeries([{ name: "Usuarios", data }]);
   }, [data]);
 
-  return <ReactApexChart options={options} series={series} type='line' height='380' />;
+  return (
+    <Card>
+      <CardBody>
+        <CardTitle>Usuarios registrados</CardTitle>
+        <ReactApexChart options={options} series={series} type='line' height='380' />
+      </CardBody>
+    </Card>
+  );
 };
 
 export default React.memo(UsersChart);

@@ -6,9 +6,8 @@ import { Container, Row, Col } from "reactstrap";
 import StackedColumnChart from "./StackedColumnChart";
 import UsersChart from "./UsersChart";
 
-// Pages Components
 // import MonthlyEarning from "./MonthlyEarning";
-import ActivityComp from "./ActivityComp";
+// import ActivityComp from "./ActivityComp";
 import Counters from "./Counters";
 
 //Import Breadcrumb
@@ -18,7 +17,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { withNamespaces } from "react-i18next";
 
 const Dashboard = (props) => {
-  const user = useSelector((state) => state.Login.user);
+  // const user = useSelector((state) => state.Login.user);
   const { currencyBarData } = useSelector((state) => state.Charts);
 
   return (
@@ -33,15 +32,18 @@ const Dashboard = (props) => {
                 <Counters />
               </Row>
             </Col>
-            {user && user.role === "ROLE_ADMIN" ? (
+            {/* {user && user.role === "ROLE_ADMIN" ? (
               <Col xl='8'>
                 <ActivityComp />
               </Col>
-            ) : null}
+            ) : null} */}
           </Row>
           <Row>
-            <Col xl='12'>
+            <Col xl='6'>
               <StackedColumnChart data={currencyBarData} title='Movimiento cambios de divisa' />
+            </Col>
+            <Col xl='6'>
+              <UsersChart />
             </Col>
             {/* <Col xl='6'>
               <Card>
@@ -52,12 +54,6 @@ const Dashboard = (props) => {
                 </CardBody>
               </Card>
             </Col> */}
-          </Row>
-
-          <Row>
-            <Col className='col-12'>
-              <UsersChart />
-            </Col>
           </Row>
         </Container>
       </div>
