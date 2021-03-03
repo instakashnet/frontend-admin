@@ -5,7 +5,7 @@ import * as types from "./types";
 import { getExchangesSuccess } from "../transactions/currencyExchange/actions";
 import io from "socket.io-client";
 
-const socketURL = process.env.NODE_ENV === "production" ? "https://instakash-exchange-service.herokuapp.com/orders" : "https://exchange-service-on36n.ondigitalocean.app/orders";
+const socketURL = process.env.NODE_ENV !== "production" ? "https://instakash-exchange-service.herokuapp.com/orders" : "https://exchange-service-on36n.ondigitalocean.app/orders";
 
 function connect() {
   const socket = io(socketURL);
