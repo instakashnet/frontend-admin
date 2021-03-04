@@ -1,7 +1,8 @@
 import * as actionTypes from "./actionTypes";
 
 const initialState = {
-  orders: [],
+  allOrders: [],
+  recentOrders: [],
   details: null,
   error: "",
   success: "",
@@ -13,8 +14,8 @@ export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case actionTypes.GET_ORDERS_SUCCESS:
-      return { ...state, orders: action.orders, isLoading: false };
+    case actionTypes.GET_RECENT_ORDERS_SUCCESS:
+      return { ...state, recentOrders: action.orders, isLoading: false };
 
     case actionTypes.VALIDATE_EXCHANGE:
     case actionTypes.APPROVE_EXCHANGE:

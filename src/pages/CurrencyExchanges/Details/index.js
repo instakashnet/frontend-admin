@@ -49,7 +49,7 @@ const ExchangeDetails = (props) => {
         <Row>
           <Col lg='10' xl='8'>
             <div className='d-flex align-items-center justify-content-between'>
-              <button type='button' onClick={() => props.history.push("/currency-exchanges")} className='btn btn-blue waves-effect btn-label waves-light'>
+              <button type='button' onClick={() => history.push("/currency-exchanges/recent-orders")} className='btn btn-blue waves-effect btn-label waves-light'>
                 <i className='fas fa-arrow-left label-icon'></i> Regresar
               </button>
               <div>

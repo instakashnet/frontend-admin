@@ -1,8 +1,7 @@
 import { call, all, fork, apply, take, put } from "redux-saga/effects";
 import { eventChannel } from "redux-saga";
 import * as types from "./types";
-// import { GET_ORDERS } from "../transactions/currencyExchange/actionTypes";
-import { getExchangesSuccess } from "../transactions/currencyExchange/actions";
+import { getRecentExchangesSuccess } from "../transactions/currencyExchange/actions";
 import io from "socket.io-client";
 
 const socketURL = process.env.NODE_ENV !== "production" ? "https://instakash-exchange-service.herokuapp.com/orders" : "https://exchange-service-on36n.ondigitalocean.app/orders";
@@ -57,7 +56,7 @@ function* onGetOrders(socket) {
   while (true) {
     try {
       const orders = yield take(ordersChannel);
-      yield put(getExchangesSuccess(orders));
+      yield put(getRecentExchangesSuccess(orders));
     } catch (error) {
       console.log("orders error: " + error);
     }

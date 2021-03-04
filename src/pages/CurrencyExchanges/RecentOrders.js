@@ -1,5 +1,7 @@
-import React from "react";
-import { Card, CardBody, Badge } from "reactstrap";
+import React, { useEffect } from "react";
+import { Card, CardBody, Badge, Container, Row, Col } from "reactstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { joinGroup } from "../../store/actions";
 import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 
@@ -7,8 +9,16 @@ import moment from "moment-timezone";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import Table from "../../components/UI/Table";
 
-const Transactions = (props) => {
+const Transactions = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
+
+  const { recentOrders, isLoading } = useSelector((state) => state.CurrencyExchange);
+  const token = useSelector((state) => state.Login.token);
+
+  useEffect(() => {
+    dispatch(joinGroup(token));
+  }, [dispatch, token]);
 
   const data = {
     columns: [
@@ -76,8 +86,8 @@ const Transactions = (props) => {
       },
     ],
     rows:
-      props.orders.length > 0
-        ? props.orders.map((order) => ({
+      recentOrders.length > 0
+        ? recentOrders.map((order) => ({
             id: order.id,
             pedidoId: order.uuid,
             date: moment(order.created).format("DD/MM/YY hh:mm a"),
@@ -94,19 +104,25 @@ const Transactions = (props) => {
   };
 
   return (
-    <div className='container-fluid'>
-      <Breadcrumbs title='Transacciones' breadcrumbItem='Transacciones recibidas (cambios de divisa)' />
+    <div className='page-content'>
+      <Container fluid>
+        <Row>
+          <Col lg='12'>
+            <Breadcrumbs title='Transacciones' breadcrumbItem='Operaciones recientes' />
 
-      <Card>
-        <CardBody>
-          <Table
-            columns={data.columns}
-            isLoading={props.isLoading}
-            rows={data.rows}
-            options={{ sorting: true, loadingType: "overlay", pageSize: 100, pageSizeOptions: [50, 100, 200] }}
-          />
-        </CardBody>
-      </Card>
+            <Card>
+              <CardBody>
+                <Table
+                  columns={data.columns}
+                  isLoading={isLoading}
+                  rows={data.rows}
+                  options={{ sorting: true, loadingType: "overlay", pageSize: 50, pageSizeOptions: [50, 100, 200] }}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 };

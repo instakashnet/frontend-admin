@@ -16,7 +16,8 @@ const AdminUsers = React.lazy(() => import("../pages/AdminUsers"));
 const Clients = React.lazy(() => import("../pages/Clients"));
 const ClientDetails = React.lazy(() => import("../pages/Clients/ClientDetails"));
 // Transactions modules
-const CurrencyExchanges = React.lazy(() => import("../pages/CurrencyExchanges"));
+const AllCurrencyExchanges = React.lazy(() => import("../pages/CurrencyExchanges/AllOrders"));
+const RecentCurrencyExchanges = React.lazy(() => import("../pages/CurrencyExchanges/RecentOrders"));
 const ExchangeDetails = React.lazy(() => import("../pages/CurrencyExchanges/Details"));
 const CashAdvances = React.lazy(() => import("../pages/CashAdvances"));
 // System configuration
@@ -36,7 +37,8 @@ const authProtectedRoutes = [
   { path: "/registered-users", component: Clients },
   { path: "/registered-users/:id", component: ClientDetails },
   // Transactions modules
-  { path: "/currency-exchanges", component: CurrencyExchanges },
+  { path: "/currency-exchanges/all-orders", component: AllCurrencyExchanges },
+  { path: "/currency-exchanges/recent-orders", component: RecentCurrencyExchanges },
   { path: "/exchange-details/:id", component: ExchangeDetails },
   { path: "/cash-advances", component: CashAdvances },
   // System configuration

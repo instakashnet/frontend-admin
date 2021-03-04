@@ -21,9 +21,12 @@ function* getExchangeDetails({ id }) {
 }
 
 function* editExchange({ id, values, setState }) {
+  const token = yield select((state) => state.Login.token);
+
   try {
     const res = yield exchangeInstance.put(`/order/admin/${id}`, values);
     if (res.status === 200) {
+      yield put(changeOrderState(token, id));
       yield put(actions.editExchangeSuccess());
       yield call(getExchangeDetails, { id });
       yield call(setState, false);
@@ -57,7 +60,6 @@ function* validateExchange({ orderId, history }) {
         yield call(getExchangeDetails, { id: orderId });
         yield put(actions.approveExchangeSuccess());
         yield Swal.fire("Exitoso", `La operación fue validada correctamente.`, "success");
-        yield history.push("/currency-exchanges");
       }
     } else yield put(actions.apiError());
   } catch (error) {
@@ -105,7 +107,6 @@ function* declineExchange({ orderId, history }) {
         yield call(getExchangeDetails, { id: orderId });
         yield put(actions.declineExchangeSuccess());
         yield Swal.fire("Exitoso", "La operación fue cancelada correctamente.", "success");
-        yield history.push("/currency-exchanges");
       }
     } else put(actions.apiError());
   } catch (error) {

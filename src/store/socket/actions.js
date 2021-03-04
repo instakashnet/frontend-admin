@@ -6,7 +6,7 @@ export const joinGroup = (token) => ({
 });
 
 export const changeOrderState = (token, orderId) => ({
-  type: types.JOIN_GROUP,
+  type: types.CHANGE_ORDER_STATE,
   token,
   orderId,
 });
