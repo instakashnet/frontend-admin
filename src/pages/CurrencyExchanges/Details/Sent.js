@@ -26,7 +26,7 @@ const Received = (props) => {
                   </div>
                 </div>
               </Col>
-              {details.stateId === 3 && (
+              {(details.stateId === 3 || details.stateId === 4) && (
                 <Col sm='4' className='d-flex justify-content-end align-items-start'>
                   <button className='btn' onClick={props.onEdiState}>
                     <i className='fas fa-edit' /> Editar

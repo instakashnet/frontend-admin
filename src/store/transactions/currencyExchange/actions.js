@@ -1,12 +1,12 @@
 import * as actionTypes from "./actionTypes";
 
-export const getExchanges = (token) => ({
-  type: actionTypes.GET_ORDERS,
+export const getRecentExchanges = (token) => ({
+  type: actionTypes.GET_RECENT_ORDERS_INIT,
   token,
 });
 
-export const getExchangesSuccess = (orders) => ({
-  type: actionTypes.GET_ORDERS_SUCCESS,
+export const getRecentExchangesSuccess = (orders) => ({
+  type: actionTypes.GET_RECENT_ORDERS_SUCCESS,
   orders,
 });
 
