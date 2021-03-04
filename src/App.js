@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Switch, BrowserRouter as Router } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getCountriesInit, loadUser } from "./store/actions";
+import { getCountriesInit, loadUser, joinGroup } from "./store/actions";
 import history from "./helpers/history";
 
 // Import Routes
@@ -22,8 +22,11 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (token) dispatch(getCountriesInit());
-  }, [dispatch, token]);
+    if (token) {
+      dispatch(getCountriesInit());
+      dispatch(joinGroup(token));
+    }
+  }, [token, dispatch]);
 
   useEffect(() => {
     dispatch(loadUser(history));

@@ -49,7 +49,7 @@ const OldTransactions = (props) => {
   if (props.orders.length > 0) {
     const filteredOrders = props.orders.filter((order) => order.id !== props.details.id);
 
-    data.rows = filteredOrders.map((order) => ({
+    data.rows = filteredOrders.reverse().map((order) => ({
       date: moment(order.created).format("DD/MM/YYYY HH:mm a"),
       bankSent: order.bankSent,
       bankReceive: order.bankReceive,
