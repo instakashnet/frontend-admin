@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Card, CardBody, Badge, Col, Row, Container } from "reactstrap";
+import React, { useState, useRef } from "react";
+import { Card, CardBody, Badge, Col, Row, Container, Button } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import { exchangeInstance } from "../../helpers/AuthType/axios";
 import moment from "moment-timezone";
@@ -10,6 +10,7 @@ import Table from "../../components/UI/Table";
 
 const Transactions = () => {
   const history = useHistory();
+  const tableRef = useRef();
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -87,14 +88,18 @@ const Transactions = () => {
 
             <Card>
               <CardBody>
+                <Button onClick={() => tableRef.current.onQueryChange()} className='mb-4 btn-primary'>
+                  Actualizar operaciones
+                </Button>
                 <Table
+                  ref={tableRef}
                   columns={columns}
                   isLoading={isLoading}
                   rows={(query) =>
                     new Promise(async (resolve) => {
                       const res = await exchangeInstance.get(`/order/admin?page=${query.page + 1}&qty=${query.pageSize}`);
 
-                      const orders = res.data.map((order) => ({
+                      const orders = res.data.orders.map((order) => ({
                         id: order.id,
                         pedidoId: order.uuid,
                         date: moment(order.created).format("DD/MM/YY hh:mm a"),
@@ -111,7 +116,7 @@ const Transactions = () => {
                       resolve({
                         data: orders,
                         page: query.page,
-                        totalCount: orders.length,
+                        totalCount: res.data.count,
                       });
                     })
                   }

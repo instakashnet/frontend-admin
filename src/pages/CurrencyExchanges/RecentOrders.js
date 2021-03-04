@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Card, CardBody, Badge, Container, Row, Col } from "reactstrap";
-import { useSelector, useDispatch } from "react-redux";
-import { joinGroup } from "../../store/actions";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 
@@ -10,15 +9,9 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import Table from "../../components/UI/Table";
 
 const Transactions = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
 
   const { recentOrders, isLoading } = useSelector((state) => state.CurrencyExchange);
-  const token = useSelector((state) => state.Login.token);
-
-  useEffect(() => {
-    dispatch(joinGroup(token));
-  }, [dispatch, token]);
 
   const data = {
     columns: [
