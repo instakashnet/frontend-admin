@@ -85,8 +85,6 @@ export function* watchUserLogout() {
   yield takeEvery(LOGOUT_USER, logoutUser);
 }
 
-function* authSaga() {
+export default function* authSaga() {
   yield all([fork(watchLoadUser), fork(watchUserLogin), fork(watchUserLogout)]);
 }
-
-export default authSaga;

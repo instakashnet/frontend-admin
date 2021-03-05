@@ -97,9 +97,12 @@ const Transactions = () => {
                   isLoading={isLoading}
                   rows={(query) =>
                     new Promise(async (resolve) => {
-                      const res = await exchangeInstance.get(`/order/admin?page=${query.page + 1}&qty=${query.pageSize}`);
+                      const res = await exchangeInstance.get(`/order/admin?page=${query.page + 1}&qty=${1000}`);
+                      let ordersList = [];
+                      let orders = res.data.orders;
+                      if (query.search) orders = res.data.orders.filter((order) => order.uuid.includes(query.search));
 
-                      const orders = res.data.orders.map((order) => ({
+                      ordersList = orders.map((order) => ({
                         id: order.id,
                         pedidoId: order.uuid,
                         date: moment(order.created).format("DD/MM/YY hh:mm a"),
@@ -112,9 +115,10 @@ const Transactions = () => {
                         statusColor: order.stateColor,
                         invoice: order.billAssigned,
                       }));
+
                       setIsLoading(false);
                       resolve({
-                        data: orders,
+                        data: ordersList,
                         page: query.page,
                         totalCount: res.data.count,
                       });

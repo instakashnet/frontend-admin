@@ -30,6 +30,6 @@ export function* watchGetCurrencies() {
   yield takeEvery(types.GET_CURRENCIES_INIT, getCurrencies);
 }
 
-export default function* () {
+export default function* dataSaga() {
   yield all([fork(watchGetCountries), fork(watchGetCurrencies)]);
 }

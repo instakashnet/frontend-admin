@@ -80,6 +80,6 @@ export function* watchEditCbBalance() {
   yield takeEvery(actionTypes.EDIT_CB_BALANCE, editCbBalance);
 }
 
-export default function* () {
+export default function* bankAccountsSaga() {
   yield all([fork(watchGetCbAccounts), fork(watchAddCbAccount), fork(watchEditCbBalance), fork(watchEditCbAccount)]);
 }

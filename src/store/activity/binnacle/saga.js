@@ -28,6 +28,6 @@ export function* watchGetAdminBinnacle() {
   yield takeEvery(actionTypes.GET_ADMIN_BINNACLE, getAdminBinnacle);
 }
 
-export default function* () {
+export default function* binnacleSaga() {
   yield all([fork(watchGetClientBinnacle), fork(watchGetAdminBinnacle)]);
 }

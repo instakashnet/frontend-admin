@@ -32,6 +32,6 @@ export function* watchEditSchedule() {
   yield takeEvery(actionTypes.EDIT_SCHEDULE, editSchedule);
 }
 
-export default function* () {
+export default function* scheduleSaga() {
   yield all([fork(watchGetSchedule), fork(watchEditSchedule)]);
 }

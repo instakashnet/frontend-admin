@@ -16,8 +16,6 @@ export function* watchGetAdminUsers() {
   yield takeEvery(types.GET_USERS, getAdminUsers);
 }
 
-function* ProfileSaga() {
+export default function* ProfileSaga() {
   yield all([fork(watchGetAdminUsers)]);
 }
-
-export default ProfileSaga;

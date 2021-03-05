@@ -102,6 +102,6 @@ export function* watchGetBanks() {
   yield takeEvery(actionTypes.GET_BANKS, getBanks);
 }
 
-export default function* () {
+export default function* banksSaga() {
   yield all([fork(watchGetBanks), fork(watchAddBank), fork(watchDeleteBank), fork(watichEditBank)]);
 }

@@ -83,6 +83,6 @@ export function* watchUpdateClient() {
   yield takeEvery(actionTypes.UPDATE_CLIENT, updateClient);
 }
 
-export default function* () {
+export default function* clientsSaga() {
   yield all([fork(watchGetClientDetails), fork(watchUpdateClient), fork(watchGetClientActivity), fork(watchGetClientExchanges), fork(watchGetClients)]);
 }
