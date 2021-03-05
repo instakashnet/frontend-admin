@@ -1,8 +1,7 @@
 import React from "react";
 import { FormGroup, Label } from "reactstrap";
 
-const Input = (props) => {
-  const { label, name, type, touched, error, ...rest } = props;
+const Input = ({ label, name, type, touched, error, ...rest }) => {
   return (
     <FormGroup>
       <Label>{label}</Label>

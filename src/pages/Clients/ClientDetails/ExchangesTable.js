@@ -1,12 +1,23 @@
-import React from "react";
-import { Row, Col, Card, CardBody, Badge } from "reactstrap";
+import React, { useEffect } from "react";
+import { Card, CardBody, Badge } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { convertHexToRGBA } from "../../../helpers/functions";
+import { getClientExchanges } from "../../../store/actions";
 import moment from "moment";
 
-import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import Table from "../../../components/UI/Table";
 
 const ExchangesTable = (props) => {
+  const { id } = props;
+  const dispatch = useDispatch();
+
+  const { exchanges, isLoading } = useSelector((state) => state.Clients);
+  console.log(exchanges);
+
+  useEffect(() => {
+    dispatch(getClientExchanges(id));
+  }, [dispatch, id]);
+
   const data = {
     columns: [
       {
@@ -40,35 +51,16 @@ const ExchangesTable = (props) => {
         ),
       },
     ],
-    rows:
-      props.data && props.data.length > 0
-        ? props.data.map((data) => ({
-            pedidoId: data.pedidoId,
-            date: moment(data.paymentDate).format("DD/MM/YYYY hh:mm a"),
-            amountSent: data.currencyFrom.symbol + " " + data.amountSell.toFixed(2),
-            amountReceive: data.currencyTo.symbol + " " + data.amountReceive.toFixed(2),
-            bankReceive: data.bank.image,
-            statusName: data.transactionState.description,
-            statusColor: data.transactionState.hexaColor,
-          }))
-        : [],
+    rows: [],
   };
 
   return (
-    <div className='container-fluid'>
-      <Breadcrumbs title='Clientes' breadcrumbItem='Cambios registrados' />
-
-      <Row>
-        <Col className='col-12'>
-          <Card>
-            <CardBody>
-              <Table columns={data.columns} rows={data.rows} options={{ loadingType: "linear" }} isLoading={props.isLoading} />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </div>
+    <Card>
+      <CardBody>
+        <Table columns={data.columns} rows={data.rows} options={{ loadingType: "linear" }} isLoading={isLoading} />
+      </CardBody>
+    </Card>
   );
 };
 
-export default ExchangesTable;
+export default React.memo(ExchangesTable);
