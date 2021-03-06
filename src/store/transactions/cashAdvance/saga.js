@@ -53,6 +53,6 @@ export function* watchApproveCashAdvance() {
   yield takeEvery(actionTypes.APPROVE_CASH_ADVANCE, approveCashAdvance);
 }
 
-export default function* advanceSaga() {
+export default function* cashAdvanceSaga() {
   yield all([fork(watchGetAdvanceDetails), fork(watchApproveCashAdvance)]);
 }

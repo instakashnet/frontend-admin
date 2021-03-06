@@ -1,12 +1,22 @@
-import React from "react";
-import { Row, Col, Card, CardBody, Badge } from "reactstrap";
+import React, { useEffect } from "react";
+import { Card, CardBody, Badge } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { convertHexToRGBA } from "../../../helpers/functions";
+import { getClientExchanges } from "../../../store/actions";
 import moment from "moment";
 
-import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import Table from "../../../components/UI/Table";
 
 const ExchangesTable = (props) => {
+  const { id } = props;
+  const dispatch = useDispatch();
+
+  const { exchanges, isLoading } = useSelector((state) => state.Clients);
+
+  useEffect(() => {
+    dispatch(getClientExchanges(id));
+  }, [dispatch, id]);
+
   const data = {
     columns: [
       {
@@ -19,16 +29,23 @@ const ExchangesTable = (props) => {
       },
       {
         field: "amountSent",
-        title: "Envía",
+        title: "Envíado",
+        render: (rowData) => (
+          <div className='d-flex align-items-center'>
+            <span className='mr-2'>{rowData.amountSent}</span>
+            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankReceive}.svg`} width={20} alt='banco' />
+          </div>
+        ),
       },
       {
         field: "amountReceive",
-        title: "Recibe",
-      },
-      {
-        field: "bankReceive",
-        title: "Destino",
-        render: (rowData) => <img height={20} src={`data:image/png;base64, ${rowData.bankReceive}`} alt='Imagen' />,
+        title: "A recibir",
+        render: (rowData) => (
+          <div className='d-flex align-items-center'>
+            <span className='mr-2'>{rowData.amountReceive}</span>
+            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankSent}.svg`} width={20} alt='banco' />
+          </div>
+        ),
       },
       {
         field: "statusName",
@@ -40,35 +57,25 @@ const ExchangesTable = (props) => {
         ),
       },
     ],
-    rows:
-      props.data && props.data.length > 0
-        ? props.data.map((data) => ({
-            pedidoId: data.pedidoId,
-            date: moment(data.paymentDate).format("DD/MM/YYYY hh:mm a"),
-            amountSent: data.currencyFrom.symbol + " " + data.amountSell.toFixed(2),
-            amountReceive: data.currencyTo.symbol + " " + data.amountReceive.toFixed(2),
-            bankReceive: data.bank.image,
-            statusName: data.transactionState.description,
-            statusColor: data.transactionState.hexaColor,
-          }))
-        : [],
+    rows: exchanges.map((order) => ({
+      pedidoId: order.uuid,
+      date: moment(order.created).format("DD/MM/YYYY HH:mm a"),
+      amountSent: `${order.currencySent === "USD" ? "$" : "S/."} ${order.amountSent.toFixed(2)}`,
+      amountReceive: `${order.currencyReceived === "USD" ? "$" : "S/."} ${order.amountReceived.toFixed(2)}`,
+      bankSent: order.bankSent,
+      bankReceive: order.bankReceive,
+      statusName: order.estateName,
+      statusColor: order.stateColor,
+    })),
   };
 
   return (
-    <div className='container-fluid'>
-      <Breadcrumbs title='Clientes' breadcrumbItem='Cambios registrados' />
-
-      <Row>
-        <Col className='col-12'>
-          <Card>
-            <CardBody>
-              <Table columns={data.columns} rows={data.rows} options={{ loadingType: "linear" }} isLoading={props.isLoading} />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </div>
+    <Card>
+      <CardBody>
+        <Table title='Cambios de divisa realizados' columns={data.columns} rows={data.rows} options={{ loadingType: "linear" }} isLoading={isLoading} />
+      </CardBody>
+    </Card>
   );
 };
 
-export default ExchangesTable;
+export default React.memo(ExchangesTable);

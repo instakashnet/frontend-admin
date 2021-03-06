@@ -7,7 +7,7 @@ const initialState = {
   isLoading: true,
 };
 
-export default function chartSaga(state = initialState, action) {
+export default function chartsReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {

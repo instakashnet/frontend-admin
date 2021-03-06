@@ -97,12 +97,9 @@ const Transactions = () => {
                   isLoading={isLoading}
                   rows={(query) =>
                     new Promise(async (resolve) => {
-                      const res = await exchangeInstance.get(`/order/admin?page=${query.page + 1}&qty=${1000}`);
-                      let ordersList = [];
-                      let orders = res.data.orders;
-                      if (query.search) orders = res.data.orders.filter((order) => order.uuid.includes(query.search));
+                      const res = await exchangeInstance.get(`/order/admin?page=${query.page + 1}&qty=${query.pageSize}&search=${query.search}`);
 
-                      ordersList = orders.map((order) => ({
+                      const orders = res.data.map((order) => ({
                         id: order.id,
                         pedidoId: order.uuid,
                         date: moment(order.created).format("DD/MM/YY hh:mm a"),
@@ -118,7 +115,7 @@ const Transactions = () => {
 
                       setIsLoading(false);
                       resolve({
-                        data: ordersList,
+                        data: orders,
                         page: query.page,
                         totalCount: res.data.count,
                       });

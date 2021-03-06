@@ -1,7 +1,8 @@
-import { put, all, fork, takeEvery } from "redux-saga/effects";
+import { put, all, fork, takeEvery, call, delay } from "redux-saga/effects";
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
-import { exchangeInstance, authInstance } from "../../../helpers/AuthType/axios";
+import { exchangeInstance, authInstance, accountsInstance } from "../../../helpers/AuthType/axios";
+import Swal from "sweetalert2";
 
 function* getClients() {
   try {
@@ -18,6 +19,8 @@ function* getClientDetails({ userId }) {
     if (res.status === 200) yield put(actions.getClientDetailsSuccess(res.data.user[0]));
   } catch (error) {
     yield put(actions.apiError(error.message));
+    yield delay(4000);
+    yield put(actions.clearAlert());
   }
 }
 
@@ -27,40 +30,36 @@ function* getClientExchanges({ userId }) {
     if (res.status === 200) yield put(actions.getClientExchangesSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError(error.message));
+    yield delay(4000);
+    yield put(actions.clearAlert());
   }
 }
 
-function* getClientActivity({ payload }) {
-  // const { id } = payload;
-  // try {
-  //   const res = yield axios.get(`/Cliente/ObtenerTransacciones?IdUsuario=${id}`);
-  //   if (res.status === 200) yield put(actions.getClientActivitySuccess(res.data));
-  // } catch (error) {
-  //   yield put(actions.apiError(error.message));
-  // }
+function* editClientProfile({ values, closeModal }) {
+  try {
+    const res = yield authInstance.put("/admin/users/profiles", values);
+    if (res.status === 200) {
+      yield put(actions.editProfileSuccess());
+      yield call(closeModal);
+      yield call(getClientDetails, { userId: values.userId });
+      yield Swal.fire("Exitoso", "Los datos del perfil fueron editados correctamente.", "success");
+    }
+  } catch (error) {
+    yield put(actions.apiError("Ha ocurrido un error editando los datos del perfil. Por favor contacta a soporte."));
+    yield delay(4000);
+    yield put(actions.clearAlert());
+  }
 }
 
-function* updateClient({ payload }) {
-  // const { values, id } = payload;
-  // const newValues = {
-  //   ...values,
-  //   dateBirth: values.dateBirth || null,
-  //   id: +id,
-  //   isDisabled: values.isDisabled === "true" ? true : false,
-  // };
-  // console.log(newValues);
-  // try {
-  //   const res = yield axios.post("/Cliente/EditarCliente", newValues);
-  //   if (res.status === 200) {
-  //     yield put(actions.updateClientSuccess("Usuario actualizado correctamente!"));
-  //     yield put(actions.getClientDetails(+id));
-  //   }
-  // } catch (error) {
-  //   yield put(actions.apiError(error.message));
-  // } finally {
-  //   yield delay(4000);
-  //   yield put(actions.clearAlert());
-  // }
+function* getClientAccounts({ id }) {
+  try {
+    const res = yield accountsInstance.get(`/admin/accounts/${id}`);
+    yield put(actions.getClientAccountsSuccess(res.data.accounts));
+  } catch (error) {
+    yield put(actions.apiError(error.message));
+    yield delay(4000);
+    yield put(actions.clearAlert());
+  }
 }
 
 export function* watchGetClients() {
@@ -72,17 +71,17 @@ export function* watchGetClientExchanges() {
 }
 
 export function* watchGetClientActivity() {
-  yield takeEvery(actionTypes.GET_CLIENT_ACTIVITY, getClientActivity);
+  yield takeEvery(actionTypes.GET_CLIENT_ACCOUNTS, getClientAccounts);
 }
 
 export function* watchGetClientDetails() {
   yield takeEvery(actionTypes.GET_CLIENT_DETAILS, getClientDetails);
 }
 
-export function* watchUpdateClient() {
-  yield takeEvery(actionTypes.UPDATE_CLIENT, updateClient);
+export function* watchEditClientProfile() {
+  yield takeEvery(actionTypes.EDIT_PROFILE_INIT, editClientProfile);
 }
 
 export default function* clientsSaga() {
-  yield all([fork(watchGetClientDetails), fork(watchUpdateClient), fork(watchGetClientActivity), fork(watchGetClientExchanges), fork(watchGetClients)]);
+  yield all([fork(watchGetClientDetails), fork(watchEditClientProfile), fork(watchGetClientActivity), fork(watchGetClientExchanges), fork(watchGetClients)]);
 }

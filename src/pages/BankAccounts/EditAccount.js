@@ -45,7 +45,7 @@ const EditAccount = (props) => {
             <Input name='balance' type='number' value={formik.values.balance} onChange={formik.handleChange} onBlur={formik.handleBlur} />
 
             <Button className={`btn-primary ld-ext-right ${props.isProcessing ? "running" : ""}`} disabled={props.isProcessing} type='submit'>
-              <span className='ld ld-ring lid-spin' />
+              <span className='ld ld-ring ld-spin' />
               Editar cuenta
             </Button>
           </form>
