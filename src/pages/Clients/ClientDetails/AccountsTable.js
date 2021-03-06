@@ -9,6 +9,7 @@ const AccountsTable = ({ userId }) => {
   const dispatch = useDispatch();
 
   const { accounts, isLoading } = useSelector((state) => state.Clients);
+  console.log(accounts);
 
   useEffect(() => {
     dispatch(getClientAccounts(userId));
@@ -19,6 +20,7 @@ const AccountsTable = ({ userId }) => {
       {
         field: "bank",
         title: "Banco",
+        render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bank}.svg`} width={20} alt='banco' />,
       },
       {
         field: "currency",
@@ -34,8 +36,8 @@ const AccountsTable = ({ userId }) => {
       },
     ],
     rows: accounts.map((account) => ({
-      bank: "BCP",
-      currency: account.ISO === "USD" ? "$" : "S/.",
+      bank: account.bank.name,
+      currency: account.currency.ISO === "USD" ? "$" : "S/.",
       account_number: account.account_number || account.cci,
       account_type: account.account_type === "savings" ? "De ahorros" : "Corriente",
     })),

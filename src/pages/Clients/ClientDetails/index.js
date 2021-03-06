@@ -8,6 +8,7 @@ import ExchangesTable from "./ExchangesTable";
 import AccountsTable from "./AccountsTable";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import EditUserProfile from "./EditUserProfile";
+import EditCompanyProfile from "./EditCompanyProfile";
 import Alert from "../../../components/UI/Alert";
 
 import Male from "../../../assets/images/profile-male.svg";
@@ -129,18 +130,22 @@ const ClientDetails = (props) => {
                   </div>
 
                   <div className='table-responsive'>
-                    <tr>
-                      <th scope='row'>Empresa</th>
-                      <td>{company.razon_social}</td>
-                    </tr>
-                    <tr>
-                      <th scope='row'>RUC</th>
-                      <td>{company.ruc}</td>
-                    </tr>
-                    <tr>
-                      <th scope='row'>Dirección fiscal</th>
-                      <td>{company.address}</td>
-                    </tr>
+                    <Table className='table-nowrap mb-0'>
+                      <tbody>
+                        <tr>
+                          <th scope='row'>Empresa</th>
+                          <td>{company.razon_social}</td>
+                        </tr>
+                        <tr>
+                          <th scope='row'>RUC</th>
+                          <td>{company.ruc}</td>
+                        </tr>
+                        <tr>
+                          <th scope='row'>Dirección fiscal</th>
+                          <td>{company.address}</td>
+                        </tr>
+                      </tbody>
+                    </Table>
                   </div>
                 </CardBody>
               </Card>
@@ -160,7 +165,11 @@ const ClientDetails = (props) => {
       <Modal isOpen={modal} role='dialog' autoFocus={true} centered={true} tabIndex='-1' toggle={closeModal}>
         <ModalHeader toggle={closeModal}>Editar perfil</ModalHeader>
         <ModalBody>
-          <EditUserProfile userId={id} isProcessing={isProcessing} closeModal={closeModal} details={profileDetails} />
+          {profileDetails.type === "natural" ? (
+            <EditUserProfile userId={id} isProcessing={isProcessing} closeModal={closeModal} details={profileDetails} />
+          ) : (
+            <EditCompanyProfile userId={id} isProcessing={isProcessing} closeModal={closeModal} details={profileDetails} />
+          )}
         </ModalBody>
       </Modal>
     </div>
