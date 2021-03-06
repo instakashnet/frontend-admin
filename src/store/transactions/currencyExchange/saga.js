@@ -184,6 +184,6 @@ export function* watchCreateInvoice() {
   yield takeEvery(actionTypes.CREATE_INVOICE, createInvoice);
 }
 
-export default function* () {
+export default function* currencyExchangeSaga() {
   yield all([fork(watchExchangeDetails), fork(watchApproveExchange), fork(watchValidateExchange), fork(watchDeclineExchange), fork(watchEditExchange), fork(watchCreateInvoice)]);
 }

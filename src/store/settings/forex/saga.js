@@ -74,6 +74,6 @@ export function* watchGetForexRates() {
   yield takeEvery(actionTypes.GET_RATES_INIT, getforexRates);
 }
 
-export default function* () {
+export default function* forexSaga() {
   yield all([fork(watchAddCurrencyPrice), fork(watchGetForex), fork(watchGetAllRates), fork(watchGetForexRates)]);
 }

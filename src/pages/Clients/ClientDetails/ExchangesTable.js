@@ -12,7 +12,6 @@ const ExchangesTable = (props) => {
   const dispatch = useDispatch();
 
   const { exchanges, isLoading } = useSelector((state) => state.Clients);
-  console.log(exchanges);
 
   useEffect(() => {
     dispatch(getClientExchanges(id));
@@ -30,16 +29,23 @@ const ExchangesTable = (props) => {
       },
       {
         field: "amountSent",
-        title: "Envía",
+        title: "Envíado",
+        render: (rowData) => (
+          <div className='d-flex align-items-center'>
+            <span className='mr-2'>{rowData.amountSent}</span>
+            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankReceive}.svg`} width={20} alt='banco' />
+          </div>
+        ),
       },
       {
         field: "amountReceive",
-        title: "Recibe",
-      },
-      {
-        field: "bankReceive",
-        title: "Destino",
-        render: (rowData) => <img height={20} src={`data:image/png;base64, ${rowData.bankReceive}`} alt='Imagen' />,
+        title: "A recibir",
+        render: (rowData) => (
+          <div className='d-flex align-items-center'>
+            <span className='mr-2'>{rowData.amountReceive}</span>
+            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankSent}.svg`} width={20} alt='banco' />
+          </div>
+        ),
       },
       {
         field: "statusName",
@@ -51,13 +57,22 @@ const ExchangesTable = (props) => {
         ),
       },
     ],
-    rows: [],
+    rows: exchanges.map((order) => ({
+      pedidoId: order.uuid,
+      date: moment(order.created).format("DD/MM/YYYY HH:mm a"),
+      amountSent: `${order.currencySent === "USD" ? "$" : "S/."} ${order.amountSent.toFixed(2)}`,
+      amountReceive: `${order.currencyReceived === "USD" ? "$" : "S/."} ${order.amountReceived.toFixed(2)}`,
+      bankSent: order.bankSent,
+      bankReceive: order.bankReceive,
+      statusName: order.estateName,
+      statusColor: order.stateColor,
+    })),
   };
 
   return (
     <Card>
       <CardBody>
-        <Table columns={data.columns} rows={data.rows} options={{ loadingType: "linear" }} isLoading={isLoading} />
+        <Table title='Cambios de divisa realizados' columns={data.columns} rows={data.rows} options={{ loadingType: "linear" }} isLoading={isLoading} />
       </CardBody>
     </Card>
   );

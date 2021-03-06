@@ -14,6 +14,7 @@ import VerticalLayout from "./components/VerticalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
 
 // Import scss
+import "./assets/css/app.css";
 import "./assets/scss/theme.scss";
 import "./assets/scss/custom.scss";
 

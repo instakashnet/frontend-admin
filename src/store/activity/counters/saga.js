@@ -16,6 +16,6 @@ export function* watchGetCounters() {
   yield takeEvery(actionTypes.GET_COUNTERS, getCounters);
 }
 
-export default function* () {
+export default function* countersSaga() {
   yield all([fork(watchGetCounters)]);
 }

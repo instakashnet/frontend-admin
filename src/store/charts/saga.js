@@ -42,6 +42,6 @@ export function* watchGetUsersChart() {
   yield takeEvery(actionTypes.GET_USERS_CHART, getUsersChart);
 }
 
-export default function* () {
+export default function* chartsSaga() {
   yield all([fork(watchGetCurrencyBarChart), fork(watchGetAdvanceBarChart), fork(watchGetUsersChart)]);
 }

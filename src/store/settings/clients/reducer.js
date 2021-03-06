@@ -2,14 +2,15 @@ import * as actionTypes from "./actionTypes";
 const initialState = {
   clients: [],
   details: null,
-  activity: {},
+  accounts: [],
   exchanges: [],
   error: "",
   success: "",
   isLoading: true,
+  isProcessing: false,
 };
 
-export default function (state = initialState, action) {
+export default function clientsReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -22,19 +23,17 @@ export default function (state = initialState, action) {
     case actionTypes.GET_CLIENT_EXCHANGES_SUCCESS:
       return { ...state, exchanges: action.orders, isLoading: false };
 
-    case actionTypes.GET_CLIENT_ACTIVITY:
-      return { ...state, isLoading: true };
-    case actionTypes.GET_CLIENT_ACTIVITY_SUCCESS:
-      return { ...state, activity: payload.data, isLoading: false };
+    case actionTypes.GET_CLIENT_ACCOUNTS_SUCCESS:
+      return { ...state, accounts: action.accounts, isLoading: false };
 
-    case actionTypes.UPDATE_CLIENT_SUCCESS:
-      return { ...state, success: payload };
+    case actionTypes.EDIT_PROFILE_SUCCESS:
+      return { ...state, isProcessing: false };
 
     case actionTypes.CLEAR_ALERT:
       return { ...state, success: "", error: "" };
 
     case actionTypes.API_ERROR:
-      return { ...state, error: payload };
+      return { ...state, error: payload, isProcessing: false, isLoading: false };
 
     default:
       return state;

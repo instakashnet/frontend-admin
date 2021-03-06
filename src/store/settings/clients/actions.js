@@ -29,24 +29,24 @@ export const getClientExchangesSuccess = (orders) => ({
   orders,
 });
 
-export const getClientActivity = (id) => ({
-  type: actionTypes.GET_CLIENT_ACTIVITY,
-  payload: { id },
+export const getClientAccounts = (id) => ({
+  type: actionTypes.GET_CLIENT_ACCOUNTS,
+  id,
 });
 
-export const getClientActivitySuccess = (data) => ({
-  type: actionTypes.GET_CLIENT_ACTIVITY_SUCCESS,
-  payload: { data },
+export const getClientAccountsSuccess = (accounts) => ({
+  type: actionTypes.GET_CLIENT_ACCOUNTS_SUCCESS,
+  accounts,
 });
 
-export const updateClient = (values, id) => ({
-  type: actionTypes.UPDATE_CLIENT,
-  payload: { values, id },
+export const editProfileInit = (values, closeModal) => ({
+  type: actionTypes.EDIT_PROFILE_INIT,
+  values,
+  closeModal,
 });
 
-export const updateClientSuccess = (msg) => ({
-  type: actionTypes.UPDATE_CLIENT_SUCCESS,
-  payload: msg,
+export const editProfileSuccess = () => ({
+  type: actionTypes.EDIT_PROFILE_SUCCESS,
 });
 
 export const clearAlert = () => ({

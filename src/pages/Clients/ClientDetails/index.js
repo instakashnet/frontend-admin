@@ -5,17 +5,20 @@ import { getClientDetails } from "../../../store/actions";
 import moment from "moment-timezone";
 
 import ExchangesTable from "./ExchangesTable";
+import AccountsTable from "./AccountsTable";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
+import EditUserProfile from "./EditUserProfile";
+import Alert from "../../../components/UI/Alert";
 
 import Male from "../../../assets/images/profile-male.svg";
 import Female from "../../../assets/images/profile-female.svg";
 
 const ClientDetails = (props) => {
   const [modal, setModal] = useState(false);
-  const [profileDetails, setProfileDetails] = useState(null);
+  const [profileDetails, setProfileDetails] = useState({});
   const dispatch = useDispatch();
   const { id } = props.match.params;
-  const details = useSelector((state) => state.Clients.details);
+  const { details, isProcessing, error } = useSelector((state) => state.Clients);
 
   let companyProfiles = [];
   let userProfile;
@@ -33,11 +36,9 @@ const ClientDetails = (props) => {
   };
 
   const closeModal = () => {
-    setProfileDetails(null);
+    setProfileDetails({});
     setModal(false);
   };
-
-  console.log(profileDetails);
 
   useEffect(() => {
     dispatch(getClientDetails(id));
@@ -46,6 +47,7 @@ const ClientDetails = (props) => {
   return (
     <div className='page-content'>
       <Container fluid>
+        {error && <Alert color='danger' error={error} />}
         <Row>
           <Col lg='6'>
             <Card className='text-center'>
@@ -146,16 +148,20 @@ const ClientDetails = (props) => {
           ))}
         </Row>
         <Row>
-          <Col lg='12'>
-            <Breadcrumbs title='Cambios de divisas' breadcrumbItem='Cambios realizados anteriormente' />
+          <Col lg='6'>
             <ExchangesTable id={id} />
+          </Col>
+          <Col lg='6'>
+            <AccountsTable userId={id} />
           </Col>
         </Row>
       </Container>
 
       <Modal isOpen={modal} role='dialog' autoFocus={true} centered={true} tabIndex='-1' toggle={closeModal}>
         <ModalHeader toggle={closeModal}>Editar perfil</ModalHeader>
-        <ModalBody>{/* <TransferInvoice isProcessing={isProcessing} orderId={id} onApprove={onApproveExchange} /> */}</ModalBody>
+        <ModalBody>
+          <EditUserProfile userId={id} isProcessing={isProcessing} closeModal={closeModal} details={profileDetails} />
+        </ModalBody>
       </Modal>
     </div>
   );

@@ -1,26 +1,3 @@
-import moment from "moment";
-
-export const registerAdminValues = (values) => ({
-  UserName: (values && values.userName) || "",
-  Email: (values && values.userEmail) || "",
-  Password: "",
-  ConfirmPassword: "",
-  IdRol: (values && values.roleId) || "",
-});
-
-export const landingSettingsValues = (values) => ({
-  contUsers: values ? values.contUsers : "",
-  contOps: values ? values.contOps : "",
-  contSolesTransfer: values ? values.contSolesTransfer : "",
-  showRealStadistic: values ? values.showRealStadistic : false,
-});
-
-export const transactionSettingsValues = (values) => ({
-  merchantComment: values ? values.merchantComment : "",
-  minutesToCancelOp: values ? values.minutesToCancelOp : "",
-  timeToResponse: values ? values.timeToResponse : "",
-});
-
 export const editCurrencyExchangeValues = {
   idBankSend: "",
   idBankReceive: "",
@@ -65,22 +42,6 @@ export const CbAccountValues = {
   currencyId: "",
   acc_type: "checking",
 };
-
-export const editClientValues = (values) => ({
-  firstName: values && values.firstName ? values.firstName : "",
-  lastName: values && values.lastName ? values.lastName : "",
-  email: values && values.email ? values.email : "",
-  phoneNumber: values && values.phoneNumber ? values.phoneNumber : "",
-  idDocumentType: values && values.idDocumentType ? values.idDocumentType : "",
-  dniNumber: values && values.dniNumber ? values.dniNumber : "",
-  dateBirth: values && values.dateBirth ? moment(values.dateBirth).format("YYYY-MM-DD") : "",
-  address: values && values.address ? values.address : "",
-  occupation: values && values.occupation ? values.occupation : "",
-  profession: values && values.profession ? values.profession : "",
-  RUCNumber: values && values.rucNumber ? values.rucNumber : "",
-  CompanyName: values && values.companyName ? values.companyName : "",
-  isDisabled: values ? values.isDisabled : "",
-});
 
 export const statusValues = (values) => ({
   name: values ? values.name : "",

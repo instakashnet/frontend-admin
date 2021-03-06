@@ -36,6 +36,6 @@ export function* watchGetStatus() {
   yield takeEvery(actionTypes.GET_STATUS, getStatus);
 }
 
-export default function* () {
+export default function* statusSaga() {
   yield all([fork(watchGetStatus), fork(watchEditStatus)]);
 }
