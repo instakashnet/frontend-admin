@@ -1,8 +1,9 @@
-import { takeEvery, fork, put, all, call, delay } from "redux-saga/effects";
+import { takeEvery, fork, put, all, call, delay, select } from "redux-saga/effects";
 
 // Login Redux States
 import { LOGIN_USER, LOGOUT_USER, LOAD_USER } from "./actionTypes";
 import * as actions from "./actions";
+import { leaveGroup } from "../../socket/actions";
 import { authInstance } from "../../../helpers/AuthType/axios";
 
 function* loadUser({ history }) {
@@ -61,6 +62,7 @@ function* loginUser({ payload }) {
 
 function* logoutUser({ payload }) {
   const { history } = payload;
+  const token = yield select((state) => state.Login.token);
 
   try {
     yield authInstance.post("/auth/logout");
@@ -68,6 +70,7 @@ function* logoutUser({ payload }) {
     console.log(error);
   }
 
+  if (token) yield put(leaveGroup(token));
   yield localStorage.removeItem("authUser");
   yield history && history.push("/");
   yield put(actions.logoutUserSuccess());

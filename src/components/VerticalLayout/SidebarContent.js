@@ -139,7 +139,7 @@ const SidebarContent = (props) => {
             </>
           ) : null}
 
-          {user && user.role === "ROLE_ADMIN" ? (
+          {user && user.role === "ROLE_ADMIN" && (
             <>
               <li className='menu-title'>{props.t("Configuraciones generales")}</li>
 
@@ -156,37 +156,34 @@ const SidebarContent = (props) => {
                   <span>{props.t("Bancos aceptados")}</span>
                 </Link>
               </li>
-
-              {/* <li>
-                <Link to='/countries' className=' waves-effect'>
-                  <i className='mdi mdi-flag-outline'></i>
-                  <span>{props.t("Paises aceptados")}</span>
-                </Link>
-              </li> */}
-
-              <li>
-                <Link to='/registered-users'>
-                  <i className='bx bx-user-circle'></i>
-                  <span>{props.t("Usuarios registrados")}</span>
-                </Link>
-              </li>
-
-              <li>
-                <Link to='/#' className='has-arrow waves-effect'>
-                  <i className='bx bx-cog'></i>
-                  <span>{props.t("Ajustes")}</span>
-                </Link>
-                <ul className='sub-menu'>
-                  <li>
-                    <Link to='/admin-users'>{props.t("Usuarios administrativos")}</Link>
-                  </li>
-                  <li>
-                    <Link to='/status'>{props.t("Estados de operaciones")}</Link>
-                  </li>
-                </ul>
-              </li>
             </>
-          ) : null}
+          )}
+
+          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_MANAGER") && (
+            <li>
+              <Link to='/registered-users'>
+                <i className='bx bx-user-circle'></i>
+                <span>{props.t("Usuarios registrados")}</span>
+              </Link>
+            </li>
+          )}
+
+          {user && user.role === "ROLE_ADMIN" && (
+            <li>
+              <Link to='/#' className='has-arrow waves-effect'>
+                <i className='bx bx-cog'></i>
+                <span>{props.t("Ajustes")}</span>
+              </Link>
+              <ul className='sub-menu'>
+                <li>
+                  <Link to='/admin-users'>{props.t("Usuarios administrativos")}</Link>
+                </li>
+                <li>
+                  <Link to='/status'>{props.t("Estados de operaciones")}</Link>
+                </li>
+              </ul>
+            </li>
+          )}
         </ul>
       </div>
     </React.Fragment>

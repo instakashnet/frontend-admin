@@ -5,6 +5,11 @@ export const joinGroup = (token) => ({
   token,
 });
 
+export const leaveGroup = (token) => ({
+  type: types.LEAVE_GROUP,
+  token,
+});
+
 export const changeOrderState = (token, orderId) => ({
   type: types.CHANGE_ORDER_STATE,
   token,

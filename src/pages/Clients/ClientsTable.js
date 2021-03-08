@@ -49,7 +49,7 @@ const UsersTable = (props) => {
   };
 
   if (props.clients.length > 0) {
-    data.rows = props.clients.map((client) => ({
+    data.rows = props.clients.reverse().map((client) => ({
       id: client.id,
       userName: client.profiles[0].first_name + " " + client.profiles[0].last_name,
       email: client.email,

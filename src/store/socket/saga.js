@@ -19,14 +19,15 @@ const createSocketChannel = (socket, eventName) =>
 
     socket.on(eventName, handler);
 
-    return () => {
-      socket.emit("leaveGroup");
-      socket.emit("disconnect");
-    };
+    return () => socket.emit("disconnect");
   });
 
 function* joinGroup(socket, token) {
   yield apply(socket, socket.emit, ["joinGroup", { data: token }]);
+}
+
+function* leaveGroup(socket, token) {
+  yield apply(socket, socket.emit, ["leaveGroup", { data: token }]);
 }
 
 function* getOrders(socket, token) {
@@ -63,6 +64,13 @@ function* onGetOrders(socket) {
   }
 }
 
+function* listenLeaveGroupSaga(socket) {
+  while (true) {
+    const { token } = yield take(types.LEAVE_GROUP);
+    yield fork(leaveGroup, socket, token);
+  }
+}
+
 function* listenSocketSaga() {
   try {
     const socket = yield call(connect);
@@ -70,9 +78,10 @@ function* listenSocketSaga() {
     yield fork(joinGroup, socket, token);
     yield fork(onJoinedGroup, socket, token);
     yield fork(onGetOrders, socket);
+    yield fork(listenLeaveGroupSaga, socket);
 
     while (true) {
-      const { token, orderId } = yield take(types.CHANGE_ORDER_STATE);
+      const { orderId } = yield take(types.CHANGE_ORDER_STATE);
       yield fork(changeOrderState, socket, token, orderId);
     }
   } catch (error) {
