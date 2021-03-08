@@ -75,16 +75,9 @@ const SidebarContent = (props) => {
             </Link>
           </li>
 
-          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER") ? (
+          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER" || user.role === "ROLE_MANAGER") && (
             <>
               <li className='menu-title'>{props.t("Datos del sistema")}</li>
-
-              <li>
-                <Link to='/forex' className=' waves-effect'>
-                  <i className='bx bx-dollar-circle'></i>
-                  <span>{props.t("Precio del dolar")}</span>
-                </Link>
-              </li>
 
               <li>
                 <Link to='/bank-accounts'>
@@ -93,7 +86,16 @@ const SidebarContent = (props) => {
                 </Link>
               </li>
             </>
-          ) : null}
+          )}
+
+          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER") && (
+            <li>
+              <Link to='/forex' className=' waves-effect'>
+                <i className='bx bx-dollar-circle'></i>
+                <span>{props.t("Precio del dolar")}</span>
+              </Link>
+            </li>
+          )}
 
           {user &&
           (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER" || user.role === "ROLE_OPERATOR" || user.role === "ROLE_ANALYST" || user.role === "ROLE_MANAGER") ? (

@@ -9,7 +9,6 @@ const AccountsTable = ({ userId }) => {
   const dispatch = useDispatch();
 
   const { accounts, isLoading } = useSelector((state) => state.Clients);
-  console.log(accounts);
 
   useEffect(() => {
     dispatch(getClientAccounts(userId));
