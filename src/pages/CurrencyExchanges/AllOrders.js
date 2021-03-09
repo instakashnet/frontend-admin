@@ -97,7 +97,7 @@ const Transactions = () => {
                   isLoading={isLoading}
                   rows={(query) =>
                     new Promise(async (resolve) => {
-                      const res = await exchangeInstance.get(`/order/admin?page=${query.page + 1}&qty=${query.pageSize}&search=${query.search}`);
+                      const res = await exchangeInstance.get(`/order/admin?page=${query.page + 1}&qty=${query.search ? "10000000" : query.pageSize}&search=${query.search}`);
 
                       const orders = res.data.orders.map((order) => ({
                         id: order.id,
