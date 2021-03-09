@@ -2,7 +2,7 @@ import { fork, all, put, takeEvery, call, delay, takeLatest } from "redux-saga/e
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
 import { exchangeInstance } from "../../../helpers/AuthType/axios";
-import axios from "axios";
+// import axios from "axios";
 
 function* getForex() {
   try {
@@ -31,21 +31,21 @@ function* getforexRates({ forexId }) {
   }
 }
 
-function* addDolarPrice({ values }) {
-  const token = yield localStorage.getItem("dolarAuth");
+// function* addDolarPrice({ values }) {
+//   const token = yield localStorage.getItem("dolarAuth");
 
-  const formData = new FormData();
-  formData.append("email", "update@instakash.net");
-  formData.append("password", "=qAX*96Ec");
+//   const formData = new FormData();
+//   formData.append("email", "update@instakash.net");
+//   formData.append("password", "=qAX*96Ec");
 
-  if (!token) {
-    const res = yield axios.post("https://api.cuantoestaeldolar.pe/Api/Dolar/auth", formData, {
-      withCredentials: true,
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    console.log(res);
-  }
-}
+//   if (!token) {
+//     const res = yield axios.post("https://api.cuantoestaeldolar.pe/Api/Dolar/auth", formData, {
+//       withCredentials: true,
+//       headers: { "Content-Type": "multipart/form-data" },
+//     });
+//     console.log(res);
+//   }
+// }
 
 function* addCurrencyPrice({ values }) {
   try {
@@ -53,7 +53,7 @@ function* addCurrencyPrice({ values }) {
     if (res.status === 201) {
       yield call(getforexRates, { forexId: values.forexId });
       yield call(getAllRates);
-      yield call(addDolarPrice, values);
+      // yield call(addDolarPrice, values);
       yield put(actions.addCurrencyPriceSuccess("Precio actualizado correctamente!"));
       yield delay(4000);
       yield put(actions.clearAlert());
