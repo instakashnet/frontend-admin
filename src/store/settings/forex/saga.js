@@ -39,7 +39,10 @@ function* addDolarPrice({ values }) {
   formData.append("password", "=qAX*96Ec");
 
   if (!token) {
-    const res = yield axios.post("https://api.cuantoestaeldolar.pe/Api/Dolar/auth", formData, { withCredentials: false, timeout: 5000 });
+    const res = yield axios.post("https://api.cuantoestaeldolar.pe/Api/Dolar/auth", formData, {
+      withCredentials: true,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     console.log(res);
   }
 }
