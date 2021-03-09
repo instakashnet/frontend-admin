@@ -34,8 +34,12 @@ function* getforexRates({ forexId }) {
 function* addDolarPrice({ values }) {
   const token = yield localStorage.getItem("dolarAuth");
 
+  const formData = new FormData();
+  formData.append("email", "update@instakash.net");
+  formData.append("password", "=qAX*96Ec");
+
   if (!token) {
-    const res = yield axios.post("https://api.cuantoestaeldolar.pe/Api/Dolar/auth", { email: "update@instakash.net", password: "=qAX*96Ec" });
+    const res = yield axios.post("https://api.cuantoestaeldolar.pe/Api/Dolar/auth", formData, { withCredentials: false, timeout: 5000 });
     console.log(res);
   }
 }
