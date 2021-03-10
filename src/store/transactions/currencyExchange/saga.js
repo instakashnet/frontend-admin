@@ -69,7 +69,7 @@ function* validateExchange({ orderId, history }) {
   }
 }
 
-function* approveExchange({ orderId }) {
+function* approveExchange({ orderId, closeModal }) {
   const token = yield select((state) => state.Login.token);
 
   try {
@@ -78,6 +78,7 @@ function* approveExchange({ orderId }) {
       yield put(changeOrderState(token, orderId));
       yield put(actions.approveExchangeSuccess());
       yield call(getExchangeDetails, { id: orderId });
+      yield call(closeModal);
       yield put(actions.createInvoice(orderId));
       yield Swal.fire("Exitoso", `La operación fue aprobada correctamente.`, "success");
     }
@@ -134,8 +135,7 @@ function* uploadVoucher({ orderId, values, closeModal }) {
     if (result.isConfirmed) {
       const res = yield exchangeInstance.post(`/bills/admin/order/attach-voucher/${orderId}`, formData);
       if (res.status === 201) {
-        yield call(approveExchange, { orderId });
-        yield call(closeModal);
+        yield call(approveExchange, { orderId, closeModal });
       }
     } else yield put(actions.apiError());
   } catch (error) {
