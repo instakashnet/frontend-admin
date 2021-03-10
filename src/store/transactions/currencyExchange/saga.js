@@ -87,7 +87,7 @@ function* approveExchange({ orderId, closeModal }) {
   }
 }
 
-function* declineExchange({ orderId, history }) {
+function* declineExchange({ orderId }) {
   const token = yield select((state) => state.Login.token);
 
   try {
