@@ -30,6 +30,7 @@ const AddCurrencyPrice = (props) => {
     initialValues: currencyPriceValues(toBuy, toSell),
     validationSchema: validateUpdateCurrencyPrice,
     onSubmit,
+    enableReinitialize: true,
   });
 
   const shutdown = () => {

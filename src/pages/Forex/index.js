@@ -4,16 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { getForexInit, getForexRatesInit, getAllRatesInit } from "../../store/actions";
 import { addCurrencyPrice } from "../../store/actions";
 
-// import PricesTable from "./Prices";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import AddCurrency from "./AddCurrencyPrice";
 import FlagsSelect from "../../components/UI/FormItems/FlagsSelect";
 import PricesTable from "./Prices";
+import Alert from "../../components/UI/Alert";
 
 const Forex = () => {
   const [forex, setForex] = useState(null);
   const dispatch = useDispatch();
-  const { forexTypes, activeRates, allRates, isLoading } = useSelector((state) => state.Forex);
+  const { forexTypes, activeRates, allRates, isLoading, error, success } = useSelector((state) => state.Forex);
   const forexOptions = forexTypes.length > 0 ? forexTypes.map((type) => ({ label: "USD/PEN", value: type.id, image: `${process.env.PUBLIC_URL}/images/flags/USDPEN.svg` })) : [];
 
   useEffect(() => {
@@ -29,6 +29,8 @@ const Forex = () => {
   return (
     <div className='page-content'>
       <Container fluid>
+        {error && <Alert color='danger' error={error} />}
+        {success && <Alert color='success' error={success} />}
         <Breadcrumbs title='Forex' breadcrumbItem='Par de monedas' />
         <Row>
           <Col lg='6'>

@@ -2,14 +2,13 @@ import { fork, all, put, takeEvery, call, delay, takeLatest } from "redux-saga/e
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
 import { exchangeInstance } from "../../../helpers/AuthType/axios";
-// import axios from "axios";
 
 function* getForex() {
   try {
     const res = yield exchangeInstance.get("/forex/admin");
     yield put(actions.getForexSuccess(res.data));
   } catch (error) {
-    yield put(actions.apiError("Ha ocurrido un error obtienes los pares de moneda. Por favro contacte a soporte."));
+    yield put(actions.apiError());
   }
 }
 
@@ -18,7 +17,7 @@ function* getAllRates() {
     const res = yield exchangeInstance.get("/rates/admin/all");
     yield put(actions.getAllRateSuccess(res.data));
   } catch (error) {
-    yield put(actions.apiError("Ha ocurrido un error obteniendo todas las tasas activas."));
+    yield put(actions.apiError());
   }
 }
 
@@ -27,25 +26,9 @@ function* getforexRates({ forexId }) {
     const res = yield exchangeInstance.get(`/rates/admin/forex/${forexId}`);
     if (res.status === 200) yield put(actions.getForexRatesSuccess(res.data));
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(actions.apiError());
   }
 }
-
-// function* addDolarPrice({ values }) {
-//   const token = yield localStorage.getItem("dolarAuth");
-
-//   const formData = new FormData();
-//   formData.append("email", "update@instakash.net");
-//   formData.append("password", "=qAX*96Ec");
-
-//   if (!token) {
-//     const res = yield axios.post("https://api.cuantoestaeldolar.pe/Api/Dolar/auth", formData, {
-//       withCredentials: true,
-//       headers: { "Content-Type": "multipart/form-data" },
-//     });
-//     console.log(res);
-//   }
-// }
 
 function* addCurrencyPrice({ values }) {
   try {
@@ -53,12 +36,12 @@ function* addCurrencyPrice({ values }) {
     if (res.status === 201) {
       yield call(getforexRates, { forexId: values.forexId });
       yield call(getAllRates);
-      // yield call(addDolarPrice, values);
       yield put(actions.addCurrencyPriceSuccess("Precio actualizado correctamente!"));
       yield delay(4000);
       yield put(actions.clearAlert());
     }
   } catch (error) {
+    console.log(error);
     yield put(actions.apiError("Ha ocurrido un problema actualizando la tasa. Por favor intente de nuevo o contacte a soporte."));
     yield delay(4000);
     yield put(actions.clearAlert());
