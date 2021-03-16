@@ -1,9 +1,10 @@
-import React from "react";
-import { Card, CardBody, Row, Col } from "reactstrap";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import moment from "moment-timezone";
+import React from 'react';
+import { Card, CardBody, Row, Col } from 'reactstrap';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import moment from 'moment-timezone';
+import { formatAmount } from '../../../helpers/functions';
 
-import CopyButton from "../../../components/UI/CopyButton";
+import CopyButton from '../../../components/UI/CopyButton';
 
 const Received = (props) => {
   const { isLoading, details } = props;
@@ -21,7 +22,7 @@ const Received = (props) => {
                     <h5>
                       Pedido {details.uuid} <CopyButton textToCopy={details.uuid} />
                     </h5>
-                    <p className='text-muted mb-1'>{moment(details.created).format("DD/MM/YYYY HH:mm a")}</p>
+                    <p className='text-muted mb-1'>{moment(details.created).format('DD/MM/YYYY HH:mm a')}</p>
                     {details.fundsOrigin && <p className='text-muted mb-0'>Origen de fondos: {details.fundsOrigin}</p>}
                   </div>
                 </div>
@@ -44,7 +45,7 @@ const Received = (props) => {
               <div>
                 <p className='text-muted mb-2'>Nro. de transferencia</p>
                 <h5>
-                  {details.transactionCode || "Sin nro. de transferencia"} {details.transactionCode && <CopyButton textToCopy={details.transactionCode} />}
+                  {details.transactionCode || 'Sin nro. de transferencia'} {details.transactionCode && <CopyButton textToCopy={details.transactionCode} />}
                 </h5>
               </div>
             </Col>
@@ -55,7 +56,7 @@ const Received = (props) => {
             <Col sm='6'>
               <div>
                 <p className='text-muted mb-2'>Monto recibido</p>
-                <h5>{`${details.currencySent === "USD" ? "$" : "S/."} ${details.amountSent.toFixed(2)}`}</h5>
+                <h5>{`${details.currencySent === 'USD' ? '$' : 'S/.'} ${formatAmount(details.amountSent)}`}</h5>
               </div>
             </Col>
             <Col sm='6'>
@@ -63,7 +64,7 @@ const Received = (props) => {
                 <p className='text-muted mb-2'>Banco que recibe</p>
                 <h5>
                   <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankReceive}.svg`} alt={details.bankReceive} width={20} />
-                  <span className='ml-2 text-muted'>{`${details.bankReceive} ${details.currencySent === "USD" ? "$" : "S/."}`}</span>
+                  <span className='ml-2 text-muted'>{`${details.bankReceive} ${details.currencySent === 'USD' ? '$' : 'S/.'}`}</span>
                 </h5>
               </div>
             </Col>

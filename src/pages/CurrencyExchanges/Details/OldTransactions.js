@@ -1,20 +1,21 @@
-import React from "react";
-import { Card, CardBody, Badge } from "reactstrap";
-import moment from "moment-timezone";
+import React from 'react';
+import { Card, CardBody, Badge } from 'reactstrap';
+import moment from 'moment-timezone';
+import { formatAmount } from '../../../helpers/functions';
 
-import Table from "../../../components/UI/Table";
+import Table from '../../../components/UI/Table';
 
 const OldTransactions = (props) => {
   const data = {
     columns: [
       {
-        title: "Fecha",
-        field: "date",
+        title: 'Fecha',
+        field: 'date',
       },
       {
-        title: "Enviado",
-        field: "amountSent",
-        cellStyle: { fontWeight: "bold" },
+        title: 'Enviado',
+        field: 'amountSent',
+        cellStyle: { fontWeight: 'bold' },
         render: (rowData) => (
           <div className='d-flex align-items-center'>
             <span className='mr-2'>{rowData.amountSent}</span>
@@ -23,9 +24,9 @@ const OldTransactions = (props) => {
         ),
       },
       {
-        title: "Recibibo",
-        field: "amountReceived",
-        cellStyle: { fontWeight: "bold" },
+        title: 'Recibibo',
+        field: 'amountReceived',
+        cellStyle: { fontWeight: 'bold' },
         render: (rowData) => (
           <div className='d-flex align-items-center'>
             <span className='mr-2'>{rowData.amountReceived}</span>
@@ -34,10 +35,10 @@ const OldTransactions = (props) => {
         ),
       },
       {
-        title: "Estado",
-        field: "status",
+        title: 'Estado',
+        field: 'status',
         render: (rowData) => (
-          <Badge className='btn py-2 font-size-12 px-3' style={{ color: "#FFF", backgroundColor: rowData.statusColor }} pill>
+          <Badge className='btn py-2 font-size-12 px-3' style={{ color: '#FFF', backgroundColor: rowData.statusColor }} pill>
             {rowData.statusName}
           </Badge>
         ),
@@ -50,11 +51,11 @@ const OldTransactions = (props) => {
     const filteredOrders = props.orders.filter((order) => order.id !== props.details.id);
 
     data.rows = filteredOrders.reverse().map((order) => ({
-      date: moment(order.created).format("DD/MM/YYYY HH:mm a"),
+      date: moment(order.created).format('DD/MM/YYYY HH:mm a'),
       bankSent: order.bankSent,
       bankReceive: order.bankReceive,
-      amountSent: `${order.currencySent === "USD" ? "$" : "S/."} ${order.amountSent.toFixed(2)}`,
-      amountReceived: `${order.currencyReceived === "USD" ? "$" : "S/."} ${order.amountReceived.toFixed(2)}`,
+      amountSent: `${order.currencySent === 'USD' ? '$' : 'S/.'} ${formatAmount(order.amountSent)}`,
+      amountReceived: `${order.currencyReceived === 'USD' ? '$' : 'S/.'} ${formatAmount(order.amountReceived)}`,
       statusName: order.estateName,
       statusColor: order.stateColor,
     }));
@@ -68,7 +69,7 @@ const OldTransactions = (props) => {
           columns={data.columns}
           isLoading={props.isLoading}
           rows={data.rows}
-          options={{ sorting: true, loadingType: "linear", pageSize: 5, pageSizeOptions: [5, 10, 25] }}
+          options={{ sorting: true, loadingType: 'linear', pageSize: 5, pageSizeOptions: [5, 10, 25] }}
         />
       </CardBody>
     </Card>
