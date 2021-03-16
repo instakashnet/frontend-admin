@@ -50,7 +50,7 @@ const Sent = (props) => {
                 <div>
                   <p className='text-muted mb-2'>Monto a enviar</p>
                   <h5>
-                    {`${details.currencyReceived === 'PEN' ? 'S/.' : '$'} ${formatAmount(details.amountReceived)}`} <CopyButton textToCopy={formatAmount(details.amountReceived)} />
+                    {`${details.currencyReceived === 'PEN' ? 'S/.' : '$'} ${formatAmount(details.amountReceived)}`} <CopyButton textToCopy={details.amountReceived.toFixed(2)} />
                   </h5>
                 </div>
               </Col>
