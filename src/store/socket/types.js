@@ -1,0 +1,3 @@
+export const JOIN_GROUP = "JOIN_GROUP";
+export const LEAVE_GROUP = "LEAVE_GROUP";
+export const CHANGE_ORDER_STATE = "CHANGE_ORDER_STATE";
