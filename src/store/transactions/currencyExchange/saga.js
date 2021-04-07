@@ -117,6 +117,7 @@ function* declineExchange({ orderId }) {
 
 function* uploadVoucher({ orderId, values, closeModal }) {
   const formData = new FormData();
+  formData.append('file', values.file);
 
   try {
     const result = yield Swal.fire({
