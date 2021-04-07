@@ -79,7 +79,6 @@ function* approveExchange({ orderId, closeModal }) {
       yield put(actions.approveExchangeSuccess());
       yield call(getExchangeDetails, { id: orderId });
       yield call(closeModal);
-      yield put(actions.createInvoice(orderId));
       yield Swal.fire('Exitoso', `La operación fue aprobada correctamente.`, 'success');
     }
   } catch (error) {
