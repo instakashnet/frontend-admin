@@ -106,7 +106,6 @@ function* declineExchange({ orderId }) {
         yield put(changeOrderState(token, orderId));
         yield call(getExchangeDetails, { id: orderId });
         yield put(actions.declineExchangeSuccess());
-        yield Swal.fire('Exitoso', 'La operación fue cancelada correctamente.', 'success');
       }
     } else put(actions.apiError());
   } catch (error) {
@@ -118,7 +117,6 @@ function* declineExchange({ orderId }) {
 
 function* uploadVoucher({ orderId, values, closeModal }) {
   const formData = new FormData();
-  formData.append('file', values.file);
 
   try {
     const result = yield Swal.fire({
