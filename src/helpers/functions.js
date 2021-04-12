@@ -22,7 +22,8 @@ export const checkInterplaza = (bank, accNumber) => {
       firstAccNumber.substring(0, 1) === '4' ||
       firstAccNumber.substring(0, 1) === '6' ||
       firstAccNumber.substring(0, 1) === '5' ||
-      firstAccNumber.substring(0, 1) === '7') ? (
+      firstAccNumber.substring(0, 1) === '7' ||
+      firstAccNumber.substring(0, 1) === '8') ? (
     <p className='text-danger'>* La cuenta parece ser de provincia. Contactar al usuario.</p>
   ) : null;
 };
