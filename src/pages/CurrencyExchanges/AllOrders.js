@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardBody, Badge, Col, Row, Container, Button } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment-timezone';
@@ -14,6 +14,14 @@ const Transactions = () => {
   const tableRef = useRef();
 
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      tableRef.current && tableRef.current.onQueryChange();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  });
 
   const columns = [
     {
