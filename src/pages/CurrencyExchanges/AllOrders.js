@@ -18,7 +18,7 @@ const Transactions = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       tableRef.current && tableRef.current.onQueryChange();
-    }, 30000);
+    }, 60000);
 
     return () => clearInterval(interval);
   });
