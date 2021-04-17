@@ -21,8 +21,9 @@ const Sent = (props) => {
               <h5>Datos para enviar</h5>
               <div className='mb-2'>
                 <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankSent}.svg`} alt={details.bankSent} width={20} />
-                <span className='ml-2 text-muted'>{`${details.bankSent} ${details.currencyReceive === 'USD' ? '$' : 'S/.'}`} - </span>
-                <span className='ml-2 text-muted'>{details.accTypeTo === 'savings' ? 'Ahorros' : 'Corriente'}</span>
+                <span className='ml-2 text-muted'>
+                  {details.bankSent} - {details.accTypeTo === 'savings' ? 'Ahorros' : 'Corriente'} {details.currencyReceived === 'PEN' ? 'Soles' : 'Dólares'}
+                </span>
               </div>
             </div>
           </div>
