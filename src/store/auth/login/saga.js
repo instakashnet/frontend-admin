@@ -1,13 +1,12 @@
-import { takeEvery, fork, put, all, call, delay, select } from "redux-saga/effects";
+import { takeEvery, fork, put, all, call, delay } from 'redux-saga/effects';
 
 // Login Redux States
-import { LOGIN_USER, LOGOUT_USER, LOAD_USER } from "./actionTypes";
-import * as actions from "./actions";
-import { leaveGroup } from "../../socket/actions";
-import { authInstance } from "../../../helpers/AuthType/axios";
+import { LOGIN_USER, LOGOUT_USER, LOAD_USER } from './actionTypes';
+import * as actions from './actions';
+import { authInstance } from '../../../helpers/AuthType/axios';
 
 function* loadUser({ history }) {
-  const authUser = yield call([localStorage, "getItem"], "authUser");
+  const authUser = yield call([localStorage, 'getItem'], 'authUser');
 
   if (!authUser) return yield put(actions.loadUserError());
   const { accessToken, tokenExp, user } = JSON.parse(authUser);
@@ -23,11 +22,11 @@ function* loadUser({ history }) {
 
   try {
     yield delay(1000);
-    const res = yield authInstance.get("/users/session");
+    const res = yield authInstance.get('/users/session');
 
-    yield call([sessionStorage, "setItem"], "session", JSON.stringify(res.data.activityUser));
+    yield call([sessionStorage, 'setItem'], 'session', JSON.stringify(res.data.activityUser));
     yield put(actions.loginSuccess(user, accessToken));
-    yield history && history.push("/dashboard");
+    yield history && history.push('/dashboard');
   } catch (error) {
     yield put(actions.logoutUser(history));
     yield put(actions.loadUserError());
@@ -37,21 +36,21 @@ function* loadUser({ history }) {
 function* loginUser({ payload }) {
   const { user, history } = payload;
   try {
-    const res = yield authInstance.post("auth/admin/signin", user);
+    const res = yield authInstance.post('auth/admin/signin', user);
 
     const userObj = {
       accessToken: res.data.accessToken,
       userId: res.data.id,
       tokenExp: res.expiresIn,
-      user: { name: res.data.first_name + " " + res.data.last_name, email: user.email, role: res.data.roles[0] },
+      user: { name: res.data.first_name + ' ' + res.data.last_name, email: user.email, role: res.data.roles[0] },
     };
-    yield call([localStorage, "setItem"], "authUser", JSON.stringify(userObj));
+    yield call([localStorage, 'setItem'], 'authUser', JSON.stringify(userObj));
     yield put(actions.loadUser(history));
   } catch (error) {
     let message = error.message;
 
     if (error.status !== 500) {
-      message = "Las credenciales de acceso no son correctas.";
+      message = 'Las credenciales de acceso no son correctas.';
     }
 
     yield put(actions.apiError(message));
@@ -62,17 +61,15 @@ function* loginUser({ payload }) {
 
 function* logoutUser({ payload }) {
   const { history } = payload;
-  const token = yield select((state) => state.Login.token);
 
   try {
-    yield authInstance.post("/auth/logout");
+    yield authInstance.post('/auth/logout');
   } catch (error) {
     console.log(error);
   }
 
-  if (token) yield put(leaveGroup(token));
-  yield localStorage.removeItem("authUser");
-  yield history && history.push("/");
+  yield localStorage.removeItem('authUser');
+  yield history && history.push('/');
   yield put(actions.logoutUserSuccess());
 }
 

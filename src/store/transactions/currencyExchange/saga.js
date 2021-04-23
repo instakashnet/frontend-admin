@@ -1,7 +1,6 @@
-import { all, call, takeEvery, put, fork, delay, select } from 'redux-saga/effects';
+import { all, call, takeEvery, put, fork, delay } from 'redux-saga/effects';
 import * as actions from './actions';
 import * as actionTypes from './actionTypes';
-import { changeOrderState } from '../../socket/actions';
 import Swal from 'sweetalert2';
 import { exchangeInstance } from '../../../helpers/AuthType/axios';
 import { getClientExchanges } from '../../settings/clients/actions';
@@ -21,12 +20,9 @@ function* getExchangeDetails({ id }) {
 }
 
 function* editExchange({ id, values, setState }) {
-  const token = yield select((state) => state.Login.token);
-
   try {
     const res = yield exchangeInstance.put(`/order/admin/${id}`, values);
     if (res.status === 200) {
-      yield put(changeOrderState(token, id));
       yield put(actions.editExchangeSuccess());
       yield call(getExchangeDetails, { id });
       yield call(setState, false);
@@ -40,8 +36,6 @@ function* editExchange({ id, values, setState }) {
 }
 
 function* validateExchange({ orderId, history }) {
-  const token = yield select((state) => state.Login.token);
-
   try {
     const result = yield Swal.fire({
       title: `¿Deseas validar esta operación?`,
@@ -56,7 +50,6 @@ function* validateExchange({ orderId, history }) {
     if (result.isConfirmed) {
       const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 4 });
       if (res.status === 201) {
-        yield put(changeOrderState(token, orderId));
         yield call(getExchangeDetails, { id: orderId });
         yield put(actions.approveExchangeSuccess());
         yield Swal.fire('Exitoso', `La operación fue validada correctamente.`, 'success');
@@ -70,12 +63,9 @@ function* validateExchange({ orderId, history }) {
 }
 
 function* approveExchange({ orderId, closeModal }) {
-  const token = yield select((state) => state.Login.token);
-
   try {
     const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 6 });
     if (res.status === 201) {
-      yield put(changeOrderState(token, orderId));
       yield put(actions.approveExchangeSuccess());
       yield call(getExchangeDetails, { id: orderId });
       yield call(closeModal);
@@ -87,8 +77,6 @@ function* approveExchange({ orderId, closeModal }) {
 }
 
 function* declineExchange({ orderId }) {
-  const token = yield select((state) => state.Login.token);
-
   try {
     const result = yield Swal.fire({
       title: `¿Deseas cancelar esta operación?`,
@@ -103,7 +91,6 @@ function* declineExchange({ orderId }) {
     if (result.isConfirmed) {
       const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 5 });
       if (res.status === 201) {
-        yield put(changeOrderState(token, orderId));
         yield call(getExchangeDetails, { id: orderId });
         yield put(actions.declineExchangeSuccess());
       }

@@ -1,30 +1,28 @@
-import { all } from "redux-saga/effects";
+import { all } from 'redux-saga/effects';
 
 //public
-import AuthSaga from "./auth/login/saga";
-import LayoutSaga from "./layout/saga";
-import BanksSaga from "./settings/banks/saga";
-import DataSaga from "./settings/data/saga";
-import SocketSaga from "./socket/saga";
+import AuthSaga from './auth/login/saga';
+import LayoutSaga from './layout/saga';
+import BanksSaga from './settings/banks/saga';
+import DataSaga from './settings/data/saga';
 
 // private
-import AdminUsersSaga from "./settings/users/saga";
-import CurrencyExchangeSaga from "./transactions/currencyExchange/saga";
-import CashAdvanceSaga from "./transactions/cashAdvance/saga";
-import BinnacleSaga from "./activity/binnacle/saga";
-import forexSaga from "./settings/forex/saga";
-import BankAccountsSaga from "./settings/bankAccounts/saga";
-import ClientsSaga from "./settings/clients/saga";
-import StatusSaga from "./settings/status/saga";
-import CountersSaga from "./activity/counters/saga";
-import ScheduleSaga from "./settings/schedule/saga";
-import ChartsSaga from "./charts/saga";
+import AdminUsersSaga from './settings/users/saga';
+import CurrencyExchangeSaga from './transactions/currencyExchange/saga';
+import CashAdvanceSaga from './transactions/cashAdvance/saga';
+import BinnacleSaga from './activity/binnacle/saga';
+import forexSaga from './settings/forex/saga';
+import BankAccountsSaga from './settings/bankAccounts/saga';
+import ClientsSaga from './settings/clients/saga';
+import StatusSaga from './settings/status/saga';
+import CountersSaga from './activity/counters/saga';
+import ScheduleSaga from './settings/schedule/saga';
+import ChartsSaga from './charts/saga';
 
 export default function* rootSaga() {
   yield all([
     //public
     AuthSaga(),
-    SocketSaga(),
     //private
     DataSaga(),
     AdminUsersSaga(),

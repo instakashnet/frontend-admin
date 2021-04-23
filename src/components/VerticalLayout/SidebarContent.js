@@ -103,15 +103,10 @@ const SidebarContent = (props) => {
               <li className='menu-title'>{props.t('Cambios de divisa')}</li>
 
               <li>
-                <Link to='!#' className=' waves-effect'>
-                  <i className='bx bx-list-ol'></i>
-                  {/* <span className='badge badge-pill badge-warning float-right'>{props.t("4")}</span> */}
-                  <span>{props.t('Operaciones recientes')}</span>
-                </Link>
-                <Link to='/currency-exchanges/all-orders' className=' waves-effect'>
+                <Link to='/currency-exchanges/orders' className=' waves-effect'>
                   <i className='bx bx-list-check'></i>
                   {/* <span className='badge badge-pill badge-warning float-right'>{props.t("4")}</span> */}
-                  <span>{props.t('Todas las operaciones')}</span>
+                  <span>{props.t('Operaciones recibidas')}</span>
                 </Link>
               </li>
 
