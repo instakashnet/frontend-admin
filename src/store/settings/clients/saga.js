@@ -63,10 +63,16 @@ function* getClientAccounts({ id }) {
   }
 }
 
-function* downloadClients() {
+function* downloadClients({ fileType }) {
+  let URL;
+
+  if (fileType === 'companies') URL = '/users/admin/companies/download';
+  if (fileType === 'clients') URL = '/users/admin/clients/download';
+
   try {
-    const res = yield authInstance.get('/users/admin/companies/download', { responseType: 'arraybuffer' });
-    fileDownload(res.data, 'clients.xlsx');
+    if (!URL) return;
+    const res = yield authInstance.get(URL, { responseType: 'arraybuffer' });
+    fileDownload(res.data, `${fileType}.xlsx`);
   } catch (error) {
     yield put(actions.apiError(error.message));
     yield delay(4000);

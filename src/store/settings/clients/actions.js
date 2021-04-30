@@ -49,8 +49,9 @@ export const editProfileSuccess = () => ({
   type: actionTypes.EDIT_PROFILE_SUCCESS,
 });
 
-export const downloadClientsInit = () => ({
+export const downloadClientsInit = (fileType) => ({
   type: actionTypes.DOWNLOAD_CLIENTS_INIT,
+  fileType,
 });
 
 export const downloadClientsSuccess = () => ({

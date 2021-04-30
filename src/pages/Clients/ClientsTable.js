@@ -37,7 +37,7 @@ const UsersTable = (props) => {
       {
         field: 'status',
         title: 'Estado',
-        render: (rowData) => <span className={rowData.status ? 'text-warning' : 'text-success'}>{rowData.status ? 'NO ACTIVO' : 'ACTIVO'}</span>,
+        render: (rowData) => <span className={!rowData.status ? 'text-warning' : 'text-success'}>{!rowData.status ? 'NO ACTIVO' : 'ACTIVO'}</span>,
       },
       {
         title: 'Acción',
@@ -73,9 +73,14 @@ const UsersTable = (props) => {
         <Col className='col-12'>
           <Card>
             <CardBody>
-              <Button type='button' className='btn-primary mb-3' onClick={() => dispatch(downloadClientsInit())}>
-                Empresas <CloudDownload className='ml-2' />
-              </Button>
+              <div className='flex items-center'>
+                <Button type='button' className='btn-primary mb-3' onClick={() => dispatch(downloadClientsInit('companies'))}>
+                  Archivo Empresas <CloudDownload className='ml-2' />
+                </Button>
+                <Button type='button' className='btn-primary ml-3 mb-3' onClick={() => dispatch(downloadClientsInit('clients'))}>
+                  Archivo Clientes <CloudDownload className='ml-2' />
+                </Button>
+              </div>
               <Table
                 columns={data.columns}
                 rows={data.rows}
