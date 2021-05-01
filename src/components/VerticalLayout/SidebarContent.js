@@ -1,24 +1,24 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 // MetisMenu
-import MetisMenu from "metismenujs";
-import { withRouter } from "react-router-dom";
-import { Link } from "react-router-dom";
+import MetisMenu from 'metismenujs';
+import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 //i18n
-import { withNamespaces } from "react-i18next";
+import { withNamespaces } from 'react-i18next';
 
 const SidebarContent = (props) => {
   const { type, location } = props;
 
   useEffect(() => {
     const initMenu = () => {
-      new MetisMenu("#side-menu");
+      new MetisMenu('#side-menu');
 
       var matchingMenuItem = null;
-      var ul = document.getElementById("side-menu");
-      var items = ul.getElementsByTagName("a");
+      var ul = document.getElementById('side-menu');
+      var items = ul.getElementsByTagName('a');
       for (var i = 0; i < items.length; ++i) {
         if (location.pathname === items[i].pathname) {
           matchingMenuItem = items[i];
@@ -36,24 +36,24 @@ const SidebarContent = (props) => {
   const user = useSelector((state) => state.Login.user);
 
   const activateParentDropdown = (item) => {
-    item.classList.add("active");
+    item.classList.add('active');
     const parent = item.parentElement;
 
     if (parent) {
-      parent.classList.add("mm-active");
+      parent.classList.add('mm-active');
       const parent2 = parent.parentElement;
 
       if (parent2) {
-        parent2.classList.add("mm-show");
+        parent2.classList.add('mm-show');
 
         const parent3 = parent2.parentElement;
 
         if (parent3) {
-          parent3.classList.add("mm-active"); // li
-          parent3.childNodes[0].classList.add("mm-active"); //a
+          parent3.classList.add('mm-active'); // li
+          parent3.childNodes[0].classList.add('mm-active'); //a
           const parent4 = parent3.parentElement;
           if (parent4) {
-            parent4.classList.add("mm-active");
+            parent4.classList.add('mm-active');
           }
         }
       }
@@ -66,52 +66,47 @@ const SidebarContent = (props) => {
     <React.Fragment>
       <div id='sidebar-menu'>
         <ul className='metismenu list-unstyled' id='side-menu'>
-          <li className='menu-title'>{props.t("Principal")}</li>
+          <li className='menu-title'>{props.t('Principal')}</li>
 
           <li>
             <Link to='/dashboard'>
               <i className='bx bx-home-circle'></i>
-              <span>{props.t("Actividad")}</span>
+              <span>{props.t('Actividad')}</span>
             </Link>
           </li>
 
-          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER" || user.role === "ROLE_MANAGER") && (
+          {user && (user.role === 'ROLE_ADMIN' || user.role === 'ROLE_APPRAISER' || user.role === 'ROLE_MANAGER') && (
             <>
-              <li className='menu-title'>{props.t("Datos del sistema")}</li>
+              <li className='menu-title'>{props.t('Datos del sistema')}</li>
 
               <li>
                 <Link to='/bank-accounts'>
                   <i className='bx bx-wallet'></i>
-                  <span>{props.t("Cuentas de la empresa")}</span>
+                  <span>{props.t('Cuentas de la empresa')}</span>
                 </Link>
               </li>
             </>
           )}
 
-          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER") && (
+          {user && (user.role === 'ROLE_ADMIN' || user.role === 'ROLE_APPRAISER') && (
             <li>
               <Link to='/forex' className=' waves-effect'>
                 <i className='bx bx-dollar-circle'></i>
-                <span>{props.t("Precio del dolar")}</span>
+                <span>{props.t('Precio del dolar')}</span>
               </Link>
             </li>
           )}
 
           {user &&
-          (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER" || user.role === "ROLE_OPERATOR" || user.role === "ROLE_ANALYST" || user.role === "ROLE_MANAGER") ? (
+          (user.role === 'ROLE_ADMIN' || user.role === 'ROLE_APPRAISER' || user.role === 'ROLE_OPERATOR' || user.role === 'ROLE_ANALYST' || user.role === 'ROLE_MANAGER') ? (
             <>
-              <li className='menu-title'>{props.t("Cambios de divisa")}</li>
+              <li className='menu-title'>{props.t('Cambios de divisa')}</li>
 
               <li>
-                <Link to='/currency-exchanges/recent-orders' className=' waves-effect'>
-                  <i className='bx bx-list-ol'></i>
-                  {/* <span className='badge badge-pill badge-warning float-right'>{props.t("4")}</span> */}
-                  <span>{props.t("Operaciones recientes")}</span>
-                </Link>
-                <Link to='/currency-exchanges/all-orders' className=' waves-effect'>
+                <Link to='/currency-exchanges/orders' className=' waves-effect'>
                   <i className='bx bx-list-check'></i>
                   {/* <span className='badge badge-pill badge-warning float-right'>{props.t("4")}</span> */}
-                  <span>{props.t("Todas las operaciones")}</span>
+                  <span>{props.t('Operaciones recibidas')}</span>
                 </Link>
               </li>
 
@@ -122,7 +117,16 @@ const SidebarContent = (props) => {
                 </Link>
               </li> */}
 
-              <li className='menu-title'>{props.t("Avances de efectivo")}</li>
+              <li className='menu-title'>{props.t('Solicitud de retiros KASH')}</li>
+              <li>
+                <Link to='/withdrawals/all-orders' className='waves-effect'>
+                  <i className='bx bx-list-ol'></i>
+                  {/* <span className='badge badge-pill badge-warning float-right'>{props.t("4")}</span> */}
+                  <span>{props.t('Retiros KASH')}</span>
+                </Link>
+              </li>
+
+              {/* <li className='menu-title'>{props.t("Avances de efectivo")}</li> */}
               {/* 
               <li>
                 <Link to='/cash-advances' className=' waves-effect'>
@@ -141,47 +145,54 @@ const SidebarContent = (props) => {
             </>
           ) : null}
 
-          {user && user.role === "ROLE_ADMIN" && (
+          {user && user.role === 'ROLE_ADMIN' && (
             <>
-              <li className='menu-title'>{props.t("Configuraciones generales")}</li>
+              <li className='menu-title'>{props.t('Configuraciones generales')}</li>
 
               <li>
                 <Link to='/schedule' className=' waves-effect'>
                   <i className='bx bx-calendar'></i>
-                  <span>{props.t("Horarios")}</span>
+                  <span>{props.t('Horarios')}</span>
+                </Link>
+              </li>
+
+              <li>
+                <Link to='/coupons' className=' waves-effect'>
+                  <i className='bx bxs-discount'></i>
+                  <span>{props.t('Cupones de descuento')}</span>
                 </Link>
               </li>
 
               <li>
                 <Link to='/banks' className=' waves-effect'>
                   <i className='mdi mdi-bank-outline'></i>
-                  <span>{props.t("Bancos aceptados")}</span>
+                  <span>{props.t('Bancos aceptados')}</span>
                 </Link>
               </li>
             </>
           )}
 
-          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_MANAGER") && (
+          {user && (user.role === 'ROLE_ADMIN' || user.role === 'ROLE_MANAGER') && (
             <li>
               <Link to='/registered-users'>
                 <i className='bx bx-user-circle'></i>
-                <span>{props.t("Usuarios registrados")}</span>
+                <span>{props.t('Usuarios registrados')}</span>
               </Link>
             </li>
           )}
 
-          {user && user.role === "ROLE_ADMIN" && (
+          {user && user.role === 'ROLE_ADMIN' && (
             <li>
               <Link to='/#' className='has-arrow waves-effect'>
                 <i className='bx bx-cog'></i>
-                <span>{props.t("Ajustes")}</span>
+                <span>{props.t('Ajustes')}</span>
               </Link>
               <ul className='sub-menu'>
                 <li>
-                  <Link to='/admin-users'>{props.t("Usuarios administrativos")}</Link>
+                  <Link to='/admin-users'>{props.t('Usuarios administrativos')}</Link>
                 </li>
                 <li>
-                  <Link to='/status'>{props.t("Estados de operaciones")}</Link>
+                  <Link to='/status'>{props.t('Estados de operaciones')}</Link>
                 </li>
               </ul>
             </li>

@@ -1,20 +1,20 @@
-import React from "react";
+import React from 'react';
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
-import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
+import NotificationDropdown from '../CommonForBoth/TopbarDropdown/NotificationDropdown';
+import ProfileMenu from '../CommonForBoth/TopbarDropdown/ProfileMenu';
 
-import logo from "../../assets/images/logo-light.svg";
-import icon from "../../assets/images/icon-light.svg";
+import logo from '../../assets/images/logo-light.svg';
+import icon from '../../assets/images/icon-light.svg';
 
 //i18n
-import { withNamespaces } from "react-i18next";
+import { withNamespaces } from 'react-i18next';
 
 // Redux Store
-import { toggleRightSidebar } from "../../store/actions";
+import { toggleRightSidebar } from '../../store/actions';
 
 const Header = (props) => {
   const toggleMenu = () => {
@@ -50,10 +50,10 @@ const Header = (props) => {
             <div className='navbar-brand-box'>
               <Link to='/' className='logo logo-light'>
                 <span className='logo-sm'>
-                  <img src={icon} alt='' height='22' />
+                  <img src={icon} alt='' height='22' className='mt-2' />
                 </span>
                 <span className='logo-lg'>
-                  <img src={logo} alt='' height='19' />
+                  <img src={logo} alt='' height='19' className='mt-2' />
                 </span>
               </Link>
             </div>

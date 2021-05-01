@@ -1,7 +1,7 @@
 body {
   font-size: 15px;
   color: #fff;
-  font-family: "Open Sans", sans-serif !important;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 .apexcharts-theme-light {
@@ -84,6 +84,11 @@ body {
   color: #556ee6;
 }
 
+.menu-title {
+  color: lighten($color: #7f8387, $amount: 20) !important;
+  font-size: 0.75rem;
+}
+
 /* Material table styles */
 .main-content {
   .MuiPaper-root {
@@ -123,7 +128,7 @@ body {
 }
 
 .MuiTableCell-root {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .status-color {

@@ -1,4 +1,4 @@
-import * as actionTypes from "./actionTypes";
+import * as actionTypes from './actionTypes';
 
 export const getClientsInit = () => ({
   type: actionTypes.GET_CLIENTS_INIT,
@@ -47,6 +47,27 @@ export const editProfileInit = (values, closeModal) => ({
 
 export const editProfileSuccess = () => ({
   type: actionTypes.EDIT_PROFILE_SUCCESS,
+});
+
+export const downloadClientsInit = (fileType) => ({
+  type: actionTypes.DOWNLOAD_CLIENTS_INIT,
+  fileType,
+});
+
+export const downloadClientsSuccess = () => ({
+  type: actionTypes.DOWNLOAD_CLIENTS_SUCCESS,
+});
+
+export const editInterplazaInit = (values, detailsType, id, setState) => ({
+  type: actionTypes.EDIT_INTERPLAZA_INIT,
+  values,
+  detailsType,
+  id,
+  setState,
+});
+
+export const editInterplazaSuccess = () => ({
+  type: actionTypes.EDIT_INTERPLAZA_SUCCESS,
 });
 
 export const clearAlert = () => ({

@@ -17,13 +17,7 @@ export const convertHexToRGBA = (hexCode, opacity) => {
 export const checkInterplaza = (bank, accNumber) => {
   const firstAccNumber = accNumber.substring(0, 1);
 
-  return bank.toLowerCase() === 'interbank' &&
-    (firstAccNumber.substring(0, 1) === '3' ||
-      firstAccNumber.substring(0, 1) === '4' ||
-      firstAccNumber.substring(0, 1) === '6' ||
-      firstAccNumber.substring(0, 1) === '5' ||
-      firstAccNumber.substring(0, 1) === '7' ||
-      firstAccNumber.substring(0, 1) === '8') ? (
+  return bank.toLowerCase() === 'interbank' && +firstAccNumber >= 3 && +firstAccNumber <= 8 ? (
     <p className='text-danger'>* La cuenta parece ser de provincia. Contactar al usuario.</p>
   ) : null;
 };

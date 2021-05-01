@@ -1,4 +1,4 @@
-import * as actionTypes from "./actionTypes";
+import * as actionTypes from './actionTypes';
 
 export const getRecentExchanges = (token) => ({
   type: actionTypes.GET_RECENT_ORDERS_INIT,

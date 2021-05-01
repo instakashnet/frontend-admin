@@ -1,23 +1,20 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Container, Row, Col } from "reactstrap";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Container, Row, Col } from 'reactstrap';
 
 //import Charts
-import StackedColumnChart from "./StackedColumnChart";
-import UsersChart from "./UsersChart";
+import StackedColumnChart from './StackedColumnChart';
+import UsersChart from './UsersChart';
 
-// import MonthlyEarning from "./MonthlyEarning";
-// import ActivityComp from "./ActivityComp";
-import Counters from "./Counters";
+import Counters from './Counters';
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb";
+import Breadcrumbs from '../../components/Common/Breadcrumb';
 
 //i18n
-import { withNamespaces } from "react-i18next";
+import { withNamespaces } from 'react-i18next';
 
 const Dashboard = (props) => {
-  // const user = useSelector((state) => state.Login.user);
   const { currencyBarData } = useSelector((state) => state.Charts);
 
   return (
@@ -25,18 +22,13 @@ const Dashboard = (props) => {
       <div className='page-content'>
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumbs title={props.t("Dashboard")} breadcrumbItem={props.t("Dashboard")} />
+          <Breadcrumbs title={props.t('Dashboard')} breadcrumbItem={props.t('Dashboard')} />
           <Row>
             <Col xl='12'>
               <Row>
                 <Counters />
               </Row>
             </Col>
-            {/* {user && user.role === "ROLE_ADMIN" ? (
-              <Col xl='8'>
-                <ActivityComp />
-              </Col>
-            ) : null} */}
           </Row>
           <Row>
             <Col xl='6'>
@@ -45,15 +37,6 @@ const Dashboard = (props) => {
             <Col xl='6'>
               <UsersChart />
             </Col>
-            {/* <Col xl='6'>
-              <Card>
-                <CardBody>
-                  <CardTitle className='mb-4 float-sm-left'>Avances de efectivo (por mes)</CardTitle>
-
-                  <StackedColumnChart data={advanceBarData} />
-                </CardBody>
-              </Card>
-            </Col> */}
           </Row>
         </Container>
       </div>
