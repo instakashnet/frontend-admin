@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card, CardBody, Table, CardTitle, Button, Modal, ModalBody, ModalHeader } from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { getClientDetails } from "../../../store/actions";
-import moment from "moment-timezone";
+import React, { useEffect, useState } from 'react';
+import { Container, Row, Col, Card, CardBody, Table, CardTitle, Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { getClientDetails } from '../../../store/actions';
+import moment from 'moment-timezone';
 
-import ExchangesTable from "./ExchangesTable";
-import AccountsTable from "./AccountsTable";
-import Breadcrumbs from "../../../components/Common/Breadcrumb";
-import EditUserProfile from "./EditUserProfile";
-import EditCompanyProfile from "./EditCompanyProfile";
-import Alert from "../../../components/UI/Alert";
+import ExchangesTable from './ExchangesTable';
+import AccountsTable from './AccountsTable';
+import Breadcrumbs from '../../../components/Common/Breadcrumb';
+import EditUserProfile from './EditUserProfile';
+import EditCompanyProfile from './EditCompanyProfile';
+import Alert from '../../../components/UI/Alert';
 
-import Male from "../../../assets/images/profile-male.svg";
-import Female from "../../../assets/images/profile-female.svg";
+import Male from '../../../assets/images/profile-male.svg';
+import Female from '../../../assets/images/profile-female.svg';
 
 const ClientDetails = (props) => {
   const [modal, setModal] = useState(false);
@@ -26,9 +26,9 @@ const ClientDetails = (props) => {
   let Avatar;
 
   if (details) {
-    companyProfiles = details.profiles.filter((profile) => profile.type !== "natural");
-    userProfile = details.profiles.find((profile) => profile.type === "natural");
-    Avatar = userProfile.identity_sex === "male" ? Male : Female;
+    companyProfiles = details.profiles.filter((profile) => profile.type !== 'natural');
+    userProfile = details.profiles.find((profile) => profile.type === 'natural');
+    Avatar = userProfile.identity_sex === 'male' ? Male : Female;
   }
 
   const openModal = (profileData) => {
@@ -55,8 +55,11 @@ const ClientDetails = (props) => {
               <CardBody>
                 <div className='avatar-sm mx-auto mb-4'>{Avatar && <img src={Avatar} alt='profile' className='img-thumbnail rounded-circle' width={85} height={85} />}</div>
                 <h5 className='font-size-15'>{userProfile && `${userProfile.first_name} ${userProfile.last_name}`}</h5>
-                <p className='text-muted'>{details && details.email}</p>
-                <span className='badge badge-primary font-size-14 m-1'>{details && details.phone}</span>
+                <p className='text-muted mb-2'>{details && details.email}</p>
+                <span className='badge badge-primary font-size-14 m-1 mb-2'>{details && details.phone}</span>
+                <p className='text-muted'>
+                  KASH acumulados = <b>{details && details.kashAcumulated}</b>
+                </p>
               </CardBody>
             </Card>
           </Col>
@@ -76,7 +79,7 @@ const ClientDetails = (props) => {
                       {userProfile && userProfile.date_birth && (
                         <tr>
                           <th scope='row'>Fecha de nacimiento</th>
-                          <td>{moment(userProfile.date_birth).format("Do MMMM YYYY")}</td>
+                          <td>{moment(userProfile.date_birth).format('Do MMMM YYYY')}</td>
                         </tr>
                       )}
                       {userProfile && userProfile.address && (
@@ -99,7 +102,7 @@ const ClientDetails = (props) => {
                       )}
                       <tr>
                         <th scope='row'>¿Persona políticamente expuesta?</th>
-                        <td>{userProfile && userProfile.pep ? "SI" : "NO"}</td>
+                        <td>{userProfile && userProfile.pep ? 'SI' : 'NO'}</td>
                       </tr>
                       <tr>
                         <th scope='row'>Documento</th>
@@ -165,7 +168,7 @@ const ClientDetails = (props) => {
       <Modal isOpen={modal} role='dialog' autoFocus={true} centered={true} tabIndex='-1' toggle={closeModal}>
         <ModalHeader toggle={closeModal}>Editar perfil</ModalHeader>
         <ModalBody>
-          {profileDetails.type === "natural" ? (
+          {profileDetails.type === 'natural' ? (
             <EditUserProfile userId={id} isProcessing={isProcessing} closeModal={closeModal} details={profileDetails} />
           ) : (
             <EditCompanyProfile userId={id} isProcessing={isProcessing} closeModal={closeModal} details={profileDetails} />

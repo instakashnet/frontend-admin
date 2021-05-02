@@ -19,7 +19,7 @@ function* getClients() {
 function* getClientDetails({ userId }) {
   try {
     const res = yield authInstance.get(`/admin/users/${userId}`);
-    if (res.status === 200) yield put(actions.getClientDetailsSuccess(res.data.user[0]));
+    if (res.status === 200) yield put(actions.getClientDetailsSuccess(res.data.user));
   } catch (error) {
     yield put(actions.apiError(error.message));
     yield delay(4000);

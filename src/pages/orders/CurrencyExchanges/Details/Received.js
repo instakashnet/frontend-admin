@@ -33,7 +33,7 @@ const Sent = (props) => {
             <div>
               <h5>Datos para enviar</h5>
               <div className='mb-2 flex items-center'>
-                <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankSent}.svg`} alt={details.bankSent} width={20} className='mr-2' />
+                <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankSent}.svg`} alt={details.bankSent} width={80} className='mr-2' />
                 <span className='ml-2 text-muted'>
                   {details.bankSent} <br />
                   {details.accTypeTo === 'savings' ? 'Ahorros' : 'Corriente'} {details.currencyReceived === 'PEN' ? 'Soles' : 'Dólares'}

@@ -11,12 +11,7 @@ const BanksList = (props) => {
       {
         field: 'bankName',
         title: 'Banco',
-        render: (rowData) => (
-          <div className='d-flex align-items-center'>
-            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankName}.svg`} width={30} alt='banco' />
-            <span className='ml-2'>{rowData.bankName}</span>
-          </div>
-        ),
+        render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankName}.svg`} width={80} alt='banco' />,
       },
       {
         field: 'country',

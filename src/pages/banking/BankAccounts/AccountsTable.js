@@ -11,11 +11,7 @@ const AccountsTable = (props) => {
       {
         title: 'Banco',
         field: 'bankName',
-        render: (rowData) => (
-          <div className='d-flex align-items-center'>
-            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankName}.svg`} alt={rowData.bankName} className='mr-2' width={25} /> {rowData.bankName}
-          </div>
-        ),
+        render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankName}.svg`} alt={rowData.bankName} className='mr-2' width={80} />,
       },
       {
         title: 'Nro. de cuenta',

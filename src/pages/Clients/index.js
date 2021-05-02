@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Card, CardBody, Button } from 'reactstrap';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { CloudDownload } from '@material-ui/icons';
 import moment from 'moment-timezone';
@@ -109,4 +109,4 @@ const UsersTable = () => {
   );
 };
 
-export default withRouter(UsersTable);
+export default UsersTable;

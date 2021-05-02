@@ -61,7 +61,7 @@ const Received = (props) => {
               <div className='text-sm-right mt-4 mt-sm-0'>
                 <p className='text-muted mb-2'>Banco que recibe</p>
                 <h5 className='flex items-center justify-end'>
-                  <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankReceive}.svg`} alt={details.bankReceive} width={20} />
+                  <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankReceive}.svg`} alt={details.bankReceive} width={80} />
                   <span className='ml-2 text-muted'>{`${details.bankReceive} ${details.currencySent === 'USD' ? 'Dólares' : 'Soles'}`}</span>
                 </h5>
               </div>
@@ -74,7 +74,7 @@ const Received = (props) => {
                 </div>
               </Col>
             )}
-            {props.details.kashApplied && (
+            {props.details.kashUsed > 0 && (
               <Col sm='6'>
                 <div className='mt-4 mt-sm-0'>
                   <p className='text-muted mb-2'>KASH usados</p>

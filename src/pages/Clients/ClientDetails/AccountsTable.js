@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getClientAccounts } from "../../../store/actions";
-import { Card, CardBody } from "reactstrap";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getClientAccounts } from '../../../store/actions';
+import { Card, CardBody } from 'reactstrap';
 
-import Table from "../../../components/UI/Table";
+import Table from '../../../components/UI/Table';
 
 const AccountsTable = ({ userId }) => {
   const dispatch = useDispatch();
@@ -17,28 +17,28 @@ const AccountsTable = ({ userId }) => {
   const data = {
     columns: [
       {
-        field: "bank",
-        title: "Banco",
-        render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bank}.svg`} width={20} alt='banco' />,
+        field: 'bank',
+        title: 'Banco',
+        render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bank}.svg`} width={80} alt='banco' />,
       },
       {
-        field: "currency",
-        title: "Moneda",
+        field: 'currency',
+        title: 'Moneda',
       },
       {
-        field: "account_number",
-        title: "Número de cuenta",
+        field: 'account_number',
+        title: 'Número de cuenta',
       },
       {
-        field: "account_type",
-        title: "Tipo de cuenta",
+        field: 'account_type',
+        title: 'Tipo de cuenta',
       },
     ],
     rows: accounts.map((account) => ({
       bank: account.bank.name,
-      currency: account.currency.ISO === "USD" ? "$" : "S/.",
+      currency: account.currency.ISO === 'USD' ? '$' : 'S/.',
       account_number: account.account_number || account.cci,
-      account_type: account.account_type === "savings" ? "De ahorros" : "Corriente",
+      account_type: account.account_type === 'savings' ? 'De ahorros' : 'Corriente',
     })),
   };
 

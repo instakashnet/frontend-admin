@@ -6,8 +6,6 @@ import { exchangeInstance } from '../../../helpers/AuthType/axios';
 import { getClientExchanges } from '../../settings/clients/actions';
 
 function* getExchangeDetails({ id }) {
-  console.log(id);
-
   try {
     const res = yield exchangeInstance.get(`/order/admin/${id}`);
     if (res.status === 200) {

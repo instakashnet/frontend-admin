@@ -22,7 +22,6 @@ const ExchangeDetails = (props) => {
   const [edit, setEdit] = useState(false);
   const { details, isLoading, isProcessing, error, success } = useSelector((state) => state.CurrencyExchange);
   const user = useSelector((state) => state.Login.user);
-  console.log(details);
 
   const { exchanges, isLoading: dataLoading } = useSelector((state) => state.Clients);
 

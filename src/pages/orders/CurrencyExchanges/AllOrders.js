@@ -51,13 +51,13 @@ const Transactions = () => {
     {
       title: 'O',
       field: 'originBank',
-      render: (rowData) => <img width={25} src={`${process.env.PUBLIC_URL}/images/banks/${rowData.originBank}.svg`} alt='banco' />,
+      render: (rowData) => <img width={80} src={`${process.env.PUBLIC_URL}/images/banks/${rowData.originBank}.svg`} alt='banco' />,
       width: 1 - 0,
     },
     {
       title: 'D',
       field: 'destinationBank',
-      render: (rowData) => <img width={25} src={`${process.env.PUBLIC_URL}/images/banks/${rowData.destinationBank}.svg`} alt='banco' />,
+      render: (rowData) => <img width={80} src={`${process.env.PUBLIC_URL}/images/banks/${rowData.destinationBank}.svg`} alt='banco' />,
       width: 100,
     },
     {
