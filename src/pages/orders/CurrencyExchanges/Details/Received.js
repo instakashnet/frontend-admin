@@ -93,11 +93,8 @@ const Sent = (props) => {
                   )}
                   {interplaza && (
                     <>
-                      {!editState && accToInterbank === null ? (
-                        <small className='text-danger'>* Parece que esta es una cuenta interplaza.</small>
-                      ) : (
-                        accToInterbank && <small className='text-danger'>* Cuenta interplaza.</small>
-                      )}
+                      {!editState && details.accToInterbank === null && <small className='text-danger'>* Parece que esta es una cuenta interplaza.</small>}
+                      {!editState && accToInterbank && <small className='text-danger'>* Cuenta interplaza.</small>}
                       <br />
                       <button className='btn' onClick={() => setEditState((prev) => !prev)}>
                         <i className='fas fa-edit' /> Editar
