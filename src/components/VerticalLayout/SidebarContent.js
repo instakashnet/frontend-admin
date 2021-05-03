@@ -116,7 +116,6 @@ const SidebarContent = (props) => {
                   <span>{props.t("Limites por transacción")}</span>
                 </Link>
               </li> */}
-
               <li className='menu-title'>{props.t('Solicitud de retiros KASH')}</li>
               <li>
                 <Link to='/withdrawals/all-orders' className='waves-effect'>
@@ -127,6 +126,7 @@ const SidebarContent = (props) => {
               </li>
 
               {/* <li className='menu-title'>{props.t("Avances de efectivo")}</li> */}
+
               {/* 
               <li>
                 <Link to='/cash-advances' className=' waves-effect'>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getExchangeDetails, createInvoice, approveExchange, validateExchange, declineExchange } from '../../../../store/actions';
+import { getExchangeDetails, createInvoice, approveExchange, validateExchange, declineExchange } from '../../../store/actions';
 import { Container, Row, Col, Badge, Modal, ModalBody, ModalHeader } from 'reactstrap';
 
-import Breadcrumbs from '../../../../components/Common/Breadcrumb';
+import Breadcrumbs from '../../../components/Common/Breadcrumb';
+
 import User from './User';
 import Received from './Received';
 import Sent from './Sent';

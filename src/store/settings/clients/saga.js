@@ -99,7 +99,6 @@ function* editInterplaza({ values, detailsType, id, setState }) {
     yield put(actions.clearAlert());
   }
 }
-
 export function* watchGetClients() {
   yield takeEvery(actionTypes.GET_CLIENTS_INIT, getClients);
 }

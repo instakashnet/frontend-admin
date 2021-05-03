@@ -44,6 +44,7 @@ const authProtectedRoutes = [
   { path: '/withdrawals/all-orders', component: Withdrawals },
   { path: '/withdrawal-details/:id', component: WithdrawalDetails },
   // { path: '/cash-advances', component: CashAdvances },
+
   // System configuration
   { path: '/forex', component: Forex },
   { path: '/bank-accounts', component: BankAccounts },

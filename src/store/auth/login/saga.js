@@ -41,12 +41,20 @@ function* loginUser({ payload }) {
     const userObj = {
       accessToken: res.data.accessToken,
       userId: res.data.id,
+<<<<<<< HEAD
       tokenExp: res.data.expiresIn,
       user: { name: res.data.name, email: res.data.email, role: res.data.roles[0] },
     };
 
     yield call([localStorage, 'setItem'], 'authUser', JSON.stringify(userObj));
     yield call(loadUser, { history });
+=======
+      tokenExp: res.expiresIn,
+      user: { name: res.data.first_name + ' ' + res.data.last_name, email: user.email, role: res.data.roles[0] },
+    };
+    yield call([localStorage, 'setItem'], 'authUser', JSON.stringify(userObj));
+    yield put(actions.loadUser(history));
+>>>>>>> 12a94ad7edacd2766c44ef981e5690c4af654256
   } catch (error) {
     let message = error.message;
 

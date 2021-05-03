@@ -17,6 +17,7 @@ export * from './activity/counters/actions';
 // Transactions modules
 export * from './transactions/currencyExchange/actions';
 export * from './transactions/withdrawals/actions';
+
 export * from './transactions/cashAdvance/actions';
 export * from './charts/actions';
 
