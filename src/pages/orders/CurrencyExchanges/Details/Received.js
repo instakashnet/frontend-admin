@@ -103,6 +103,14 @@ const Sent = (props) => {
                   )}
                 </div>
               </Col>
+              {props.details.kashUsed > 0 && (
+                <Col sm='6'>
+                  <div className='mt-4 mt-sm-0'>
+                    <p className='text-muted mb-2'>KASH retirados</p>
+                    <h5>{props.details.kashUsed} KASH</h5>
+                  </div>
+                </Col>
+              )}
             </Row>
           </>
         )}
