@@ -1,10 +1,10 @@
-import React from "react";
-import { useFormik } from "formik";
-import { Button } from "reactstrap";
-import { useDispatch } from "react-redux";
-import { editProfileInit } from "../../../store/actions";
+import React from 'react';
+import { useFormik } from 'formik';
+import { Button } from 'reactstrap';
+import { useDispatch } from 'react-redux';
+import { editProfileInit } from '../../../../store/actions';
 
-import Input from "../../../components/UI/FormItems/Input";
+import Input from '../../../../components/UI/FormItems/Input';
 
 const EditCompanyProfile = (props) => {
   const { details, isProcessing, userId } = props;
@@ -12,7 +12,7 @@ const EditCompanyProfile = (props) => {
   const dispatch = useDispatch();
 
   const formik = useFormik({
-    initialValues: { userId: +userId, profileId: details.id, type: "juridica", razon_social: details.razon_social, ruc: details.ruc, address: details.address },
+    initialValues: { userId: +userId, profileId: details.id, type: 'juridica', razon_social: details.razon_social, ruc: details.ruc, address: details.address },
     onSubmit: (values) => dispatch(editProfileInit(values, props.closeModal)),
   });
 
@@ -25,7 +25,7 @@ const EditCompanyProfile = (props) => {
       <Input name='address' label='Dirección fiscal' value={formik.values.address} onChange={formik.handleChange} onBlur={formik.handleBlur} />
 
       <div className='flex justify-center'>
-        <Button className={`btn-primary ld-ext-right ${isProcessing ? "running" : ""}`} type='submit' disabled={!formik.isValid || isProcessing}>
+        <Button className={`btn-primary ld-ext-right ${isProcessing ? 'running' : ''}`} type='submit' disabled={!formik.isValid || isProcessing}>
           <span className='ld ld-ring ld-spin' />
           Edtiar datos de empresa
         </Button>

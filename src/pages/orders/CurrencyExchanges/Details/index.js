@@ -10,8 +10,9 @@ import User from './User';
 import Received from './Received';
 import Sent from './Sent';
 import Transactions from './OldTransactions';
-import TransferInvoice from './TransferInvoice';
-import EditTransaction from './EditTransaction';
+import CompleteOrder from '../Forms/CompleteOrder';
+import EditOrder from '../Forms/EditOrder';
+import ReassignOrder from '../Forms/ReassignOrder';
 import Alert from '../../../../components/UI/Alert';
 import LoadingPage from '../../../../pages/LoadingPage';
 
@@ -20,13 +21,17 @@ const ExchangeDetails = (props) => {
   const history = useHistory();
   const { id } = props.match.params;
   const [modal, setModal] = useState(false);
-  const [edit, setEdit] = useState(false);
+  const [formType, setFormType] = useState(null);
+  const [showForm, setShowForm] = useState(false);
   const { details, isLoading, isProcessing, error, success } = useSelector((state) => state.CurrencyExchange);
   const user = useSelector((state) => state.Login.user);
 
   const { exchanges, isLoading: dataLoading } = useSelector((state) => state.Clients);
 
-  const editStateHandler = () => setEdit((prev) => !prev);
+  const showFormHandler = (formType = null) => {
+    setShowForm((prev) => !prev);
+    setFormType(formType);
+  };
 
   const toggleModal = () => setModal((prev) => !prev);
 
@@ -41,6 +46,11 @@ const ExchangeDetails = (props) => {
   useEffect(() => {
     dispatch(getExchangeDetails(id));
   }, [dispatch, id]);
+
+  let FormComponent;
+
+  if (formType === 'edit') FormComponent = <EditOrder details={details} onShowForm={setShowForm} />;
+  if (formType === 'reassign') FormComponent = <ReassignOrder details={details} onShowForm={setShowForm} isProcessing={isProcessing} />;
 
   return isLoading || dataLoading ? (
     <LoadingPage />
@@ -88,16 +98,12 @@ const ExchangeDetails = (props) => {
         </Row>
         <Row>
           <Col lg='5' xl='4'>
-            <Sent details={details} onEdiState={editStateHandler} isLoading={isLoading} />
+            <Sent details={details} onShowForm={showFormHandler} isLoading={isLoading} />
           </Col>
           <Col lg='5' xl='4'>
-            <Received details={details} orderId={id} isProcessing={isProcessing} isLoading={isLoading} />
+            <Received details={details} onShowForm={showFormHandler} isProcessing={isProcessing} isLoading={isLoading} />
           </Col>
-          {edit && (
-            <Col lg='4'>
-              <EditTransaction details={details} setEditState={setEdit} />
-            </Col>
-          )}
+          {showForm && <Col lg='5'>{FormComponent}</Col>}
         </Row>
         <Row>
           <Col lg='10' xl='8'>
@@ -108,7 +114,7 @@ const ExchangeDetails = (props) => {
       <Modal isOpen={modal} role='dialog' autoFocus={true} centered={true} tabIndex='-1' toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>Adjunta el comprobante de pago</ModalHeader>
         <ModalBody>
-          <TransferInvoice isProcessing={isProcessing} orderId={id} onApprove={onApproveExchange} />
+          <CompleteOrder isProcessing={isProcessing} orderId={id} onApprove={onApproveExchange} />
         </ModalBody>
       </Modal>
     </div>

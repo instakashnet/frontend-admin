@@ -5,7 +5,6 @@ import Layout from './layout/reducer';
 // import Socket from "./socket/reducer";
 
 // Settings
-import AdminUsers from './settings/users/reducer';
 import Banks from './settings/banks/reducer';
 import Forex from './settings/forex/reducer';
 import BankAccounts from './settings/bankAccounts/reducer';
@@ -26,6 +25,7 @@ import Charts from './charts/reducer';
 
 // Authentication
 import Login from './auth/login/reducer';
+import AdminUsers from './auth/admin/reducer';
 
 // Coupons
 import Coupons from './coupons/reducer';

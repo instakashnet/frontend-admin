@@ -55,7 +55,7 @@ const CustomValueContainer = ({ children, ...props }) => {
 const IconOption = (props) => {
   return (
     <Option {...props}>
-      {props.data.image && <img src={props.data.image} alt={props.data.label} style={{ width: '25px', marginRIght: '10px', display: 'inline-block' }} />}
+      {props.data.image && <img src={props.data.image} alt={props.data.label} style={{ width: '55px', marginRIght: '10px', display: 'inline-block' }} />}
       <span className='ml-2'>{props.data.label}</span>
     </Option>
   );

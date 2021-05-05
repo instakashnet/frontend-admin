@@ -12,7 +12,7 @@ import CashAdvanceSaga from './transactions/cashAdvance/saga';
 import WithdrawalsSaga from './transactions/withdrawals/saga';
 
 // private
-import AdminUsersSaga from './settings/users/saga';
+import AdminUsersSaga from './auth/admin/saga';
 import BinnacleSaga from './activity/binnacle/saga';
 import forexSaga from './settings/forex/saga';
 import BankAccountsSaga from './settings/bankAccounts/saga';

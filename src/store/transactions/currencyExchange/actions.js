@@ -80,6 +80,17 @@ export const createInvoiceSuccess = (msg) => ({
   msg,
 });
 
+export const reassignOrderInit = (values, orderId, setState) => ({
+  type: actionTypes.REASSIGN_ORDER_INIT,
+  values,
+  orderId,
+  setState,
+});
+
+export const reassignOrderSuccess = () => ({
+  type: actionTypes.REASSIGN_ORDER_SUCCESS,
+});
+
 export const clearAlert = () => ({
   type: actionTypes.CLEAR_ALERT,
 });

@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { CloudDownload } from '@material-ui/icons';
 import moment from 'moment-timezone';
-import { downloadClientsInit } from '../../store/actions';
-import { authInstance } from '../../helpers/AuthType/axios';
+import { downloadClientsInit } from '../../../store/actions';
+import { authInstance } from '../../../helpers/AuthType/axios';
 
-import Breadcrumbs from '../../components/Common/Breadcrumb';
-import Table from '../../components/UI/Table';
+import Breadcrumbs from '../../../components/Common/Breadcrumb';
+import Table from '../../../components/UI/Table';
 
 const UsersTable = () => {
   const [isLoading, setIsLoading] = useState(true);

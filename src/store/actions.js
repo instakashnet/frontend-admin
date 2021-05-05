@@ -1,7 +1,6 @@
 export * from './layout/actions';
 
 // Settings modules
-export * from './settings/users/actions';
 export * from './settings/banks/actions';
 export * from './settings/forex/actions';
 export * from './settings/bankAccounts/actions';
@@ -23,6 +22,7 @@ export * from './charts/actions';
 
 // Authentication module
 export * from './auth/login/actions';
+export * from './auth/admin/actions';
 
 // Coupons module
 export * from './coupons/actions';

@@ -6,14 +6,12 @@ import { Card, CardBody, Button } from 'reactstrap';
 
 import Input from '../../../../components/UI/FormItems/Input';
 
-const EditTransaction = (props) => {
-  const { details } = props;
-
+const EditTransaction = ({ details, onShowForm }) => {
   const dispatch = useDispatch();
   const formik = useFormik({
-    initialValues: { transaction_code: details.transactionCode, account_to: details.accountToRaw, rate: details.rate, amount_sent: details.amountSent },
+    initialValues: { transaction_code: details.transactionCode, rate: details.rate, amount_sent: details.amountSent },
     enableReinitialize: true,
-    onSubmit: (values) => dispatch(editExchange(details.id, values, props.setEditState)),
+    onSubmit: (values) => dispatch(editExchange(details.id, values, onShowForm)),
   });
 
   const { isProcessing } = useSelector((state) => state.CurrencyExchange);
@@ -32,16 +30,6 @@ const EditTransaction = (props) => {
             onBlur={formik.handleBlur}
             error={formik.errors.transaction_code}
             touched={formik.touched.transaction_code}
-          />
-          <Input
-            type='text'
-            label='Cuenta del cliente'
-            name='account_to'
-            value={formik.values.account_to}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.errors.account_to}
-            touched={formik.touched.account_to}
           />
           <Input
             style={{ width: '40%' }}

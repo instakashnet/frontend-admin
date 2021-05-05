@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { Card, CardBody, Badge } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { convertHexToRGBA, formatAmount } from '../../../helpers/functions';
-import { getClientExchanges } from '../../../store/actions';
+import { convertHexToRGBA, formatAmount } from '../../../../helpers/functions';
+import { getClientExchanges } from '../../../../store/actions';
 
-import Table from '../../../components/UI/Table';
+import Table from '../../../../components/UI/Table';
 
 const ExchangesTable = (props) => {
   const { id } = props;

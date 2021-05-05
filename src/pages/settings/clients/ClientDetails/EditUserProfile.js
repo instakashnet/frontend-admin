@@ -1,18 +1,18 @@
-import React from "react";
-import { useFormik } from "formik";
-import { Button } from "reactstrap";
-import { useDispatch } from "react-redux";
-import { editProfileInit } from "../../../store/actions";
+import React from 'react';
+import { useFormik } from 'formik';
+import { Button } from 'reactstrap';
+import { useDispatch } from 'react-redux';
+import { editProfileInit } from '../../../../store/actions';
 
-import Input from "../../../components/UI/FormItems/Input";
-import Select from "../../../components/UI/FormItems/Select";
+import Input from '../../../../components/UI/FormItems/Input';
+import Select from '../../../../components/UI/FormItems/Select';
 
 const EditUser = ({ details, userId, closeModal, isProcessing }) => {
   const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
-      type: "natural",
+      type: 'natural',
       userId: +userId,
       identity_sex: details.identity_sex,
       profileId: details.id,
@@ -25,10 +25,10 @@ const EditUser = ({ details, userId, closeModal, isProcessing }) => {
   });
 
   const documentOptions = [
-    { label: "DNI", value: "DNI" },
-    { label: "Carnet de Extranjería", value: "CE" },
-    { label: "PTP", value: "PTP" },
-    { label: "Pasaporte", value: "pasaporte" },
+    { label: 'DNI', value: 'DNI' },
+    { label: 'Carnet de Extranjería', value: 'CE' },
+    { label: 'PTP', value: 'PTP' },
+    { label: 'Pasaporte', value: 'pasaporte' },
   ];
 
   return (
@@ -56,7 +56,7 @@ const EditUser = ({ details, userId, closeModal, isProcessing }) => {
         />
       </div>
       <div className='flex justify-center my-6'>
-        <Button type='submit' className={`btn-primary ld-ext-right ${isProcessing ? "running" : ""}`} disabled={isProcessing}>
+        <Button type='submit' className={`btn-primary ld-ext-right ${isProcessing ? 'running' : ''}`} disabled={isProcessing}>
           <span className='ld ld-ring ld-spin' />
           Editar perfil
         </Button>

@@ -12,9 +12,8 @@ import Pages404 from '../pages/Utility/404';
 // LAZY IMPORTS
 
 // Users
-const AdminUsers = React.lazy(() => import('../pages/AdminUsers'));
-const Clients = React.lazy(() => import('../pages/Clients'));
-const ClientDetails = React.lazy(() => import('../pages/Clients/ClientDetails'));
+const Clients = React.lazy(() => import('../pages/settings/clients'));
+const ClientDetails = React.lazy(() => import('../pages/settings/clients/ClientDetails'));
 // Transactions modules
 const AllCurrencyExchanges = React.lazy(() => import('../pages/orders/CurrencyExchanges/AllOrders'));
 const Withdrawals = React.lazy(() => import('../pages/orders/Withdrawals/AllOrders'));
@@ -35,7 +34,6 @@ const authProtectedRoutes = [
   { path: '/dashboard', component: Dashboard },
 
   // Users
-  { path: '/admin-users', component: AdminUsers },
   { path: '/registered-users', component: Clients },
   { path: '/registered-users/:id', component: ClientDetails },
   // Transactions modules

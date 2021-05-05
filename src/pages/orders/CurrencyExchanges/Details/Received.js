@@ -8,9 +8,8 @@ import { editInterplazaInit } from '../../../../store/actions';
 import CopyButton from '../../../../components/UI/CopyButton';
 import Radio from '../../../../components/UI/FormItems/Radio';
 
-const Sent = (props) => {
+const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
   const dispatch = useDispatch();
-  const { details, isLoading, isProcessing } = props;
   const [editState, setEditState] = useState(false);
   let interplaza;
   let accToInterbank;
@@ -22,27 +21,27 @@ const Sent = (props) => {
   const formik = useFormik({
     initialValues: { interbank: null, accountId: details && details.accountToId },
     enableReinitialize: true,
-    onSubmit: (values) => dispatch(editInterplazaInit(values, 'exchange', props.orderId, setEditState)),
+    onSubmit: (values) => dispatch(editInterplazaInit(values, 'exchange', details.id, setEditState)),
   });
 
   return (
     <Card>
       <CardBody>
+        <div className='flex items-center justify-between'>
+          <h5>Datos para enviar</h5>
+          <button className='text-success' onClick={() => onShowForm('reassign')}>
+            <i className='fas fa-edit' /> Reasignar
+          </button>
+        </div>
         {details && (
           <div className='flex items-center justify-between'>
-            <div>
-              <h5>Datos para enviar</h5>
-              <div className='mb-2 flex items-center'>
-                <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankSent}.svg`} alt={details.bankSent} width={80} className='mr-2' />
-                <span className='ml-2 text-muted'>
-                  {details.bankSent} <br />
-                  {details.accTypeTo === 'savings' ? 'Ahorros' : 'Corriente'} {details.currencyReceived === 'PEN' ? 'Soles' : 'Dólares'}
-                </span>
-              </div>
+            <div className='mb-2 flex items-center'>
+              <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankSent}.svg`} alt={details.bankSent} width={80} className='mr-2' />
+              <span className='ml-2 text-muted'>
+                {details.bankSent} <br />
+                {details.accTypeTo === 'savings' ? 'Ahorros' : 'Corriente'} {details.currencyReceived === 'PEN' ? 'Soles' : 'Dólares'}
+              </span>
             </div>
-            <button className='btn' onClick={() => {}}>
-              <i className='fas fa-edit' /> Reasignar
-            </button>
           </div>
         )}
       </CardBody>
@@ -96,18 +95,18 @@ const Sent = (props) => {
                       {!editState && details.accToInterbank === null && <small className='text-danger'>* Parece que esta es una cuenta interplaza.</small>}
                       {!editState && accToInterbank && <small className='text-danger'>* Cuenta interplaza.</small>}
                       <br />
-                      <button className='btn' onClick={() => setEditState((prev) => !prev)}>
-                        <i className='fas fa-edit' /> Editar
+                      <button className='text-success mt-2' onClick={() => setEditState((prev) => !prev)}>
+                        <i className='fas fa-edit' /> Editar cuenta
                       </button>
                     </>
                   )}
                 </div>
               </Col>
-              {props.details.kashUsed > 0 && (
+              {details.kashUsed > 0 && (
                 <Col sm='6'>
                   <div className='mt-4 mt-sm-0'>
                     <p className='text-muted mb-2'>KASH retirados</p>
-                    <h5>{props.details.kashUsed} KASH</h5>
+                    <h5>{details.kashUsed} KASH</h5>
                   </div>
                 </Col>
               )}

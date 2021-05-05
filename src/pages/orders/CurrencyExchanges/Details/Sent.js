@@ -5,9 +5,7 @@ import { formatAmount } from '../../../../helpers/functions';
 
 import CopyButton from '../../../../components/UI/CopyButton';
 
-const Received = (props) => {
-  const { isLoading, details } = props;
-
+const Received = ({ isLoading, details, onShowForm }) => {
   return (
     <Card>
       <CardBody>
@@ -27,7 +25,7 @@ const Received = (props) => {
               </Col>
               {(details.stateId === 3 || details.stateId === 4) && (
                 <Col sm='4' className='d-flex justify-content-end align-items-start'>
-                  <button className='btn' onClick={props.onEdiState}>
+                  <button className='text-success' onClick={() => onShowForm('edit')}>
                     <i className='fas fa-edit' /> Editar
                   </button>
                 </Col>
@@ -37,7 +35,7 @@ const Received = (props) => {
         </Row>
       </CardBody>
       <CardBody>
-        {!isLoading && props.details && (
+        {!isLoading && details && (
           <Row>
             <Col sm='6'>
               <div>
@@ -49,7 +47,7 @@ const Received = (props) => {
             </Col>
           </Row>
         )}
-        {!isLoading && props.details && (
+        {!isLoading && details && (
           <Row>
             <Col sm='6'>
               <div>
@@ -66,11 +64,11 @@ const Received = (props) => {
                 </h5>
               </div>
             </Col>
-            {props.details.couponName && (
+            {details.couponName && (
               <Col sm='6'>
                 <div className='mt-4 mt-sm-0'>
                   <p className='text-muted mb-2'>Cupón usado</p>
-                  <h5>{props.details.couponName}</h5>
+                  <h5>{details.couponName}</h5>
                 </div>
               </Col>
             )}

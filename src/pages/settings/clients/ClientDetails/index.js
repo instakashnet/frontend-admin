@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, CardBody, Table, CardTitle, Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getClientDetails } from '../../../store/actions';
+import { getClientDetails } from '../../../../store/actions';
 import moment from 'moment-timezone';
 
 import ExchangesTable from './ExchangesTable';
 import AccountsTable from './AccountsTable';
-import Breadcrumbs from '../../../components/Common/Breadcrumb';
+import Breadcrumbs from '../../../../components/Common/Breadcrumb';
 import EditUserProfile from './EditUserProfile';
 import EditCompanyProfile from './EditCompanyProfile';
-import Alert from '../../../components/UI/Alert';
+import Alert from '../../../../components/UI/Alert';
 
-import Male from '../../../assets/images/profile-male.svg';
-import Female from '../../../assets/images/profile-female.svg';
+import Male from '../../../../assets/images/profile-male.svg';
+import Female from '../../../../assets/images/profile-female.svg';
 
 const ClientDetails = (props) => {
   const [modal, setModal] = useState(false);

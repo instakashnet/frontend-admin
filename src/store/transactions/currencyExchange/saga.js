@@ -1,9 +1,10 @@
-import { all, call, takeEvery, put, fork, delay } from 'redux-saga/effects';
+import { all, call, takeEvery, takeLatest, put, fork, delay } from 'redux-saga/effects';
 import * as actions from './actions';
 import * as actionTypes from './actionTypes';
 import Swal from 'sweetalert2';
 import { exchangeInstance } from '../../../helpers/AuthType/axios';
 import { getClientExchanges } from '../../settings/clients/actions';
+import history from '../../../helpers/history';
 
 function* getExchangeDetails({ id }) {
   try {
@@ -145,6 +146,35 @@ function* createInvoice({ orderId }) {
   }
 }
 
+function* reassignOrder({ values, orderId, setState }) {
+  const reassignValues = {
+    ...values,
+    operatorAssigned: +values.operatorAssigned,
+  };
+
+  try {
+    const res = yield exchangeInstance.put(`/order/admin/assigned/${orderId}`, reassignValues);
+    if (res.status === 200) {
+      yield put(actions.reassignOrderSuccess());
+      yield call(setState, null);
+      yield call(getExchangeDetails, { id: orderId });
+      yield call([Swal, 'fire'], 'Exitoso', 'Orden reasignada correctamente', 'success');
+      yield call([history, 'goBack']);
+    }
+  } catch (error) {
+    let message = error.message;
+
+    if (error.data) {
+      if (error.data.code === 4008) message = 'La moneda de la cuenta seleccionada no corresponde a la moneda del monto a enviar.';
+      if (error.data.code === 4007) message = 'El operador que se desea asignar no corresponde al banco de la cuenta seleccionada.';
+    }
+
+    yield put(actions.apiError(message));
+    yield delay(4000);
+    yield put(actions.clearAlert());
+  }
+}
+
 export function* watchEditExchange() {
   yield takeEvery(actionTypes.EDIT_EXCHANGE, editExchange);
 }
@@ -169,6 +199,18 @@ export function* watchCreateInvoice() {
   yield takeEvery(actionTypes.CREATE_INVOICE, createInvoice);
 }
 
+export function* watchReassignOrder() {
+  yield takeLatest(actionTypes.REASSIGN_ORDER_INIT, reassignOrder);
+}
+
 export default function* currencyExchangeSaga() {
-  yield all([fork(watchExchangeDetails), fork(watchApproveExchange), fork(watchValidateExchange), fork(watchDeclineExchange), fork(watchEditExchange), fork(watchCreateInvoice)]);
+  yield all([
+    fork(watchExchangeDetails),
+    fork(watchApproveExchange),
+    fork(watchValidateExchange),
+    fork(watchDeclineExchange),
+    fork(watchEditExchange),
+    fork(watchCreateInvoice),
+    fork(watchReassignOrder),
+  ]);
 }
