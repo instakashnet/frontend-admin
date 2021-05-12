@@ -29,7 +29,7 @@ const Coupons = () => {
     new Promise(async (resolve, reject) => {
       try {
         let clients = [];
-        const res = await authInstance.get(`/admin/users?type=client&page=1&qty=10000000&search=${inputValue}`);
+        const res = await authInstance.get(`/admin/users?type=client&page=1&qty=10000000&completed=true&search=${inputValue}`);
         if (res.status === 200) {
           const clientOptions = res.data.users.map((client) => ({ value: client.id, label: client.email }));
           clients = clientOptions;

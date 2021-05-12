@@ -15,6 +15,15 @@ export default function clientsReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
+    case actionTypes.GET_CLIENT_DETAILS:
+      return { ...state, isLoading: true };
+
+    case actionTypes.ADD_PROFILE_INIT:
+    case actionTypes.EDIT_PROFILE_INIT:
+    case actionTypes.EDIT_INFO_INIT:
+    case actionTypes.DISABLE_CLIENT_INIT:
+      return { ...state, isProcessing: true };
+
     case actionTypes.GET_CLIENTS_SUCCESS:
       return { ...state, clients: action.clients, isLoading: false };
 
@@ -27,7 +36,10 @@ export default function clientsReducer(state = initialState, action) {
     case actionTypes.GET_CLIENT_ACCOUNTS_SUCCESS:
       return { ...state, accounts: action.accounts, isLoading: false };
 
+    case actionTypes.ADD_PROFILE_SUCCESS:
     case actionTypes.EDIT_PROFILE_SUCCESS:
+    case actionTypes.EDIT_INFO_SUCCESS:
+    case actionTypes.DISABLE_CLIENT_SUCCESS:
       return { ...state, isProcessing: false };
 
     case actionTypes.CLEAR_ALERT:

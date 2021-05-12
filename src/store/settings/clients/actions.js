@@ -39,10 +39,31 @@ export const getClientAccountsSuccess = (accounts) => ({
   accounts,
 });
 
+export const addProfileInit = (values, closeModal) => ({
+  type: actionTypes.ADD_PROFILE_INIT,
+  values,
+  closeModal,
+});
+
+export const addProfileSuccess = () => ({
+  type: actionTypes.ADD_PROFILE_SUCCESS,
+});
+
 export const editProfileInit = (values, closeModal) => ({
   type: actionTypes.EDIT_PROFILE_INIT,
   values,
   closeModal,
+});
+
+export const editClientInfoInit = (values, userId, closeModal) => ({
+  type: actionTypes.EDIT_INFO_INIT,
+  values,
+  closeModal,
+  userId,
+});
+
+export const editClientInfoSuccess = () => ({
+  type: actionTypes.EDIT_INFO_SUCCESS,
 });
 
 export const editProfileSuccess = () => ({
@@ -68,6 +89,16 @@ export const editInterplazaInit = (values, detailsType, id, setState) => ({
 
 export const editInterplazaSuccess = () => ({
   type: actionTypes.EDIT_INTERPLAZA_SUCCESS,
+});
+
+export const disableClientInit = (userId, active) => ({
+  type: actionTypes.DISABLE_CLIENT_INIT,
+  userId,
+  active,
+});
+
+export const disableClientSuccess = () => ({
+  type: actionTypes.DISABLE_CLIENT_SUCCESS,
 });
 
 export const clearAlert = () => ({

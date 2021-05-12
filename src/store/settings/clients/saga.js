@@ -29,8 +29,40 @@ function* getClientDetails({ userId }) {
 
 function* getClientExchanges({ userId }) {
   try {
-    const res = yield exchangeInstance(`/order/admin/user/${userId}`);
+    const res = yield exchangeInstance.get(`/order/admin/user/${userId}`);
     if (res.status === 200) yield put(actions.getClientExchangesSuccess(res.data));
+  } catch (error) {
+    yield put(actions.apiError(error.message));
+    yield delay(4000);
+    yield put(actions.clearAlert());
+  }
+}
+
+function* addClientProfile({ values, closeModal }) {
+  try {
+    const res = yield authInstance.post(`/admin/users/profiles`, values);
+    if (res.status === 200) {
+      yield put(actions.addProfileSuccess());
+      yield call(closeModal);
+      yield call(getClientDetails, { userId: values.userId });
+      yield Swal.fire('Exitoso', 'El perfil fue agregado correctamente.', 'success');
+    }
+  } catch (error) {
+    yield put(actions.apiError(error.message));
+    yield delay(4000);
+    yield put(actions.clearAlert());
+  }
+}
+
+function* editClientInfo({ userId, values, closeModal }) {
+  try {
+    const res = yield authInstance.put(`/admin/user/${userId}`, values);
+    if (res.status === 200) {
+      yield put(actions.editClientInfoSuccess());
+      yield call(closeModal);
+      yield call(getClientDetails, { userId });
+      yield Swal.fire('Exitoso', 'Los datos del usuario fueron editados correctamente.', 'success');
+    }
   } catch (error) {
     yield put(actions.apiError(error.message));
     yield delay(4000);
@@ -93,12 +125,38 @@ function* editInterplaza({ values, detailsType, id, setState }) {
       yield put(actions.editInterplazaSuccess());
     }
   } catch (error) {
-    console.log(error);
     yield put(actions.apiError(error.message));
     yield delay(4000);
     yield put(actions.clearAlert());
   }
 }
+
+function* disableClient({ userId, active }) {
+  try {
+    const result = yield Swal.fire({
+      icon: 'warning',
+      title: `¿Desea ${active ? 'deshabilitar' : 'habilitar'} a este usuario?`,
+      showCancelButton: true,
+      cancelButtonText: 'Regresar',
+      cancelButtonColor: '#d9534f',
+      confirmButtonText: 'Si, continuar',
+    });
+
+    if (result.isConfirmed) {
+      const res = yield authInstance.put('/admin/users/access', { userId, active: !active });
+      if (res.status === 200) {
+        yield put(actions.disableClientSuccess());
+        yield call(getClientDetails, { userId });
+        yield Swal.fire('Exitoso', `Usuario ${active ? 'deshabilitado' : 'habilitado'}.`, 'success');
+      }
+    } else yield put(actions.apiError());
+  } catch (error) {
+    yield put(actions.apiError(error.message));
+    yield delay(4000);
+    yield put(actions.clearAlert());
+  }
+}
+
 export function* watchGetClients() {
   yield takeEvery(actionTypes.GET_CLIENTS_INIT, getClients);
 }
@@ -115,6 +173,14 @@ export function* watchGetClientDetails() {
   yield takeEvery(actionTypes.GET_CLIENT_DETAILS, getClientDetails);
 }
 
+export function* watchAddClientProfile() {
+  yield takeEvery(actionTypes.ADD_PROFILE_INIT, addClientProfile);
+}
+
+export function* watchEditClientInfo() {
+  yield takeLatest(actionTypes.EDIT_INFO_INIT, editClientInfo);
+}
+
 export function* watchEditClientProfile() {
   yield takeEvery(actionTypes.EDIT_PROFILE_INIT, editClientProfile);
 }
@@ -127,14 +193,21 @@ export function* watchEditInterplaza() {
   yield takeLatest(actionTypes.EDIT_INTERPLAZA_INIT, editInterplaza);
 }
 
+export function* watchDisableClient() {
+  yield takeLatest(actionTypes.DISABLE_CLIENT_INIT, disableClient);
+}
+
 export default function* clientsSaga() {
   yield all([
     fork(watchGetClientDetails),
+    fork(watchAddClientProfile),
     fork(watchEditClientProfile),
+    fork(watchEditClientInfo),
     fork(watchGetClientActivity),
     fork(watchGetClientExchanges),
     fork(watchGetClients),
     fork(watchDownloadClients),
     fork(watchEditInterplaza),
+    fork(watchDisableClient),
   ]);
 }
