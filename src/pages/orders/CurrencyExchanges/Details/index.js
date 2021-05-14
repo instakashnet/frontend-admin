@@ -92,7 +92,7 @@ const ExchangeDetails = (props) => {
               <Col lg='10' xl='8' className='d-flex justify-content-between items-center'>
                 {details && (
                   <p className='mb-0'>
-                    <span className='text-muted mr-1'>Asignado a: </span> {details.emailOperator || 'Sin asignar'}
+                    <span className='text-muted mr-1'>Asignado a: </span> {details.operatorName || 'Sin asignar'}
                   </p>
                 )}
                 {details && (
