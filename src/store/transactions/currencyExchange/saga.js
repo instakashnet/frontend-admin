@@ -14,8 +14,11 @@ function* getExchangeDetails({ id }) {
       yield put(getClientExchanges(res.data.userId));
     }
   } catch (error) {
-    yield put(actions.apiError(error.message));
-    yield delay(4000);
+    let message = error.message;
+    if (error.status === 404) message = 'No estas asignado para poder ver esta operación.';
+
+    yield put(actions.apiError(message));
+    yield delay(6000);
     yield put(actions.clearAlert());
   }
 }
@@ -50,9 +53,9 @@ function* validateExchange({ orderId }) {
 
     if (result.isConfirmed) {
       const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 4 });
-      if (res.status === 201) {
+      if (res.status === 200) {
         yield call(getExchangeDetails, { id: orderId });
-        yield put(actions.approveExchangeSuccess());
+        yield put(actions.validateExchangeSuccess());
         yield Swal.fire('Exitoso', `La operación fue validada correctamente.`, 'success');
       }
     } else yield put(actions.apiError());
@@ -66,7 +69,7 @@ function* validateExchange({ orderId }) {
 function* approveExchange({ orderId, closeModal }) {
   try {
     const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 6 });
-    if (res.status === 201) {
+    if (res.status === 200) {
       yield put(actions.approveExchangeSuccess());
       yield call(getExchangeDetails, { id: orderId });
       yield call(closeModal);
@@ -91,7 +94,7 @@ function* declineExchange({ orderId }) {
 
     if (result.isConfirmed) {
       const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 5 });
-      if (res.status === 201) {
+      if (res.status === 200) {
         yield call(getExchangeDetails, { id: orderId });
         yield put(actions.declineExchangeSuccess());
       }
