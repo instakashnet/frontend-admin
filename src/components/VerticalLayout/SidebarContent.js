@@ -98,7 +98,12 @@ const SidebarContent = (props) => {
           )}
 
           {user &&
-          (user.role === 'ROLE_ADMIN' || user.role === 'ROLE_APPRAISER' || user.role === 'ROLE_OPERATOR' || user.role === 'ROLE_ANALYST' || user.role === 'ROLE_MANAGER') ? (
+          (user.role === 'ROLE_ADMIN' ||
+            user.role === 'ROLE_APPRAISER' ||
+            user.role === 'ROLE_OPERATOR' ||
+            user.role === 'ROLE_ANALYST' ||
+            user.role === 'ROLE_MANAGER' ||
+            user.role === 'ROLE_SIGNATORY') ? (
             <>
               <li className='menu-title'>{props.t('Cambios de divisa')}</li>
 

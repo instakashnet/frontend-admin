@@ -178,6 +178,22 @@ function* reassignOrder({ values, orderId, setState }) {
   }
 }
 
+function* setRevision({ values, setState, orderId }) {
+  try {
+    const res = yield exchangeInstance.put(`/order/admin/notes/${orderId}`, values);
+    if (res.status === 200) {
+      yield put(actions.setRevisionSuccess());
+      yield call(getExchangeDetails, { id: orderId });
+      yield call(setState, false);
+      yield call([Swal, 'fire'], 'Exitoso', 'La revisión de orden ha sido actualizada.', 'success');
+    }
+  } catch (error) {
+    yield put(actions.apiError(error.message));
+    yield delay(4000);
+    yield put(actions.clearAlert());
+  }
+}
+
 export function* watchEditExchange() {
   yield takeEvery(actionTypes.EDIT_EXCHANGE, editExchange);
 }
@@ -206,6 +222,10 @@ export function* watchReassignOrder() {
   yield takeLatest(actionTypes.REASSIGN_ORDER_INIT, reassignOrder);
 }
 
+export function* watchSetRevision() {
+  yield takeLatest(actionTypes.SET_REVISION_INIT, setRevision);
+}
+
 export default function* currencyExchangeSaga() {
   yield all([
     fork(watchExchangeDetails),
@@ -215,5 +235,6 @@ export default function* currencyExchangeSaga() {
     fork(watchEditExchange),
     fork(watchCreateInvoice),
     fork(watchReassignOrder),
+    fork(watchSetRevision),
   ]);
 }

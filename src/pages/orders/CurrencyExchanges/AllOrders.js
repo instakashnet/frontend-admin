@@ -71,8 +71,8 @@ const Transactions = () => {
       field: 'status',
       width: 100,
       render: (rowData) => (
-        <Badge className='btn py-2 font-size-12 px-3' style={{ color: '#FFF', backgroundColor: rowData.statusColor }} pill>
-          {rowData.statusName}
+        <Badge className='btn py-2 font-size-12 px-3' style={{ color: '#FFF', backgroundColor: rowData.revision ? 'purple' : rowData.statusColor }} pill>
+          {rowData.revision ? 'EN REVISIÓN' : rowData.statusName}
         </Badge>
       ),
     },
@@ -113,6 +113,7 @@ const Transactions = () => {
                         pedidoId: order.uuid,
                         date: moment(order.created).format('DD/MM/YY hh:mm a'),
                         user: order.firstName + ' ' + order.lastName,
+                        revision: order.orderNotes,
                         amountSent: ` ${order.currencySent === 'PEN' ? 'S/.' : '$'} ${formatAmount(order.amountSent)}`,
                         amountReceived: `${order.currencyReceived === 'PEN' ? 'S/.' : '$'} ${formatAmount(order.amountReceived)}`,
                         originBank: order.bankFromName,

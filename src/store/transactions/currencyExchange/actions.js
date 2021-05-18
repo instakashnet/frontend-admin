@@ -91,6 +91,17 @@ export const reassignOrderSuccess = () => ({
   type: actionTypes.REASSIGN_ORDER_SUCCESS,
 });
 
+export const setRevisionInit = (values, setState, orderId) => ({
+  type: actionTypes.SET_REVISION_INIT,
+  values,
+  orderId,
+  setState,
+});
+
+export const setRevisionSuccess = () => ({
+  type: actionTypes.SET_REVISION_SUCCESS,
+});
+
 export const clearAlert = () => ({
   type: actionTypes.CLEAR_ALERT,
 });

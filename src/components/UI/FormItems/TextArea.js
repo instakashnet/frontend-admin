@@ -1,17 +1,14 @@
-import React from "react";
-import { FormGroup, Label } from "reactstrap";
-import { Field, ErrorMessage } from "formik";
+import React from 'react';
+import { FormGroup, Label } from 'reactstrap';
 
-import classes from "./FormItems.module.scss";
+import classes from './FormItems.module.scss';
 
-const TextArea = (props) => {
-  const { name, label, ...rest } = props;
-
+const TextArea = ({ name, label, placeholder, error, touched, ...rest }) => {
   return (
     <FormGroup className='d-flex flex-column align-items-center'>
       <Label>{label}</Label>
-      <Field id={name} name={name} as='textarea' className={classes.TextArea} {...rest} />
-      <ErrorMessage name={name}>{(message) => <span className='invalid-feedback'>{message}</span>}</ErrorMessage>
+      <textarea name={name} placeholder={placeholder} className={classes.TextArea} {...rest} />
+      {error && touched && <span className='invalid-feedback'>{error}</span>}
     </FormGroup>
   );
 };

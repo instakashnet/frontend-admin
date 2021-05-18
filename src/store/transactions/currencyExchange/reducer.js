@@ -24,6 +24,7 @@ export default function currencyExchangeReducer(state = initialState, action) {
     case actionTypes.EDIT_EXCHANGE:
     case actionTypes.CREATE_INVOICE:
     case EDIT_INTERPLAZA_INIT:
+    case actionTypes.SET_REVISION_INIT:
       return { ...state, isProcessing: true };
 
     case actionTypes.GET_EXCHANGE_DETAILS:
@@ -37,6 +38,7 @@ export default function currencyExchangeReducer(state = initialState, action) {
     case actionTypes.DECLINE_EXCHANGE_SUCCESS:
     case actionTypes.EDIT_EXCHANGE_SUCCESS:
     case EDIT_INTERPLAZA_SUCCESS:
+    case actionTypes.SET_REVISION_SUCCESS:
       return { ...state, isProcessing: false };
 
     case actionTypes.CREATE_INVOICE_SUCCESS:

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { Edit } from '@material-ui/icons';
 import { getExchangeDetails, createInvoice, approveExchange, validateExchange, declineExchange } from '../../../../store/actions';
 import { Container, Row, Col, Badge, Modal, ModalBody, ModalHeader } from 'reactstrap';
 
@@ -13,6 +14,7 @@ import Transactions from './OldTransactions';
 import CompleteOrder from '../Forms/CompleteOrder';
 import EditOrder from '../Forms/EditOrder';
 import ReassignOrder from '../Forms/ReassignOrder';
+import Revision from './Revision';
 import Alert from '../../../../components/UI/Alert';
 import LoadingPage from '../../../../pages/LoadingPage';
 
@@ -23,6 +25,7 @@ const ExchangeDetails = (props) => {
   const [modal, setModal] = useState(false);
   const [formType, setFormType] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [revision, setRevision] = useState(false);
   const { details, isLoading, isProcessing, error, success } = useSelector((state) => state.CurrencyExchange);
   const user = useSelector((state) => state.Login.user);
 
@@ -62,7 +65,7 @@ const ExchangeDetails = (props) => {
           <>
             <Breadcrumbs title='Detalles del cambio' breadcrumbItem='Detalles del cambio de divisa' />
             <Row>
-              <Col lg='10' xl='8'>
+              <Col lg='8'>
                 <div className='d-flex align-items-center justify-content-between'>
                   <button type='button' onClick={() => history.goBack()} className='btn btn-blue waves-effect btn-label waves-light'>
                     <i className='fas fa-arrow-left label-icon'></i> Regresar
@@ -87,18 +90,28 @@ const ExchangeDetails = (props) => {
                 </div>
                 <User details={details} isLoading={isLoading} />
               </Col>
+              {(details.stateId === 3 || details.stateId === 4) && (
+                <Col lg='4'>{(revision || details.orderNotes) && <Revision note={details.orderNotes} isProcessing={isProcessing} setRevision={setRevision} orderId={id} />}</Col>
+              )}
             </Row>
             <Row className='mb-3'>
-              <Col lg='10' xl='8' className='d-flex justify-content-between items-center'>
+              <Col lg='8' className='d-flex justify-content-between items-center'>
                 {details && (
                   <p className='mb-0'>
                     <span className='text-muted mr-1'>Operador asignado: </span> {details.operatorName || 'Sin asignar'}
                   </p>
                 )}
                 {details && (
-                  <Badge className='py-2 font-size-15 px-5' style={{ color: '#fff', backgroundColor: details.stateColor }}>
-                    {details.stateNme}
-                  </Badge>
+                  <div className='flex flex-col items-end'>
+                    <Badge className='py-2 font-size-15 px-5' style={{ color: '#fff', backgroundColor: details.stateColor }}>
+                      {`${details.stateNme} ${details.orderNotes ? ' - EN REVISIÓN' : ''}`}
+                    </Badge>
+                    {(details.stateId === 3 || details.stateId === 4) && (
+                      <button type='button' className='mt-2' onClick={() => setRevision((prev) => !prev)}>
+                        <Edit fontSize='small' className='mr-1' /> {details.orderNotes ? 'Editar' : 'Agregar'} revisión
+                      </button>
+                    )}
+                  </div>
                 )}
               </Col>
             </Row>
