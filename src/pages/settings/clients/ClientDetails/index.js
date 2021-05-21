@@ -89,11 +89,11 @@ const ClientDetails = (props) => {
             </Row>
             {userProfile && (
               <Row>
-                <Col lg='12'>
-                  <ExchangesTable id={id} />
-                </Col>
                 <Col lg='6'>
                   <AccountsTable userId={id} />
+                </Col>
+                <Col lg='12'>
+                  <ExchangesTable id={id} />
                 </Col>
               </Row>
             )}

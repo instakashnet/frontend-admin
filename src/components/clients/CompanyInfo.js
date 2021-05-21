@@ -8,7 +8,7 @@ const CompanyInfo = ({ company, openModal }) => {
         <CardBody>
           <div className='d-flex align-items-center justify-content-between mb-4'>
             <CardTitle>Información de empresa</CardTitle>
-            <Button onClick={() => openModal(company)}>
+            <Button onClick={() => openModal('editProfile', company)}>
               <span className='bx bx-edit mr-2' /> Editar
             </Button>
           </div>

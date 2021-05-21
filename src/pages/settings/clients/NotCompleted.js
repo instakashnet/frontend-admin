@@ -67,7 +67,7 @@ const NotCompleted = () => {
             })
           }
           isLoading={isLoading}
-          options={{ loadingType: 'linear', pageSize: 5, pageSizeOptions: [5, 10, 25] }}
+          options={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }}
         />
       </CardBody>
     </Card>
