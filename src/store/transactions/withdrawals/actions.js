@@ -19,10 +19,12 @@ export const getWithdrawalDetailsSuccess = (details) => ({
   details,
 });
 
-export const changeWithdrawalStatusInit = (id, statusId) => ({
+export const changeWithdrawalStatusInit = (id, statusId, values = null, toggle = null) => ({
   type: types.CHANGE_WITHDRAW_STATUS_INIT,
   id,
   statusId,
+  values,
+  toggle,
 });
 
 export const changeWithdrawalStatusSuccess = () => ({

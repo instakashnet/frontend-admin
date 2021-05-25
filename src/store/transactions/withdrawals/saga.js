@@ -22,7 +22,19 @@ function* getWithdrawalDetails({ id }) {
   }
 }
 
-function* changeWithdrawalStatus({ id, statusId }) {
+function* attachVoucher({ id, values, toggle }) {
+  const formData = new FormData();
+  formData.append('file', values.file);
+
+  try {
+    const res = yield exchangeInstance.post(`/withdrawals/admin/order/attach-voucher/${id}`, formData);
+    if (res.status === 201) yield call(toggle);
+  } catch (error) {
+    yield put(actions.withdrawalsError());
+  }
+}
+
+function* changeWithdrawalStatus({ id, statusId, values, toggle }) {
   try {
     const result = yield call([Swal, 'fire'], {
       title: `¿Deseas ${statusId === 3 ? 'cancelar' : 'aprobar'} esta operación?`,
@@ -35,6 +47,7 @@ function* changeWithdrawalStatus({ id, statusId }) {
     });
 
     if (result.isConfirmed) {
+      if (statusId === 6) yield call(attachVoucher, { id, values, toggle });
       const res = yield exchangeInstance.put('/withdrawals/admin/status', { id, status: statusId });
       if (res.status === 200) {
         yield call(getWithdrawalDetails, { id });

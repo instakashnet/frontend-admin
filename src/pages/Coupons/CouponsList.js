@@ -30,12 +30,8 @@ const CouponsList = ({ coupons, isLoading, onForm, onDelete, onDisable }) => {
       render: (rowData) => <p>{rowData.profileType === 'natural' ? 'Cliente' : rowData.profileType === 'juridica' ? 'Empresa' : 'Todos'}</p>,
     },
     {
-      field: 'minBuy',
+      field: 'minAmount',
       title: 'Mínimo ($)',
-    },
-    {
-      field: 'minSell',
-      title: 'Mínimo (S/.)',
     },
     {
       field: 'endDate',
@@ -66,8 +62,7 @@ const CouponsList = ({ coupons, isLoading, onForm, onDelete, onDisable }) => {
     affiliates: coupon.affiliates,
     profileType: coupon.profileType,
     active: coupon.active,
-    minBuy: coupon.minAmountBuy ? coupon.minAmountBuy : 0,
-    minSell: coupon.minAmountSell ? coupon.minAmountSell : 0,
+    minAmount: coupon.minAmountBuy ? coupon.minAmountBuy : 0,
     endDate: moment(coupon.endDate).format('DD/MM/YYYY'),
   }));
 

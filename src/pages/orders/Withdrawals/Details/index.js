@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Row, Col, Badge } from 'reactstrap';
+import { Container, Row, Col, Badge, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { getWithdrawalDetailsInit, changeWithdrawalStatusInit } from '../../../../store/actions';
 
 import UserInfo from './UserInfo';
 import WithdrawalInfo from './WithdrawalInfo';
 import LoadingPage from '../../../LoadingPage';
+import CompleteOrder from '../../Forms/CompleteOrder';
 
 const Details = ({ match, history }) => {
+  const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
   const { id } = match.params;
+
+  const toggleModal = () => setModal((prev) => !prev);
 
   const { details, isLoading, isProcessing } = useSelector((state) => state.Withdrawals);
 
@@ -18,7 +22,7 @@ const Details = ({ match, history }) => {
   }, [dispatch, id]);
 
   const declineWithdrawalHandler = () => dispatch(changeWithdrawalStatusInit(details.id, 5));
-  const approveWithdrawalHandler = () => dispatch(changeWithdrawalStatusInit(details.id, 6));
+  const approveWithdrawalHandler = (values) => dispatch(changeWithdrawalStatusInit(details.id, 6, values, toggleModal));
 
   return isLoading ? (
     <LoadingPage />
@@ -37,7 +41,7 @@ const Details = ({ match, history }) => {
                   <button type='button' onClick={declineWithdrawalHandler} className='btn btn-danger waves-effect btn-label mr-3 waves-light' disabled={isProcessing}>
                     <i className='fas fa-times label-icon'></i> Cancelar
                   </button>
-                  <button type='button' onClick={approveWithdrawalHandler} className='btn btn-primary waves-effect btn-label waves-light' disabled={isProcessing}>
+                  <button type='button' onClick={() => setModal(true)} className='btn btn-primary waves-effect btn-label waves-light' disabled={isProcessing}>
                     <i className='fas fa-check label-icon'></i> Aprobar
                   </button>
                 </div>
@@ -59,6 +63,12 @@ const Details = ({ match, history }) => {
           </Col>
         </Row>
       </Container>
+      <Modal isOpen={modal} role='dialog' autoFocus={true} centered={true} tabIndex='-1' toggle={toggleModal}>
+        <ModalHeader toggle={toggleModal}>Adjunta el comprobante de pago</ModalHeader>
+        <ModalBody>
+          <CompleteOrder isProcessing={isProcessing} orderId={id} onApprove={approveWithdrawalHandler} />
+        </ModalBody>
+      </Modal>
     </div>
   );
 };

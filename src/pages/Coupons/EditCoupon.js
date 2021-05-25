@@ -25,7 +25,6 @@ const EditCoupon = ({ couponId, isProcessing, clients }) => {
       users: details.users && details.users.length > 0 ? details.users : [],
       endDate: details.endDate ? moment(details.endDate).format('YYYY-MM-DD') : '',
       minAmountBuy: details.minAmountBuy || '',
-      minAmountSell: details.minAmountSell || '',
       profileType: details.profileType || 'all',
     },
     enableReinitialize: true,
@@ -96,16 +95,6 @@ const EditCoupon = ({ couponId, isProcessing, clients }) => {
             onBlur={formik.handleBlur}
             error={formik.errors.minAmountBuy}
             touched={formik.touched.minAmountBuy}
-          />
-          <Input
-            name='minAmountSell'
-            type='number'
-            label='Monto mínimo (S/.)'
-            value={formik.values.minAmountSell}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.errors.minAmountSell}
-            touched={formik.touched.minAmountSell}
           />
           <Checkbox name='indefinite' label='¿Uso indefinido?' onChange={formik.handleChange} value={formik.values.indefinite} />
           {!formik.values.indefinite && (

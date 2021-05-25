@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import Dropzone from '../../../../components/UI/FormItems/CustomUpload';
+import Dropzone from '../../../components/UI/FormItems/CustomUpload';
 import { Button } from 'reactstrap';
 
 const validateForm = Yup.object().shape({

@@ -11,7 +11,7 @@ import User from './User';
 import Received from './Received';
 import Sent from './Sent';
 import Transactions from './OldTransactions';
-import CompleteOrder from '../Forms/CompleteOrder';
+import CompleteOrder from '../../Forms/CompleteOrder';
 import EditOrder from '../Forms/EditOrder';
 import ReassignOrder from '../Forms/ReassignOrder';
 import Revision from './Revision';
