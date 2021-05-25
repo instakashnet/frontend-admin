@@ -24,6 +24,8 @@ const Details = ({ match, history }) => {
   const declineWithdrawalHandler = () => dispatch(changeWithdrawalStatusInit(details.id, 5));
   const approveWithdrawalHandler = (values) => dispatch(changeWithdrawalStatusInit(details.id, 6, values, toggleModal));
 
+  console.log(details);
+
   return isLoading ? (
     <LoadingPage />
   ) : (

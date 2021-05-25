@@ -27,9 +27,15 @@ const WithdrawalInfo = ({ details, isProcessing }) => {
         <Row>
           <Col sm='6'>
             <div>
+              <p className='text-muted mb-2'>Nro. de pedido</p>
+              <h5>
+                {details.uuid} <CopyButton textToCopy={details.uuid} />
+              </h5>
+            </div>
+            <div>
               <p className='text-muted mb-2'>Cantidad solicitada</p>
               <h5>
-                {details.kashQty} KASH = $ {formatAmount(details.kashQty)}
+                {details.kashQty} KASH = $ {formatAmount(details.kashQty)} <CopyButton textToCopy={details.kashQty} />
               </h5>
             </div>
           </Col>
