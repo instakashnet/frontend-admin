@@ -1,9 +1,9 @@
-import React from 'react';
-import { Card, CardBody, Row, Col } from 'reactstrap';
-import moment from 'moment-timezone';
-import { formatAmount } from '../../../../helpers/functions';
+import React from "react";
+import { Card, CardBody, Row, Col } from "reactstrap";
+import moment from "moment-timezone";
+import { formatAmount } from "../../../../helpers/functions";
 
-import CopyButton from '../../../../components/UI/CopyButton';
+import CopyButton from "../../../../components/UI/CopyButton";
 
 const Received = ({ isLoading, details, onShowForm }) => {
   return (
@@ -12,21 +12,21 @@ const Received = ({ isLoading, details, onShowForm }) => {
         <Row>
           {details && (
             <>
-              <Col sm='8'>
+              <Col sm="8">
                 <div>
                   <div>
                     <h5>
                       Pedido {details.uuid} <CopyButton textToCopy={details.uuid} />
                     </h5>
-                    <p className='text-muted mb-1'>{moment(details.created).format('DD/MM/YYYY HH:mm a')}</p>
-                    {details.fundsOrigin && <p className='text-muted mb-0'>Origen de fondos: {details.fundsOrigin}</p>}
+                    <p className="text-muted mb-1">{moment(details.created).format("DD/MM/YYYY HH:mm a")}</p>
+                    {details.fundsOrigin && <p className="text-muted mb-0">Origen de fondos: {details.fundsOrigin}</p>}
                   </div>
                 </div>
               </Col>
               {(details.stateId === 3 || details.stateId === 4) && (
-                <Col sm='4' className='d-flex justify-content-end align-items-start'>
-                  <button className='text-success' onClick={() => onShowForm('edit')}>
-                    <i className='fas fa-edit' /> Editar
+                <Col sm="4" className="d-flex justify-content-end align-items-start">
+                  <button className="text-success" onClick={() => onShowForm("edit")}>
+                    <i className="fas fa-edit" /> Editar
                   </button>
                 </Col>
               )}
@@ -37,11 +37,15 @@ const Received = ({ isLoading, details, onShowForm }) => {
       <CardBody>
         {!isLoading && details && (
           <Row>
-            <Col sm='6'>
+            <Col sm="6">
               <div>
-                <p className='text-muted mb-2'>Nro. de transferencia</p>
+                <p className="text-muted mb-2">Nro. de transferencia</p>
                 <h5>
-                  {details.transactionCode || 'Sin nro. de transferencia'} {details.transactionCode && <CopyButton textToCopy={details.transactionCode} />}
+                  {details.amountSent > 0
+                    ? details.transactionCode
+                      ? details.transactionCode && <CopyButton textToCopy={details.transactionCode} />
+                      : "Sin nro. de transferencia"
+                    : "Kash usados"}
                 </h5>
               </div>
             </Col>
@@ -49,25 +53,34 @@ const Received = ({ isLoading, details, onShowForm }) => {
         )}
         {!isLoading && details && (
           <Row>
-            <Col sm='6'>
+            <Col sm="6">
               <div>
-                <p className='text-muted mb-2'>Monto recibido</p>
-                <h5>{`${details.currencySent === 'USD' ? '$' : 'S/.'} ${formatAmount(details.amountSent)}`}</h5>
+                <p className="text-muted mb-2">Monto recibido</p>
+                {details.kashUsed > 0 && (
+                  <div className="mt-4 mt-sm-0">
+                    <h5>{details.kashUsed} KASH</h5>
+                  </div>
+                )}
+                {details.amountSent > 0 && <h5>{`${details.currencySentSymbol} ${formatAmount(details.amountSent)}`}</h5>}
               </div>
             </Col>
-            <Col sm='6'>
-              <div className='text-sm-right mt-4 mt-sm-0'>
-                <p className='text-muted mb-2'>Banco que recibe</p>
-                <h5 className='flex items-center justify-end'>
-                  <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankReceive}.svg`} alt={details.bankReceive} width={80} />
-                  <span className='ml-2 text-muted'>{`${details.bankReceive} ${details.currencySent === 'USD' ? 'Dólares' : 'Soles'}`}</span>
+            <Col sm="6">
+              <div className="text-sm-right mt-4 mt-sm-0">
+                <p className="text-muted mb-2">Envía desde</p>
+                <h5 className="flex items-center justify-end">
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/banks/${details.amountSent > 0 ? details.bankReceive : "kash"}.svg`}
+                    alt={details.bankReceive}
+                    width={details.amountSent > 0 ? 80 : 50}
+                  />
+                  <span className="ml-2 text-muted">{details.amountSent > 0 ? `${details.bankReceive} ${details.currencySentSymbol}` : "KASH"}</span>
                 </h5>
               </div>
             </Col>
             {details.couponName && (
-              <Col sm='6'>
-                <div className='mt-4 mt-sm-0'>
-                  <p className='text-muted mb-2'>Cupón usado</p>
+              <Col sm="6">
+                <div className="mt-4 mt-sm-0">
+                  <p className="text-muted mb-2">Cupón usado</p>
                   <h5>{details.couponName}</h5>
                 </div>
               </Col>
