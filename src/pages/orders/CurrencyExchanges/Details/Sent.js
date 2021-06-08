@@ -41,11 +41,17 @@ const Received = ({ isLoading, details, onShowForm }) => {
               <div>
                 <p className="text-muted mb-2">Nro. de transferencia</p>
                 <h5>
-                  {details.amountSent > 0
-                    ? details.transactionCode
-                      ? details.transactionCode && <CopyButton textToCopy={details.transactionCode} />
-                      : "Sin nro. de transferencia"
-                    : "Kash usados"}
+                  {details.amountSent > 0 ? (
+                    details.transactionCode ? (
+                      <>
+                        {details.transactionCode} <CopyButton textToCopy={details.transactionCode} />
+                      </>
+                    ) : (
+                      "Sin nro. de transferencia"
+                    )
+                  ) : (
+                    "Kash usados"
+                  )}
                 </h5>
               </div>
             </Col>
