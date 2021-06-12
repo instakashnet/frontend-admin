@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardBody, Badge, Col, Row, Container, Button } from "reactstrap";
 import { useHistory } from "react-router-dom";
-import moment from "moment-timezone";
-import { exchangeInstance } from "../../../helpers/AuthType/axios";
-import { formatAmount } from "../../../helpers/functions";
+import { getAllOrders } from "../../../services/orders/exchanges.service";
 
 //Components
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
@@ -104,33 +102,7 @@ const Transactions = () => {
                   ref={tableRef}
                   columns={columns}
                   isLoading={isLoading}
-                  rows={(query) =>
-                    new Promise(async (resolve) => {
-                      const res = await exchangeInstance.get(`/order/admin?page=${query.page + 1}&qty=${query.search ? "10000000" : query.pageSize}&search=${query.search}`);
-
-                      const orders = res.data.orders.map((order) => ({
-                        id: order.id,
-                        pedidoId: order.uuid,
-                        date: moment(order.created).format("DD/MM/YY hh:mm a"),
-                        user: order.firstName + " " + order.lastName,
-                        revision: order.orderNotes,
-                        amountSent: order.amountSent > 0 ? `${order.currencySentSymbol} ${formatAmount(order.amountSent)}` : `${order.kashUsed} KASH`,
-                        amountReceived: `${order.currencyReceivedSymbol} ${formatAmount(order.amountReceived)}`,
-                        originBank: order.amountSent > 0 ? order.bankFromName : "kash",
-                        destinationBank: order.accToBankName,
-                        statusName: order.stateName,
-                        statusColor: order.stateColor,
-                        invoice: order.billAssigned,
-                      }));
-
-                      setIsLoading(false);
-                      resolve({
-                        data: orders,
-                        page: query.page,
-                        totalCount: res.data.count,
-                      });
-                    })
-                  }
+                  rows={(query) => getAllOrders(query, setIsLoading)}
                   options={{ sorting: true, loadingType: "overlay", pageSize: 50, pageSizeOptions: [50, 100, 200] }}
                 />
               </CardBody>

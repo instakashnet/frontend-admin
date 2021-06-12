@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Card, CardBody, Row, Col, Button } from "reactstrap";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
-import { formatAmount, checkInterplaza } from "../../../../helpers/functions";
-import { editInterplazaInit } from "../../../../store/actions";
+import { formatAmount, checkInterplaza } from "../../../../../helpers/functions";
+import { editInterplazaInit } from "../../../../../store/actions";
 
-import CopyButton from "../../../../components/UI/CopyButton";
-import Radio from "../../../../components/UI/FormItems/Radio";
+import CopyButton from "../../../../../components/UI/CopyButton";
+import Radio from "../../../../../components/UI/FormItems/Radio";
 
 const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
   const dispatch = useDispatch();
