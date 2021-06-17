@@ -1,9 +1,9 @@
 import React from "react";
 import { Card, CardBody, Badge } from "reactstrap";
 import moment from "moment-timezone";
-import { formatAmount } from "../../../../helpers/functions";
+import { formatAmount } from "../../../../../helpers/functions";
 
-import Table from "../../../../components/UI/Table";
+import Table from "../../../../../components/UI/Table";
 
 const OldTransactions = (props) => {
   const data = {

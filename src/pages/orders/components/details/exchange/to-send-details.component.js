@@ -1,9 +1,9 @@
 import React from "react";
 import { Card, CardBody, Row, Col } from "reactstrap";
 import moment from "moment-timezone";
-import { formatAmount } from "../../../../helpers/functions";
+import { formatAmount } from "../../../../../helpers/functions";
 
-import CopyButton from "../../../../components/UI/CopyButton";
+import CopyButton from "../../../../../components/UI/CopyButton";
 
 const Received = ({ isLoading, details, onShowForm }) => {
   return (
