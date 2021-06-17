@@ -10,13 +10,14 @@ import Table from "../../../components/UI/Table";
 const Transactions = () => {
   const history = useHistory();
   const tableRef = useRef();
+  const [querySearch, setQuerySearch] = useState("");
+  console.log(querySearch);
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      tableRef.current && tableRef.current.onQueryChange();
-    }, 45000);
+    let interval;
+    if (querySearch.length <= 0) interval = setInterval(() => tableRef.current && tableRef.current.onQueryChange(), 45000);
 
     return () => clearInterval(interval);
   });
@@ -102,7 +103,7 @@ const Transactions = () => {
                   ref={tableRef}
                   columns={columns}
                   isLoading={isLoading}
-                  rows={(query) => getAllOrders(query, setIsLoading)}
+                  rows={(query) => getAllOrders(query, setIsLoading, setQuerySearch)}
                   options={{ sorting: true, loadingType: "overlay", pageSize: 50, pageSizeOptions: [50, 100, 200] }}
                 />
               </CardBody>

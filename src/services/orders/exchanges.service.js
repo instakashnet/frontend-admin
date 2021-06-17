@@ -2,9 +2,10 @@ import moment from "moment";
 import { exchangeInstance } from "../../helpers/AuthType/axios";
 import { formatAmount } from "../../helpers/functions";
 
-export const getAllOrders = (query, setLoading) => {
+export const getAllOrders = (query, setLoading, setSearch) => {
   return new Promise(async (resolve) => {
     const search = query.search;
+    setSearch(search);
     let orders = [];
     let res;
     let URL = `/order/admin?page=${query.page + 1}&qty=${query.pageSize}`;
