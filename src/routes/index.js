@@ -10,7 +10,7 @@ import Pages404 from "../pages/Utility/404";
 
 // LAZY IMPORTS
 // Users
-const Clients = React.lazy(() => import("../pages/settings/clients"));
+const Clients = React.lazy(() => import("../pages/settings/clients/containers/clients.screen"));
 const ClientDetails = React.lazy(() => import("../pages/settings/clients/ClientDetails"));
 // Transactions modules
 const Exchanges = React.lazy(() => import("../pages/orders/containers/exchanges.screen"));
