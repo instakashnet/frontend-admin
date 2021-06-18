@@ -5,12 +5,14 @@ import Swal from "sweetalert2";
 import { exchangeInstance } from "../../../helpers/AuthType/axios";
 import { getClientExchanges } from "../../settings/clients/actions";
 import history from "../../../helpers/history";
+import camelize from "camelize";
 
 function* getExchangeDetails({ id }) {
   try {
     const res = yield exchangeInstance.get(`/order/admin/${id}`);
     if (res.status === 200) {
-      yield put(actions.getExchangeDetailsSuccess(res.data));
+      const exchangeDetails = camelize(res.data);
+      yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
       yield put(getClientExchanges(res.data.userId));
     }
   } catch (error) {

@@ -71,7 +71,7 @@ const RecentOrders = () => {
       id: withdraw.id,
       pedidoId: withdraw.uuid,
       date: moment(withdraw.createdAt).format("DD-MM-YYYY HH:mm"),
-      user: withdraw.first_name + " " + withdraw.last_name,
+      user: withdraw.firstName + " " + withdraw.lastName,
       destinationBank: withdraw.bankName.toLowerCase(),
       statusColor: withdraw.statusColor,
       statusName: withdraw.statusName,
