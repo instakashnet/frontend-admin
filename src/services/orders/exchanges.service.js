@@ -12,7 +12,7 @@ export const getAllOrders = (query, setLoading, setSearch) => {
 
     if (search) {
       if (search.length >= 5) {
-        URL = `/order/admin?page=${query.page + 1}&qty=50000&search=${search}`;
+        URL = `/order/admin?page=${query.page + 1}&qty=50000&search=${search.toLowerCase()}`;
         res = await exchangeInstance.get(URL, { timeout: 20000 });
       }
     } else res = await exchangeInstance.get(URL);
