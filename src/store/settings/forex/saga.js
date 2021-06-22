@@ -24,7 +24,12 @@ function* getAllRates() {
 function* getforexRates({ forexId }) {
   try {
     const res = yield exchangeInstance.get(`/rates/admin/forex/${forexId}`);
-    if (res.status === 200) yield put(actions.getForexRatesSuccess(res.data));
+    const ratesArray = res.data.map((rates) => ({
+      ...rates,
+      buy: +rates.buy,
+      sell: +rates.sell,
+    }));
+    if (res.status === 200) yield put(actions.getForexRatesSuccess(ratesArray));
   } catch (error) {
     yield put(actions.apiError());
   }
