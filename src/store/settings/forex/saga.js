@@ -36,8 +36,14 @@ function* getforexRates({ forexId }) {
 }
 
 function* addCurrencyPrice({ values }) {
+  const ratesValues = {
+    ...values,
+    buy: values.buy.toFixed(3),
+    sell: values.sell.toFixed(3),
+  };
+
   try {
-    const res = yield exchangeInstance.post("/rates/admin", values);
+    const res = yield exchangeInstance.post("/rates/admin", ratesValues);
     if (res.status === 201) {
       yield call(getforexRates, { forexId: values.forexId });
       yield call(getAllRates);
