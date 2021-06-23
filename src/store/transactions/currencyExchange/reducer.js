@@ -1,12 +1,12 @@
-import * as actionTypes from './actionTypes';
-import { EDIT_INTERPLAZA_INIT, EDIT_INTERPLAZA_SUCCESS } from '../../settings/clients/actionTypes';
+import * as actionTypes from "./actionTypes";
+import { EDIT_INTERPLAZA_INIT, EDIT_INTERPLAZA_SUCCESS } from "../../settings/clients/actionTypes";
 
 const initialState = {
   allOrders: [],
   recentOrders: [],
   details: null,
-  error: '',
-  success: '',
+  error: "",
+  success: "",
   isLoading: true,
   isProcessing: false,
 };
@@ -28,7 +28,7 @@ export default function currencyExchangeReducer(state = initialState, action) {
       return { ...state, isProcessing: true };
 
     case actionTypes.GET_EXCHANGE_DETAILS:
-      return { ...state, isLoading: true, exchangeDetails: null };
+      return { ...state, isLoading: true, details: null };
 
     case actionTypes.GET_EXCHANGE_DETAILS_SUCCESS:
       return { ...state, details: payload.details, isLoading: false };
@@ -45,7 +45,7 @@ export default function currencyExchangeReducer(state = initialState, action) {
       return { ...state, isProcessing: false, success: action.msg };
 
     case actionTypes.CLEAR_ALERT:
-      return { ...state, error: '', success: '' };
+      return { ...state, error: "", success: "" };
 
     case actionTypes.API_ERROR:
       return { ...state, error: payload, isLoading: false, isProcessing: false };

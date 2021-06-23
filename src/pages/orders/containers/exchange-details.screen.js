@@ -17,6 +17,7 @@ import ReassignOrder from "../components/forms/reassign-order.component";
 import SetRevision from "../components/forms/set-revision.component";
 import Alert from "../../../components/UI/Alert";
 import LoadingPage from "../../LoadingPage";
+import ActionButtons from "../components/details/action-buttons.component";
 
 const ExchangeDetails = (props) => {
   const dispatch = useDispatch();
@@ -58,7 +59,7 @@ const ExchangeDetails = (props) => {
   return (
     <div className="page-content">
       <Container fluid>
-        {isLoading || (dataLoading && <LoadingPage />)}
+        {(isLoading || dataLoading) && <LoadingPage />}
         {error && <Alert color="danger" error={error} />}
         {success && <Alert color="success" error={success} />}
         {!isLoading && !dataLoading && (
@@ -66,28 +67,18 @@ const ExchangeDetails = (props) => {
             <Breadcrumbs title="Detalles del cambio" breadcrumbItem="Detalles del cambio de divisa" />
             <Row>
               <Col lg="8">
-                <div className="d-flex align-items-center justify-content-between">
-                  <button type="button" onClick={() => history.goBack()} className="btn btn-blue waves-effect btn-label waves-light">
-                    <i className="fas fa-arrow-left label-icon"></i> Regresar
-                  </button>
-                  <div>
-                    {details && (details.stateId === 2 || details.stateId === 3 || details.stateId === 4) && user.role !== "ROLE_OPERATOR" && (
-                      <button type="button" disabled={isProcessing} onClick={onDeclineExchange} className="btn btn-danger waves-effect btn-label mr-3 waves-light">
-                        <i className="fas fa-times label-icon"></i> Cancelar
-                      </button>
-                    )}
-                    {details && (details.stateId === 3 || details.stateId === 4) && (
-                      <button type="button" disabled={isProcessing} onClick={changeStatusHandler} className="btn btn-primary waves-effect btn-label waves-light">
-                        <i className="fas fa-check label-icon"></i> {details.stateId === 3 ? "Validar" : "Aprobar"}
-                      </button>
-                    )}
-                    {details && details.stateId === 6 && !details.billAssigned && (
-                      <button type="button" disabled={isProcessing} onClick={onCreateInvoice} className="btn btn-primary waves-effect btn-label waves-light">
-                        <i className="fas fa-file-invoice label-icon"></i> Generar factura
-                      </button>
-                    )}
-                  </div>
-                </div>
+                {details && (
+                  <ActionButtons
+                    history={history}
+                    stateId={details.stateId}
+                    role={user.role}
+                    billCreated={details.billAssigned}
+                    onDecline={onDeclineExchange}
+                    onCreateInvoice={onCreateInvoice}
+                    onChangeStatus={changeStatusHandler}
+                    isProcessing={isProcessing}
+                  />
+                )}
                 <UserInfo details={details} isLoading={isLoading} />
               </Col>
               {(details.stateId === 3 || details.stateId === 4) && (
