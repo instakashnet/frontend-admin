@@ -21,7 +21,7 @@ export const getAllOrders = (query, setLoading, setSearch) => {
       orders = res.data.orders.map((order) => ({
         id: order.id,
         pedidoId: order.uuid,
-        date: moment(order.created).format("DD/MM/YY hh:mm a"),
+        date: order.completedAt ? moment(order.completedAt).format("DD/MM/YY hh:mm a") : "Sin completar",
         user: order.firstName + " " + order.lastName,
         revision: order.orderNotes,
         amountSent: order.amountSent > 0 ? `${order.currencySentSymbol} ${formatAmount(order.amountSent)}` : `${order.kashUsed} KASH`,

@@ -18,7 +18,8 @@ const Received = ({ isLoading, details, onShowForm }) => {
                     <h5>
                       Pedido {details.uuid} <CopyButton textToCopy={details.uuid} />
                     </h5>
-                    <p className="text-muted mb-1">{moment(details.created).format("DD/MM/YYYY HH:mm a")}</p>
+                    <p className="text-muted mb-1">Creada el: {moment(details.created).format("DD/MM/YYYY HH:mm a")}</p>
+                    {details.completedAt && <p className="text-muted mb-1">En proceso desde: {moment(details.completedAt).format("DD/MM/YYYY HH:mm a")}</p>}
                     {details.fundsOrigin && <p className="text-muted mb-0">Origen de fondos: {details.fundsOrigin}</p>}
                   </div>
                 </div>

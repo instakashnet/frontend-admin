@@ -10,6 +10,7 @@ import camelize from "camelize";
 function* getExchangeDetails({ id }) {
   try {
     const res = yield exchangeInstance.get(`/order/admin/${id}`);
+    console.log(res);
     if (res.status === 200) {
       const exchangeDetails = camelize(res.data);
       yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
