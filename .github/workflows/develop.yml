@@ -3,7 +3,7 @@ name: developCI
 on:
   push:
     branches:
-      - "*"
+      - "develop"
 
 jobs:
   build:
