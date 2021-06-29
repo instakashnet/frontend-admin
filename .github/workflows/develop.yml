@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-        env:
+    env:
       REACT_APP_AUTH_API: ${{ secrets.TEST_AUTH_API }}
       REACT_APP_ACCOUNTS_API: ${{ secrets.TEST_ACCOUNTS_API }}
       REACT_APP_EXCHANGE_API: ${{ secrets.TEST_EXCHANGE_API }}
