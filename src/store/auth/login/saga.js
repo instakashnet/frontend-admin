@@ -1,12 +1,13 @@
-import { takeEvery, fork, put, all, call, delay } from 'redux-saga/effects';
+import { takeEvery, fork, put, all, call, delay } from "redux-saga/effects";
 
 // Login Redux States
-import { LOGIN_USER, LOGOUT_USER, LOAD_USER } from './actionTypes';
-import * as actions from './actions';
-import { authInstance } from '../../../helpers/AuthType/axios';
+import { LOGIN_USER, LOGOUT_USER, LOAD_USER } from "./actionTypes";
+import * as actions from "./actions";
+import { setAlert } from "../../actions";
+import { authInstance } from "../../../helpers/AuthType/axios";
 
 function* loadUser({ history }) {
-  const authUser = yield call([localStorage, 'getItem'], 'authUser');
+  const authUser = yield call([localStorage, "getItem"], "authUser");
 
   if (!authUser) return yield put(actions.loadUserError());
   const { accessToken, tokenExp, user } = JSON.parse(authUser);
@@ -22,11 +23,11 @@ function* loadUser({ history }) {
 
   try {
     yield delay(1000);
-    const res = yield authInstance.get('/users/admin/session');
+    const res = yield authInstance.get("/users/admin/session");
 
-    yield call([sessionStorage, 'setItem'], 'session', JSON.stringify(res.data.activityUser));
+    yield call([sessionStorage, "setItem"], "session", JSON.stringify(res.data.activityUser));
     yield put(actions.loginSuccess(user, accessToken));
-    yield history && history.push('/dashboard');
+    yield history && history.push("/dashboard");
   } catch (error) {
     yield put(actions.logoutUser(history));
     yield put(actions.loadUserError());
@@ -36,7 +37,7 @@ function* loadUser({ history }) {
 function* loginUser({ payload }) {
   const { user, history } = payload;
   try {
-    const res = yield authInstance.post('auth/admin/signin', user);
+    const res = yield authInstance.post("auth/admin/signin", user);
 
     const userObj = {
       accessToken: res.data.accessToken,
@@ -45,18 +46,11 @@ function* loginUser({ payload }) {
       user: { name: res.data.name, email: res.data.email, role: res.data.roles[0] },
     };
 
-    yield call([localStorage, 'setItem'], 'authUser', JSON.stringify(userObj));
+    yield call([localStorage, "setItem"], "authUser", JSON.stringify(userObj));
     yield call(loadUser, { history });
   } catch (error) {
-    let message = error.message;
-
-    if (error.status !== 500) {
-      message = 'Las credenciales de acceso no son correctas.';
-    }
-
-    yield put(actions.apiError(message));
-    yield delay(5000);
-    yield put(actions.clearAlert());
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -64,13 +58,13 @@ function* logoutUser({ payload }) {
   const { history } = payload;
 
   try {
-    yield authInstance.post('/auth/logout');
+    yield authInstance.post("/auth/logout");
   } catch (error) {
     console.log(error);
   }
 
-  yield localStorage.removeItem('authUser');
-  yield history && history.push('/');
+  yield localStorage.removeItem("authUser");
+  yield history && history.push("/");
   yield put(actions.logoutUserSuccess());
 }
 

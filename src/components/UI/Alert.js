@@ -1,16 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Alert } from "reactstrap";
 
-const CustomAlert = ({ color, error }) => {
-  const [visible, setVisible] = useState(true);
+import { removeAlert } from "../../store/actions";
 
-  const closeHandler = () => setVisible(false);
+export const CustomAlert = ({ className }) => {
+  const dispatch = useDispatch();
+  const { color, msg, show } = useSelector((state) => state.Alert);
+
+  useEffect(() => {
+    let timeout;
+    if (show) {
+      timeout = setTimeout(() => dispatch(removeAlert()), 4000);
+    } else {
+      if (timeout) clearTimeout(timeout);
+    }
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [show, dispatch]);
 
   return (
-    <Alert color={color} isOpen={visible} toggle={closeHandler} className='custom-alert'>
-      {error}
+    <Alert color={color} isOpen={show} toggle={() => dispatch(removeAlert())} className={`max-w-xl ${className || ""}`}>
+      {msg}
     </Alert>
   );
 };
-
-export default CustomAlert;

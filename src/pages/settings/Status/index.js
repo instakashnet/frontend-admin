@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Alert } from 'reactstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { getStatus, editStatus } from '../../../store/actions';
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col } from "reactstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { getStatus, editStatus } from "../../../store/actions";
 
-import StatusTable from './StatusTable';
-import EditStatus from './EditStatus';
+import StatusTable from "./StatusTable";
+import EditStatus from "./EditStatus";
 
 const Status = () => {
   const dispatch = useDispatch();
@@ -19,17 +19,13 @@ const Status = () => {
   }, [dispatch]);
 
   return (
-    <div className='page-content'>
+    <div className="page-content">
       <Container fluid>
         <Row>
-          <Col lg='6'>
+          <Col lg="6">
             <StatusTable data={status} isLoading={isLoading} setEdit={setEditData} />
           </Col>
-          <Col lg='6'>
-            {error && <Alert color='danger'>{error}</Alert>}
-            {success && <Alert color='success'>{success}</Alert>}
-            {editData && <EditStatus isProcessing={isProcessing} edit={editStatusHandler} data={editData} />}
-          </Col>
+          <Col lg="6">{editData && <EditStatus isProcessing={isProcessing} edit={editStatusHandler} data={editData} />}</Col>
         </Row>
       </Container>
     </div>

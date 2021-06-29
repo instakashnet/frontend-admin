@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardBody, Badge, Col, Row, Container, Button } from "reactstrap";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getAllOrders } from "../../../services/orders/exchanges.service";
 
 //Components
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import Table from "../../../components/UI/Table";
+import { CustomAlert } from "../../../components/UI/Alert";
 
-const Transactions = () => {
+export const ExchangesScreen = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const tableRef = useRef();
   const [querySearch, setQuerySearch] = useState("");
-  console.log(querySearch);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -99,11 +101,12 @@ const Transactions = () => {
                 <Button onClick={() => tableRef.current.onQueryChange()} className="mb-4 btn-primary">
                   Actualizar operaciones
                 </Button>
+                <CustomAlert />
                 <Table
                   ref={tableRef}
                   columns={columns}
                   isLoading={isLoading}
-                  rows={(query) => getAllOrders(query, setIsLoading, setQuerySearch)}
+                  rows={(query) => getAllOrders(query, setIsLoading, setQuerySearch, dispatch)}
                   options={{ sorting: true, loadingType: "overlay", pageSize: 50, pageSizeOptions: [50, 100, 200] }}
                 />
               </CardBody>
@@ -114,5 +117,3 @@ const Transactions = () => {
     </div>
   );
 };
-
-export default React.memo(Transactions);

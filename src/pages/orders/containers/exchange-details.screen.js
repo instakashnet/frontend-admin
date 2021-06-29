@@ -15,11 +15,11 @@ import CompleteOrder from "../components/forms/complete-order.component";
 import EditOrder from "../components/forms/edit-order.component";
 import ReassignOrder from "../components/forms/reassign-order.component";
 import SetRevision from "../components/forms/set-revision.component";
-import Alert from "../../../components/UI/Alert";
 import LoadingPage from "../../LoadingPage";
-import ActionButtons from "../components/details/action-buttons.component";
+import { ActionButtons } from "../components/details/action-buttons.component";
+import { CustomAlert } from "../../../components/UI/Alert";
 
-const ExchangeDetails = (props) => {
+export const ExchangeDetailsScreen = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { id } = props.match.params;
@@ -27,8 +27,7 @@ const ExchangeDetails = (props) => {
   const [formType, setFormType] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [revision, setRevision] = useState(false);
-  const { details, isLoading, isProcessing, error, success } = useSelector((state) => state.CurrencyExchange);
-  const user = useSelector((state) => state.Login.user);
+  const { details, isLoading, isProcessing } = useSelector((state) => state.CurrencyExchange);
 
   const { exchanges, isLoading: dataLoading } = useSelector((state) => state.Clients);
 
@@ -60,8 +59,6 @@ const ExchangeDetails = (props) => {
     <div className="page-content">
       <Container fluid>
         {(isLoading || dataLoading) && <LoadingPage />}
-        {error && <Alert color="danger" error={error} />}
-        {success && <Alert color="success" error={success} />}
         {!isLoading && !dataLoading && (
           <>
             <Breadcrumbs title="Detalles del cambio" breadcrumbItem="Detalles del cambio de divisa" />
@@ -69,16 +66,17 @@ const ExchangeDetails = (props) => {
               <Col lg="8">
                 {details && (
                   <ActionButtons
-                    history={history}
-                    stateId={details.stateId}
-                    role={user.role}
+                    goBack={() => history.goBack()}
+                    statusId={details.stateId}
                     billCreated={details.billAssigned}
                     onDecline={onDeclineExchange}
                     onCreateInvoice={onCreateInvoice}
                     onChangeStatus={changeStatusHandler}
                     isProcessing={isProcessing}
+                    hasInvoice
                   />
                 )}
+                <CustomAlert className="max-w-xl" />
                 <UserInfo details={details} isLoading={isLoading} />
               </Col>
               {(details.stateId === 3 || details.stateId === 4) && (
@@ -86,19 +84,19 @@ const ExchangeDetails = (props) => {
               )}
             </Row>
             <Row className="mb-3">
-              <Col lg="8" className="d-flex justify-content-between items-center">
+              <Col lg="8" className="d-flex flex-wrap justify-content-between items-center">
                 {details && (
-                  <p className="mb-0">
-                    <span className="text-muted mr-1">Operador asignado: </span> {details.operatorName || "Sin asignar"}
-                  </p>
+                  <Badge className="py-2 font-size-15 w-full max-w-xs" style={{ color: "#fff", backgroundColor: details.stateColor }}>
+                    {`${details.stateNme} ${details.orderNotes ? " - EN REVISIÓN" : ""}`}
+                  </Badge>
                 )}
                 {details && (
                   <div className="flex flex-col items-end">
-                    <Badge className="py-2 font-size-15 px-5" style={{ color: "#fff", backgroundColor: details.stateColor }}>
-                      {`${details.stateNme} ${details.orderNotes ? " - EN REVISIÓN" : ""}`}
-                    </Badge>
+                    <p className="mb-2">
+                      <span className="text-muted mr-1">Operador asignado: </span> {details.operatorName || "Sin asignar"}
+                    </p>
                     {(details.stateId === 3 || details.stateId === 4) && (
-                      <button type="button" className="mt-2" onClick={() => setRevision((prev) => !prev)}>
+                      <button type="button" className="mt-1 border-2 border-gray-400 py-2 px-4 text-sm rounded-md" onClick={() => setRevision((prev) => !prev)}>
                         <Edit fontSize="small" className="mr-1" /> {details.orderNotes ? "Editar" : "Agregar"} revisión
                       </button>
                     )}
@@ -132,5 +130,3 @@ const ExchangeDetails = (props) => {
     </div>
   );
 };
-
-export default ExchangeDetails;

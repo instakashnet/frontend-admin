@@ -1,25 +1,26 @@
 import React from "react";
+import { Spinner } from "reactstrap";
 
-const ActionButtons = ({ history, stateId, role, billCreated, onDecline, onCreateInvoice, onChangeStatus, isProcessing }) => {
+export const ActionButtons = ({ goBack, statusId, billCreated, onDecline, onCreateInvoice, onChangeStatus, isProcessing, hasInvoice = false }) => {
   return (
     <div className="d-flex align-items-center justify-content-between">
-      <button type="button" onClick={() => history.goBack()} className="btn btn-blue waves-effect btn-label waves-light">
+      <button type="button" onClick={goBack} className="btn btn-blue waves-effect btn-label waves-light">
         <i className="fas fa-arrow-left label-icon"></i> Regresar
       </button>
       <div>
-        {(stateId === 2 || stateId === 3 || stateId === 4) && role !== "ROLE_OPERATOR" && (
+        {(statusId === 2 || statusId === 3 || statusId === 4) && (
           <button type="button" disabled={isProcessing} onClick={onDecline} className="btn btn-danger waves-effect btn-label waves-light">
-            <i className="fas fa-times label-icon"></i> Cancelar
+            <ButtonInfo icon="fa-times" info="Cancelar" isProcessing={isProcessing} />
           </button>
         )}
-        {(stateId === 3 || stateId === 4) && (
-          <button type="button" disabled={isProcessing} onClick={onChangeStatus} className="btn btn-primary waves-effect ml-3 btn-label waves-light">
-            <i className="fas fa-check label-icon"></i> {stateId === 3 ? "Validar" : "Aprobar"}
+        {(statusId === 3 || statusId === 4) && (
+          <button type="button" disabled={isProcessing} onClick={onChangeStatus} className="btn btn-success waves-effect ml-3 btn-label waves-light">
+            <ButtonInfo icon="fa-check" info={statusId === 3 ? "Validar" : "Aprobar"} isProcessing={isProcessing} />
           </button>
         )}
-        {stateId === 6 && !billCreated && (
-          <button type="button" disabled={isProcessing} onClick={onCreateInvoice} className="btn btn-primary waves-effect btn-label waves-light">
-            <i className="fas fa-file-invoice label-icon"></i> Generar factura
+        {statusId === 6 && !billCreated && hasInvoice && (
+          <button type="button" disabled={isProcessing} onClick={onCreateInvoice} className="btn btn-success waves-effect btn-label waves-light">
+            <ButtonInfo icon="fa-file-invoice" info="Generar factura" isProcessing={isProcessing} />
           </button>
         )}
       </div>
@@ -27,4 +28,11 @@ const ActionButtons = ({ history, stateId, role, billCreated, onDecline, onCreat
   );
 };
 
-export default ActionButtons;
+const ButtonInfo = ({ icon, info, isProcessing }) =>
+  isProcessing ? (
+    <Spinner size="sm" />
+  ) : (
+    <>
+      <i className={`fas ${icon} label-icon`} /> {info}
+    </>
+  );

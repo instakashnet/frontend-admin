@@ -1,4 +1,4 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from "./actionTypes";
 
 export const getRecentExchanges = (token) => ({
   type: actionTypes.GET_RECENT_ORDERS_INIT,
@@ -102,11 +102,6 @@ export const setRevisionSuccess = () => ({
   type: actionTypes.SET_REVISION_SUCCESS,
 });
 
-export const clearAlert = () => ({
-  type: actionTypes.CLEAR_ALERT,
-});
-
-export const apiError = (msg) => ({
+export const apiError = () => ({
   type: actionTypes.API_ERROR,
-  payload: msg,
 });

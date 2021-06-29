@@ -21,11 +21,6 @@ export const editScheduleSuccess = (msg) => ({
   payload: msg,
 });
 
-export const clearAlert = () => ({
-  type: actionTypes.CLEAR_ALERT,
-});
-
-export const apiError = (msg) => ({
+export const apiError = () => ({
   type: actionTypes.API_ERROR,
-  payload: msg,
 });

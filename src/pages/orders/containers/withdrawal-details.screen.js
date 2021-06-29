@@ -7,8 +7,10 @@ import UserInfo from "../components/details/user-details.component";
 import WithdrawalInfo from "../components/details/withdrawal/withdrawal-info.component";
 import LoadingPage from "../../LoadingPage";
 import CompleteOrder from "../components/forms/complete-order.component";
+import { ActionButtons } from "../components/details/action-buttons.component";
+import { CustomAlert } from "../../../components/UI/Alert";
 
-const Details = ({ match, history }) => {
+export const WithdrawalDetailsScreen = ({ match, history }) => {
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
   const { id } = match.params;
@@ -31,22 +33,14 @@ const Details = ({ match, history }) => {
       <Container fluid>
         <Row>
           <Col lg="8" xl="6">
-            <div className="d-flex align-items-center justify-content-between">
-              <button type="button" onClick={() => history.goBack()} className="btn btn-blue waves-effect btn-label waves-light">
-                <i className="fas fa-arrow-left label-icon"></i> Regresar
-              </button>
-              {details.statusID !== 5 && details.statusID !== 6}
-              {details.statusID === 4 && (
-                <div className="flex items-center">
-                  <button type="button" onClick={declineWithdrawalHandler} className="btn btn-danger waves-effect btn-label mr-3 waves-light" disabled={isProcessing}>
-                    <i className="fas fa-times label-icon"></i> Cancelar
-                  </button>
-                  <button type="button" onClick={() => setModal(true)} className="btn btn-primary waves-effect btn-label waves-light" disabled={isProcessing}>
-                    <i className="fas fa-check label-icon"></i> Aprobar
-                  </button>
-                </div>
-              )}
-            </div>
+            <ActionButtons
+              goBack={() => history.goBack()}
+              statusId={details.statusID}
+              onDecline={declineWithdrawalHandler}
+              onChangeStatus={() => setModal(true)}
+              isProcessing={isProcessing}
+            />
+            <CustomAlert />
             <UserInfo details={details} />
           </Col>
         </Row>
@@ -72,5 +66,3 @@ const Details = ({ match, history }) => {
     </div>
   );
 };
-
-export default Details;

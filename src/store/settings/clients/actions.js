@@ -1,4 +1,4 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from "./actionTypes";
 
 export const getClientsInit = () => ({
   type: actionTypes.GET_CLIENTS_INIT,
@@ -99,10 +99,6 @@ export const disableClientInit = (userId, active) => ({
 
 export const disableClientSuccess = () => ({
   type: actionTypes.DISABLE_CLIENT_SUCCESS,
-});
-
-export const clearAlert = () => ({
-  type: actionTypes.CLEAR_ALERT,
 });
 
 export const apiError = (msg) => ({

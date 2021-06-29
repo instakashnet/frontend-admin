@@ -3,7 +3,6 @@ import * as actionTypes from "./actionTypes";
 const initialState = {
   user: null,
   token: null,
-  error: "",
   isLoading: false,
   isProcessing: false,
 };
@@ -31,9 +30,7 @@ const login = (state = initialState, action) => {
     case actionTypes.LOAD_USER_FAILED:
       return { ...state, isLoading: false };
     case actionTypes.API_ERROR:
-      return { ...state, error: action.payload, isLoading: false, isProcessing: false };
-    case actionTypes.CLEAR_ALERT:
-      return { ...state, error: "" };
+      return { ...state, isLoading: false, isProcessing: false };
     default:
       return state;
   }

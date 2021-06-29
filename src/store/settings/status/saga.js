@@ -1,4 +1,4 @@
-import { put, all, takeEvery, fork, delay, call } from "redux-saga/effects";
+import { put, all, takeEvery, fork, call } from "redux-saga/effects";
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
 import { exchangeInstance } from "../../../helpers/AuthType/axios";
@@ -22,9 +22,6 @@ function* editStatus({ values, id, setState }) {
     }
   } catch (error) {
     yield put(actions.apiError(error.message));
-  } finally {
-    yield delay(4000);
-    yield put(actions.clearAlert());
   }
 }
 

@@ -1,5 +1,5 @@
-import * as types from './types';
-import { EDIT_INTERPLAZA_INIT, EDIT_INTERPLAZA_SUCCESS } from '../../settings/clients/actionTypes';
+import * as types from "./types";
+import { EDIT_INTERPLAZA_INIT, EDIT_INTERPLAZA_SUCCESS } from "../../settings/clients/actionTypes";
 
 const initialState = {
   withdrawals: [],
@@ -10,6 +10,10 @@ const initialState = {
 
 const withdrawalsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.GET_WITHDRAWS_INIT:
+    case types.GET_WITHDRAW_DETAILS_INIT:
+      return { ...state, isLoading: true };
+
     case EDIT_INTERPLAZA_INIT:
     case types.CHANGE_WITHDRAW_STATUS_INIT:
       return { ...state, isProcessing: true };
@@ -19,10 +23,12 @@ const withdrawalsReducer = (state = initialState, action) => {
 
     case types.GET_WITHDRAWS_SUCCESS:
       return { ...state, isLoading: false, withdrawals: action.withdrawals };
-    case types.GET_WITHDRAW_DETAILS_INIT:
-      return { ...state, isLoading: true };
+
     case types.GET_WITHDRAW_DETAILS_SUCCESS:
       return { ...state, details: action.details, isLoading: false };
+
+    case types.WITHDRAWS_ERROR:
+      return { ...state, isLoading: false, isProcessing: false };
     default:
       return state;
   }

@@ -1,7 +1,7 @@
 body {
   font-size: 15px;
   color: #fff;
-  font-family: 'Open Sans', sans-serif !important;
+  font-family: "Open Sans", sans-serif !important;
 }
 
 .apexcharts-theme-light {
@@ -67,7 +67,9 @@ body {
 .btn-primary {
   background-color: #00ad97;
   border-color: #00ad97;
-  color: #fff;
+  color: #fff !important;
+  width: 100%;
+  max-width: 12rem;
 
   &:hover {
     background-color: darken($color: #00ad97, $amount: 5);
@@ -128,7 +130,7 @@ body {
 }
 
 .MuiTableCell-root {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 .status-color {
@@ -153,6 +155,13 @@ body {
 
 .alert {
   font-size: 0.85rem;
+}
+
+.fixed-alert {
+  position: fixed;
+  bottom: 0.7rem;
+  right: 1rem;
+  z-index: 9999;
 }
 
 .custom-button {
@@ -196,11 +205,4 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.custom-alert {
-  position: fixed;
-  bottom: 35px;
-  z-index: 9999;
-  right: 35px;
 }

@@ -1,6 +1,7 @@
 import { put, all, fork, takeEvery, call } from "redux-saga/effects";
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
+import { setAlert } from "../../actions";
 import { exchangeInstance } from "../../../helpers/AuthType/axios";
 
 function* getSchedule() {
@@ -8,19 +9,23 @@ function* getSchedule() {
     const res = yield exchangeInstance.get("/schedules");
     if (res.status === 200) yield put(actions.getScheduleSuccess(res.data));
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(actions.apiError());
+    yield put(setAlert("danger", error.message));
   }
 }
 
 function* editSchedule({ values, id, setState }) {
   try {
-    const res = yield exchangeInstance.put(`/schedules/${id}`, values);
+    const res = yield exchangeInstance.put(`/schedules/${id}`, values, { timeout: 1000 });
     if (res.status === 200) {
+      yield put(actions.getSchedule());
       yield call(setState, false);
-      yield put(actions.editScheduleSuccess("Horario actualizado correctamente."));
+      yield put(setAlert("success", "Horario actualizado correctamente."));
+      yield put(actions.editScheduleSuccess());
     }
   } catch (error) {
-    yield put(actions.apiError("Ha ocurrido un error actualizando el horario. Por favor contacta a soporte"));
+    yield put(actions.apiError());
+    yield put(setAlert("danger", error.message));
   }
 }
 

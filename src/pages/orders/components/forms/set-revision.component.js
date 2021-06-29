@@ -25,7 +25,7 @@ const Revision = ({ note, orderId, setRevision, isProcessing }) => {
           <form onSubmit={formik.handleSubmit} className="text-center">
             <Textarea name="note" value={formik.values.note} onChange={formik.handleChange} onBlur={formik.handleBlur} />
             <div className="flex items-center justify-center mt-2">
-              <Button type="submit" disabled={!formik.isValid || isProcessing} className="btn-primary mr-2">
+              <Button type="submit" disabled={!formik.isValid || isProcessing} className="btn-success mr-2">
                 {note ? "Editar nota" : "Agregar nota"}
               </Button>
               <Button type="button" className="btn-danger" onClick={deleteNoteHandler}>
