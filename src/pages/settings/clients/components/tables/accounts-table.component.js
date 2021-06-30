@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getClientAccounts } from "../../../../store/actions";
+import { getClientAccounts } from "../../../../../store/actions";
 import { Card, CardBody } from "reactstrap";
 
-import Table from "../../../../components/UI/Table";
+import Table from "../../../../../components/UI/Table";
 
 const AccountsTable = ({ userId }) => {
   const dispatch = useDispatch();

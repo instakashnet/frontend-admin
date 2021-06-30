@@ -1,6 +1,7 @@
-import { put, all, fork, takeEvery, takeLatest, call, delay } from "redux-saga/effects";
+import { put, all, fork, takeEvery, takeLatest, call } from "redux-saga/effects";
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
+import { setAlert } from "../../actions";
 import Swal from "sweetalert2";
 import fileDownload from "js-file-download";
 import { exchangeInstance, authInstance, accountsInstance } from "../../../helpers/AuthType/axios";
@@ -12,7 +13,8 @@ function* getClients() {
     const res = yield authInstance.get("/admin/users?type=client");
     if (res.status === 200) yield put(actions.getClientsSuccess(res.data.users));
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -21,8 +23,8 @@ function* getClientDetails({ userId }) {
     const res = yield authInstance.get(`/admin/users/${userId}`);
     if (res.status === 200) yield put(actions.getClientDetailsSuccess(res.data.user));
   } catch (error) {
-    yield put(actions.apiError(error.message));
-    yield delay(4000);
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -31,7 +33,8 @@ function* getClientExchanges({ userId }) {
     const res = yield exchangeInstance.get(`/order/admin/user/${userId}`);
     if (res.status === 200) yield put(actions.getClientExchangesSuccess(res.data));
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -45,7 +48,8 @@ function* addClientProfile({ values, closeModal }) {
       yield Swal.fire("Exitoso", "El perfil fue agregado correctamente.", "success");
     }
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -59,7 +63,8 @@ function* editClientInfo({ userId, values, closeModal }) {
       yield Swal.fire("Exitoso", "Los datos del usuario fueron editados correctamente.", "success");
     }
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -73,7 +78,8 @@ function* editClientProfile({ values, closeModal }) {
       yield Swal.fire("Exitoso", "Los datos del perfil fueron editados correctamente.", "success");
     }
   } catch (error) {
-    yield put(actions.apiError("Ha ocurrido un error editando los datos del perfil. Por favor contacta a soporte."));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -82,7 +88,8 @@ function* getClientAccounts({ id }) {
     const res = yield accountsInstance.get(`/admin/accounts/${id}`);
     yield put(actions.getClientAccountsSuccess(res.data.accounts));
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -97,7 +104,8 @@ function* downloadClients({ fileType }) {
     const res = yield authInstance.get(URL, { responseType: "arraybuffer" });
     fileDownload(res.data, `${fileType}.xlsx`);
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -112,7 +120,8 @@ function* editInterplaza({ values, detailsType, id, setState }) {
       yield put(actions.editInterplazaSuccess());
     }
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -136,7 +145,8 @@ function* disableClient({ userId, active }) {
       }
     } else yield put(actions.apiError());
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 

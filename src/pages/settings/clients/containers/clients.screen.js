@@ -5,7 +5,7 @@ import Breadcrumbs from "../../../../components/Common/Breadcrumb";
 import CompletedUsers from "../components/tables/completed-clients.component";
 import NotCompletedUsers from "../components/tables/not-completed-clients.component";
 
-const ClientsScreen = () => {
+export const ClientsScreen = () => {
   return (
     <div className="page-content">
       <div className="container-fluid">
@@ -24,5 +24,3 @@ const ClientsScreen = () => {
     </div>
   );
 };
-
-export default ClientsScreen;

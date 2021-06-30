@@ -1,24 +1,24 @@
-import React from 'react';
-import { Card, CardBody } from 'reactstrap';
+import React from "react";
+import { Card, CardBody } from "reactstrap";
 
-import Breadcrumbs from '../../../components/Common/Breadcrumb';
-import Table from '../../../components/UI/Table';
+import Breadcrumbs from "../../../../components/Common/Breadcrumb";
+import Table from "../../../../components/UI/Table";
 
 const StatusTable = (props) => {
   const data = {
     columns: [
       {
-        field: 'id',
-        title: 'ID',
+        field: "id",
+        title: "ID",
       },
       {
-        field: 'name',
-        title: 'Nombre',
+        field: "name",
+        title: "Nombre",
       },
       {
-        field: 'color',
-        title: 'Color',
-        render: (rowData) => <span className='status-color' style={{ backgroundColor: rowData.color }} />,
+        field: "color",
+        title: "Color",
+        render: (rowData) => <span className="status-color" style={{ backgroundColor: rowData.color }} />,
       },
     ],
     rows:
@@ -33,7 +33,7 @@ const StatusTable = (props) => {
 
   return (
     <>
-      <Breadcrumbs title='status' breadcrumbItem='Estados transacciones' />
+      <Breadcrumbs title="status" breadcrumbItem="Estados transacciones" />
       <Card>
         <CardBody>
           <Table
@@ -41,9 +41,9 @@ const StatusTable = (props) => {
             rows={data.rows}
             actions={[
               {
-                icon: 'edit',
-                iconProps: { style: { color: '#f1b44c' } },
-                tooltip: 'Editar estado',
+                icon: "edit",
+                iconProps: { style: { color: "#f1b44c" } },
+                tooltip: "Editar estado",
                 onClick: (e, rowData) => props.setEdit(rowData),
               },
             ]}

@@ -3,7 +3,7 @@ import { lazily } from "react-lazily";
 import { Redirect } from "react-router-dom";
 
 // Authentication related pages
-import { LoginScreen, ScheduleScreen, CouponsScreen } from "../pages";
+import { LoginScreen, ScheduleScreen, CouponsScreen, BanksScreen, ClientsScreen, StatusScreen } from "../pages";
 
 // LAZY IMPORTS
 const { DashboardScreen } = lazily(() => import("../pages/Dashboard/dashboard.screen"));
@@ -13,6 +13,7 @@ const { ExchangesScreen } = lazily(() => import("../pages/orders/containers/exch
 const { ExchangeDetailsScreen } = lazily(() => import("../pages/orders/containers/exchange-details.screen"));
 const { WithdrawalsScreen } = lazily(() => import("../pages/orders/containers/withdrawals.screen"));
 const { WithdrawalDetailsScreen } = lazily(() => import("../pages/orders/containers/withdrawal-details.screen"));
+const { ClientDetailsScreen } = lazily(() => import("../pages/settings/clients/containers/client-details.screen"));
 
 // Users
 /* const Clients = React.lazy(() => import("../pages/settings/clients/containers/clients.screen"));
@@ -45,26 +46,10 @@ const authProtectedRoutes = [
   // Settings
   { path: "/schedule", component: ScheduleScreen },
   { path: "/coupons", component: CouponsScreen },
-
-  /*   // Users
-  { path: "/registered-users", component: Clients },
-  { path: "/registered-users/:id", component: ClientDetails },
-  // Transactions modules
-  
-  ,
-  
-  
-  // { path: '/cash-advances', component: CashAdvances },
-
-  // System configuration
-  { path: "/forex", component: Forex },
-  
-  { path: "/status", component: Status },
-  
-  // Settings
-  { path: "/banks", component: Banks },
-  { path: "/countries", component: Countries },
-  { path: "/schedule", component: Schedule }, */
+  { path: "/banks", component: BanksScreen },
+  { path: "/registered-users", component: ClientsScreen },
+  { path: "/registered-users/:id", component: ClientDetailsScreen },
+  { path: "/status", component: StatusScreen },
 
   // // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },

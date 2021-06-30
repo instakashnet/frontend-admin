@@ -1,12 +1,10 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from "./actionTypes";
 const initialState = {
   clients: [],
   details: null,
   accounts: [],
   exchanges: [],
   widthdrawals: [],
-  error: '',
-  success: '',
   isLoading: true,
   isProcessing: false,
 };
@@ -42,11 +40,8 @@ export default function clientsReducer(state = initialState, action) {
     case actionTypes.DISABLE_CLIENT_SUCCESS:
       return { ...state, isProcessing: false };
 
-    case actionTypes.CLEAR_ALERT:
-      return { ...state, success: '', error: '' };
-
     case actionTypes.API_ERROR:
-      return { ...state, error: payload, isProcessing: false, isLoading: false };
+      return { ...state, isProcessing: false, isLoading: false };
 
     default:
       return state;

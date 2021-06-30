@@ -101,7 +101,6 @@ export const disableClientSuccess = () => ({
   type: actionTypes.DISABLE_CLIENT_SUCCESS,
 });
 
-export const apiError = (msg) => ({
+export const apiError = () => ({
   type: actionTypes.API_ERROR,
-  payload: msg,
 });
