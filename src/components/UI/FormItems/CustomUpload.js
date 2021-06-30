@@ -25,33 +25,33 @@ const CustomUpload = (props) => {
 
   return (
     <>
-      <Dropzone onDrop={onDropHandler} multiple={false} accept='application/pdf'>
+      <Dropzone onDrop={onDropHandler} multiple={false} accept="application/pdf, image/jpeg, image/png">
         {({ getRootProps, getInputProps }) => (
-          <div className='dropzone'>
-            <div className='dz-message needsclick' {...getRootProps()}>
+          <div className="dropzone">
+            <div className="dz-message needsclick" {...getRootProps()}>
               <input {...getInputProps()} />
-              <div className='mb-2'>
-                <i className='display-4 text-muted bx bxs-cloud-upload'></i>
+              <div className="mb-2">
+                <i className="display-4 text-muted bx bxs-cloud-upload"></i>
               </div>
               <h4>{props.label}</h4>
             </div>
           </div>
         )}
       </Dropzone>
-      <div className='dropzone-previews' id='file-previews'>
-        <Card className='mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete'>
-          <div className='p-2'>
-            <Row className='align-items-center'>
+      <div className="dropzone-previews" id="file-previews">
+        <Card className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete">
+          <div className="p-2">
+            <Row className="align-items-center">
               {selectedFile && (
                 <>
-                  <Col className='col-auto'>
-                    <span className='bx bxs-file-pdf bx-md' />
+                  <Col className="col-auto">
+                    <span className="bx bxs-file-pdf bx-md" />
                   </Col>
                   <Col>
-                    <Link to='#' className='text-muted font-weight-bold'>
+                    <Link to="#" className="text-muted font-weight-bold">
                       {selectedFile.name}
                     </Link>
-                    <p className='mb-0'>
+                    <p className="mb-0">
                       <strong>{formattedSize}</strong>
                     </p>
                   </Col>
@@ -61,7 +61,7 @@ const CustomUpload = (props) => {
           </div>
         </Card>
       </div>
-      {props.error && props.touched && <span className='invalid-feedback'>{props.error}</span>}
+      {props.error && props.touched && <span className="invalid-feedback">{props.error}</span>}
     </>
   );
 };
