@@ -19,30 +19,26 @@ import LoadingPage from "../../LoadingPage";
 import { ActionButtons } from "../components/details/action-buttons.component";
 
 export const ExchangeDetailsScreen = (props) => {
+  const { id } = props.match.params;
   const dispatch = useDispatch();
   const history = useHistory();
-  const { id } = props.match.params;
   const [modal, setModal] = useState(false);
   const [formType, setFormType] = useState(null);
-  const [showForm, setShowForm] = useState(false);
-  const [revision, setRevision] = useState(false);
-  const { details, isLoading, isProcessing } = useSelector((state) => state.CurrencyExchange);
 
+  const { details, isLoading, isProcessing } = useSelector((state) => state.CurrencyExchange);
   const { exchanges, isLoading: dataLoading } = useSelector((state) => state.Clients);
 
   const showFormHandler = (formType = null) => {
-    setShowForm((prev) => !prev);
+    setModal((prev) => !prev);
     setFormType(formType);
   };
-
-  const toggleModal = () => setModal((prev) => !prev);
 
   const changeStatusHandler = () => {
     if (details.stateId === 3) return dispatch(validateExchange(details.id, history));
     setModal(true);
   };
   const onDeclineExchange = () => dispatch(declineExchange(details.id, history));
-  const onApproveExchange = (values) => dispatch(approveExchange(id, values, toggleModal));
+  const onApproveExchange = (values) => dispatch(approveExchange(id, values, showFormHandler));
   const onCreateInvoice = () => dispatch(createInvoice(id));
 
   useEffect(() => {
@@ -51,8 +47,10 @@ export const ExchangeDetailsScreen = (props) => {
 
   let FormComponent;
 
-  if (formType === "edit") FormComponent = <EditOrder details={details} onShowForm={setShowForm} />;
-  if (formType === "reassign") FormComponent = <ReassignOrder details={details} onShowForm={setShowForm} isProcessing={isProcessing} />;
+  if (formType === "edit") FormComponent = <EditOrder details={details} onShowForm={showFormHandler} />;
+  if (formType === "reassign") FormComponent = <ReassignOrder details={details} onShowForm={showFormHandler} isProcessing={isProcessing} />;
+  if (formType === "complete") FormComponent = <CompleteOrder isProcessing={isProcessing} orderId={id} onShowForm={showFormHandler} onApprove={onApproveExchange} />;
+  if (formType === "revision") FormComponent = <SetRevision note={details.orderNotes} isProcessing={isProcessing} onShowForm={showFormHandler} orderId={id} />;
 
   return (
     <div className="page-content">
@@ -77,9 +75,6 @@ export const ExchangeDetailsScreen = (props) => {
                 )}
                 <UserInfo details={details} isLoading={isLoading} />
               </Col>
-              {(details.stateId === 3 || details.stateId === 4) && (
-                <Col lg="4">{(revision || details.orderNotes) && <SetRevision note={details.orderNotes} isProcessing={isProcessing} setRevision={setRevision} orderId={id} />}</Col>
-              )}
             </Row>
             <Row className="mb-3">
               <Col lg="8" className="d-flex flex-wrap justify-content-between items-center">
@@ -94,7 +89,7 @@ export const ExchangeDetailsScreen = (props) => {
                       <span className="text-muted mr-1">Operador asignado: </span> {details.operatorName || "Sin asignar"}
                     </p>
                     {(details.stateId === 3 || details.stateId === 4) && (
-                      <button type="button" className="mt-1 border-2 border-gray-400 py-2 px-4 text-sm rounded-md" onClick={() => setRevision((prev) => !prev)}>
+                      <button type="button" className="mt-1 border-2 border-gray-400 py-2 px-4 text-sm rounded-md" onClick={() => showFormHandler("revision")}>
                         <Edit fontSize="small" className="mr-1" /> {details.orderNotes ? "Editar" : "Agregar"} revisión
                       </button>
                     )}
@@ -109,7 +104,6 @@ export const ExchangeDetailsScreen = (props) => {
               <Col lg="5" xl="4">
                 <Received details={details} onShowForm={showFormHandler} isProcessing={isProcessing} isLoading={isLoading} />
               </Col>
-              {showForm && <Col lg="5">{FormComponent}</Col>}
             </Row>
             <Row>
               <Col lg="10" xl="8">
@@ -119,11 +113,9 @@ export const ExchangeDetailsScreen = (props) => {
           </>
         )}
       </Container>
-      <Modal isOpen={modal} role="dialog" autoFocus={true} centered={true} tabIndex="-1" toggle={toggleModal}>
-        <ModalHeader toggle={toggleModal}>Adjunta el comprobante de pago</ModalHeader>
-        <ModalBody>
-          <CompleteOrder isProcessing={isProcessing} orderId={id} onApprove={onApproveExchange} />
-        </ModalBody>
+      <Modal isOpen={modal} role="dialog" autoFocus centered tabIndex="-1" toggle={showFormHandler}>
+        <ModalHeader toggle={showFormHandler}>Adjunta el comprobante de pago</ModalHeader>
+        <ModalBody>{FormComponent}</ModalBody>
       </Modal>
     </div>
   );
