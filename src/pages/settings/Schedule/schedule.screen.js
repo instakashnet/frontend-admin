@@ -5,7 +5,6 @@ import { getSchedule, editSchedule } from "../../../store/actions";
 
 import ScheduleTable from "./components/schedule-table.component";
 import EditSchedule from "./components/forms/edit-schedule.component";
-import { CustomAlert } from "../../../components/UI/Alert";
 
 export const ScheduleScreen = () => {
   const dispatch = useDispatch();
@@ -25,10 +24,7 @@ export const ScheduleScreen = () => {
           <Col md="8">
             <ScheduleTable edit={setEditData} data={schedule} isLoading={isLoading} />
           </Col>
-          <Col md="4">
-            {editData && <EditSchedule data={editData} onEdit={editScheduleHandler} isProcessing={isProcessing} />}
-            <CustomAlert />
-          </Col>
+          <Col md="4">{editData && <EditSchedule data={editData} onEdit={editScheduleHandler} isProcessing={isProcessing} />}</Col>
         </Row>
       </Container>
     </div>

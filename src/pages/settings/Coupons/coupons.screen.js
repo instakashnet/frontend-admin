@@ -7,7 +7,6 @@ import { authInstance } from "../../../helpers/AuthType/axios";
 import CouponsList from "./components/coupons-table.component";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import EditCoupon from "./components/forms/edit-coupon.component";
-import { CustomAlert } from "../../../components/UI/Alert";
 
 export const CouponsScreen = () => {
   const [showForm, setShowForm] = useState(false);
@@ -63,7 +62,6 @@ export const CouponsScreen = () => {
               <EditCoupon couponId={couponId} isProcessing={isProcessing} clients={allClients} />
             </Col>
           )}
-          <CustomAlert className="fixed-alert" />
         </Row>
       </Container>
     </div>

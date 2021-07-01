@@ -1,6 +1,5 @@
 import * as actionTypes from "./actionTypes";
 const initialState = {
-  clients: [],
   details: null,
   accounts: [],
   exchanges: [],
@@ -21,9 +20,6 @@ export default function clientsReducer(state = initialState, action) {
     case actionTypes.EDIT_INFO_INIT:
     case actionTypes.DISABLE_CLIENT_INIT:
       return { ...state, isProcessing: true };
-
-    case actionTypes.GET_CLIENTS_SUCCESS:
-      return { ...state, clients: action.clients, isLoading: false };
 
     case actionTypes.GET_CLIENT_DETAILS_SUCCESS:
       return { ...state, details: payload.data, isLoading: false };

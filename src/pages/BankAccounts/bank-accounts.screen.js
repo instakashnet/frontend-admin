@@ -7,7 +7,6 @@ import AccountsTable from "./components/accounts-table.component";
 import AddAccount from "./components/forms/add-account.component";
 import EditAccount from "./components/forms/edit-account.component";
 import EditBalance from "./components/forms/edit-balance.component";
-import { CustomAlert } from "../../components/UI/Alert";
 
 export const BankAccountsScreen = () => {
   const [formType, setFormType] = useState("");
@@ -48,13 +47,6 @@ export const BankAccountsScreen = () => {
             <AccountsTable isLoading={isLoading} accounts={accounts} onShowForm={showFormHandler} />
           </Col>
           <Col lg="4">{showForm && FormComponent}</Col>
-        </Row>
-        <Row>
-          <Col>
-            <div className="flex justify-center">
-              <CustomAlert />
-            </div>
-          </Col>
         </Row>
       </Container>
     </div>

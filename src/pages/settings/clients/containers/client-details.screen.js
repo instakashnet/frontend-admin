@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { disableClientInit, getClientDetails } from "../../../../store/actions";
 
-import { CustomAlert } from "../../../../components/UI/Alert";
 import Breadcrumbs from "../../../../components/Common/Breadcrumb";
 import LoadingPage from "../../../LoadingPage";
 import ExchangesTable from "../components/tables/exchanges-table.component";
@@ -102,8 +101,6 @@ export const ClientDetailsScreen = (props) => {
             <ModalHeader toggle={closeModal}>Editar perfil</ModalHeader>
             <ModalBody>{ModalComponent}</ModalBody>
           </Modal>
-
-          <CustomAlert className="fixed-alert" />
         </>
       )}
     </div>

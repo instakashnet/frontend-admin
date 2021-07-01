@@ -17,7 +17,6 @@ import ReassignOrder from "../components/forms/reassign-order.component";
 import SetRevision from "../components/forms/set-revision.component";
 import LoadingPage from "../../LoadingPage";
 import { ActionButtons } from "../components/details/action-buttons.component";
-import { CustomAlert } from "../../../components/UI/Alert";
 
 export const ExchangeDetailsScreen = (props) => {
   const dispatch = useDispatch();
@@ -76,7 +75,6 @@ export const ExchangeDetailsScreen = (props) => {
                     hasInvoice
                   />
                 )}
-                <CustomAlert className="max-w-xl" />
                 <UserInfo details={details} isLoading={isLoading} />
               </Col>
               {(details.stateId === 3 || details.stateId === 4) && (

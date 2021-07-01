@@ -77,9 +77,17 @@ body {
   }
 }
 
+.btn-action {
+  background-color: #556ee6;
+  color: #fff !important;
+  border: none;
+  width: 100%;
+  max-width: 8rem;
+}
+
 .btn-blue {
   background-color: #556ee6;
-  color: #fff;
+  color: #fff !important;
 }
 
 .text-blue {

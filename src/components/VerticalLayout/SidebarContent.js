@@ -6,9 +6,6 @@ import MetisMenu from "metismenujs";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-//i18n
-import { withNamespaces } from "react-i18next";
-
 const SidebarContent = (props) => {
   const { type, location } = props;
 
@@ -66,23 +63,23 @@ const SidebarContent = (props) => {
     <React.Fragment>
       <div id="sidebar-menu">
         <ul className="metismenu list-unstyled" id="side-menu">
-          <li className="menu-title">{props.t("Principal")}</li>
+          <li className="menu-title">{"Principal"}</li>
 
           <li>
             <Link to="/dashboard">
               <i className="bx bx-home-circle"></i>
-              <span>{props.t("Actividad")}</span>
+              <span>{"Actividad"}</span>
             </Link>
           </li>
 
           {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER" || user.role === "ROLE_MANAGER") && (
             <>
-              <li className="menu-title">{props.t("Datos del sistema")}</li>
+              <li className="menu-title">{"Datos del sistema"}</li>
 
               <li>
                 <Link to="/bank-accounts">
                   <i className="bx bx-wallet"></i>
-                  <span>{props.t("Cuentas de la empresa")}</span>
+                  <span>{"Cuentas de la empresa"}</span>
                 </Link>
               </li>
             </>
@@ -92,7 +89,7 @@ const SidebarContent = (props) => {
             <li>
               <Link to="/forex" className=" waves-effect">
                 <i className="bx bx-dollar-circle"></i>
-                <span>{props.t("Precio del dolar")}</span>
+                <span>{"Precio del dolar"}</span>
               </Link>
             </li>
           )}
@@ -105,46 +102,46 @@ const SidebarContent = (props) => {
             user.role === "ROLE_MANAGER" ||
             user.role === "ROLE_SIGNATORY") ? (
             <>
-              <li className="menu-title">{props.t("Cambios de divisa")}</li>
+              <li className="menu-title">{"Cambios de divisa"}</li>
 
               <li>
                 <Link to="/exchanges/all" className=" waves-effect">
                   <i className="bx bx-list-check"></i>
-                  {/* <span className='badge badge-pill badge-warning float-right'>{props.t("4")}</span> */}
-                  <span>{props.t("Operaciones recibidas")}</span>
+                  {/* <span className='badge badge-pill badge-warning float-right'>{"4"}</span> */}
+                  <span>{"Operaciones recibidas"}</span>
                 </Link>
               </li>
 
               {/* <li>
                 <Link to='/exchange-transaction-limits?type=currencyExchange' className=' waves-effect'>
                   <i className='bx bx-tachometer'></i>
-                  <span>{props.t("Limites por transacción")}</span>
+                  <span>{"Limites por transacción"}</span>
                 </Link>
               </li> */}
-              <li className="menu-title">{props.t("Solicitud de retiros KASH")}</li>
+              <li className="menu-title">{"Solicitud de retiros KASH"}</li>
               <li>
                 <Link to="/withdrawals/all" className="waves-effect">
                   <i className="bx bx-list-ol"></i>
-                  {/* <span className='badge badge-pill badge-warning float-right'>{props.t("4")}</span> */}
-                  <span>{props.t("Retiros KASH")}</span>
+                  {/* <span className='badge badge-pill badge-warning float-right'>{"4"}</span> */}
+                  <span>{"Retiros KASH"}</span>
                 </Link>
               </li>
 
-              {/* <li className='menu-title'>{props.t("Avances de efectivo")}</li> */}
+              {/* <li className='menu-title'>{"Avances de efectivo"}</li> */}
 
               {/* 
               <li>
                 <Link to='/cash-advances' className=' waves-effect'>
                   <i className='bx bx-bar-chart-square'></i>
-                  <span className='badge badge-pill badge-warning float-right'>{props.t("4")}</span>
-                  <span>{props.t("Transacciones")}</span>
+                  <span className='badge badge-pill badge-warning float-right'>{"4"}</span>
+                  <span>{"Transacciones"}</span>
                 </Link>
               </li> */}
               {/* 
               <li>
                 <Link to='/advance-transaction-limits?type=cashAdvance' className=' waves-effect'>
                   <i className='bx bx-tachometer'></i>
-                  <span>{props.t("Limites por transacción")}</span>
+                  <span>{"Limites por transacción"}</span>
                 </Link>
               </li> */}
             </>
@@ -152,26 +149,26 @@ const SidebarContent = (props) => {
 
           {user && user.role === "ROLE_ADMIN" && (
             <>
-              <li className="menu-title">{props.t("Configuraciones generales")}</li>
+              <li className="menu-title">{"Configuraciones generales"}</li>
 
               <li>
                 <Link to="/schedule" className=" waves-effect">
                   <i className="bx bx-calendar"></i>
-                  <span>{props.t("Horarios")}</span>
+                  <span>{"Horarios"}</span>
                 </Link>
               </li>
 
               <li>
                 <Link to="/coupons" className=" waves-effect">
                   <i className="bx bxs-discount"></i>
-                  <span>{props.t("Cupones de descuento")}</span>
+                  <span>{"Cupones de descuento"}</span>
                 </Link>
               </li>
 
               <li>
                 <Link to="/banks" className=" waves-effect">
                   <i className="mdi mdi-bank-outline"></i>
-                  <span>{props.t("Bancos aceptados")}</span>
+                  <span>{"Bancos aceptados"}</span>
                 </Link>
               </li>
             </>
@@ -181,7 +178,7 @@ const SidebarContent = (props) => {
             <li>
               <Link to="/registered-users">
                 <i className="bx bx-user-circle"></i>
-                <span>{props.t("Usuarios registrados")}</span>
+                <span>{"Usuarios registrados"}</span>
               </Link>
             </li>
           )}
@@ -190,14 +187,14 @@ const SidebarContent = (props) => {
             <li>
               <Link to="/#" className="has-arrow waves-effect">
                 <i className="bx bx-cog"></i>
-                <span>{props.t("Ajustes")}</span>
+                <span>{"Ajustes"}</span>
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/admin-users">{props.t("Usuarios administrativos")}</Link>
+                  <Link to="/admin-users">{"Usuarios administrativos"}</Link>
                 </li>
                 <li>
-                  <Link to="/status">{props.t("Estados de operaciones")}</Link>
+                  <Link to="/status">{"Estados de operaciones"}</Link>
                 </li>
               </ul>
             </li>
@@ -208,4 +205,4 @@ const SidebarContent = (props) => {
   );
 };
 
-export default withRouter(withNamespaces()(SidebarContent));
+export default withRouter(SidebarContent);

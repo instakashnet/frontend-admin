@@ -7,7 +7,6 @@ import { getAllOrders } from "../../../services/orders/exchanges.service";
 //Components
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import Table from "../../../components/UI/Table";
-import { CustomAlert } from "../../../components/UI/Alert";
 
 export const ExchangesScreen = () => {
   const dispatch = useDispatch();
@@ -22,7 +21,7 @@ export const ExchangesScreen = () => {
     if (querySearch.length <= 0) interval = setInterval(() => tableRef.current && tableRef.current.onQueryChange(), 45000);
 
     return () => clearInterval(interval);
-  });
+  }, [querySearch]);
 
   const columns = [
     {
@@ -80,11 +79,10 @@ export const ExchangesScreen = () => {
     {
       title: "Acción",
       field: "action",
-      width: 150,
       render: (rowData) => (
-        <button className="btn-rounded waves-effect waves-light btn btn-blue btn-sm font-size-13" onClick={() => history.push(`/exchange-details/${rowData.id}`)}>
-          Ver detalles
-        </button>
+        <Button className="btn-rounded btn-action" onClick={() => history.push(`/exchange-details/${rowData.id}`)}>
+          Ver más
+        </Button>
       ),
     },
   ];
@@ -101,7 +99,6 @@ export const ExchangesScreen = () => {
                 <Button onClick={() => tableRef.current.onQueryChange()} className="mb-4 btn-primary">
                   Actualizar operaciones
                 </Button>
-                <CustomAlert />
                 <Table
                   ref={tableRef}
                   columns={columns}

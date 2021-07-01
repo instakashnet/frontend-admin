@@ -7,7 +7,6 @@ import { getWithdrawsInit } from "../../../store/actions";
 
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import Table from "../../../components/UI/Table";
-import { CustomAlert } from "../../../components/UI/Alert";
 
 export const WithdrawalsScreen = () => {
   const history = useHistory();
@@ -89,7 +88,6 @@ export const WithdrawalsScreen = () => {
 
             <Card>
               <CardBody>
-                <CustomAlert />
                 <Table columns={columns} rows={data} options={{ sorting: true, loadingType: "overlay", pageSize: 10 }} isLoading={isLoading} />
               </CardBody>
             </Card>

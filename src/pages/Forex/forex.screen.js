@@ -7,7 +7,6 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import FlagsSelect from "../../components/UI/FormItems/FlagsSelect";
 import { ActualPrice } from "./components/actual-price.component";
 import { AddPrice } from "./components/forms/add-price.component";
-import { CustomAlert } from "../../components/UI/Alert";
 import PricesTable from "./components/prices-table.component";
 
 export const ForexScreen = () => {
@@ -62,7 +61,6 @@ export const ForexScreen = () => {
                 </Col>
                 <Col lg="8">
                   <AddPrice currentPrice={activeRates[0]} isUpdating={isUpdating} isLoading={isLoading} />
-                  <CustomAlert />
                 </Col>
               </Row>
             )}

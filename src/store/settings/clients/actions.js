@@ -1,14 +1,5 @@
 import * as actionTypes from "./actionTypes";
 
-export const getClientsInit = () => ({
-  type: actionTypes.GET_CLIENTS_INIT,
-});
-
-export const getClientsSuccess = (clients) => ({
-  type: actionTypes.GET_CLIENTS_SUCCESS,
-  clients,
-});
-
 export const getClientDetails = (userId) => ({
   type: actionTypes.GET_CLIENT_DETAILS,
   userId,

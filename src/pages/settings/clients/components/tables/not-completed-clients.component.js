@@ -5,7 +5,7 @@ import { getClients } from "../../../../../services/clients/clients.service";
 
 import Table from "../../../../../components/UI/Table";
 
-const NotCompleted = () => {
+const NotCompleted = ({ dispatch }) => {
   const [isLoading, setIsLoading] = useState(true);
   const columns = [
     {
@@ -41,7 +41,12 @@ const NotCompleted = () => {
   return (
     <Card>
       <CardBody>
-        <Table columns={columns} rows={(query) => getClients(query, setIsLoading, false)} isLoading={isLoading} options={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }} />
+        <Table
+          columns={columns}
+          rows={(query) => getClients(query, setIsLoading, dispatch, false)}
+          isLoading={isLoading}
+          options={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }}
+        />
       </CardBody>
     </Card>
   );

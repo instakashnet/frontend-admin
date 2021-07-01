@@ -8,7 +8,6 @@ import WithdrawalInfo from "../components/details/withdrawal/withdrawal-info.com
 import LoadingPage from "../../LoadingPage";
 import CompleteOrder from "../components/forms/complete-order.component";
 import { ActionButtons } from "../components/details/action-buttons.component";
-import { CustomAlert } from "../../../components/UI/Alert";
 
 export const WithdrawalDetailsScreen = ({ match, history }) => {
   const [modal, setModal] = useState(false);
@@ -40,7 +39,6 @@ export const WithdrawalDetailsScreen = ({ match, history }) => {
               onChangeStatus={() => setModal(true)}
               isProcessing={isProcessing}
             />
-            <CustomAlert />
             <UserInfo details={details} />
           </Col>
         </Row>

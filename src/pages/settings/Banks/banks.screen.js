@@ -5,7 +5,6 @@ import { getBanks, getCurrenciesInit } from "../../../store/actions";
 
 import BanksTable from "./components/banks-table.component";
 import AddBank from "./components/forms/add-bank.component";
-import { CustomAlert } from "../../../components/UI/Alert";
 
 export const BanksScreen = () => {
   const dispatch = useDispatch();
@@ -27,10 +26,7 @@ export const BanksScreen = () => {
           <Col lg="8">
             <BanksTable data={banks} isLoading={isLoading} onAdd={addBankHandler} />
           </Col>
-          <Col lg="4">
-            {addState && <AddBank setAddState={setAddState} isProcessing={isProcessing} />}
-            <CustomAlert />
-          </Col>
+          <Col lg="4">{addState && <AddBank setAddState={setAddState} isProcessing={isProcessing} />}</Col>
         </Row>
       </Container>
     </div>

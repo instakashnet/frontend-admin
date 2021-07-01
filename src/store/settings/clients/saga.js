@@ -8,16 +8,6 @@ import { exchangeInstance, authInstance, accountsInstance } from "../../../helpe
 import { getExchangeDetails } from "../../transactions/currencyExchange/actions";
 import { getWithdrawalDetailsInit } from "../../transactions/withdrawals/actions";
 
-function* getClients() {
-  try {
-    const res = yield authInstance.get("/admin/users?type=client");
-    if (res.status === 200) yield put(actions.getClientsSuccess(res.data.users));
-  } catch (error) {
-    yield put(setAlert("danger", error.message));
-    yield put(actions.apiError());
-  }
-}
-
 function* getClientDetails({ userId }) {
   try {
     const res = yield authInstance.get(`/admin/users/${userId}`);
@@ -150,10 +140,6 @@ function* disableClient({ userId, active }) {
   }
 }
 
-export function* watchGetClients() {
-  yield takeEvery(actionTypes.GET_CLIENTS_INIT, getClients);
-}
-
 export function* watchGetClientExchanges() {
   yield takeEvery(actionTypes.GET_CLIENT_EXCHANGES, getClientExchanges);
 }
@@ -198,7 +184,6 @@ export default function* clientsSaga() {
     fork(watchEditClientInfo),
     fork(watchGetClientActivity),
     fork(watchGetClientExchanges),
-    fork(watchGetClients),
     fork(watchDownloadClients),
     fork(watchEditInterplaza),
     fork(watchDisableClient),

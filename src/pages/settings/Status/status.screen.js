@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { getStatus, editStatus } from "../../../store/actions";
 
 import StatusTable from "./components/status-table.component";
-import { CustomAlert } from "../../../components/UI/Alert";
 import EditStatus from "./components/forms/edit-status.component";
 
 export const StatusScreen = () => {
@@ -26,10 +25,7 @@ export const StatusScreen = () => {
           <Col lg="6">
             <StatusTable data={status} isLoading={isLoading} setEdit={setEditData} />
           </Col>
-          <Col lg="6">
-            {editData && <EditStatus isProcessing={isProcessing} edit={editStatusHandler} data={editData} />}
-            <CustomAlert />
-          </Col>
+          <Col lg="6">{editData && <EditStatus isProcessing={isProcessing} edit={editStatusHandler} data={editData} />}</Col>
         </Row>
       </Container>
     </div>
