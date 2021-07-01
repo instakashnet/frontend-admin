@@ -33,13 +33,8 @@ export const logoutUserSuccess = () => {
   };
 };
 
-export const clearAlert = () => ({
-  type: actionTypes.CLEAR_ALERT,
-});
-
-export const apiError = (error) => {
+export const apiError = () => {
   return {
     type: actionTypes.API_ERROR,
-    payload: error,
   };
 };

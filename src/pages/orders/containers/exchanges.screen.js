@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardBody, Badge, Col, Row, Container, Button } from "reactstrap";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getAllOrders } from "../../../services/orders/exchanges.service";
 
@@ -7,11 +8,11 @@ import { getAllOrders } from "../../../services/orders/exchanges.service";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import Table from "../../../components/UI/Table";
 
-const Transactions = () => {
+export const ExchangesScreen = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const tableRef = useRef();
   const [querySearch, setQuerySearch] = useState("");
-  console.log(querySearch);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -20,7 +21,7 @@ const Transactions = () => {
     if (querySearch.length <= 0) interval = setInterval(() => tableRef.current && tableRef.current.onQueryChange(), 45000);
 
     return () => clearInterval(interval);
-  });
+  }, [querySearch]);
 
   const columns = [
     {
@@ -78,11 +79,10 @@ const Transactions = () => {
     {
       title: "Acción",
       field: "action",
-      width: 150,
       render: (rowData) => (
-        <button className="btn-rounded waves-effect waves-light btn btn-blue btn-sm font-size-13" onClick={() => history.push(`/exchange-details/${rowData.id}`)}>
-          Ver detalles
-        </button>
+        <Button className="btn-rounded btn-action" onClick={() => history.push(`/exchange-details/${rowData.id}`)}>
+          Ver más
+        </Button>
       ),
     },
   ];
@@ -103,7 +103,7 @@ const Transactions = () => {
                   ref={tableRef}
                   columns={columns}
                   isLoading={isLoading}
-                  rows={(query) => getAllOrders(query, setIsLoading, setQuerySearch)}
+                  rows={(query) => getAllOrders(query, setIsLoading, setQuerySearch, dispatch)}
                   options={{ sorting: true, loadingType: "overlay", pageSize: 50, pageSizeOptions: [50, 100, 200] }}
                 />
               </CardBody>
@@ -114,5 +114,3 @@ const Transactions = () => {
     </div>
   );
 };
-
-export default React.memo(Transactions);

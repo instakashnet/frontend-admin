@@ -1,6 +1,7 @@
-import { all, call, put, takeEvery, fork, delay } from "redux-saga/effects";
+import { all, call, put, takeEvery, fork } from "redux-saga/effects";
 import * as actionTypes from "./actionTypes";
-import * as actions from "./actions.js";
+import * as actions from "./actions";
+import { setAlert } from "../../actions";
 import Swal from "sweetalert2";
 import { accountsInstance } from "../../../helpers/AuthType/axios";
 
@@ -9,9 +10,8 @@ function* getBanks() {
     const res = yield accountsInstance.get("/admin/banks");
     if (res.status === 200) yield put(actions.getBanksSuccess(res.data.banks));
   } catch (error) {
-    yield put(actions.apiError("Ha ocurrido un error obteniendo los bancos. Por favor contacte a soporte."));
-    yield delay(4000);
-    yield put(actions.clearBankErrorAlert());
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -26,7 +26,8 @@ function* addBank({ values, setState }) {
       yield Swal.fire("Exitoso", "El banco ha sido agregado correctamente.", "success");
     }
   } catch (error) {
-    yield put(actions.apiError("Ha ocurrido un error agregando el banco. Por favor contacta a soporte."));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 

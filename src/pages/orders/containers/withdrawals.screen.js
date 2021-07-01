@@ -8,7 +8,7 @@ import { getWithdrawsInit } from "../../../store/actions";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import Table from "../../../components/UI/Table";
 
-const RecentOrders = () => {
+export const WithdrawalsScreen = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { isLoading, withdrawals } = useSelector((state) => state.Withdrawals);
@@ -88,7 +88,7 @@ const RecentOrders = () => {
 
             <Card>
               <CardBody>
-                <Table columns={columns} rows={data} options={{ sorting: true, loadingType: "overlay" }} loading={isLoading} />
+                <Table columns={columns} rows={data} options={{ sorting: true, loadingType: "overlay", pageSize: 10 }} isLoading={isLoading} />
               </CardBody>
             </Card>
           </Col>
@@ -97,5 +97,3 @@ const RecentOrders = () => {
     </div>
   );
 };
-
-export default RecentOrders;

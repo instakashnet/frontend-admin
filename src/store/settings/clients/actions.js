@@ -1,13 +1,4 @@
-import * as actionTypes from './actionTypes';
-
-export const getClientsInit = () => ({
-  type: actionTypes.GET_CLIENTS_INIT,
-});
-
-export const getClientsSuccess = (clients) => ({
-  type: actionTypes.GET_CLIENTS_SUCCESS,
-  clients,
-});
+import * as actionTypes from "./actionTypes";
 
 export const getClientDetails = (userId) => ({
   type: actionTypes.GET_CLIENT_DETAILS,
@@ -101,11 +92,6 @@ export const disableClientSuccess = () => ({
   type: actionTypes.DISABLE_CLIENT_SUCCESS,
 });
 
-export const clearAlert = () => ({
-  type: actionTypes.CLEAR_ALERT,
-});
-
-export const apiError = (msg) => ({
+export const apiError = () => ({
   type: actionTypes.API_ERROR,
-  payload: msg,
 });

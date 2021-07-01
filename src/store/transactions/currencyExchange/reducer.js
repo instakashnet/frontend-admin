@@ -5,8 +5,6 @@ const initialState = {
   allOrders: [],
   recentOrders: [],
   details: null,
-  error: "",
-  success: "",
   isLoading: true,
   isProcessing: false,
 };
@@ -42,13 +40,10 @@ export default function currencyExchangeReducer(state = initialState, action) {
       return { ...state, isProcessing: false };
 
     case actionTypes.CREATE_INVOICE_SUCCESS:
-      return { ...state, isProcessing: false, success: action.msg };
-
-    case actionTypes.CLEAR_ALERT:
-      return { ...state, error: "", success: "" };
+      return { ...state, isProcessing: false };
 
     case actionTypes.API_ERROR:
-      return { ...state, error: payload, isLoading: false, isProcessing: false };
+      return { ...state, isLoading: false, isProcessing: false };
 
     default:
       return state;

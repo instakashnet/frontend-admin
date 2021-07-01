@@ -21,10 +21,6 @@ export const editStatusSuccess = (msg) => ({
   payload: msg,
 });
 
-export const clearAlert = () => ({
-  type: actionTypes.CLEAR_ALERT,
-});
-
 export const apiError = (msg) => ({
   type: actionTypes.API_ERROR,
   payload: msg,

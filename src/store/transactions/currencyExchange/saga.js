@@ -1,5 +1,6 @@
-import { all, call, takeEvery, takeLatest, put, fork, delay } from "redux-saga/effects";
+import { all, call, takeEvery, takeLatest, put, fork } from "redux-saga/effects";
 import * as actions from "./actions";
+import { setAlert } from "../../actions";
 import * as actionTypes from "./actionTypes";
 import Swal from "sweetalert2";
 import { exchangeInstance } from "../../../helpers/AuthType/axios";
@@ -10,7 +11,6 @@ import camelize from "camelize";
 function* getExchangeDetails({ id }) {
   try {
     const res = yield exchangeInstance.get(`/order/admin/${id}`);
-    console.log(res);
     if (res.status === 200) {
       const exchangeDetails = camelize(res.data);
       yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
@@ -19,10 +19,8 @@ function* getExchangeDetails({ id }) {
   } catch (error) {
     let message = error.message;
     if (error.status === 404) message = "No estas asignado para poder ver esta operación.";
-
-    yield put(actions.apiError(message));
-    yield delay(6000);
-    yield put(actions.clearAlert());
+    yield put(setAlert("danger", message));
+    yield put(actions.apiError());
   }
 }
 
@@ -36,9 +34,8 @@ function* editExchange({ id, values, setState }) {
       yield Swal.fire("Operación editada", "Los datos de la operación han sido editados.", "success");
     }
   } catch (error) {
-    yield put(actions.apiError("Ha ocurrido un error editando la transacción, Por favor contacte a soporte."));
-    yield delay(4000);
-    yield put(actions.clearAlert());
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -63,9 +60,8 @@ function* validateExchange({ orderId }) {
       }
     } else yield put(actions.apiError());
   } catch (error) {
-    yield put(actions.apiError("Ha ocurrido un error validando la operación. Por favor contacta a soporte."));
-    yield delay(4000);
-    yield put(actions.clearAlert());
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -79,7 +75,8 @@ function* approveExchange({ orderId, closeModal }) {
       yield Swal.fire("Exitoso", `La operación fue aprobada correctamente.`, "success");
     }
   } catch (error) {
-    throw error;
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -103,9 +100,8 @@ function* declineExchange({ orderId }) {
       }
     } else yield put(actions.apiError());
   } catch (error) {
-    yield put(actions.apiError(error.message));
-    yield delay(4000);
-    yield put(actions.clearAlert());
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -131,9 +127,8 @@ function* uploadVoucher({ orderId, values, closeModal }) {
       }
     } else yield put(actions.apiError());
   } catch (error) {
-    yield put(actions.apiError("Ha ocurrido un error aprobando la orden. Por favor contacta a soporte."));
-    yield delay(4000);
-    yield put(actions.clearAlert());
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -141,14 +136,13 @@ function* createInvoice({ orderId }) {
   try {
     const res = yield exchangeInstance.post(`/bills/admin/order/${orderId}`);
     if (res.status === 201) {
-      yield put(actions.createInvoiceSuccess("Factura generada correctamente."));
+      yield put(actions.createInvoiceSuccess());
       yield call(getExchangeDetails, { id: orderId });
+      yield put(setAlert("success", "La factura se ha generado correctamente."));
     }
   } catch (error) {
-    yield put(actions.apiError(error.data ? error.data.message : "Ha ocurrido un error generando la factura. Por favor contacta a soporte."));
-  } finally {
-    yield delay(4000);
-    yield put(actions.clearAlert());
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -176,8 +170,6 @@ function* reassignOrder({ values, orderId, setState }) {
     }
 
     yield put(actions.apiError(message));
-    yield delay(4000);
-    yield put(actions.clearAlert());
   }
 }
 
@@ -194,8 +186,6 @@ function* setRevision({ values, setState, orderId }) {
     }
   } catch (error) {
     yield put(actions.apiError(error.message));
-    yield delay(4000);
-    yield put(actions.clearAlert());
   }
 }
 

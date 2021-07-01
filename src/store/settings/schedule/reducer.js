@@ -1,8 +1,6 @@
 import * as actionTypes from "./actionTypes";
 const initialState = {
   schedule: [],
-  error: "",
-  success: "",
   isLoading: true,
   isProcessing: false,
 };
@@ -22,11 +20,8 @@ export default function scheduleReducer(state = initialState, action) {
     case actionTypes.GET_SCHEDULE_SUCCESS:
       return { ...state, schedule: payload.schedule, isLoading: false };
 
-    case actionTypes.CLEAR_ALERT:
-      return { ...state, error: "", success: "" };
-
     case actionTypes.API_ERROR:
-      return { ...state, error: payload, isLoading: false, isProcessing: false };
+      return { ...state, isLoading: false, isProcessing: false };
 
     default:
       return state;

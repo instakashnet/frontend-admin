@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { CloudDownload } from "@material-ui/icons";
 import { Card, CardBody, Button } from "reactstrap";
 import { downloadClientsInit } from "../../../../../store/actions";
@@ -8,9 +7,8 @@ import { getClients } from "../../../../../services/clients/clients.service";
 
 import Table from "../../../../../components/UI/Table";
 
-const Completed = () => {
+const Completed = ({ dispatch }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useDispatch();
   const columns = [
     {
       field: "userName",
@@ -62,7 +60,7 @@ const Completed = () => {
         </div>
         <Table
           columns={columns}
-          rows={(query) => getClients(query, setIsLoading)}
+          rows={(query) => getClients(query, setIsLoading, dispatch)}
           title="Completados"
           isLoading={isLoading}
           options={{ pageSize: 10, loadingType: "overlay", pageSizeOptions: [10, 25, 50] }}

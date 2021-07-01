@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import { Switch, BrowserRouter as Router } from "react-router-dom";
+import { Switch, Router } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useRole } from "./hooks/useRole";
 import { getCountriesInit, loadUser } from "./store/actions";
 import history from "./helpers/history";
 
 // Import Routes
-import { authProtectedRoutes, publicRoutes } from "./routes/";
+import * as routes from "./routes/";
+import { CustomAlert } from "./components/UI/Alert";
 import AppRoute from "./routes/route";
 import LazyComponent from "./helpers/lazyComponent";
 
@@ -19,7 +21,8 @@ import "./assets/scss/theme.scss";
 import "./assets/scss/custom.scss";
 
 const App = () => {
-  const { isLoading, token } = useSelector((state) => state.Login);
+  const { isLoading, token, user } = useSelector((state) => state.Login);
+  const [role] = useRole(user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,14 +36,15 @@ const App = () => {
   return (
     <Router history={history}>
       <Switch>
-        {publicRoutes.map((route, idx) => (
-          <AppRoute isLoading={isLoading} path={route.path} layout={NonAuthLayout} component={route.component} key={idx} isAuthProtected={false} />
+        {routes.public.map((route) => (
+          <AppRoute isLoading={isLoading} path={route.path} layout={NonAuthLayout} component={route.component} key={route.path} isAuthProtected={false} />
         ))}
-
-        {authProtectedRoutes.map((route, idx) => (
-          <AppRoute exact isLoading={isLoading} path={route.path} layout={VerticalLayout} component={LazyComponent(route.component)} key={idx} isAuthProtected={true} />
-        ))}
+        {role &&
+          routes[role].map((route) => (
+            <AppRoute exact isLoading={isLoading} path={route.path} layout={VerticalLayout} component={LazyComponent(route.component)} key={route.path} isAuthProtected />
+          ))}
       </Switch>
+      {history.location.pathname !== "/login" && <CustomAlert className="fixed-alert" />}
     </Router>
   );
 };

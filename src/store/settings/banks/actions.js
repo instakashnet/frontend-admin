@@ -39,14 +39,6 @@ export const deleteBankSuccess = () => ({
   type: actionTypes.DELETE_BANK_SUCCESS,
 });
 
-export const clearBankSuccessAlert = () => ({
-  type: actionTypes.CLEAR_SUCCESS_ALERT,
-});
-
-export const clearBankErrorAlert = () => ({
-  type: actionTypes.CLEAR_ERROR_ALERT,
-});
-
 export const apiError = (msg) => ({
   type: actionTypes.API_ERROR,
   payload: msg,

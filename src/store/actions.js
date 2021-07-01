@@ -1,28 +1,28 @@
-export * from './layout/actions';
+export * from "./layout/actions";
+export * from "./alert/actions";
 
 // Settings modules
-export * from './settings/banks/actions';
-export * from './settings/forex/actions';
-export * from './settings/bankAccounts/actions';
-export * from './settings/clients/actions';
-export * from './settings/status/actions';
-export * from './settings/schedule/actions';
-export * from './settings/data/actions';
+export * from "./settings/banks/actions";
+export * from "./settings/clients/actions";
+export * from "./settings/status/actions";
+export * from "./settings/schedule/actions";
+export * from "./settings/data/actions";
+export * from "./settings/coupons/actions";
 
 // Activity
-export * from './activity/binnacle/actions';
-export * from './activity/counters/actions';
+export * from "./activity/binnacle/actions";
+export * from "./activity/counters/actions";
+
+export * from "./bankAccounts/actions";
+export * from "./forex/actions";
 
 // Transactions modules
-export * from './transactions/currencyExchange/actions';
-export * from './transactions/withdrawals/actions';
+export * from "./transactions/currencyExchange/actions";
+export * from "./transactions/withdrawals/actions";
 
-export * from './transactions/cashAdvance/actions';
-export * from './charts/actions';
+export * from "./transactions/cashAdvance/actions";
+export * from "./charts/actions";
 
 // Authentication module
-export * from './auth/login/actions';
-export * from './auth/admin/actions';
-
-// Coupons module
-export * from './coupons/actions';
+export * from "./auth/login/actions";
+export * from "./auth/admin/actions";
