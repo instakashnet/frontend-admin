@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 
 function* getCbAccounts() {
   try {
-    const res = yield accountsInstance.get("/admin/accounts?type=company");
+    const res = yield accountsInstance.get("/accounts?type=company");
     if (res.status === 200) yield put(actions.getCbAccountsSuccess(res.data.accounts));
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -22,7 +22,7 @@ function* addAcbAccount({ values, setState }) {
   };
 
   try {
-    const res = yield accountsInstance.post("/admin/accounts", accValues);
+    const res = yield accountsInstance.post("/accounts", accValues);
     if (res.status === 201) {
       yield put(actions.addCbAccountSuccess());
       yield call(getCbAccounts);
@@ -37,7 +37,7 @@ function* addAcbAccount({ values, setState }) {
 
 function* editCbAccount({ values, setState }) {
   try {
-    const res = yield accountsInstance.put("/admin/accounts", values);
+    const res = yield accountsInstance.put("/accounts", values);
     if (res.status === 200) {
       yield put(actions.editCbAccountSuccess());
       yield call(getCbAccounts);
@@ -52,7 +52,7 @@ function* editCbAccount({ values, setState }) {
 
 function* editCbBalance({ values, accountId, setState }) {
   try {
-    const res = yield accountsInstance.put(`/admin/accounts/funds/${accountId}`, values);
+    const res = yield accountsInstance.put(`/accounts/funds/${accountId}`, values);
     if (res.status === 200) {
       yield put(actions.editCbBalanceSuccess());
       yield call(getCbAccounts);

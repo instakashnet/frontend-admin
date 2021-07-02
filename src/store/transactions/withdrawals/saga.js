@@ -8,7 +8,7 @@ import camelize from "camelize";
 
 function* getWithdrawals() {
   try {
-    const res = yield exchangeInstance.get("/withdrawals/admin");
+    const res = yield exchangeInstance.get("/withdrawals");
     if (res.status === 200) {
       const withdrawals = camelize(res.data);
       yield put(actions.getWithdrawsSuccess(withdrawals));
@@ -21,7 +21,7 @@ function* getWithdrawals() {
 
 function* getWithdrawalDetails({ id }) {
   try {
-    const res = yield exchangeInstance.get(`/withdrawals/admin/${id}`);
+    const res = yield exchangeInstance.get(`/withdrawals/${id}`);
     if (res.status === 200) {
       const withdrawalDetails = camelize(res.data);
       yield put(actions.getWithdrawalDetailsSuccess(withdrawalDetails));
@@ -37,7 +37,7 @@ function* attachVoucher({ id, values }) {
   formData.append("file", values.file);
 
   try {
-    yield exchangeInstance.post(`/withdrawals/admin/order/attach-voucher/${id}`, formData);
+    yield exchangeInstance.post(`/withdrawals/order/attach-voucher/${id}`, formData);
   } catch (error) {
     throw error;
   }
@@ -57,7 +57,7 @@ function* changeWithdrawalStatus({ id, statusId, values, toggle }) {
 
     if (result.isConfirmed) {
       if (statusId === 6) yield call(attachVoucher, { id, values, toggle });
-      const res = yield exchangeInstance.put("/withdrawals/admin/status", { id, status: statusId });
+      const res = yield exchangeInstance.put("/withdrawals/status", { id, status: statusId });
       if (res.status === 200) {
         yield call(getWithdrawalDetails, { id });
         yield put(actions.changeWithdrawalStatusSuccess());
@@ -67,7 +67,6 @@ function* changeWithdrawalStatus({ id, statusId, values, toggle }) {
     } else yield put(actions.withdrawalsError());
   } catch (error) {
     yield put(setAlert("danger", error.message));
-    if (statusId === 6) yield call(toggle, false);
     yield put(actions.withdrawalsError());
   }
 }

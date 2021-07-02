@@ -11,7 +11,7 @@ export const getAllOrders = (query, setLoading, setSearch, dispatch) => {
     setSearch(search);
     let orders = [];
     let res;
-    let URL = `/order/admin?page=${query.page + 1}&qty=${query.pageSize}`;
+    let URL = `/order?page=${query.page + 1}&qty=${query.pageSize}`;
 
     try {
       if (search) {

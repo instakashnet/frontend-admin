@@ -33,7 +33,7 @@ function* loadUser({ history }) {
   if (expTime <= new Date()) return yield put(actions.logoutUser(history));
 
   try {
-    const res = yield authInstance.get("/users/admin/session");
+    const res = yield authInstance.get("/users/session");
 
     yield call([sessionStorage, "setItem"], "session", JSON.stringify(res.data.activityUser));
     const redirectRoute = yield call(setRoleRedirect, user.role);
@@ -48,7 +48,7 @@ function* loadUser({ history }) {
 function* loginUser({ payload }) {
   const { user, history } = payload;
   try {
-    const res = yield authInstance.post("auth/admin/signin", user);
+    const res = yield authInstance.post("/auth/signin", user);
 
     const userObj = {
       accessToken: res.data.accessToken,

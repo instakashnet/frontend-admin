@@ -5,7 +5,7 @@ import { exchangeInstance } from "../../helpers/AuthType/axios";
 
 function* getCurrencyBarChart({ chartType }) {
   try {
-    const res = yield exchangeInstance.get(`/order/admin/data/orders?type=${chartType}`);
+    const res = yield exchangeInstance.get(`/order/data/orders?type=${chartType}`);
     if (res.status === 200) yield put(actions.getCurrencyBarChartSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError());
@@ -23,7 +23,7 @@ function* getAdvanceBarChart() {
 
 function* getUsersChart() {
   try {
-    const res = yield exchangeInstance.get("/order/admin/data/users");
+    const res = yield exchangeInstance.get("/order/data/users");
     if (res.status === 200) yield put(actions.getUsersChartSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError(error.message));

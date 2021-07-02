@@ -17,6 +17,7 @@ import ReassignOrder from "../components/forms/reassign-order.component";
 import SetRevision from "../components/forms/set-revision.component";
 import LoadingPage from "../../LoadingPage";
 import { ActionButtons } from "../components/details/action-buttons.component";
+import { RevisionNote } from "../components/details/revision-note.component";
 
 export const ExchangeDetailsScreen = (props) => {
   const { id } = props.match.params;
@@ -35,7 +36,7 @@ export const ExchangeDetailsScreen = (props) => {
 
   const changeStatusHandler = () => {
     if (details.stateId === 3) return dispatch(validateExchange(details.id, history));
-    setModal(true);
+    showFormHandler("complete");
   };
   const onDeclineExchange = () => dispatch(declineExchange(details.id, history));
   const onApproveExchange = (values) => dispatch(approveExchange(id, values, showFormHandler));
@@ -47,7 +48,7 @@ export const ExchangeDetailsScreen = (props) => {
 
   let FormComponent;
 
-  if (formType === "edit") FormComponent = <EditOrder details={details} onShowForm={showFormHandler} />;
+  if (formType === "edit") FormComponent = <EditOrder details={details} isProcessing={isProcessing} onShowForm={showFormHandler} />;
   if (formType === "reassign") FormComponent = <ReassignOrder details={details} onShowForm={showFormHandler} isProcessing={isProcessing} />;
   if (formType === "complete") FormComponent = <CompleteOrder isProcessing={isProcessing} orderId={id} onShowForm={showFormHandler} onApprove={onApproveExchange} />;
   if (formType === "revision") FormComponent = <SetRevision note={details.orderNotes} isProcessing={isProcessing} onShowForm={showFormHandler} orderId={id} />;
@@ -75,6 +76,11 @@ export const ExchangeDetailsScreen = (props) => {
                 )}
                 <UserInfo details={details} isLoading={isLoading} />
               </Col>
+              {details.orderNotes && (
+                <Col lg="4">
+                  <RevisionNote note={details.orderNotes} onEdit={() => showFormHandler("revision")} />
+                </Col>
+              )}
             </Row>
             <Row className="mb-3">
               <Col lg="8" className="d-flex flex-wrap justify-content-between items-center">
@@ -114,7 +120,7 @@ export const ExchangeDetailsScreen = (props) => {
         )}
       </Container>
       <Modal isOpen={modal} role="dialog" autoFocus centered tabIndex="-1" toggle={showFormHandler}>
-        <ModalHeader toggle={showFormHandler}>Adjunta el comprobante de pago</ModalHeader>
+        <ModalHeader toggle={showFormHandler}>Formulario</ModalHeader>
         <ModalBody>{FormComponent}</ModalBody>
       </Modal>
     </div>

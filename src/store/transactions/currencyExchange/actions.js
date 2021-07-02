@@ -45,10 +45,11 @@ export const approveExchangeCancel = () => ({
   type: actionTypes.APPROVE_EXCHANGE_CANCELED,
 });
 
-export const declineExchange = (orderId, history) => ({
+export const declineExchange = (orderId, history, closeModal) => ({
   type: actionTypes.DECLINE_EXCHANGE,
   orderId,
   history,
+  closeModal,
 });
 
 export const declineExchangeSuccess = () => ({
@@ -59,11 +60,11 @@ export const declineExchangeCancel = () => ({
   type: actionTypes.DECLINE_EXCHANGE_CANCELED,
 });
 
-export const editExchange = (id, values, setState) => ({
+export const editExchange = (id, values, closeModal) => ({
   type: actionTypes.EDIT_EXCHANGE,
   id,
   values,
-  setState,
+  closeModal,
 });
 
 export const editExchangeSuccess = () => ({
@@ -80,22 +81,22 @@ export const createInvoiceSuccess = (msg) => ({
   msg,
 });
 
-export const reassignOrderInit = (values, orderId, setState) => ({
+export const reassignOrderInit = (values, orderId, closeModal) => ({
   type: actionTypes.REASSIGN_ORDER_INIT,
   values,
   orderId,
-  setState,
+  closeModal,
 });
 
 export const reassignOrderSuccess = () => ({
   type: actionTypes.REASSIGN_ORDER_SUCCESS,
 });
 
-export const setRevisionInit = (values, setState, orderId) => ({
+export const setRevisionInit = (values, orderId, closeModal) => ({
   type: actionTypes.SET_REVISION_INIT,
   values,
   orderId,
-  setState,
+  closeModal,
 });
 
 export const setRevisionSuccess = () => ({

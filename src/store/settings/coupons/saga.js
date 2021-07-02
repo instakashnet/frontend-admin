@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 
 function* getCoupons() {
   try {
-    const res = yield exchangeInstance.get("/coupons/admin");
+    const res = yield exchangeInstance.get("/coupons");
     if (res.status === 200) yield put(actions.getCouponsSuccess(res.data));
   } catch (error) {
     yield put(actions.couponsError());
@@ -27,7 +27,7 @@ function* addCoupon({ values }) {
   };
 
   try {
-    const res = yield exchangeInstance.post("/coupons/admin", couponValues);
+    const res = yield exchangeInstance.post("/coupons", couponValues);
     if (res.status === 201) {
       yield put(actions.addCouponSuccess());
       yield call(getCoupons);
@@ -60,7 +60,7 @@ function* editCoupon({ id, values, active }) {
   };
 
   try {
-    const res = yield exchangeInstance.put(`/coupons/admin/edit/${id}`, couponValues, { timeout: 100 });
+    const res = yield exchangeInstance.put(`/coupons/edit/${id}`, couponValues, { timeout: 100 });
     if (res.status === 200) {
       yield put(actions.editCouponSuccess());
       yield call(getCoupons);
@@ -83,7 +83,7 @@ function* deleteCoupon({ id }) {
     });
 
     if (result.isConfirmed) {
-      const res = yield exchangeInstance.delete(`/coupons/admin/${id}`);
+      const res = yield exchangeInstance.delete(`/coupons/${id}`);
       if (res.status === 200) {
         yield call([Swal, "fire"], "Exitoso", "El cupón ha sido eliminado.", "success");
         yield call(getCoupons);
@@ -105,7 +105,7 @@ function* disableCoupon({ id, active }) {
     });
 
     if (result.isConfirmed) {
-      const res = yield exchangeInstance.put(`/coupons/admin/${id}`, { active });
+      const res = yield exchangeInstance.put(`/coupons/${id}`, { active });
       if (res.status === 200) {
         yield call(getCoupons);
         yield call([Swal, "fire"], "Exitoso!", `El cupón ha sido ${active ? "habilitado" : "deshabilitado"}.`, "success");

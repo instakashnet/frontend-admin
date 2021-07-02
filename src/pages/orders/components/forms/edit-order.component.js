@@ -29,30 +29,33 @@ const EditTransaction = ({ details, onShowForm, isProcessing }) => {
             error={formik.errors.transaction_code}
             touched={formik.touched.transaction_code}
           />
-          <Input
-            style={{ width: "40%" }}
-            type="number"
-            label="Tasa preferencial"
-            name="rate"
-            value={formik.values.rate}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.errors.rate}
-            touched={formik.touched.rate}
-          />
-          <Input
-            type="number"
-            label="Monto recibido"
-            name="amount_sent"
-            value={formik.values.amount_sent}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.errors.amount_sent}
-            touched={formik.touched.amount_sent}
-          />
-          <Button type="submit" disabled={!formik.isValid || isProcessing} className="btn-primary my-3">
-            {isProcessing ? <Spinner size="sm" /> : "Editar operación"}
-          </Button>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              type="number"
+              label="Tasa preferencial"
+              name="rate"
+              value={formik.values.rate}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.rate}
+              touched={formik.touched.rate}
+            />
+            <Input
+              type="number"
+              label="Monto recibido"
+              name="amount_sent"
+              value={formik.values.amount_sent}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.errors.amount_sent}
+              touched={formik.touched.amount_sent}
+            />
+          </div>
+          <div className="flex justify-center">
+            <Button type="submit" disabled={!formik.isValid || isProcessing} className="btn-primary my-3">
+              {isProcessing ? <Spinner size="sm" /> : "Editar operación"}
+            </Button>
+          </div>
         </form>
       </CardBody>
     </Card>

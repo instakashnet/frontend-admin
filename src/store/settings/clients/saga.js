@@ -10,7 +10,7 @@ import { getWithdrawalDetailsInit } from "../../transactions/withdrawals/actions
 
 function* getClientDetails({ userId }) {
   try {
-    const res = yield authInstance.get(`/admin/users/${userId}`);
+    const res = yield authInstance.get(`/users/user/${userId}`);
     if (res.status === 200) yield put(actions.getClientDetailsSuccess(res.data.user));
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -20,7 +20,7 @@ function* getClientDetails({ userId }) {
 
 function* getClientExchanges({ userId }) {
   try {
-    const res = yield exchangeInstance.get(`/order/admin/user/${userId}`);
+    const res = yield exchangeInstance.get(`/order/user/${userId}`);
     if (res.status === 200) yield put(actions.getClientExchangesSuccess(res.data));
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -30,7 +30,7 @@ function* getClientExchanges({ userId }) {
 
 function* addClientProfile({ values, closeModal }) {
   try {
-    const res = yield authInstance.post(`/admin/users/profiles`, values);
+    const res = yield authInstance.post(`/users/profiles`, values);
     if (res.status === 200) {
       yield put(actions.addProfileSuccess());
       yield call(closeModal);
@@ -45,7 +45,7 @@ function* addClientProfile({ values, closeModal }) {
 
 function* editClientInfo({ userId, values, closeModal }) {
   try {
-    const res = yield authInstance.put(`/admin/user/${userId}`, values);
+    const res = yield authInstance.put(`/users/user/${userId}`, values);
     if (res.status === 200) {
       yield put(actions.editClientInfoSuccess());
       yield call(closeModal);
@@ -60,7 +60,7 @@ function* editClientInfo({ userId, values, closeModal }) {
 
 function* editClientProfile({ values, closeModal }) {
   try {
-    const res = yield authInstance.put("/admin/users/profiles", values);
+    const res = yield authInstance.put("/users/profiles", values);
     if (res.status === 200) {
       yield put(actions.editProfileSuccess());
       yield call(closeModal);
@@ -75,7 +75,7 @@ function* editClientProfile({ values, closeModal }) {
 
 function* getClientAccounts({ id }) {
   try {
-    const res = yield accountsInstance.get(`/admin/accounts/${id}`);
+    const res = yield accountsInstance.get(`/accounts/${id}`);
     yield put(actions.getClientAccountsSuccess(res.data.accounts));
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -86,8 +86,8 @@ function* getClientAccounts({ id }) {
 function* downloadClients({ fileType }) {
   let URL;
 
-  if (fileType === "companies") URL = "/users/admin/companies/download";
-  if (fileType === "clients") URL = "/users/admin/clients/download";
+  if (fileType === "companies") URL = "/users/companies/download";
+  if (fileType === "clients") URL = "/users/clients/download";
 
   try {
     if (!URL) return;
@@ -101,7 +101,7 @@ function* downloadClients({ fileType }) {
 
 function* editInterplaza({ values, detailsType, id, setState }) {
   try {
-    const res = yield accountsInstance.put(`/admin/accounts/${values.accountId}`, { interbank: values.interbank });
+    const res = yield accountsInstance.put(`/accounts/${values.accountId}`, { interbank: values.interbank });
     if (res.status === 200) {
       if (detailsType === "exchange") yield put(getExchangeDetails(id));
       if (detailsType === "withdrawal") yield put(getWithdrawalDetailsInit(id));
@@ -127,7 +127,7 @@ function* disableClient({ userId, active }) {
     });
 
     if (result.isConfirmed) {
-      const res = yield authInstance.put("/admin/users/access", { userId, active: !active });
+      const res = yield authInstance.put("/users/access", { userId, active: !active });
       if (res.status === 200) {
         yield put(actions.disableClientSuccess());
         yield call(getClientDetails, { userId });

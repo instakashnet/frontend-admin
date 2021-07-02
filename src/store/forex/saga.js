@@ -6,7 +6,7 @@ import { exchangeInstance } from "../../helpers/AuthType/axios";
 
 function* getForex() {
   try {
-    const res = yield exchangeInstance.get("/forex/admin");
+    const res = yield exchangeInstance.get("/forex");
     yield put(actions.getForexSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError());
@@ -15,7 +15,7 @@ function* getForex() {
 
 function* getAllRates() {
   try {
-    const res = yield exchangeInstance.get("/rates/admin/all");
+    const res = yield exchangeInstance.get("/rates/all");
     yield put(actions.getAllRateSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError());
@@ -24,7 +24,7 @@ function* getAllRates() {
 
 function* getforexRates({ forexId }) {
   try {
-    const res = yield exchangeInstance.get(`/rates/admin/forex/${forexId}`);
+    const res = yield exchangeInstance.get(`/rates/forex/${forexId}`);
     const ratesArray = res.data.map((rates) => ({
       ...rates,
       buy: +rates.buy,
@@ -44,7 +44,7 @@ function* addCurrencyPrice({ values }) {
   };
 
   try {
-    const res = yield exchangeInstance.post("/rates/admin", ratesValues);
+    const res = yield exchangeInstance.post("/rates", ratesValues);
     if (res.status === 201) {
       yield call(getforexRates, { forexId: values.forexId });
       yield call(getAllRates);

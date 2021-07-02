@@ -5,7 +5,7 @@ import { exchangeInstance, accountsInstance } from "../../../helpers/AuthType/ax
 
 function* getCounters() {
   try {
-    const res = yield exchangeInstance.get("/order/admin/data/today");
+    const res = yield exchangeInstance.get("/order/data/today");
     if (res.status === 200) yield put(actions.getCountersSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError(error.message));
@@ -14,7 +14,7 @@ function* getCounters() {
 
 function* getTotalKash() {
   try {
-    const res = yield accountsInstance.get("/admin/accounts/users/kash-total");
+    const res = yield accountsInstance.get("/accounts/users/kash-total");
     if (res.status === 200) yield put(actions.getTotalKashSuccess(res.data.totalKashAcumulated));
   } catch (error) {
     yield put(actions.apiError(error.message));

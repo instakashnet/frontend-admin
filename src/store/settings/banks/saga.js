@@ -7,7 +7,7 @@ import { accountsInstance } from "../../../helpers/AuthType/axios";
 
 function* getBanks() {
   try {
-    const res = yield accountsInstance.get("/admin/banks");
+    const res = yield accountsInstance.get("/banks");
     if (res.status === 200) yield put(actions.getBanksSuccess(res.data.banks));
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -17,7 +17,7 @@ function* getBanks() {
 
 function* addBank({ values, setState }) {
   try {
-    const res = yield accountsInstance.post("/admin/banks", values);
+    const res = yield accountsInstance.post("/banks", values);
 
     if (res.status === 201) {
       yield put(actions.addBankSuccess());

@@ -52,10 +52,11 @@ const ReassignOrder = ({ details, isProcessing, onShowForm }) => {
               error={formik.errors.accountId}
               touched={formik.touched.accountId}
             />
-            <Button type="submit" className={`btn-primary ld-ext-right ${isProcessing ? "running" : ""}`} disabled={!formik.isValid || isProcessing}>
-              <span className="ld ld-ring ld-spin" />
-              Reasignar orden
-            </Button>
+            <div className="flex justify-center mt-3">
+              <Button type="submit" className="btn-primary" disabled={!formik.isValid || isProcessing}>
+                {isProcessing ? <Spinner size="sm" /> : "Reasignar orden"}
+              </Button>
+            </div>
           </form>
         )}
       </CardBody>

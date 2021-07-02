@@ -10,7 +10,7 @@ import camelize from "camelize";
 
 function* getExchangeDetails({ id }) {
   try {
-    const res = yield exchangeInstance.get(`/order/admin/${id}`);
+    const res = yield exchangeInstance.get(`/order/${id}`);
     if (res.status === 200) {
       const exchangeDetails = camelize(res.data);
       yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
@@ -24,13 +24,13 @@ function* getExchangeDetails({ id }) {
   }
 }
 
-function* editExchange({ id, values, setState }) {
+function* editExchange({ id, values, closeModal }) {
   try {
-    const res = yield exchangeInstance.put(`/order/admin/${id}`, values);
+    const res = yield exchangeInstance.put(`/order/${id}`, values);
     if (res.status === 200) {
       yield put(actions.editExchangeSuccess());
       yield call(getExchangeDetails, { id });
-      yield call(setState, false);
+      yield call(closeModal);
       yield Swal.fire("Operación editada", "Los datos de la operación han sido editados.", "success");
     }
   } catch (error) {
@@ -39,7 +39,7 @@ function* editExchange({ id, values, setState }) {
   }
 }
 
-function* validateExchange({ orderId }) {
+function* validateExchange({ orderId, closeModal }) {
   try {
     const result = yield Swal.fire({
       title: `¿Deseas validar esta operación?`,
@@ -52,10 +52,11 @@ function* validateExchange({ orderId }) {
     });
 
     if (result.isConfirmed) {
-      const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 4 });
+      const res = yield exchangeInstance.put(`/order/status/${orderId}`, { status: 4 });
       if (res.status === 200) {
         yield call(getExchangeDetails, { id: orderId });
         yield put(actions.validateExchangeSuccess());
+        yield call(closeModal);
         yield Swal.fire("Exitoso", `La operación fue validada correctamente.`, "success");
       }
     } else yield put(actions.apiError());
@@ -67,7 +68,7 @@ function* validateExchange({ orderId }) {
 
 function* approveExchange({ orderId, closeModal }) {
   try {
-    const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 6 });
+    const res = yield exchangeInstance.put(`/order/status/${orderId}`, { status: 6 });
     if (res.status === 200) {
       yield put(actions.approveExchangeSuccess());
       yield call(getExchangeDetails, { id: orderId });
@@ -93,7 +94,7 @@ function* declineExchange({ orderId }) {
     });
 
     if (result.isConfirmed) {
-      const res = yield exchangeInstance.put(`/order/admin/status/${orderId}`, { status: 5 });
+      const res = yield exchangeInstance.put(`/order/status/${orderId}`, { status: 5 });
       if (res.status === 200) {
         yield call(getExchangeDetails, { id: orderId });
         yield put(actions.declineExchangeSuccess());
@@ -121,7 +122,7 @@ function* uploadVoucher({ orderId, values, closeModal }) {
     });
 
     if (result.isConfirmed) {
-      const res = yield exchangeInstance.post(`/bills/admin/order/attach-voucher/${orderId}`, formData);
+      const res = yield exchangeInstance.post(`/bills/order/attach-voucher/${orderId}`, formData);
       if (res.status === 201) {
         yield call(approveExchange, { orderId, closeModal });
       }
@@ -134,7 +135,7 @@ function* uploadVoucher({ orderId, values, closeModal }) {
 
 function* createInvoice({ orderId }) {
   try {
-    const res = yield exchangeInstance.post(`/bills/admin/order/${orderId}`);
+    const res = yield exchangeInstance.post(`/bills/order/${orderId}`);
     if (res.status === 201) {
       yield put(actions.createInvoiceSuccess());
       yield call(getExchangeDetails, { id: orderId });
@@ -146,42 +147,35 @@ function* createInvoice({ orderId }) {
   }
 }
 
-function* reassignOrder({ values, orderId, setState }) {
+function* reassignOrder({ values, orderId, closeModal }) {
   const reassignValues = {
     ...values,
     operatorAssigned: +values.operatorAssigned,
   };
 
   try {
-    const res = yield exchangeInstance.put(`/order/admin/assigned/${orderId}`, reassignValues);
+    const res = yield exchangeInstance.put(`/order/assigned/${orderId}`, reassignValues);
     if (res.status === 200) {
       yield put(actions.reassignOrderSuccess());
-      yield call(setState, null);
+      yield call(closeModal);
       yield call(getExchangeDetails, { id: orderId });
       yield call([Swal, "fire"], "Exitoso", "Orden reasignada correctamente", "success");
-      yield call([history, "goBack"]);
     }
   } catch (error) {
-    let message = error.message;
-
-    if (error.data) {
-      if (error.data.code === 4008) message = "La moneda de la cuenta seleccionada no corresponde a la moneda del monto a enviar.";
-      if (error.data.code === 4007) message = "El operador que se desea asignar no corresponde al banco de la cuenta seleccionada.";
-    }
-
-    yield put(actions.apiError(message));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
-function* setRevision({ values, setState, orderId }) {
+function* setRevision({ values, closeModal, orderId }) {
   const noteValues = { note: values.note || null };
 
   try {
-    const res = yield exchangeInstance.put(`/order/admin/notes/${orderId}`, noteValues);
+    const res = yield exchangeInstance.put(`/order/notes/${orderId}`, noteValues);
     if (res.status === 200) {
       yield put(actions.setRevisionSuccess());
       yield call(getExchangeDetails, { id: orderId });
-      yield call(setState, false);
+      yield call(closeModal);
       yield call([Swal, "fire"], "Exitoso", "La revisión de orden ha sido actualizada.", "success");
     }
   } catch (error) {
