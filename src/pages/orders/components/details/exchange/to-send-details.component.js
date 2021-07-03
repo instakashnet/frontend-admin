@@ -24,7 +24,7 @@ const Received = ({ isLoading, details, onShowForm }) => {
                   </div>
                 </div>
               </Col>
-              {(details.stateId === 3 || details.stateId === 4) && (
+              {details.stateId !== 6 && details.stateId !== 5 && (
                 <Col sm="4" className="d-flex justify-content-end align-items-start">
                   <button className="text-success" onClick={() => onShowForm("edit")}>
                     <i className="fas fa-edit" /> Editar
