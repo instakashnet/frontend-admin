@@ -38,7 +38,7 @@ function* editExchange({ id, values, closeModal }) {
   }
 }
 
-function* validateExchange({ orderId, closeModal }) {
+function* validateExchange({ orderId }) {
   try {
     const result = yield Swal.fire({
       title: `¿Deseas validar esta operación?`,
@@ -55,7 +55,6 @@ function* validateExchange({ orderId, closeModal }) {
       if (res.status === 200) {
         yield call(getExchangeDetails, { id: orderId });
         yield put(actions.validateExchangeSuccess());
-        yield call(closeModal);
         yield Swal.fire("Exitoso", `La operación fue validada correctamente.`, "success");
       }
     } else yield put(actions.apiError());
