@@ -51,13 +51,15 @@ export const ExchangesScreen = () => {
     {
       title: "O",
       field: "originBank",
-      render: (rowData) => <img width={rowData.originBank === "kash" ? 40 : 80} src={`${process.env.PUBLIC_URL}/images/banks/${rowData.originBank}.svg`} alt="banco" />,
+      render: (rowData) => (
+        <img width={rowData.originBank === "kash" ? 40 : 80} src={`${process.env.PUBLIC_URL}/images/banks/${rowData.originBank}.svg`} alt={rowData.originBank} />
+      ),
       width: 100,
     },
     {
       title: "D",
       field: "destinationBank",
-      render: (rowData) => <img width={80} src={`${process.env.PUBLIC_URL}/images/banks/${rowData.destinationBank}.svg`} alt="banco" />,
+      render: (rowData) => <img width={80} src={`${process.env.PUBLIC_URL}/images/banks/${rowData.destinationBank}.svg`} alt={rowData.destinationBank} />,
       width: 100,
     },
     {
