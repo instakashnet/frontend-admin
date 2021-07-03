@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Container } from "reactstrap";
+import { Col, Row, Container, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { getCouponsInit, disableCouponInit, deleteCouponInit } from "../../../store/actions";
 import { authInstance } from "../../../helpers/AuthType/axios";
@@ -56,14 +56,15 @@ export const CouponsScreen = () => {
               onForm={onFormHandler}
             />
           </Col>
-          {showForm && (
-            <Col lg="6">
-              <Breadcrumbs title="Agregar" breadcrumbItem="Agregar cupón" />
-              <EditCoupon couponId={couponId} isProcessing={isProcessing} clients={allClients} />
-            </Col>
-          )}
         </Row>
       </Container>
+      <Modal isOpen={showForm} role="dialog" autoFocus centered tabIndex="-1" toggle={onFormHandler}>
+        <ModalHeader toggle={onFormHandler}>Formulario</ModalHeader>
+        <ModalBody>
+          <h4 className="mb-2">{couponId ? "Editar cupón" : "Agregar cupón"}</h4>
+          <EditCoupon couponId={couponId} isProcessing={isProcessing} onShowForm={onFormHandler} clients={allClients} />
+        </ModalBody>
+      </Modal>
     </div>
   );
 };

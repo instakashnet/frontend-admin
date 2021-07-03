@@ -1,4 +1,4 @@
-import * as types from './types';
+import * as types from "./types";
 
 export const getCouponsInit = () => ({
   type: types.GET_COUPONS_INIT,
@@ -19,20 +19,22 @@ export const getCouponsDetailsSuccess = (details) => ({
   details,
 });
 
-export const addCouponInit = (values) => ({
+export const addCouponInit = (values, closeModal) => ({
   type: types.ADD_COUPON_INIT,
   values,
+  closeModal,
 });
 
 export const addCouponSuccess = () => ({
   type: types.ADD_COUPON_SUCCESS,
 });
 
-export const editCouponInit = (id, values, active) => ({
+export const editCouponInit = (id, values, active, closeModal) => ({
   type: types.EDIT_COUPON_INIT,
   id,
   values,
   active,
+  closeModal,
 });
 
 export const editCouponSuccess = () => ({

@@ -11,7 +11,7 @@ import Checkbox from "../../../../../components/UI/FormItems/Checkbox";
 import AsyncSelect from "../../../../../components/UI/FormItems/AsyncSelect";
 import Select from "../../../../../components/UI/FormItems/Select";
 
-const EditCoupon = ({ couponId, isProcessing, clients }) => {
+const EditCoupon = ({ couponId, isProcessing, onShowForm, clients }) => {
   const dispatch = useDispatch();
   const details = useSelector((state) => state.Coupons.couponDetails);
 
@@ -29,7 +29,7 @@ const EditCoupon = ({ couponId, isProcessing, clients }) => {
     },
     enableReinitialize: true,
     validationSchema: couponValidations,
-    onSubmit: (values) => (couponId ? dispatch(editCouponInit(couponId, values, details.active)) : dispatch(addCouponInit(values))),
+    onSubmit: (values) => (couponId ? dispatch(editCouponInit(couponId, values, details.active, onShowForm)) : dispatch(addCouponInit(values, onShowForm))),
   });
 
   useEffect(() => {
@@ -102,9 +102,11 @@ const EditCoupon = ({ couponId, isProcessing, clients }) => {
           )}
           <AsyncSelect placeholder="selecciona usuarios" label="Asignación a usuarios" options={clients} onChange={onClientChange} value={formik.values.clients} isMulti />
           <Select name="profileType" label="Perfil de uso" value={formik.values.profileType} onChange={formik.handleChange} options={profilesOptions} />
-          <Button type="submit" disabled={!formik.isValid || isProcessing} color="primary">
-            {isProcessing ? <Spinner size="sm" /> : couponId ? "Editar cupón" : "Agregar cupón"}
-          </Button>
+          <div className="mt-2 flex justify-center">
+            <Button type="submit" disabled={!formik.isValid || isProcessing} color="primary">
+              {isProcessing ? <Spinner size="sm" /> : couponId ? "Editar cupón" : "Agregar cupón"}
+            </Button>
+          </div>
         </form>
       </CardBody>
     </Card>

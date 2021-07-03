@@ -14,7 +14,7 @@ function* getCoupons() {
   }
 }
 
-function* addCoupon({ values }) {
+function* addCoupon({ values, closeModal }) {
   const couponValues = {
     ...values,
     forexId: 1,
@@ -31,6 +31,7 @@ function* addCoupon({ values }) {
     if (res.status === 201) {
       yield put(actions.addCouponSuccess());
       yield call(getCoupons);
+      yield call(closeModal);
       yield call([Swal, "fire"], "Exitoso!", "Cupón agregado correctamente", "success");
     }
   } catch (error) {
@@ -49,7 +50,7 @@ function* getCouponDetails({ id }) {
   }
 }
 
-function* editCoupon({ id, values, active }) {
+function* editCoupon({ id, values, active, closeModal }) {
   const couponValues = {
     ...values,
     active,
@@ -60,10 +61,11 @@ function* editCoupon({ id, values, active }) {
   };
 
   try {
-    const res = yield exchangeInstance.put(`/coupons/edit/${id}`, couponValues, { timeout: 100 });
+    const res = yield exchangeInstance.put(`/coupons/edit/${id}`, couponValues);
     if (res.status === 200) {
       yield put(actions.editCouponSuccess());
       yield call(getCoupons);
+      yield call(closeModal);
       yield call([Swal, "fire"], "Exitoso!", "Cupón editado correctamente", "success");
     }
   } catch (error) {
@@ -88,7 +90,7 @@ function* deleteCoupon({ id }) {
         yield call([Swal, "fire"], "Exitoso", "El cupón ha sido eliminado.", "success");
         yield call(getCoupons);
       }
-    }
+    } else yield put(actions.couponsError());
   } catch (error) {
     yield put(actions.couponsError());
   }
@@ -110,7 +112,7 @@ function* disableCoupon({ id, active }) {
         yield call(getCoupons);
         yield call([Swal, "fire"], "Exitoso!", `El cupón ha sido ${active ? "habilitado" : "deshabilitado"}.`, "success");
       }
-    }
+    } else yield put(actions.couponsError());
   } catch (error) {
     yield put(actions.couponsError());
   }
