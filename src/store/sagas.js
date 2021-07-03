@@ -8,14 +8,12 @@ import DataSaga from "./settings/data/saga";
 
 // settings
 import CurrencyExchangeSaga from "./transactions/currencyExchange/saga";
-import CashAdvanceSaga from "./transactions/cashAdvance/saga";
 import WithdrawalsSaga from "./transactions/withdrawals/saga";
 
 import BankAccountsSaga from "./bankAccounts/saga";
 
 // private
 import AdminUsersSaga from "./auth/admin/saga";
-import BinnacleSaga from "./activity/binnacle/saga";
 import forexSaga from "./forex/saga";
 import ClientsSaga from "./settings/clients/saga";
 import StatusSaga from "./settings/status/saga";
@@ -35,11 +33,9 @@ export default function* rootSaga() {
     LayoutSaga(),
     // transacions
     CurrencyExchangeSaga(),
-    CashAdvanceSaga(),
     WithdrawalsSaga(),
 
     CouponsSaga(),
-    BinnacleSaga(),
     forexSaga(),
     BankAccountsSaga(),
     ClientsSaga(),

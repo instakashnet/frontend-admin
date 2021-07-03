@@ -5,7 +5,6 @@ import * as actionTypes from "./actionTypes";
 import Swal from "sweetalert2";
 import { exchangeInstance } from "../../../helpers/AuthType/axios";
 import { getClientExchanges } from "../../settings/clients/actions";
-import history from "../../../helpers/history";
 import camelize from "camelize";
 
 function* getExchangeDetails({ id }) {

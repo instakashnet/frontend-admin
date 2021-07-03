@@ -14,14 +14,11 @@ import Coupons from "./settings/coupons/reducer";
 
 import BankAccounts from "./bankAccounts/reducer";
 import Forex from "./forex/reducer";
-// Activity
-import Binnacle from "./activity/binnacle/reducer";
 import Counters from "./activity/counters/reducer";
 
 // Transactions
 import CurrencyExchange from "./transactions/currencyExchange/reducer";
 import Withdrawals from "./transactions/withdrawals/reducer";
-import CashAdvance from "./transactions/cashAdvance/reducer";
 import Charts from "./charts/reducer";
 
 // Authentication
@@ -39,10 +36,8 @@ const rootReducer = combineReducers({
   Banks,
   // transactions
   CurrencyExchange,
-  CashAdvance,
   Withdrawals,
   // settings
-  Binnacle,
   Forex,
   BankAccounts,
   Clients,

@@ -10,7 +10,6 @@ export * from "./settings/data/actions";
 export * from "./settings/coupons/actions";
 
 // Activity
-export * from "./activity/binnacle/actions";
 export * from "./activity/counters/actions";
 
 export * from "./bankAccounts/actions";
@@ -19,8 +18,6 @@ export * from "./forex/actions";
 // Transactions modules
 export * from "./transactions/currencyExchange/actions";
 export * from "./transactions/withdrawals/actions";
-
-export * from "./transactions/cashAdvance/actions";
 export * from "./charts/actions";
 
 // Authentication module
