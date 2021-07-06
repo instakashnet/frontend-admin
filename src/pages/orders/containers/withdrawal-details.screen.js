@@ -29,32 +29,34 @@ export const WithdrawalDetailsScreen = ({ match, history }) => {
     <LoadingPage />
   ) : (
     <div className="page-content">
-      <Container fluid>
-        <Row>
-          <Col lg="8" xl="6">
-            <ActionButtons
-              goBack={() => history.goBack()}
-              statusId={details.statusID}
-              onDecline={declineWithdrawalHandler}
-              onChangeStatus={() => setModal(true)}
-              isProcessing={isProcessing}
-            />
-            {details.user && <UserInfo user={details.user} />}
-          </Col>
-        </Row>
-        <Row>
-          <Col lg="8" xl="6" className="d-flex justify-content-end mb-3">
-            <Badge className="py-2 font-size-15 px-5" style={{ color: "#fff", backgroundColor: details.statusColor }}>
-              {details.statusName}
-            </Badge>
-          </Col>
-        </Row>
-        <Row>
-          <Col lg="8" xl="6">
-            <WithdrawalInfo details={details} isProcessing={isProcessing} />
-          </Col>
-        </Row>
-      </Container>
+      {details.user && (
+        <Container fluid>
+          <Row>
+            <Col lg="8" xl="6">
+              <ActionButtons
+                goBack={() => history.goBack()}
+                statusId={details.statusID}
+                onDecline={declineWithdrawalHandler}
+                onChangeStatus={() => setModal(true)}
+                isProcessing={isProcessing}
+              />
+              <UserInfo user={details.user} />
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="8" xl="6" className="d-flex justify-content-end mb-3">
+              <Badge className="py-2 font-size-15 px-5" style={{ color: "#fff", backgroundColor: details.statusColor }}>
+                {details.statusName}
+              </Badge>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="8" xl="6">
+              <WithdrawalInfo details={details} isProcessing={isProcessing} />
+            </Col>
+          </Row>
+        </Container>
+      )}
       <Modal isOpen={modal} role="dialog" autoFocus={true} centered={true} tabIndex="-1" toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>Adjunta el comprobante de pago</ModalHeader>
         <ModalBody>

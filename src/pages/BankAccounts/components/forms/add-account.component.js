@@ -18,7 +18,7 @@ const AddAccounts = ({ onHideForm, isProcessing }) => {
   const banks = useSelector((state) => state.Banks.banks);
   const currencies = useSelector((state) => state.Data.currencies);
 
-  const banksOptions = banks.map((bank) => ({ value: bank.id, label: bank.name, image: `${process.env.PUBLIC_URL}/images/banks/${bank.name}.svg` }));
+  const banksOptions = banks.map((bank) => ({ value: bank.id, label: bank.name, image: `${process.env.PUBLIC_URL}/images/banks/${bank.name.toLowerCase()}.svg` }));
   const currencyOptions = currencies.map((currency) => ({ label: `${currency.name} (${currency.Symbol})`, value: currency.id }));
 
   const onBankChange = (option) => formik.setFieldValue("bankId", option.value ? option.value : "");

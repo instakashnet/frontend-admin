@@ -43,7 +43,7 @@ const WithdrawalInfo = ({ details, isProcessing }) => {
             <div className="text-sm-right my-3">
               <p className="text-muted mb-2">Banco que recibe</p>
               <div className="mb-2 flex items-center md:justify-end">
-                <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankName}.svg`} alt={details.bankName} width={80} className="mr-2" />
+                <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankName.toLowerCase()}.svg`} alt={details.bankName} width={80} className="mr-2" />
                 <span className="ml-2 text-muted">{details.accountToType === "savings" ? "Ahorros" : "Corriente"} Dólares</span>
               </div>
             </div>

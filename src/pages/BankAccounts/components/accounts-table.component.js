@@ -11,7 +11,7 @@ const AccountsTable = ({ accounts, isLoading, onShowForm }) => {
       {
         title: "Banco",
         field: "bankName",
-        render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankName}.svg`} alt={rowData.bankName} className="mr-2" width={80} />,
+        render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankName.toLowerCase()}.svg`} alt={rowData.bankName} className="mr-2" width={80} />,
       },
       {
         title: "Nro. de cuenta",

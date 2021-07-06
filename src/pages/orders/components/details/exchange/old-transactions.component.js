@@ -19,7 +19,7 @@ const OldTransactions = (props) => {
         render: (rowData) => (
           <div className="d-flex align-items-center">
             <span className="mr-2">{rowData.amountSent}</span>
-            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankReceive}.svg`} width={20} alt="banco" />
+            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankReceive.toLowerCase()}.svg`} width={20} alt="banco" />
           </div>
         ),
       },
@@ -30,7 +30,7 @@ const OldTransactions = (props) => {
         render: (rowData) => (
           <div className="d-flex align-items-center">
             <span className="mr-2">{rowData.amountReceived}</span>
-            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankSent}.svg`} width={20} alt="banco" />
+            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankSent.toLowerCase()}.svg`} width={20} alt="banco" />
           </div>
         ),
       },

@@ -76,7 +76,7 @@ const Received = ({ isLoading, details, onShowForm }) => {
                 <p className="text-muted mb-2">Envía desde</p>
                 <h5 className="flex items-center justify-end">
                   <img
-                    src={`${process.env.PUBLIC_URL}/images/banks/${details.amountSent > 0 ? details.bankReceive : "kash"}.svg`}
+                    src={`${process.env.PUBLIC_URL}/images/banks/${details.amountSent > 0 ? details.bankReceive.toLowerCase() : "kash"}.svg`}
                     alt={details.bankReceive}
                     width={details.amountSent > 0 ? 80 : 50}
                   />
