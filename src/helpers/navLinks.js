@@ -9,7 +9,7 @@ export const generalLinks = [
     path: "/bank-accounts",
     icon: "bx bx-wallet",
     label: "Cuentas bancarias",
-    roles: ["admin", "officers"],
+    roles: ["admin", "officers", "manager"],
   },
   {
     path: "/forex",
