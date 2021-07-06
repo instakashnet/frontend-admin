@@ -1,4 +1,5 @@
 import moment from "moment";
+import camelize from "camelize";
 import { removeAlert, setAlert } from "../../store/actions";
 import { exchangeInstance } from "../../helpers/AuthType/axios";
 import { formatAmount } from "../../helpers/functions";
@@ -22,7 +23,8 @@ export const getAllOrders = (query, setLoading, setSearch, dispatch) => {
       } else res = await exchangeInstance.get(URL);
 
       if (res && res.data) {
-        orders = res.data.orders.map((order) => ({
+        const ordersData = camelize(res.data.orders);
+        orders = ordersData.map((order) => ({
           id: order.id,
           pedidoId: order.uuid,
           date: order.completedAt ? moment(order.completedAt).format("DD/MM/YY hh:mm a") : "Sin completar",
@@ -35,6 +37,7 @@ export const getAllOrders = (query, setLoading, setSearch, dispatch) => {
           statusName: order.stateName,
           statusColor: order.stateColor,
           invoice: order.billAssigned,
+          companyName: order.razonSocial || "",
         }));
       }
 

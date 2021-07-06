@@ -37,6 +37,7 @@ export const ExchangesScreen = () => {
     {
       title: "Usuario",
       field: "user",
+      render: (rowData) => <p>{rowData.companyName || rowData.user}</p>,
     },
     {
       title: "Envia",

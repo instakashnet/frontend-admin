@@ -63,18 +63,20 @@ export const ExchangeDetailsScreen = (props) => {
             <Row>
               <Col lg="8">
                 {details && (
-                  <ActionButtons
-                    goBack={() => history.goBack()}
-                    statusId={details.stateId}
-                    billCreated={details.billAssigned}
-                    onDecline={onDeclineExchange}
-                    onCreateInvoice={onCreateInvoice}
-                    onChangeStatus={changeStatusHandler}
-                    isProcessing={isProcessing}
-                    hasInvoice
-                  />
+                  <>
+                    <ActionButtons
+                      goBack={() => history.goBack()}
+                      statusId={details.stateId}
+                      billCreated={details.billAssigned}
+                      onDecline={onDeclineExchange}
+                      onCreateInvoice={onCreateInvoice}
+                      onChangeStatus={changeStatusHandler}
+                      isProcessing={isProcessing}
+                      hasInvoice
+                    />
+                    <UserInfo user={details.user} isLoading={isLoading} />
+                  </>
                 )}
-                <UserInfo details={details} isLoading={isLoading} />
               </Col>
               {details.orderNotes && (
                 <Col lg="4">

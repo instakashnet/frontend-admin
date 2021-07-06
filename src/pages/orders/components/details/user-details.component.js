@@ -3,37 +3,43 @@ import { Card, CardBody, Media } from "reactstrap";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 import Male from "../../../../assets/images/profile-male.svg";
+import Female from "../../../../assets/images/profile-female.svg";
+import Company from "../../../../assets/images/profile-company.svg";
 import CopyButton from "../../../../components/UI/CopyButton";
 
-const User = ({ isLoading, details }) => {
+const User = ({ isLoading, user }) => {
+  let Avatar = user.type === "juridica" ? Company : Male;
+  if (user.type === "natural") Avatar = user.identitySex === "male" ? Male : Female;
+
   return (
     <Card>
       <CardBody>
-        {isLoading && <Loading />}
-        {!isLoading && details && (
+        {isLoading ? (
+          <Loading />
+        ) : (
           <Media className="transacion-details">
             <div className="mr-3">
-              <img src={Male} width={35} className="avatar-md rounded-circle img-thumbnail" alt="user" />
+              <img src={Avatar} width={35} className="avatar-md rounded-circle img-thumbnail" alt="user" />
             </div>
             <Media body className="align-self-center">
               <div className="text-muted">
-                <h5>{details.firstName + " " + details.lastName}</h5>
-                <p className="mb-1">{details.email}</p>
+                <h5>{user.firstName + " " + user.lastName}</h5>
+                <p className="mb-1">{user.email}</p>
                 <p className="mb-1">
-                  <b>Documento:</b> {`${details.documentType} ${details.documentIdentification}`}
+                  <b>Documento:</b> {`${user.documentType} ${user.documentIdentification}`}
                 </p>
                 <p className="mb-0">
-                  <b>Teléfono:</b> {details.phone} <CopyButton textToCopy={details.phone} />
+                  <b>Teléfono:</b> {user.phone} <CopyButton textToCopy={user.phone} />
                 </p>
               </div>
             </Media>
-            {details.type === "juridica" && (
+            {user.type === "juridica" && (
               <Media body className="align-self-center">
                 <div className="text-muted">
                   <h5>Empresa</h5>
-                  <p className="mb-1">{details.razonSocial}</p>
+                  <p className="mb-1">{user.razonSocial}</p>
                   <p className="mb-0">
-                    <b>RUC:</b> {details.ruc}
+                    <b>RUC:</b> {user.ruc}
                   </p>
                 </div>
               </Media>

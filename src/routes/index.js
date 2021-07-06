@@ -36,7 +36,7 @@ const adminRoutes = [
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 ];
 
-const appraiserRoutes = [
+const officersRoutes = [
   { path: "/dashboard", component: DashboardScreen },
   { path: "/bank-accounts", component: BankAccountsScreen },
   { path: "/forex", component: ForexScreen },
@@ -82,4 +82,4 @@ const publicRoutes = [
   { path: "/pages-404", component: Pages404 }, */
 ];
 
-export { adminRoutes as admin, appraiserRoutes as appraiser, ordersRoutes as orders, managerRoutes as manager, publicRoutes as public };
+export { adminRoutes as admin, officersRoutes as officers, ordersRoutes as orders, managerRoutes as manager, publicRoutes as public };

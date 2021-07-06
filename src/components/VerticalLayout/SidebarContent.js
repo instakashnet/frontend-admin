@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useRole } from "../../hooks/useRole";
 
 // MetisMenu
 import MetisMenu from "metismenujs";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
+
+import { generalLinks, ordersLinks, configLinks } from "../../helpers/navLinks";
 
 const SidebarContent = (props) => {
   const { type, location } = props;
@@ -31,6 +34,7 @@ const SidebarContent = (props) => {
   }, [type, location]);
 
   const user = useSelector((state) => state.Login.user);
+  const [role] = useRole(user);
 
   const activateParentDropdown = (item) => {
     item.classList.add("active");
@@ -60,148 +64,51 @@ const SidebarContent = (props) => {
   };
 
   return (
-    <React.Fragment>
-      <div id="sidebar-menu">
-        <ul className="metismenu list-unstyled" id="side-menu">
-          <li className="menu-title">{"Principal"}</li>
+    <div id="sidebar-menu">
+      <ul className="metismenu list-unstyled" id="side-menu">
+        {(role === "admin" || role === "manager" || role === "officers") && <li className="menu-title">{"Principal"}</li>}
 
-          <li>
-            <Link to="/dashboard">
-              <i className="bx bx-home-circle"></i>
-              <span>{"Actividad"}</span>
-            </Link>
-          </li>
-
-          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER" || user.role === "ROLE_MANAGER") && (
-            <>
-              <li className="menu-title">{"Datos del sistema"}</li>
-
-              <li>
-                <Link to="/bank-accounts">
-                  <i className="bx bx-wallet"></i>
-                  <span>{"Cuentas de la empresa"}</span>
-                </Link>
-              </li>
-            </>
-          )}
-
-          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_APPRAISER") && (
-            <li>
-              <Link to="/forex" className=" waves-effect">
-                <i className="bx bx-dollar-circle"></i>
-                <span>{"Precio del dolar"}</span>
+        {generalLinks.map((link) => {
+          const isRole = link.roles.find((linkRole) => linkRole === role);
+          return isRole ? (
+            <li key={link.path}>
+              <Link to={link.path}>
+                <i className={link.icon}></i>
+                <span>{link.label}</span>
               </Link>
             </li>
-          )}
+          ) : null;
+        })}
 
-          {user &&
-          (user.role === "ROLE_ADMIN" ||
-            user.role === "ROLE_APPRAISER" ||
-            user.role === "ROLE_OPERATOR" ||
-            user.role === "ROLE_ANALYST" ||
-            user.role === "ROLE_MANAGER" ||
-            user.role === "ROLE_SIGNATORY") ? (
-            <>
-              <li className="menu-title">{"Cambios de divisa"}</li>
+        <li className="menu-title">{"Cambios de divisa"}</li>
 
-              <li>
-                <Link to="/exchanges/all" className=" waves-effect">
-                  <i className="bx bx-list-check"></i>
-                  {/* <span className='badge badge-pill badge-warning float-right'>{"4"}</span> */}
-                  <span>{"Operaciones recibidas"}</span>
-                </Link>
-              </li>
-
-              {/* <li>
-                <Link to='/exchange-transaction-limits?type=currencyExchange' className=' waves-effect'>
-                  <i className='bx bx-tachometer'></i>
-                  <span>{"Limites por transacción"}</span>
-                </Link>
-              </li> */}
-              <li className="menu-title">{"Solicitud de retiros KASH"}</li>
-              <li>
-                <Link to="/withdrawals/all" className="waves-effect">
-                  <i className="bx bx-list-ol"></i>
-                  {/* <span className='badge badge-pill badge-warning float-right'>{"4"}</span> */}
-                  <span>{"Retiros KASH"}</span>
-                </Link>
-              </li>
-
-              {/* <li className='menu-title'>{"Avances de efectivo"}</li> */}
-
-              {/* 
-              <li>
-                <Link to='/cash-advances' className=' waves-effect'>
-                  <i className='bx bx-bar-chart-square'></i>
-                  <span className='badge badge-pill badge-warning float-right'>{"4"}</span>
-                  <span>{"Transacciones"}</span>
-                </Link>
-              </li> */}
-              {/* 
-              <li>
-                <Link to='/advance-transaction-limits?type=cashAdvance' className=' waves-effect'>
-                  <i className='bx bx-tachometer'></i>
-                  <span>{"Limites por transacción"}</span>
-                </Link>
-              </li> */}
-            </>
-          ) : null}
-
-          {user && user.role === "ROLE_ADMIN" && (
-            <>
-              <li className="menu-title">{"Configuraciones generales"}</li>
-
-              <li>
-                <Link to="/schedule" className=" waves-effect">
-                  <i className="bx bx-calendar"></i>
-                  <span>{"Horarios"}</span>
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/coupons" className=" waves-effect">
-                  <i className="bx bxs-discount"></i>
-                  <span>{"Cupones de descuento"}</span>
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/banks" className=" waves-effect">
-                  <i className="mdi mdi-bank-outline"></i>
-                  <span>{"Bancos aceptados"}</span>
-                </Link>
-              </li>
-            </>
-          )}
-
-          {user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_MANAGER") && (
-            <li>
-              <Link to="/registered-users">
-                <i className="bx bx-user-circle"></i>
-                <span>{"Usuarios registrados"}</span>
+        {ordersLinks.map((link) => {
+          const isRole = link.roles.find((linkRole) => linkRole === role);
+          return isRole ? (
+            <li key={link.path}>
+              <Link to={link.path}>
+                <i className={link.icon}></i>
+                <span>{link.label}</span>
               </Link>
             </li>
-          )}
+          ) : null;
+        })}
 
-          {user && user.role === "ROLE_ADMIN" && (
-            <li>
-              <Link to="/#" className="has-arrow waves-effect">
-                <i className="bx bx-cog"></i>
-                <span>{"Ajustes"}</span>
+        {(role === "admin" || role === "manager") && <li className="menu-title">{"Configuraciones generales"}</li>}
+
+        {configLinks.map((link) => {
+          const isRole = link.roles.find((linkRole) => linkRole === role);
+          return isRole ? (
+            <li key={link.path}>
+              <Link to={link.path}>
+                <i className={link.icon}></i>
+                <span>{link.label}</span>
               </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/admin-users">{"Usuarios administrativos"}</Link>
-                </li>
-                <li>
-                  <Link to="/status">{"Estados de operaciones"}</Link>
-                </li>
-              </ul>
             </li>
-          )}
-        </ul>
-      </div>
-    </React.Fragment>
+          ) : null;
+        })}
+      </ul>
+    </div>
   );
 };
 
