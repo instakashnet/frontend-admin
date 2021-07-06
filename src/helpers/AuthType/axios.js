@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCodeMessage } from "./error-codes";
 
 const timeout = 13000;
 const requestLog = (config) => (process.env.NODE_ENV !== "production" ? console.log(`Request sent to ${config.url}`) : false);
@@ -17,7 +18,7 @@ const reqInterceptor = (instance) =>
     (error) => Promise.reject(error)
   );
 
-const resInterceptor = (instance) =>
+const resInterceptor = (instance, type) =>
   instance.interceptors.response.use(
     (res) => res,
     (error) => {
@@ -29,11 +30,7 @@ const resInterceptor = (instance) =>
 
       if (error.response) {
         const code = error.response.data.code;
-
-        if (code === 2004) message = "Las credenciales de acceso no son correctas.";
-        if (code === 2023) message = "Este nombre ya existe en otro cupón.";
-
-        error.response.message = message;
+        if (code) error.response.message = getCodeMessage(code, type);
 
         return Promise.reject(error.response);
       } else {
@@ -48,20 +45,20 @@ const authInstance = axios.create({
   timeout,
 });
 reqInterceptor(authInstance);
-resInterceptor(authInstance);
+resInterceptor(authInstance, "auth");
 
 const exchangeInstance = axios.create({
   baseURL: `${process.env.NODE_ENV !== "production" ? process.env.REACT_APP_TEST_EXCHANGE_API : process.env.REACT_APP_EXCHANGE_API}/admin`,
   timeout,
 });
 reqInterceptor(exchangeInstance);
-resInterceptor(exchangeInstance);
+resInterceptor(exchangeInstance, "exchange");
 
 const accountsInstance = axios.create({
   baseURL: `${process.env.NODE_ENV !== "production" ? process.env.REACT_APP_TEST_ACCOUNTS_API : process.env.REACT_APP_ACCOUNTS_API}/admin`,
   timeout,
 });
 reqInterceptor(accountsInstance);
-resInterceptor(accountsInstance);
+resInterceptor(accountsInstance, "accounts");
 
 export { authInstance, exchangeInstance, accountsInstance };

@@ -1,4 +1,4 @@
-import { takeEvery, fork, put, all, call } from "redux-saga/effects";
+import { takeEvery, fork, put, all, call, delay } from "redux-saga/effects";
 
 // Login Redux States
 import { LOGIN_USER, LOGOUT_USER, LOAD_USER } from "./actionTypes";
@@ -39,10 +39,16 @@ function* loadUser({ history }) {
     const redirectRoute = yield call(setRoleRedirect, user.role);
     yield put(actions.loginSuccess(user, accessToken));
     yield history && history.push(redirectRoute);
+    yield call(setAuthTimeout, expTime.getTime() - new Date().getTime());
   } catch (error) {
     yield put(actions.logoutUser(history));
     yield put(actions.loadUserError());
   }
+}
+
+function* setAuthTimeout(timeout) {
+  yield delay(timeout - 6000);
+  yield call(logoutUser);
 }
 
 function* loginUser({ payload }) {

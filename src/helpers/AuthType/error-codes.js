@@ -1,7 +1,11 @@
 const authCodes = [
   {
     code: 2000,
-    message: "El ",
+    message: "No has enviado ni el email ni la contraseña.",
+  },
+  {
+    code: 2004,
+    message: "Las credenciales no son correctas.",
   },
 ];
 

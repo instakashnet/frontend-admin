@@ -39,7 +39,7 @@ export const WithdrawalDetailsScreen = ({ match, history }) => {
               onChangeStatus={() => setModal(true)}
               isProcessing={isProcessing}
             />
-            <UserInfo details={details} />
+            {details.user && <UserInfo user={details.user} />}
           </Col>
         </Row>
         <Row>
