@@ -35,7 +35,7 @@ export const WithdrawalsScreen = () => {
     {
       title: "Recibe",
       field: "destinationBank",
-      render: (rowData) => <img width={80} src={`${process.env.PUBLIC_URL}/images/banks/${rowData.destinationBank}.svg`} alt={rowData.destinationBank} />,
+      render: (rowData) => <img width={80} src={`${process.env.PUBLIC_URL}/images/banks/${rowData.destinationBank.toLowerCase()}.svg`} alt={rowData.destinationBank} />,
       width: 100,
     },
     {

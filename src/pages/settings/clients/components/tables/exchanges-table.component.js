@@ -33,7 +33,7 @@ const ExchangesTable = (props) => {
         render: (rowData) => (
           <div className="d-flex align-items-center">
             <span className="mr-2">{rowData.amountSent}</span>
-            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankReceive}.svg`} width={80} alt="banco" />
+            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankReceive.toLowerCase()}.svg`} width={80} alt="banco" />
           </div>
         ),
       },
@@ -43,7 +43,7 @@ const ExchangesTable = (props) => {
         render: (rowData) => (
           <div className="d-flex align-items-center">
             <span className="mr-2">{rowData.amountReceive}</span>
-            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankSent}.svg`} width={80} alt="banco" />
+            <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankSent.toLowerCase()}.svg`} width={80} alt="banco" />
           </div>
         ),
       },

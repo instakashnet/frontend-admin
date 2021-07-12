@@ -19,7 +19,7 @@ const AccountsTable = ({ userId }) => {
       {
         field: "bank",
         title: "Banco",
-        render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bank}.svg`} width={80} alt="banco" />,
+        render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bank.toLowerCase()}.svg`} width={80} alt="banco" />,
       },
       {
         field: "currency",

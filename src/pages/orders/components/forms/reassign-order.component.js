@@ -22,7 +22,7 @@ const ReassignOrder = ({ details, isProcessing, onShowForm }) => {
   const operatorOptions = operators.map((operator) => ({ label: `${operator.name} - ${operator.email}`, value: operator.userId }));
   const clientAccountOptions = clientAccounts.map((clientAccount) => ({
     label: `${clientAccount.account_number} - ${clientAccount.currency.Symbol}`,
-    image: `${process.env.PUBLIC_URL}/images/banks/${clientAccount.bank.name}.svg`,
+    image: `${process.env.PUBLIC_URL}/images/banks/${clientAccount.bank.name.toLowerCase()}.svg`,
     value: clientAccount.id,
   }));
 

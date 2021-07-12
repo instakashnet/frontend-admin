@@ -11,7 +11,7 @@ const BanksList = (props) => {
       {
         field: "bankName",
         title: "Banco",
-        render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankName}.svg`} width={80} alt="banco" />,
+        render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankName.toLowerCase()}.svg`} width={80} alt="banco" />,
       },
       {
         field: "country",
