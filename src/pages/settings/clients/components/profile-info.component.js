@@ -3,8 +3,6 @@ import moment from "moment";
 import { Col, Card, CardBody, CardTitle, Button, Table } from "reactstrap";
 
 const ProfileInfo = ({ profile, openModal }) => {
-  console.log(profile);
-
   return (
     <Col lg="6">
       <Card>

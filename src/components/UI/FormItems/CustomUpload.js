@@ -18,14 +18,16 @@ const CustomUpload = (props) => {
   };
 
   const onDropHandler = (file) => {
-    setFormattedSize(formatBytes(file[0].size));
-    setSelectedFile(file[0]);
-    props.onDrop(file[0]);
+    if (file.length) {
+      setFormattedSize(formatBytes(file[0].size));
+      setSelectedFile(file[0]);
+      props.onDrop(file[0]);
+    } else return;
   };
 
   return (
     <>
-      <Dropzone onDrop={onDropHandler} multiple={false} accept="application/pdf, image/jpg, image/png">
+      <Dropzone onDrop={onDropHandler} multiple={false} accept="application/pdf,image/jpg,image/jpeg,image/png">
         {({ getRootProps, getInputProps }) => (
           <div className="dropzone">
             <div className="dz-message needsclick" {...getRootProps()}>
