@@ -54,25 +54,10 @@ function* validateExchange({ orderId }) {
       const res = yield exchangeInstance.put(`/order/status/${orderId}`, { status: 4 });
       if (res.status === 200) {
         yield call(getExchangeDetails, { id: orderId });
-        yield put(actions.validateExchangeSuccess());
         yield Swal.fire("Exitoso", `La operación fue validada correctamente.`, "success");
+        yield put(actions.validateExchangeSuccess());
       }
     } else yield put(actions.apiError());
-  } catch (error) {
-    yield put(setAlert("danger", error.message));
-    yield put(actions.apiError());
-  }
-}
-
-function* approveExchange({ orderId, closeModal }) {
-  try {
-    const res = yield exchangeInstance.put(`/order/status/${orderId}`, { status: 6 });
-    if (res.status === 200) {
-      yield put(actions.approveExchangeSuccess());
-      yield call(getExchangeDetails, { id: orderId });
-      yield call(closeModal);
-      yield Swal.fire("Exitoso", `La operación fue aprobada correctamente.`, "success");
-    }
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -121,10 +106,23 @@ function* uploadVoucher({ orderId, values, closeModal }) {
 
     if (result.isConfirmed) {
       const res = yield exchangeInstance.post(`/bills/order/attach-voucher/${orderId}`, formData);
-      if (res.status === 201) {
-        yield call(approveExchange, { orderId, closeModal });
-      }
+      if (res.status === 201) yield call(approveExchange, { orderId, closeModal });
     } else yield put(actions.apiError());
+  } catch (error) {
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
+
+function* approveExchange({ orderId, closeModal }) {
+  try {
+    const res = yield exchangeInstance.put(`/order/status/${orderId}`, { status: 6 });
+    if (res.status === 200) {
+      yield call(getExchangeDetails, { id: orderId });
+      yield call(closeModal);
+      yield Swal.fire("Exitoso", `La operación fue aprobada correctamente.`, "success");
+      yield put(actions.approveExchangeSuccess());
+    }
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -135,9 +133,9 @@ function* createInvoice({ orderId }) {
   try {
     const res = yield exchangeInstance.post(`/bills/order/${orderId}`);
     if (res.status === 201) {
-      yield put(actions.createInvoiceSuccess());
       yield call(getExchangeDetails, { id: orderId });
       yield put(setAlert("success", "La factura se ha generado correctamente."));
+      yield put(actions.createInvoiceSuccess());
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -154,10 +152,10 @@ function* reassignOrder({ values, orderId, closeModal }) {
   try {
     const res = yield exchangeInstance.put(`/order/assigned/${orderId}`, reassignValues);
     if (res.status === 200) {
-      yield put(actions.reassignOrderSuccess());
-      yield call(closeModal);
       yield call(getExchangeDetails, { id: orderId });
+      yield call(closeModal);
       yield call([Swal, "fire"], "Exitoso", "Orden reasignada correctamente", "success");
+      yield put(actions.reassignOrderSuccess());
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -171,13 +169,14 @@ function* setRevision({ values, closeModal, orderId }) {
   try {
     const res = yield exchangeInstance.put(`/order/notes/${orderId}`, noteValues);
     if (res.status === 200) {
-      yield put(actions.setRevisionSuccess());
       yield call(getExchangeDetails, { id: orderId });
       yield call(closeModal);
       yield call([Swal, "fire"], "Exitoso", "La revisión de orden ha sido actualizada.", "success");
+      yield put(actions.setRevisionSuccess());
     }
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
   }
 }
 
