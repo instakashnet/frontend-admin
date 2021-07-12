@@ -49,8 +49,6 @@ function* editClientInfo({ userId, values, closeModal }) {
     phone: values.phone.replace("+", ""),
   };
 
-  console.log(profileValues);
-
   try {
     const res = yield authInstance.put(`/users/user/${userId}`, profileValues);
     if (res.status === 200) {

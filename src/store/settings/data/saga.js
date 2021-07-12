@@ -8,7 +8,7 @@ function* getCountries() {
     const res = yield accountsInstance.get("/countries");
     if (res.status === 200) yield put(actions.getCountriesSuccess(res.data.countries));
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(actions.apiError());
   }
 }
 
@@ -17,8 +17,7 @@ function* getCurrencies() {
     const res = yield accountsInstance.get("/currencies");
     if (res.status === 200) yield put(actions.getCurrenciesSuccess(res.data.currencies));
   } catch (error) {
-    console.log(error);
-    yield put(actions.apiError(error.message));
+    yield put(actions.apiError());
   }
 }
 
