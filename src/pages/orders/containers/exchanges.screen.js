@@ -1,20 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Card, CardBody, Badge, Col, Row, Container, Button } from "reactstrap";
-import { useDispatch } from "react-redux";
+import { Card, CardBody, Badge, Col, Row, Container, Button, Modal, ModalHeader, ModalBody } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useRole } from "../../../hooks/useRole";
 import { getAllOrders } from "../../../services/orders/exchanges.service";
 
 //Components
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import Table from "../../../components/UI/Table";
+import { CreateExcel } from "../components/forms/ create-excel.component";
 
 export const ExchangesScreen = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const tableRef = useRef();
   const [querySearch, setQuerySearch] = useState("");
-
+  const [modal, setModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const isProcessing = useSelector((state) => state.CurrencyExchange.isProcessing);
+  const user = useSelector((state) => state.Login.user);
 
   useEffect(() => {
     let interval;
@@ -22,6 +27,8 @@ export const ExchangesScreen = () => {
 
     return () => clearInterval(interval);
   }, [querySearch]);
+
+  const [role] = useRole(user);
 
   const columns = [
     {
@@ -99,9 +106,17 @@ export const ExchangesScreen = () => {
 
             <Card>
               <CardBody>
-                <Button onClick={() => tableRef.current.onQueryChange()} className="mb-4 btn-primary">
-                  Actualizar operaciones
-                </Button>
+                <div className="flex items-center">
+                  <Button onClick={() => tableRef.current.onQueryChange()} className="mb-4 btn-primary">
+                    Actualizar operaciones
+                  </Button>
+
+                  {(role === "admin" || role === "officers") && (
+                    <Button onClick={() => setModal(true)} className="mb-4 ml-4 btn-primary">
+                      Descargar relación
+                    </Button>
+                  )}
+                </div>
                 <Table
                   ref={tableRef}
                   columns={columns}
@@ -114,6 +129,12 @@ export const ExchangesScreen = () => {
           </Col>
         </Row>
       </Container>
+      <Modal isOpen={modal} role="dialog" autoFocus centered tabIndex="-1" toggle={() => setModal((prev) => !prev)}>
+        <ModalHeader>Descargar Relación</ModalHeader>
+        <ModalBody>
+          <CreateExcel dispatch={dispatch} isProcessing={isProcessing} />
+        </ModalBody>
+      </Modal>
     </div>
   );
 };

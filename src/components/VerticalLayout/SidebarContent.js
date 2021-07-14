@@ -4,13 +4,13 @@ import { useRole } from "../../hooks/useRole";
 
 // MetisMenu
 import MetisMenu from "metismenujs";
-import { withRouter } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import { generalLinks, ordersLinks, configLinks } from "../../helpers/navLinks";
 
-const SidebarContent = (props) => {
-  const { type, location } = props;
+const SidebarContent = ({ type }) => {
+  const location = useLocation();
 
   useEffect(() => {
     const initMenu = () => {
@@ -112,4 +112,4 @@ const SidebarContent = (props) => {
   );
 };
 
-export default withRouter(SidebarContent);
+export default SidebarContent;
