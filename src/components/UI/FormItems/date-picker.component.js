@@ -10,7 +10,7 @@ export const DateInput = ({ value, label, touched, error, onChange, ...rest }) =
   return (
     <FormGroup>
       <Label>{label}</Label>
-      <DatePicker className="form-control" selected={value} locale="es" dateFormat="dd-MM-yyyy" autoComplete="off" onChange={onChange} {...rest} />
+      <DatePicker className="form-control" selected={value} locale="es" autoComplete="off" onChange={onChange} {...rest} />
       {touched && error && <span className="invalid-feedback">{error}</span>}
     </FormGroup>
   );
