@@ -3,7 +3,6 @@ import { EDIT_INTERPLAZA_INIT, EDIT_INTERPLAZA_SUCCESS } from "../../settings/cl
 
 const initialState = {
   allOrders: [],
-  recentOrders: [],
   details: null,
   isLoading: true,
   isProcessing: false,
@@ -13,9 +12,6 @@ export default function currencyExchangeReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case actionTypes.GET_RECENT_ORDERS_SUCCESS:
-      return { ...state, recentOrders: action.orders, isLoading: false };
-
     case actionTypes.VALIDATE_EXCHANGE:
     case actionTypes.APPROVE_EXCHANGE:
     case actionTypes.DECLINE_EXCHANGE:
@@ -24,13 +20,8 @@ export default function currencyExchangeReducer(state = initialState, action) {
     case EDIT_INTERPLAZA_INIT:
     case actionTypes.SET_REVISION_INIT:
     case actionTypes.REASSIGN_ORDER_INIT:
+    case actionTypes.GET_EXCHANGES_RELATION_INIT:
       return { ...state, isProcessing: true };
-
-    case actionTypes.GET_EXCHANGE_DETAILS:
-      return { ...state, isLoading: true, details: null };
-
-    case actionTypes.GET_EXCHANGE_DETAILS_SUCCESS:
-      return { ...state, details: payload.details, isLoading: false };
 
     case actionTypes.VALIDATE_EXCHANGE_SUCCESS:
     case actionTypes.APPROVE_EXCHANGE_SUCCESS:
@@ -39,7 +30,14 @@ export default function currencyExchangeReducer(state = initialState, action) {
     case EDIT_INTERPLAZA_SUCCESS:
     case actionTypes.SET_REVISION_SUCCESS:
     case actionTypes.REASSIGN_ORDER_SUCCESS:
+    case actionTypes.GET_EXCHANGES_RELATION_SUCCESS:
       return { ...state, isProcessing: false };
+
+    case actionTypes.GET_EXCHANGE_DETAILS:
+      return { ...state, isLoading: true, details: null };
+
+    case actionTypes.GET_EXCHANGE_DETAILS_SUCCESS:
+      return { ...state, details: payload.details, isLoading: false };
 
     case actionTypes.CREATE_INVOICE_SUCCESS:
       return { ...state, isProcessing: false };

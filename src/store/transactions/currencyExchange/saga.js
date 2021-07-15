@@ -1,11 +1,28 @@
 import { all, call, takeEvery, takeLatest, put, fork } from "redux-saga/effects";
-import * as actions from "./actions";
-import { setAlert } from "../../actions";
-import * as actionTypes from "./actionTypes";
 import Swal from "sweetalert2";
-import { exchangeInstance } from "../../../helpers/AuthType/axios";
-import { getClientExchanges } from "../../settings/clients/actions";
 import camelize from "camelize";
+import fileDownload from "js-file-download";
+import moment from "moment";
+
+import * as actions from "./actions";
+import * as actionTypes from "./actionTypes";
+import { setAlert } from "../../actions";
+import { exchangeInstance, authInstance } from "../../../helpers/AuthType/axios";
+import { getClientExchanges } from "../../settings/clients/actions";
+
+function* getExchangesRelation({ values }) {
+  const startDate = new Date(values.start).toISOString();
+  const endDate = new Date(values.end).toISOString();
+
+  try {
+    const res = yield authInstance.get(`/users/clients/orders/download?start=${startDate}&end=${endDate}`, { responseType: "arraybuffer" });
+    yield call(fileDownload, res.data, `relacion_ordenes_${moment(startDate).format("DD-MM-YYYY")}_${moment(endDate).format("DD-MM-YYYY")}.xlsx`);
+    yield put(actions.getExchangesRelationSuccess());
+  } catch (error) {
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
 
 function* getExchangeDetails({ id }) {
   try {
@@ -16,9 +33,7 @@ function* getExchangeDetails({ id }) {
       yield put(getClientExchanges(res.data.userId));
     }
   } catch (error) {
-    let message = error.message;
-    if (error.status === 404) message = "No estas asignado para poder ver esta operación.";
-    yield put(setAlert("danger", message));
+    yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -184,6 +199,10 @@ export function* watchEditExchange() {
   yield takeEvery(actionTypes.EDIT_EXCHANGE, editExchange);
 }
 
+export function* watchExchangesRelation() {
+  yield takeEvery(actionTypes.GET_EXCHANGES_RELATION_INIT, getExchangesRelation);
+}
+
 export function* watchExchangeDetails() {
   yield takeEvery(actionTypes.GET_EXCHANGE_DETAILS, getExchangeDetails);
 }
@@ -215,6 +234,7 @@ export function* watchSetRevision() {
 export default function* currencyExchangeSaga() {
   yield all([
     fork(watchExchangeDetails),
+    fork(watchExchangesRelation),
     fork(watchApproveExchange),
     fork(watchValidateExchange),
     fork(watchDeclineExchange),

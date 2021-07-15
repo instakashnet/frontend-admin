@@ -5,7 +5,7 @@ import { Dropdown, DropdownToggle, DropdownMenu, Row, Col } from "reactstrap";
 import SimpleBar from "simplebar-react";
 import moment from "moment-timezone";
 
-const NotificationDropdown = (props) => {
+const NotificationDropdown = () => {
   const [menu, setMenu] = useState(false);
   const [notifications] = useState(null);
   const user = useSelector((state) => state.Login.user);
