@@ -24,7 +24,9 @@ const User = ({ isLoading, user }) => {
             <Media body className="align-self-center">
               <div className="text-muted">
                 <h5>{user.firstName + " " + user.lastName}</h5>
-                <p className="mb-1">{user.email}</p>
+                <p className="mb-1">
+                  {user.email} <CopyButton textToCopy={user.email} />
+                </p>
                 <p className="mb-1">
                   <b>Documento:</b> {`${user.documentType} ${user.documentIdentification}`}
                 </p>
