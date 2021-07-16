@@ -17,11 +17,22 @@ export const CreateExcel = ({ isProcessing, dispatch }) => {
           value={formik.values.start}
           error={formik.errors.start}
           name="start"
+          showTimeSelect
           maxDate={new Date()}
           onChange={(date) => onChangeDateHandler("start", date)}
           label="Fecha desde"
+          dateFormat="dd-MM-yyyy HH:mm"
         />
-        <DateInput value={formik.values.end} error={formik.errors.end} name="end" minDate={new Date()} onChange={(date) => onChangeDateHandler("end", date)} label="Fecha hasta" />
+        <DateInput
+          value={formik.values.end}
+          error={formik.errors.end}
+          name="end"
+          showTimeSelect
+          minDate={new Date()}
+          onChange={(date) => onChangeDateHandler("end", date)}
+          label="Fecha hasta"
+          dateFormat="dd-MM-yyyy HH:mm"
+        />
       </div>
       <div className="flex justify-center mt-3">
         <Button type="submit" disabled={!formik.isValid || isProcessing} className="btn-primary">

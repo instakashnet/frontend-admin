@@ -25,17 +25,7 @@ export const getAllOrders = (query, setLoading, setSearch, dispatch) => {
       if (res && res.data) {
         const ordersData = camelize(res.data.orders);
 
-        const notRevisedOrders = ordersData.filter((order) => !order.orderNotes);
-        const revisedOrders = ordersData.filter((order) => order.orderNotes);
-
-        const notRevisedSortedOrders = notRevisedOrders.sort((a, b) => {
-          if (a.completedAt && b.completedAt) return new Date(b.completedAt) - new Date(a.completedAt);
-          return new Date(b.createdAt) - new Date(a.createdAt);
-        });
-
-        const ordersArray = [...revisedOrders, ...notRevisedSortedOrders];
-
-        orders = ordersArray.map((order) => ({
+        orders = ordersData.map((order) => ({
           id: order.id,
           pedidoId: order.uuid,
           date: order.completedAt ? moment(order.completedAt).format("DD/MM/YY hh:mm a") : "Sin completar",

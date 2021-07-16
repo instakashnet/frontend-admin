@@ -11,8 +11,8 @@ import { exchangeInstance, authInstance } from "../../../helpers/AuthType/axios"
 import { getClientExchanges } from "../../settings/clients/actions";
 
 function* getExchangesRelation({ values }) {
-  const startDate = new Date(values.start).toISOString();
-  const endDate = new Date(values.end).toISOString();
+  const startDate = moment(values.start).subtract(5, "hours").format();
+  const endDate = moment(values.end).subtract(5, "hours").format();
 
   try {
     const res = yield authInstance.get(`/users/clients/orders/download?start=${startDate}&end=${endDate}`, { responseType: "arraybuffer" });
