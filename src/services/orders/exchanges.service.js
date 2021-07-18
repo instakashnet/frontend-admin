@@ -18,7 +18,7 @@ export const getAllOrders = (query, setLoading, setSearch, dispatch) => {
       if (search) {
         if (search.length >= 5) {
           URL = `/order?page=${query.page + 1}&qty=70000&search=${search.toLowerCase()}`;
-          res = await exchangeInstance.get(URL, { timeout: 20000 });
+          res = await exchangeInstance.get(URL);
         }
       } else res = await exchangeInstance.get(URL);
 

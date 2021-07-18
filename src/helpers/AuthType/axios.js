@@ -1,7 +1,6 @@
 import axios from "axios";
 import { getCodeMessage } from "./error-codes";
 
-const timeout = 13000;
 const requestLog = (config) => (process.env.NODE_ENV !== "production" ? console.log(`Request sent to ${config.url}`) : false);
 
 const reqInterceptor = (instance) =>
@@ -42,21 +41,18 @@ const resInterceptor = (instance, type) =>
 
 const authInstance = axios.create({
   baseURL: `${process.env.NODE_ENV !== "production" ? process.env.REACT_APP_TEST_AUTH_API : process.env.REACT_APP_AUTH_API}/admin`,
-  timeout,
 });
 reqInterceptor(authInstance);
 resInterceptor(authInstance, "auth");
 
 const exchangeInstance = axios.create({
   baseURL: `${process.env.NODE_ENV !== "production" ? process.env.REACT_APP_TEST_EXCHANGE_API : process.env.REACT_APP_EXCHANGE_API}/admin`,
-  timeout,
 });
 reqInterceptor(exchangeInstance);
 resInterceptor(exchangeInstance, "exchange");
 
 const accountsInstance = axios.create({
   baseURL: `${process.env.NODE_ENV !== "production" ? process.env.REACT_APP_TEST_ACCOUNTS_API : process.env.REACT_APP_ACCOUNTS_API}/admin`,
-  timeout,
 });
 reqInterceptor(accountsInstance);
 resInterceptor(accountsInstance, "accounts");
