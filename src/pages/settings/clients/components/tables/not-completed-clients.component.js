@@ -45,7 +45,7 @@ const NotCompleted = ({ dispatch }) => {
           columns={columns}
           rows={(query) => getClients(query, setIsLoading, dispatch, false)}
           isLoading={isLoading}
-          options={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }}
+          options={{ loadingType: "overlay", pageSize: 10, pageSizeOptions: [10, 25, 50] }}
         />
       </CardBody>
     </Card>

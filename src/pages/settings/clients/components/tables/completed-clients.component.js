@@ -60,7 +60,7 @@ const Completed = ({ dispatch }) => {
         </div>
         <Table
           columns={columns}
-          rows={(query) => getClients(query, setIsLoading, dispatch)}
+          rows={(query) => getClients(query, setIsLoading, dispatch, true)}
           title="Completados"
           isLoading={isLoading}
           options={{ pageSize: 10, loadingType: "overlay", pageSizeOptions: [10, 25, 50] }}

@@ -2,7 +2,7 @@ import moment from "moment-timezone";
 import { authInstance } from "../../helpers/AuthType/axios";
 import { setAlert } from "../../store/actions";
 
-export const getClients = (query, setIsLoading, dispatch, completed = true) =>
+export const getClients = (query, setIsLoading, dispatch, completed) =>
   new Promise(async (resolve) => {
     const search = query.search;
     let URL = `/users?type=client&page=${query.page + 1}&qty=${query.pageSize}&completed=${completed}`;
