@@ -23,8 +23,12 @@ export const ExchangesScreen = () => {
 
   useEffect(() => {
     let interval;
-    if (querySearch.length <= 0 && tableRef.current) interval = setInterval(() => tableRef.current && tableRef.current.onQueryChange(), 45000);
-
+    console.log(querySearch);
+    if (querySearch.length <= 0 && tableRef.current) {
+      interval = setInterval(() => tableRef.current.onQueryChange(), 45000);
+    } else {
+      if (interval) clearInterval(interval);
+    }
     return () => clearInterval(interval);
   }, [querySearch]);
 
@@ -122,7 +126,7 @@ export const ExchangesScreen = () => {
                   columns={columns}
                   isLoading={isLoading}
                   rows={(query) => getAllOrders(query, setIsLoading, setQuerySearch, dispatch)}
-                  options={{ sorting: true, loadingType: "overlay", pageSize: 50, pageSizeOptions: [50, 100, 200] }}
+                  options={{ loadingType: "overlay", pageSize: 50, pageSizeOptions: [50, 100, 200] }}
                 />
               </CardBody>
             </Card>

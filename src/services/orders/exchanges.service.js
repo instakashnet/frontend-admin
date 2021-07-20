@@ -13,8 +13,12 @@ export const getAllOrders = (query, setLoading, setSearch, dispatch) => {
     let URL = `/order?page=${query.page + 1}&qty=${query.pageSize}`;
 
     try {
-      if (search && search.length >= 5) URL = `${URL}&search=${search.toLowerCase()}`;
-      res = await exchangeInstance.get(URL);
+      if (search) {
+        if (search.length >= 5) {
+          URL = `${URL}&search=${search.toLowerCase()}`;
+          res = await exchangeInstance.get(URL);
+        }
+      } else res = await exchangeInstance.get(URL);
 
       if (res && res.data) {
         const ordersData = camelize(res.data.orders);
