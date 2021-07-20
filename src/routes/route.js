@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeAlert } from "../store/actions";
 import { Route, Redirect, useHistory } from "react-router-dom";
 
@@ -8,10 +8,13 @@ import LoadingPage from "../pages/LoadingPage";
 const AppRoute = ({ component: Component, layout: Layout, isAuthProtected, isLoading, ...rest }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const showAlert = useSelector((state) => state.Alert.show);
 
   useEffect(() => {
-    history.listen(() => dispatch(removeAlert()));
-  }, [history, dispatch]);
+    history.listen(() => {
+      if (showAlert) dispatch(removeAlert());
+    });
+  }, [history, dispatch, showAlert]);
 
   return (
     <Route

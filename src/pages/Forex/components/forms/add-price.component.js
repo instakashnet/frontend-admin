@@ -17,11 +17,10 @@ export const AddPrice = ({ isLoading, isUpdating, currentPrice }) => {
 
   const onSubmit = (values) => {
     const ratesValues = {
-      buy: +`${values.toBuy1}.${values.toBuy2}${values.toBuy3}${values.toBuy4}`,
-      sell: +`${values.toSell1}.${values.toSell2}${values.toSell3}${values.toSell4}`,
+      buy: +`${values.toBuy1}.${values.toBuy2}${values.toBuy3}${values.toBuy4}${values.toBuy5}`,
+      sell: +`${values.toSell1}.${values.toSell2}${values.toSell3}${values.toSell4}${values.toSell5}`,
       forexId: currentPrice.forexId,
     };
-
     dispatch(addCurrencyPrice(ratesValues));
   };
 
@@ -37,10 +36,12 @@ export const AddPrice = ({ isLoading, isUpdating, currentPrice }) => {
     formik.setFieldValue("toBuy2", 0);
     formik.setFieldValue("toBuy3", 0);
     formik.setFieldValue("toBuy4", 0);
+    formik.setFieldValue("toBuy5", 0);
     formik.setFieldValue("toSell1", 0);
     formik.setFieldValue("toSell2", 0);
     formik.setFieldValue("toSell3", 0);
     formik.setFieldValue("toSell4", 0);
+    formik.setFieldValue("toSell5", 0);
   };
 
   return (
@@ -58,6 +59,7 @@ export const AddPrice = ({ isLoading, isUpdating, currentPrice }) => {
                 <RangeInput name="toBuy2" error={formik.errors.toBuy2} touched={formik.touched.toBuy2} setValue={formik.setFieldValue} value={formik.values.toBuy2} />
                 <RangeInput name="toBuy3" error={formik.errors.toBuy3} touched={formik.touched.toBuy3} setValue={formik.setFieldValue} value={formik.values.toBuy3} />
                 <RangeInput name="toBuy4" error={formik.errors.toBuy4} touched={formik.touched.toBuy4} setValue={formik.setFieldValue} value={formik.values.toBuy4} />
+                <RangeInput name="toBuy5" error={formik.errors.toBuy5} touched={formik.touched.toBuy5} setValue={formik.setFieldValue} value={formik.values.toBuy5} />
               </Col>
             </Row>
             <hr />
@@ -69,6 +71,7 @@ export const AddPrice = ({ isLoading, isUpdating, currentPrice }) => {
                 <RangeInput name="toSell2" setValue={formik.setFieldValue} value={formik.values.toSell2} />
                 <RangeInput name="toSell3" setValue={formik.setFieldValue} value={formik.values.toSell3} />
                 <RangeInput name="toSell4" setValue={formik.setFieldValue} value={formik.values.toSell4} />
+                <RangeInput name="toSell5" setValue={formik.setFieldValue} value={formik.values.toSell5} />
               </Col>
             </Row>
             <Button type="submit" className="btn-primary mt-3" disabled={!formik.isValid}>

@@ -1,12 +1,10 @@
 import moment from "moment";
 import camelize from "camelize";
-import { removeAlert, setAlert } from "../../store/actions";
+import { setAlert } from "../../store/actions";
 import { exchangeInstance } from "../../helpers/AuthType/axios";
 import { formatAmount } from "../../helpers/functions";
 
 export const getAllOrders = (query, setLoading, setSearch, dispatch) => {
-  dispatch(removeAlert());
-
   return new Promise(async (resolve) => {
     const search = query.search;
     setSearch(search);

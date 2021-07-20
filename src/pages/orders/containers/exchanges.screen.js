@@ -23,7 +23,7 @@ export const ExchangesScreen = () => {
 
   useEffect(() => {
     let interval;
-    if (querySearch.length <= 0) interval = setInterval(() => tableRef.current && tableRef.current.onQueryChange(), 45000);
+    if (querySearch.length <= 0 && tableRef.current) interval = setInterval(() => tableRef.current && tableRef.current.onQueryChange(), 45000);
 
     return () => clearInterval(interval);
   }, [querySearch]);

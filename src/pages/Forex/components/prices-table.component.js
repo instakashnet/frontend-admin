@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody } from "reactstrap";
 import moment from "moment-timezone";
-
+import { convertRate } from "../../../helpers/functions";
 //Components
 import Table from "../../../components/UI/Table";
 
@@ -37,8 +37,8 @@ const Prices = (props) => {
   if (props.rates.length > 0) {
     data.rows = props.rates.map((rate) => ({
       forex: rate.currencyOne + "/" + rate.currencyTwo,
-      buy: rate.buy,
-      sell: rate.sell,
+      buy: convertRate(rate.buy),
+      sell: convertRate(rate.sell),
       date: moment(rate.createdAt).format("DD/MM/YYYY HH:mm a"),
     }));
   }

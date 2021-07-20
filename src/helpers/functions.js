@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
 export const convertHexToRGBA = (hexCode, opacity) => {
-  let hex = hexCode.replace('#', '');
+  let hex = hexCode.replace("#", "");
 
   if (hex.length === 3) {
     hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
@@ -14,12 +14,14 @@ export const convertHexToRGBA = (hexCode, opacity) => {
   return `rgba(${r},${g},${b},${opacity / 100})`;
 };
 
+export const convertRate = (amount) => Number(amount).toFixed(4);
+
 export const checkInterplaza = (bank, accNumber) => {
   const firstAccNumber = accNumber.substring(0, 1);
 
-  return bank.toLowerCase() === 'interbank' && +firstAccNumber >= 3 && +firstAccNumber <= 7 ? (
-    <p className='text-danger'>* La cuenta parece ser de provincia. Contactar al usuario.</p>
+  return bank.toLowerCase() === "interbank" && +firstAccNumber >= 3 && +firstAccNumber <= 7 ? (
+    <p className="text-danger">* La cuenta parece ser de provincia. Contactar al usuario.</p>
   ) : null;
 };
 
-export const formatAmount = (amount) => Number(amount).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+export const formatAmount = (amount) => Number(amount).toLocaleString("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 });

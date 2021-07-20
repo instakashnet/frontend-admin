@@ -39,8 +39,8 @@ function* getforexRates({ forexId }) {
 function* addCurrencyPrice({ values }) {
   const ratesValues = {
     ...values,
-    buy: values.buy.toFixed(3),
-    sell: values.sell.toFixed(3),
+    buy: values.buy.toFixed(4),
+    sell: values.sell.toFixed(4),
   };
 
   try {

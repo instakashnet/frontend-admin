@@ -87,8 +87,9 @@ function* deleteCoupon({ id }) {
     if (result.isConfirmed) {
       const res = yield exchangeInstance.delete(`/coupons/${id}`);
       if (res.status === 200) {
-        yield call([Swal, "fire"], "Exitoso", "El cupón ha sido eliminado.", "success");
         yield call(getCoupons);
+        yield call([Swal, "fire"], "Exitoso", "El cupón ha sido eliminado.", "success");
+        yield put(actions.deleteCouponSuccess());
       }
     } else yield put(actions.couponsError());
   } catch (error) {

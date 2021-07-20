@@ -15,10 +15,12 @@ export const currencyPriceValues = (toBuy, toSell) => ({
   toBuy2: +toBuy[2] || 0,
   toBuy3: +toBuy[3] || 0,
   toBuy4: +toBuy[4] || 0,
+  toBuy5: +toBuy[5] || 0,
   toSell1: +toSell[0] || 0,
   toSell2: +toSell[2] || 0,
   toSell3: +toSell[3] || 0,
   toSell4: +toSell[4] || 0,
+  toSell5: +toSell[5] || 0,
 });
 
 export const bankValues = {

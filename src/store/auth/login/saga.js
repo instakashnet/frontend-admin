@@ -71,9 +71,7 @@ function* loginUser({ payload }) {
   }
 }
 
-function* logoutUser({ payload }) {
-  const { history } = payload;
-
+function* logoutUser({ payload: { history } }) {
   try {
     yield authInstance.post("/auth/logout");
   } catch (error) {

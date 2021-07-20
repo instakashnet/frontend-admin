@@ -8,8 +8,8 @@ import { Container, Row, Col, Badge, Modal, ModalBody, ModalHeader } from "react
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
 import UserInfo from "../components/details/user-details.component";
-import Received from "../components/details/exchange/received-details.component";
-import ToSend from "../components/details/exchange/to-send-details.component";
+import Received from "../components/details/exchange/received.component";
+import ToSend from "../components/details/exchange/to-send.component";
 import OldTransacions from "../components/details/exchange/old-transactions.component";
 import CompleteOrder from "../components/forms/complete-order.component";
 import EditOrder from "../components/forms/edit-order.component";
@@ -107,10 +107,10 @@ export const ExchangeDetailsScreen = (props) => {
             </Row>
             <Row>
               <Col lg="5" xl="4">
-                <ToSend details={details} onShowForm={showFormHandler} isLoading={isLoading} />
+                <Received details={details} onShowForm={showFormHandler} isProcessing={isProcessing} isLoading={isLoading} />
               </Col>
               <Col lg="5" xl="4">
-                <Received details={details} onShowForm={showFormHandler} isProcessing={isProcessing} isLoading={isLoading} />
+                <ToSend details={details} onShowForm={showFormHandler} isLoading={isLoading} />
               </Col>
             </Row>
             <Row>

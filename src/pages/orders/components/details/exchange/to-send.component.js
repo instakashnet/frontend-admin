@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardBody, Row, Col, Button } from "reactstrap";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
-import { formatAmount, checkInterplaza } from "../../../../../helpers/functions";
+import { formatAmount, checkInterplaza, convertRate } from "../../../../../helpers/functions";
 import { editInterplazaInit } from "../../../../../store/actions";
 
 import CopyButton from "../../../../../components/UI/CopyButton";
@@ -52,7 +52,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
               <Col sm="6">
                 <div>
                   <p className="text-muted mb-2">Tasa ofrecida</p>
-                  <h5>{details.rate}</h5>
+                  <h5>{convertRate(details.rate)}</h5>
                 </div>
               </Col>
               <Col sm="6">
