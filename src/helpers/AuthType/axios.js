@@ -31,11 +31,13 @@ const resInterceptor = (instance, type) =>
         const code = error.response.data.code;
         if (code) error.response.message = getCodeMessage(code, type);
 
+        error.response.message = message;
         return Promise.reject(error.response);
-      } else {
+      } else if (error.request) {
+        message = "Se ha caido la conexión, por favor revise su conexión a internet. Si el problema persiste contacte a soporte.";
         error.message = message;
-        return Promise.reject(error);
-      }
+      } else error.message = message;
+      return Promise.reject(error);
     }
   );
 
