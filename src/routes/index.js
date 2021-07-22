@@ -13,7 +13,7 @@ const { ExchangesScreen } = lazily(() => import("../pages/orders/containers/exch
 const { ExchangeDetailsScreen } = lazily(() => import("../pages/orders/containers/exchange-details.screen"));
 const { WithdrawalsScreen } = lazily(() => import("../pages/orders/containers/withdrawals.screen"));
 const { WithdrawalDetailsScreen } = lazily(() => import("../pages/orders/containers/withdrawal-details.screen"));
-const { ClientDetailsScreen } = lazily(() => import("../pages/settings/clients/containers/client-details.screen"));
+const { ClientDetailsScreen } = lazily(() => import("../pages/settings/Users/containers/client-details.screen"));
 
 const adminRoutes = [
   { path: "/dashboard", component: DashboardScreen },
