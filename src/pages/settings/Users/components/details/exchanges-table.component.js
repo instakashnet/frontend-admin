@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
-import { Card, CardBody, Badge } from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Card, CardBody, Badge, Button } from "reactstrap";
+import { useDispatch } from "react-redux";
 import moment from "moment";
 import { convertHexToRGBA, formatAmount } from "../../../../../helpers/functions";
 import { getClientExchanges } from "../../../../../store/actions";
 
 import Table from "../../../../../components/UI/Table";
 
-const ExchangesTable = (props) => {
-  const { id } = props;
+const ExchangesTable = ({ id, exchanges, isLoading }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
-
-  const { exchanges, isLoading } = useSelector((state) => state.Clients);
 
   useEffect(() => {
     dispatch(getClientExchanges(id));
@@ -56,8 +55,17 @@ const ExchangesTable = (props) => {
           </Badge>
         ),
       },
+      {
+        field: "action",
+        render: (rowData) => (
+          <Button className="btn-rounded btn-action" onClick={() => history.push(`/exchange-details/${rowData.id}`)}>
+            Ver más
+          </Button>
+        ),
+      },
     ],
     rows: exchanges.map((order) => ({
+      id: order.id,
       pedidoId: order.uuid,
       date: moment(order.created).format("DD/MM/YYYY HH:mm a"),
       amountSent: `${order.currencySentSymbol} ${formatAmount(order.amountSent)}`,

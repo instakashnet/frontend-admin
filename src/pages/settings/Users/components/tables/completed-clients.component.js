@@ -40,7 +40,7 @@ const Completed = ({ dispatch }) => {
       field: "action",
       width: 150,
       render: (rowData) => (
-        <Link to={`/registered-users/${rowData.id}`} className="btn-rounded waves-effect waves-light btn btn-blue btn-sm font-size-13">
+        <Link to={`/user-details/${rowData.id}`} className="btn-rounded waves-effect waves-light btn btn-blue btn-sm font-size-13">
           Ver detalles
         </Link>
       ),

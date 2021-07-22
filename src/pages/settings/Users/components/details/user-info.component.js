@@ -1,15 +1,12 @@
 import React from "react";
 import { Col, Card, CardBody, Button } from "reactstrap";
 
-import Male from "../../../../assets/images/profile-male.svg";
-import Female from "../../../../assets/images/profile-female.svg";
+import Male from "../../../../../assets/images/profile-male.svg";
+import Female from "../../../../../assets/images/profile-female.svg";
 
 const BasicInfo = ({ user, profile, openModal, onDisable }) => {
   let Avatar = Male;
-
-  if (profile) {
-    if (profile.identity_sex === "female") Avatar = Female;
-  }
+  if (profile && profile.identity_sex === "female") Avatar = Female;
 
   return (
     <Col lg="6">

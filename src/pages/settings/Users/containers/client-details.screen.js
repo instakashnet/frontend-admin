@@ -6,14 +6,14 @@ import { disableClientInit, getClientDetails } from "../../../../store/actions";
 
 import Breadcrumbs from "../../../../components/Common/Breadcrumb";
 import LoadingPage from "../../../LoadingPage";
-import ExchangesTable from "../components/tables/exchanges-table.component";
-import AccountsTable from "../components/tables/accounts-table.component";
+import ExchangesTable from "../components/details/exchanges-table.component";
+import AccountsTable from "../components/details/accounts-table.component";
 import EditUserProfile from "../components/forms/edit-profile.component";
 import EditCompanyProfile from "../components/forms/edit-company.component";
 import EditUserInfo from "../components/forms/edit-info.component";
-import BasicInfo from "../components/user-info.component";
-import ProfileInfo from "../components/profile-info.component";
-import CompanyInfo from "../components/company-info.component";
+import BasicInfo from "../components/details/user-info.component";
+import ProfileInfo from "../components/details/profile-info.component";
+import CompanyInfo from "../components/details/company-info.component";
 
 export const ClientDetailsScreen = (props) => {
   const history = useHistory();
@@ -22,7 +22,7 @@ export const ClientDetailsScreen = (props) => {
   const [profileDetails, setProfileDetails] = useState({});
   const dispatch = useDispatch();
   const { id } = props.match.params;
-  const { details, isProcessing, isLoading } = useSelector((state) => state.Clients);
+  const { details, accounts, exchanges, isProcessing, isLoading } = useSelector((state) => state.Clients);
 
   let companyProfiles = [];
   let userProfile;
@@ -88,10 +88,10 @@ export const ClientDetailsScreen = (props) => {
             {userProfile && (
               <Row>
                 <Col lg="6">
-                  <AccountsTable userId={id} />
+                  <AccountsTable userId={id} accounts={accounts} isLoading={isLoading} />
                 </Col>
                 <Col lg="12">
-                  <ExchangesTable id={id} />
+                  <ExchangesTable id={id} exchanges={exchanges} isLoading={isLoading} />
                 </Col>
               </Row>
             )}

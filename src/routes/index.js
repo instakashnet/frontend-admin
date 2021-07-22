@@ -3,7 +3,7 @@ import { lazily } from "react-lazily";
 import { Redirect } from "react-router-dom";
 
 // Authentication related pages
-import { LoginScreen, ScheduleScreen, CouponsScreen, BanksScreen, ClientsScreen, StatusScreen } from "../pages";
+import { LoginScreen, ScheduleScreen, CouponsScreen, BanksScreen, ClientsScreen, ClientsAccountsScreen, StatusScreen } from "../pages";
 
 // LAZY IMPORTS
 const { DashboardScreen } = lazily(() => import("../pages/Dashboard/dashboard.screen"));
@@ -28,8 +28,9 @@ const adminRoutes = [
   { path: "/schedule", component: ScheduleScreen },
   { path: "/coupons", component: CouponsScreen },
   { path: "/banks", component: BanksScreen },
-  { path: "/registered-users", component: ClientsScreen },
-  { path: "/registered-users/:id", component: ClientDetailsScreen },
+  { path: "/users-list", component: ClientsScreen },
+  { path: "/users-accounts", component: ClientsAccountsScreen },
+  { path: "/user-details/:id", component: ClientDetailsScreen },
   { path: "/status", component: StatusScreen },
 
   // // this route should be at the end of all other routes
@@ -69,8 +70,9 @@ const managerRoutes = [
   { path: "/withdrawal-details/:id", component: WithdrawalDetailsScreen },
 
   // Settings
-  { path: "/registered-users", component: ClientsScreen },
-  { path: "/registered-users/:id", component: ClientDetailsScreen },
+  { path: "/users-list", component: ClientsScreen },
+  { path: "/users-accounts", component: ClientsAccountsScreen },
+  { path: "/user-details/:id", component: ClientDetailsScreen },
 
   // // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },

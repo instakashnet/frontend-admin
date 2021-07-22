@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getClientAccounts } from "../../../../../store/actions";
 import { Card, CardBody } from "reactstrap";
 
 import Table from "../../../../../components/UI/Table";
 
-const AccountsTable = ({ userId }) => {
+const AccountsTable = ({ userId, accounts, isLoading }) => {
   const dispatch = useDispatch();
-
-  const { accounts, isLoading } = useSelector((state) => state.Clients);
 
   useEffect(() => {
     dispatch(getClientAccounts(userId));

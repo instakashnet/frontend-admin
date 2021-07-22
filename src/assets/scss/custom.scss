@@ -99,6 +99,11 @@ body {
   font-size: 0.75rem;
 }
 
+body[data-sidebar="dark"] #sidebar-menu ul li a.active span,
+body[data-sidebar="dark"] #sidebar-menu ul li a.active i {
+  color: #fff !important;
+}
+
 /* Material table styles */
 .main-content {
   .MuiPaper-root {

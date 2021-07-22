@@ -36,6 +36,26 @@ export const ordersLinks = [
 
 export const configLinks = [
   {
+    path: "/!#",
+    icon: "bx bx-user",
+    label: "Usuarios",
+    roles: ["admin", "manager"],
+    subNavs: [
+      {
+        path: "/users-list",
+        icon: "bx bx-id-card",
+        label: "Lista de usuarios",
+        roles: ["admin", "manager"],
+      },
+      {
+        path: "/users-accounts",
+        icon: "bx bx-list-ol",
+        label: "Cuentas de usuarios",
+        roles: ["admin", "manager"],
+      },
+    ],
+  },
+  {
     path: "/schedule",
     icon: "bx bx-calendar",
     label: "Horarios",
@@ -52,12 +72,6 @@ export const configLinks = [
     icon: "mdi mdi-bank-outline",
     label: "Bancos aceptados",
     roles: ["admin"],
-  },
-  {
-    path: "/registered-users",
-    icon: "bx bx-user-circle",
-    label: "Usuarios registrados",
-    roles: ["admin", "manager"],
   },
   {
     path: "/status",
