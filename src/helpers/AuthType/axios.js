@@ -29,7 +29,7 @@ const resInterceptor = (instance, type) =>
 
       if (error.response) {
         const code = error.response.data.code;
-        if (code) error.response.message = getCodeMessage(code, type);
+        if (code) message = getCodeMessage(code, type);
 
         error.response.message = message;
         return Promise.reject(error.response);
