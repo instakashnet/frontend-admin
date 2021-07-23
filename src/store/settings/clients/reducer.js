@@ -19,6 +19,7 @@ export default function clientsReducer(state = initialState, action) {
     case actionTypes.EDIT_PROFILE_INIT:
     case actionTypes.EDIT_INFO_INIT:
     case actionTypes.DISABLE_CLIENT_INIT:
+    case actionTypes.UPLOAD_DOCUMENT_INIT:
       return { ...state, isProcessing: true };
 
     case actionTypes.GET_CLIENT_DETAILS_SUCCESS:
@@ -34,6 +35,7 @@ export default function clientsReducer(state = initialState, action) {
     case actionTypes.EDIT_PROFILE_SUCCESS:
     case actionTypes.EDIT_INFO_SUCCESS:
     case actionTypes.DISABLE_CLIENT_SUCCESS:
+    case actionTypes.UPLOAD_DOCUMENT_SUCCESS:
       return { ...state, isProcessing: false };
 
     case actionTypes.API_ERROR:

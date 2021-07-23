@@ -82,6 +82,18 @@ export const editInterplazaSuccess = () => ({
   type: actionTypes.EDIT_INTERPLAZA_SUCCESS,
 });
 
+export const uploadDocumentInit = (values, uploadType, userId, close) => ({
+  type: actionTypes.UPLOAD_DOCUMENT_INIT,
+  values,
+  uploadType,
+  userId,
+  close,
+});
+
+export const uploadDocumentSuccess = () => ({
+  type: actionTypes.UPLOAD_DOCUMENT_SUCCESS,
+});
+
 export const disableClientInit = (userId, active) => ({
   type: actionTypes.DISABLE_CLIENT_INIT,
   userId,

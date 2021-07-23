@@ -78,6 +78,18 @@ function* editClientProfile({ values, closeModal }) {
   }
 }
 
+function* uploadDocument({ values, userId, uploadType, close }) {
+  let URL = `/users/${uploadType === "identity_photo" ? "upload-identity-photo" : "upload-identity-photo-two"}/${userId}`;
+
+  try {
+    const res = yield authInstance.post(URL, values);
+    console.log(res);
+  } catch (error) {
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
+
 function* getClientAccounts({ id }) {
   try {
     const res = yield accountsInstance.get(`/accounts/${id}`);
@@ -165,6 +177,10 @@ export function* watchEditClientInfo() {
   yield takeLatest(actionTypes.EDIT_INFO_INIT, editClientInfo);
 }
 
+export function* watchUploadDocument() {
+  yield takeLatest(actionTypes.UPLOAD_DOCUMENT_INIT, uploadDocument);
+}
+
 export function* watchEditClientProfile() {
   yield takeEvery(actionTypes.EDIT_PROFILE_INIT, editClientProfile);
 }
@@ -187,6 +203,7 @@ export default function* clientsSaga() {
     fork(watchAddClientProfile),
     fork(watchEditClientProfile),
     fork(watchEditClientInfo),
+    fork(watchUploadDocument),
     fork(watchGetClientActivity),
     fork(watchGetClientExchanges),
     fork(watchDownloadClients),
