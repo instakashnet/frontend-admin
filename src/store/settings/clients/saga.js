@@ -81,9 +81,16 @@ function* editClientProfile({ values, closeModal }) {
 function* uploadDocument({ values, userId, uploadType, close }) {
   let URL = `/users/${uploadType === "identity_photo" ? "upload-identity-photo" : "upload-identity-photo-two"}/${userId}`;
 
+  const formData = new FormData();
+  formData.append(uploadType === "identity_photo" ? "file-one" : "file-two", values[uploadType]);
+
   try {
-    const res = yield authInstance.post(URL, values);
-    console.log(res);
+    const res = yield authInstance.post(URL, formData);
+    if (res.status === 200) {
+      yield call(getClientDetails, { userId });
+      yield call(close);
+      yield call([Swal, "fire"], "Exitoso", `Documento agregado correctamente.`, "success");
+    }
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -123,7 +130,7 @@ function* editInterplaza({ values, detailsType, id, setState }) {
       if (detailsType === "exchange") yield put(getExchangeDetails(id));
       if (detailsType === "withdrawal") yield put(getWithdrawalDetailsInit(id));
       yield call(setState, false);
-      yield Swal.fire("Exitoso", `Ceunta editada correctamente.`, "success");
+      yield Swal.fire("Exitoso", `Cuenta editada correctamente.`, "success");
       yield put(actions.editInterplazaSuccess());
     }
   } catch (error) {

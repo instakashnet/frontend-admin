@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "reactstrap";
+import { Button, Spinner } from "reactstrap";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { uploadDocumentInit } from "../../../../../store/actions";
@@ -25,7 +25,7 @@ export const AddDocument = ({ type, userId, closeModal, isProcessing }) => {
       />
       <div className="flex justify-center">
         <Button type="submit" className="btn-primary" disabled={isProcessing}>
-          Agregar foto
+          {isProcessing ? <Spinner size="sm" /> : "Agregar foto"}
         </Button>
       </div>
     </form>
