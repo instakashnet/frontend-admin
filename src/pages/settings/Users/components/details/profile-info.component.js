@@ -1,4 +1,5 @@
 import React from "react";
+import { Photo } from "@material-ui/icons";
 import moment from "moment";
 import { Col, Card, CardBody, CardTitle, Button, Table } from "reactstrap";
 
@@ -49,6 +50,41 @@ const ProfileInfo = ({ profile, openModal }) => {
                 </tr>
               </tbody>
             </Table>
+          </div>
+
+          <CardTitle className="text-center">Fotos de documento</CardTitle>
+          <div className="flex flex-wrap items-center justify-center mt-4">
+            {profile.identity_photo ? (
+              <div className="flex flex-col items-center mx-6">
+                <a className="flex flex-col items-center justify-center" href={profile.identity_photo} target="_blank" rel="noopener noreferrer">
+                  <Photo size={35} />
+                  <p className="text-muted mb-1">Foto frontal</p>
+                </a>
+                <button className="underline" onClick={() => openModal("addDocument", profile, "identity_photo")}>
+                  Cambiar foto
+                </button>
+              </div>
+            ) : (
+              <button className="underline mx-6" onClick={() => openModal("addDocument", profile, "identity_photo")}>
+                Agregar foto frontal
+              </button>
+            )}
+
+            {profile.identity_photo_two ? (
+              <div className="flex flex-col items-center mx-6">
+                <a className="flex flex-col items-center justify-center" href={profile.identity_photo_two} target="_blank" rel="noopener noreferrer">
+                  <Photo size={35} />
+                  <p className="text-muted mb-1">Foto trasera</p>
+                </a>
+                <button className="underline" onClick={() => openModal("addDocument", profile, "identity_photo_two")}>
+                  Cambiar foto
+                </button>
+              </div>
+            ) : (
+              <button className="underline mx-6" onClick={() => openModal("addDocument", profile, "identity_photo_two")}>
+                Agregar foto trasera
+              </button>
+            )}
           </div>
         </CardBody>
       </Card>

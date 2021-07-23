@@ -13,9 +13,12 @@ import { getClientExchanges } from "../../settings/clients/actions";
 function* getExchangesRelation({ values }) {
   const startDate = moment(values.start).subtract(5, "hours").format();
   const endDate = moment(values.end).subtract(5, "hours").format();
+  let URL = `/users/clients/orders/download?start=${startDate}&end=${endDate}`;
+
+  if (values.bank) URL += `&bank=${values.bank}`;
 
   try {
-    const res = yield authInstance.get(`/users/clients/orders/download?start=${startDate}&end=${endDate}`, { responseType: "arraybuffer" });
+    const res = yield authInstance.get(URL, { responseType: "arraybuffer" });
     yield call(fileDownload, res.data, `relacion_ordenes_${moment(startDate).format("DD-MM-YYYY")}_${moment(endDate).format("DD-MM-YYYY")}.xlsx`);
     yield put(actions.getExchangesRelationSuccess());
   } catch (error) {

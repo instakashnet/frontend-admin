@@ -8,6 +8,7 @@ import Breadcrumbs from "../../../../components/Common/Breadcrumb";
 import LoadingPage from "../../../LoadingPage";
 import ExchangesTable from "../components/details/exchanges-table.component";
 import AccountsTable from "../components/details/accounts-table.component";
+import { AddDocument } from "../components/forms/add-document.component";
 import EditUserProfile from "../components/forms/edit-profile.component";
 import EditCompanyProfile from "../components/forms/edit-company.component";
 import EditUserInfo from "../components/forms/edit-info.component";
@@ -20,6 +21,7 @@ export const ClientDetailsScreen = (props) => {
   const [modal, setModal] = useState(false);
   const [modalType, setModalType] = useState(null);
   const [profileDetails, setProfileDetails] = useState({});
+  const [documentType, setDocumentType] = useState("");
   const dispatch = useDispatch();
   const { id } = props.match.params;
   const { details, accounts, exchanges, isProcessing, isLoading } = useSelector((state) => state.Clients);
@@ -32,10 +34,11 @@ export const ClientDetailsScreen = (props) => {
     companyProfiles = details.profiles.filter((profile) => profile.type !== "natural");
   }
 
-  const openModal = (modalType, profileData = {}) => {
+  const openModal = (modalType, profileData = {}, document = "") => {
     setProfileDetails(profileData);
     setModalType(modalType);
     setModal(true);
+    setDocumentType(document);
   };
 
   const closeModal = () => {
@@ -61,6 +64,7 @@ export const ClientDetailsScreen = (props) => {
       );
 
   if (modalType === "editInfo") ModalComponent = <EditUserInfo userId={id} isProcessing={isProcessing} details={details} closeModal={closeModal} />;
+  if (modalType === "addDocument") ModalComponent = <AddDocument userId={id} type={documentType} isProcessing={isProcessing} closeModal={closeModal} />;
 
   return (
     <div className="page-content">

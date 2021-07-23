@@ -43,11 +43,11 @@ export const getCodeMessage = (code, type) => {
   switch (type) {
     case "auth":
       selectedCode = authCodes.find((c) => c.code === code);
-      message = selectedCode ? selectedCode.message : "Ha ocurrido un error inesperad, por favor intente de nuevo. Si el problema persiste contacte a soporte.";
+      message = selectedCode ? selectedCode.message : "Ha ocurrido un error inesperado, por favor intente de nuevo. Si el problema persiste contacte a soporte.";
       return message;
     case "exchange":
       selectedCode = exchangeCodes.find((c) => c.code === code);
-      message = selectedCode ? selectedCode.message : "Ha ocurrido un error inesperad, por favor intente de nuevo. Si el problema persiste contacte a soporte.";
+      message = selectedCode ? selectedCode.message : "Ha ocurrido un error inesperado, por favor intente de nuevo. Si el problema persiste contacte a soporte.";
       return message;
     default:
       return "";
