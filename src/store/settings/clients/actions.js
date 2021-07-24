@@ -82,12 +82,13 @@ export const editInterplazaSuccess = () => ({
   type: actionTypes.EDIT_INTERPLAZA_SUCCESS,
 });
 
-export const uploadDocumentInit = (values, uploadType, userId, close) => ({
+export const uploadDocumentInit = (values, uploadType, userId, close, setPercentage) => ({
   type: actionTypes.UPLOAD_DOCUMENT_INIT,
   values,
   uploadType,
   userId,
   close,
+  setPercentage,
 });
 
 export const uploadDocumentSuccess = () => ({
