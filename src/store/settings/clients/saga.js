@@ -78,14 +78,20 @@ function* editClientProfile({ values, closeModal }) {
   }
 }
 
-function* uploadDocument({ values, userId, uploadType, close }) {
+function* uploadDocument({ values, userId, uploadType, close, setPercentage }) {
   let URL = `/users/${uploadType === "identity_photo" ? "upload-identity-photo" : "upload-identity-photo-two"}/${userId}`;
 
   const formData = new FormData();
   formData.append(uploadType === "identity_photo" ? "file-one" : "file-two", values[uploadType]);
 
   try {
-    const res = yield authInstance.post(URL, formData);
+    const res = yield authInstance.post(URL, formData, {
+      timeout: 99999,
+      onUploadProgress: ({ loaded, total }) => {
+        const percentage = Math.floor((loaded * 100) / total);
+        if (percentage < 100) setPercentage(percentage);
+      },
+    });
     if (res.status === 200) {
       yield call(getClientDetails, { userId });
       yield call(close);
