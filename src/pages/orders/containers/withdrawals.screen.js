@@ -75,7 +75,7 @@ export const WithdrawalsScreen = () => {
       destinationBank: withdraw.bankName.toLowerCase(),
       statusColor: withdraw.statusColor,
       statusName: withdraw.statusName,
-      kashQty: withdraw.kashQty + " KASH = $ " + withdraw.kashQty,
+      kashQty: withdraw.kashQty + " KASH",
     }));
   }
 
