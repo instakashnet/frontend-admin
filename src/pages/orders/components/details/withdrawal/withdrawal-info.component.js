@@ -35,7 +35,7 @@ const WithdrawalInfo = ({ details, isProcessing }) => {
             <div>
               <p className="text-muted mb-2">Cantidad solicitada</p>
               <h5>
-                {details.kashQty} KASH = $ {formatAmount(+details.kashQty * 2)} <CopyButton textToCopy={+details.kashQty * 2} />
+                {details.kashQty} KASH = $ {formatAmount(+details.kashQty)} <CopyButton textToCopy={+details.kashQty} />
               </h5>
             </div>
           </Col>
