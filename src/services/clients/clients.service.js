@@ -12,7 +12,7 @@ export const getClients = (query, setIsLoading, dispatch, completed) =>
     try {
       if (search) {
         if (search.length >= 5) {
-          URL = `/users?type=client&page=${query.page + 1}&qty=40000&completed=true&search=${query.search.toLowerCase()}`;
+          URL = `/users?type=client&page=${query.page + 1}&qty=40000&completed=${completed}&search=${query.search.toLowerCase()}`;
           res = await authInstance.get(URL, { timeout: 20000 });
         }
       } else res = await authInstance.get(URL);

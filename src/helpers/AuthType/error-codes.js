@@ -1,5 +1,9 @@
 const authCodes = [
   {
+    code: 2001,
+    message: "El correo que intentas colocar ya está registrado en otro usuario.",
+  },
+  {
     code: 2003,
     message: "El teléfono que intentas colocar ya existe en otro usuario.",
   },
