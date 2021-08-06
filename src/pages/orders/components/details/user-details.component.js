@@ -1,72 +1,51 @@
 import React from "react";
 import { Card, CardBody, Media } from "reactstrap";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 import Male from "../../../../assets/images/profile-male.svg";
 import Female from "../../../../assets/images/profile-female.svg";
 import Company from "../../../../assets/images/profile-company.svg";
 import CopyButton from "../../../../components/UI/CopyButton";
 
-const User = ({ isLoading, user }) => {
+const User = ({ user }) => {
   let Avatar = user.type === "juridica" ? Company : Male;
   if (user.type === "natural") Avatar = user.identitySex === "male" ? Male : Female;
 
   return (
     <Card>
       <CardBody>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <Media className="transacion-details">
-            <div className="mr-3">
-              <img src={Avatar} width={35} className="avatar-md rounded-circle img-thumbnail" alt="user" />
+        <Media className="transacion-details">
+          <div className="mr-3">
+            <img src={Avatar} width={35} className="avatar-md rounded-circle img-thumbnail" alt="user" />
+          </div>
+          <Media body className="align-self-center">
+            <div className="text-muted">
+              <h5>{user.firstName + " " + user.lastName}</h5>
+              <p className="mb-1">
+                {user.email} <CopyButton textToCopy={user.email} />
+              </p>
+              <p className="mb-1">
+                <b>Documento:</b> {`${user.documentType} ${user.documentIdentification}`}
+              </p>
+              <p className="mb-0">
+                <b>Teléfono:</b> {user.phone} <CopyButton textToCopy={user.phone} />
+              </p>
             </div>
+          </Media>
+          {user.type === "juridica" && (
             <Media body className="align-self-center">
               <div className="text-muted">
-                <h5>{user.firstName + " " + user.lastName}</h5>
-                <p className="mb-1">
-                  {user.email} <CopyButton textToCopy={user.email} />
-                </p>
-                <p className="mb-1">
-                  <b>Documento:</b> {`${user.documentType} ${user.documentIdentification}`}
-                </p>
+                <h5>Empresa</h5>
+                <p className="mb-1">{user.razonSocial}</p>
                 <p className="mb-0">
-                  <b>Teléfono:</b> {user.phone} <CopyButton textToCopy={user.phone} />
+                  <b>RUC:</b> {user.ruc}
                 </p>
               </div>
             </Media>
-            {user.type === "juridica" && (
-              <Media body className="align-self-center">
-                <div className="text-muted">
-                  <h5>Empresa</h5>
-                  <p className="mb-1">{user.razonSocial}</p>
-                  <p className="mb-0">
-                    <b>RUC:</b> {user.ruc}
-                  </p>
-                </div>
-              </Media>
-            )}
-          </Media>
-        )}
+          )}
+        </Media>
       </CardBody>
     </Card>
   );
 };
-
-const Loading = () => (
-  <Media className="transacion-details">
-    <SkeletonTheme color="#4444" highlightColor="#262b3c">
-      <Skeleton circle height={100} width={100} className="mr-3" />
-    </SkeletonTheme>
-    <Media body className="align-self-center">
-      <SkeletonTheme color="#4444" highlightColor="#262b3c">
-        <Skeleton width={150} className="d-block my-2" />
-        <Skeleton className="d-block my-2" width={100} />
-        <Skeleton className="d-block my-2" width={100} />
-        <Skeleton className="d-block my-2" width={100} />
-      </SkeletonTheme>
-    </Media>
-  </Media>
-);
 
 export default React.memo(User);

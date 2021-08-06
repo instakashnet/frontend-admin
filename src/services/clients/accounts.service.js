@@ -1,42 +1,27 @@
 import moment from "moment";
 import { accountsInstance } from "../../helpers/AuthType/axios";
-import { setAlert } from "../../store/actions";
 
-export const getClientsAccounts = (query, setIsLoading, dispatch) =>
+export const getClientsAccounts = ({ search, pageCount }) =>
   new Promise(async (resolve) => {
-    setIsLoading(true);
-    const search = query.search;
-
-    console.log(query);
-    let URL = `/accounts/type/users?page=${query.page + 1}&qty=${query.pageSize}`;
+    let URL = `/accounts/type/users?page=${pageCount}&qty=50`;
     let accounts = [];
-    let res;
+
+    if (search) URL = `${URL}&search=${search}`;
 
     try {
-      if (search) {
-        if (search.length >= 5) res = await accountsInstance.get(URL + `&search=${query.search}`);
-      } else res = await accountsInstance.get(URL);
+      const res = await accountsInstance(URL);
 
-      if (res && res.data) {
-        accounts = res.data.accounts.map((acc) => ({
-          accountNumber: acc.accountNUmber,
-          accountType: `${acc.accountType === "checking" ? "Corriente" : "Ahorros"} - ${acc.currencySymbol}`,
-          bankName: acc.bankName,
-          createdAt: moment(acc.createdAt).format("DD-MM-YYYY HH:mm"),
-          userName: acc.userName,
-          userEmail: acc.userEmail,
-        }));
-      }
+      accounts = res.data.accounts.map((acc) => ({
+        accountNumber: acc.accountNUmber,
+        accountType: `${acc.accountType === "checking" ? "Corriente" : "Ahorros"} - ${acc.currencySymbol}`,
+        bankName: acc.bankName,
+        createdAt: moment(acc.createdAt).format("DD-MM-YYYY HH:mm"),
+        userName: acc.userName,
+        userEmail: acc.userEmail,
+      }));
 
-      setIsLoading(false);
-
-      resolve({
-        data: accounts,
-        page: query.page,
-        totalCount: 50,
-      });
+      resolve(accounts);
     } catch (error) {
-      console.log(error);
-      dispatch(setAlert("danger", "Ha ocurrido un error obteniendo las cuentas del os usuarios. Por favor intente más tarde."));
+      throw error;
     }
   });

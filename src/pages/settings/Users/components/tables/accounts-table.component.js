@@ -1,49 +1,52 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Card, CardBody } from "reactstrap";
+import { setAlert } from "../../../../../store/actions";
 import { getClientsAccounts } from "../../../../../services/clients/accounts.service";
+import { usersAccountsColumns } from "../../../../../helpers/tables/columns";
 
-import Table from "../../../../../components/UI/Table";
+import { Table } from "../../../../../components/UI/tables/table.component";
+
+const PAGE_SIZE = 50;
 
 export const AccountsTable = ({ dispatch }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const columns = [
-    {
-      field: "accountNumber",
-      title: "Nro. de cuenta",
+  const [data, setData] = useState([]);
+
+  const getTableData = useCallback(
+    async (search = null, pageCount = 1) => {
+      setIsLoading(true);
+
+      try {
+        const tableData = await getClientsAccounts({ search, pageCount });
+        setData(tableData);
+      } catch (error) {
+        console.log(error);
+        dispatch(setAlert("danger", "Ha ocurrido un error obteniendo la lista de cuentas. Por favor, intentelo más tarde."));
+      } finally {
+        setIsLoading(false);
+      }
     },
-    {
-      field: "accountType",
-      title: "Tipo de cuenta",
-    },
-    {
-      field: "bankName",
-      title: "Banco",
-      render: (rowData) => <img src={`${process.env.PUBLIC_URL}/images/banks/${rowData.bankName.toLowerCase()}.svg`} width={80} alt={rowData.bankName} />,
-    },
-    {
-      field: "userName",
-      title: "Nombre del usuario",
-    },
-    {
-      field: "userEmail",
-      title: "Correo",
-    },
-    {
-      field: "createdAt",
-      title: "Fecha de creación",
-    },
-  ];
+    [dispatch]
+  );
+
+  useEffect(() => {
+    getTableData();
+  }, [getTableData]);
 
   return (
     <Card>
       <CardBody>
-        <Table
-          columns={columns}
-          rows={(query) => getClientsAccounts(query, setIsLoading, dispatch)}
-          title="Cuentas bancarias"
-          isLoading={isLoading}
-          options={{ pageSize: 10, loadingType: "overlay", pageSizeOptions: [10, 25, 50] }}
-        />
+        <div className="table-responsive">
+          <Table
+            columns={usersAccountsColumns}
+            data={data}
+            title="Cuentas bancarias"
+            isLoading={isLoading}
+            pagination={{ pageSize: PAGE_SIZE, async: true }}
+            search
+            getData={getTableData}
+          />
+        </div>
       </CardBody>
     </Card>
   );

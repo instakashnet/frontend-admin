@@ -10,7 +10,7 @@ import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import UserInfo from "../components/details/user-details.component";
 import Received from "../components/details/exchange/received.component";
 import ToSend from "../components/details/exchange/to-send.component";
-import OldTransacions from "../components/details/exchange/old-transactions.component";
+import { UserTransactions } from "../components/details/exchange/user-transactions.component";
 import CompleteOrder from "../components/forms/complete-order.component";
 import EditOrder from "../components/forms/edit-order.component";
 import ReassignOrder from "../components/forms/reassign-order.component";
@@ -74,7 +74,7 @@ export const ExchangeDetailsScreen = (props) => {
                       isProcessing={isProcessing}
                       hasInvoice
                     />
-                    <UserInfo user={details.user} isLoading={isLoading} />
+                    <UserInfo user={details.user} />
                   </>
                 )}
               </Col>
@@ -115,7 +115,7 @@ export const ExchangeDetailsScreen = (props) => {
             </Row>
             <Row>
               <Col lg="10" xl="8">
-                <OldTransacions isLoading={dataLoading} details={details} orders={exchanges} />
+                <UserTransactions isLoading={dataLoading} details={details} orders={exchanges} />
               </Col>
             </Row>
           </>

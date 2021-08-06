@@ -1,72 +1,66 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useCallback } from "react";
 import { CloudDownload } from "@material-ui/icons";
 import { Card, CardBody, Button } from "reactstrap";
-import { downloadClientsInit } from "../../../../../store/actions";
+import { downloadClientsInit, setAlert } from "../../../../../store/actions";
 import { getClients } from "../../../../../services/clients/clients.service";
+import { clientsCompletedColumns } from "../../../../../helpers/tables/columns";
 
-import Table from "../../../../../components/UI/Table";
+import { Table } from "../../../../../components/UI/tables/table.component";
+
+const PAGE_SIZE = 10;
 
 const Completed = ({ dispatch }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const columns = [
-    {
-      field: "userName",
-      title: "Nombre",
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  const getTableData = useCallback(
+    async (search = null, pageCount = 1) => {
+      setIsLoading(true);
+
+      try {
+        const tableData = await getClients({ search, pageCount, completed: true });
+        setData(tableData);
+      } catch (error) {
+        console.log(error);
+        dispatch(setAlert("danger", "Ha ocurrido un error obteniendo la lista de clientes. Por favor intenta de nuevo o contacta a soporte."));
+      } finally {
+        setIsLoading(false);
+      }
     },
-    {
-      field: "email",
-      title: "Correo",
-    },
-    {
-      field: "document",
-      title: "Documento",
-    },
-    {
-      field: "phone",
-      title: "Teléfono",
-    },
-    {
-      field: "date",
-      title: "Fecha registrado",
-    },
-    {
-      field: "status",
-      title: "Estado",
-      render: (rowData) => <span className={!rowData.status ? "text-warning" : "text-success"}>{!rowData.status ? "NO ACTIVO" : "ACTIVO"}</span>,
-    },
-    {
-      title: "Acción",
-      field: "action",
-      width: 150,
-      render: (rowData) => (
-        <Link to={`/user-details/${rowData.id}`} className="btn-rounded waves-effect waves-light btn btn-blue btn-sm font-size-13">
-          Ver detalles
-        </Link>
-      ),
-    },
-  ];
+    [dispatch]
+  );
+
+  useEffect(() => {
+    getTableData();
+  }, [getTableData]);
 
   return (
-    <Card>
-      <CardBody>
-        <div className="flex items-center">
-          <Button type="button" className="btn-primary mb-3" onClick={() => dispatch(downloadClientsInit("companies"))}>
-            Obtener empresas <CloudDownload className="ml-2" />
-          </Button>
-          <Button type="button" className="btn-primary ml-3 mb-3" onClick={() => dispatch(downloadClientsInit("clients"))}>
-            Obtener clientes <CloudDownload className="ml-2" />
-          </Button>
-        </div>
-        <Table
-          columns={columns}
-          rows={(query) => getClients(query, setIsLoading, dispatch, true)}
-          title="Completados"
-          isLoading={isLoading}
-          options={{ pageSize: 10, loadingType: "overlay", pageSizeOptions: [10, 25, 50] }}
-        />
-      </CardBody>
-    </Card>
+    <>
+      <div className="flex items-center">
+        <Button type="button" className="btn-primary mb-3" onClick={() => dispatch(downloadClientsInit("companies"))}>
+          Obtener empresas <CloudDownload fontSize="small" className="ml-2" />
+        </Button>
+        <Button type="button" className="btn-primary ml-3 mb-3" onClick={() => dispatch(downloadClientsInit("clients"))}>
+          Obtener clientes <CloudDownload fontSize="small" className="ml-2" />
+        </Button>
+      </div>
+      <Card>
+        <CardBody>
+          <div className="table-responsive">
+            <Table
+              columns={clientsCompletedColumns}
+              title="Usuarios (perfil completo)"
+              isLoading={isLoading}
+              data={data}
+              getData={getTableData}
+              search
+              sorted
+              pagination={{ pageSize: PAGE_SIZE, async: true }}
+            />
+          </div>
+        </CardBody>
+      </Card>
+    </>
   );
 };
 

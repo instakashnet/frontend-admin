@@ -1,91 +1,44 @@
-import React from "react";
-import { Card, CardBody } from "reactstrap";
-import { Visibility, VisibilityOff, Edit, DeleteForever } from "@material-ui/icons";
+import React, { useEffect, useState } from "react";
+import { Card, CardBody, Button } from "reactstrap";
 import moment from "moment";
+import { couponsColumns } from "../../../../helpers/tables/columns";
 
-import Table from "../../../../components/UI/Table";
+import { Table } from "../../../../components/UI/tables/table.component";
 
-const CouponsList = ({ coupons, isLoading, onForm, onDelete, onDisable }) => {
-  const columns = [
-    {
-      field: "couponName",
-      title: "Nombre",
-    },
-    {
-      field: "discount",
-      title: "Descuento",
-    },
-    {
-      field: "uses",
-      title: "usos",
-    },
-    {
-      field: "affiliates",
-      title: "¿Solo afiliados?",
-      render: (rowData) => <span className={`fa-lg fas ${rowData.affiliates ? "fa-check-circle text-success" : "fa-times-circle text-danger"}`} />,
-    },
-    {
-      field: "profileType",
-      title: "Perfiles",
-      render: (rowData) => <p>{rowData.profileType === "natural" ? "Cliente" : rowData.profileType === "juridica" ? "Empresa" : "Todos"}</p>,
-    },
-    {
-      field: "minAmount",
-      title: "Mínimo ($)",
-    },
-    {
-      field: "endDate",
-      title: "Vence en",
-    },
-    {
-      field: "actions",
-      title: "Acciones",
-      render: (rowData) => (
-        <div className="flex flex-wrap items-center">
-          {rowData.active ? (
-            <VisibilityOff color="primary" className="m-2 cursor-pointer" onClick={() => onDisable(rowData.id, false)} />
-          ) : (
-            <Visibility color="primary" className="m-2 cursor-pointer" onClick={() => onDisable(rowData.id, true)} />
-          )}
-          <Edit color="secondary" className="m-2 cursor-pointer" onClick={() => onForm(rowData.id)} />
-          <DeleteForever color="error" className="m-2 cursor-pointer" onClick={() => onDelete(rowData.id)} />
-        </div>
-      ),
-    },
-  ];
+const CouponsList = ({ coupons, isLoading, onForm, onDisable }) => {
+  const [data, setData] = useState([]);
 
-  const data = coupons.map((coupon) => ({
-    id: coupon._id,
-    couponName: coupon.name,
-    discount: coupon.discount,
-    uses: coupon.qty_uses,
-    affiliates: coupon.affiliates,
-    profileType: coupon.profileType,
-    active: coupon.active,
-    minAmount: coupon.minAmountBuy ? coupon.minAmountBuy : 0,
-    endDate: moment(coupon.endDate).format("DD/MM/YYYY"),
-  }));
+  useEffect(() => {
+    if (coupons.length > 0) {
+      setData(
+        coupons.map((coupon) => ({
+          id: coupon._id,
+          couponName: coupon.name,
+          discount: coupon.discount,
+          uses: coupon.qty_uses,
+          affiliates: coupon.affiliates,
+          profileType: coupon.profileType,
+          active: coupon.active,
+          minAmount: coupon.minAmountBuy ? coupon.minAmountBuy : 0,
+          endDate: moment(coupon.endDate).format("DD/MM/YYYY"),
+        }))
+      );
+    }
+  }, [coupons]);
 
   return (
-    <Card>
-      <CardBody>
-        <Table
-          columns={columns}
-          rows={data}
-          isLoading={isLoading}
-          options={{ loadingType: "linear", sorting: true }}
-          actions={[
-            {
-              icon: "add",
-              iconProps: { style: { color: "#fff" } },
-              tooltip: "Agregar cupón",
-              onClick: () => onForm(),
-              isFreeAction: true,
-            },
-          ]}
-        />
-      </CardBody>
-    </Card>
+    <>
+      <Button className="btn-primary my-3" onClick={onForm}>
+        Agregar cupón
+      </Button>
+      <Card>
+        <CardBody>
+          <div className="table-responsive">
+            <Table title="Cupones de descuento" columns={couponsColumns({ onDisable, onForm })} data={data} isLoading={isLoading} />
+          </div>
+        </CardBody>
+      </Card>
+    </>
   );
 };
 

@@ -23,7 +23,7 @@ export const StatusScreen = () => {
       <Container fluid>
         <Row>
           <Col lg="6">
-            <StatusTable data={status} isLoading={isLoading} setEdit={setEditData} />
+            <StatusTable status={status} isLoading={isLoading} onEdit={setEditData} />
           </Col>
           <Col lg="6">{editData && <EditStatus isProcessing={isProcessing} edit={editStatusHandler} data={editData} />}</Col>
         </Row>

@@ -14,12 +14,10 @@ export const ClientsScreen = () => {
       <div className="container-fluid">
         <Breadcrumbs title="Usuarios" breadcrumbItem="Usuarios registrados" />
         <Row>
-          <Col className="col-12">
-            <h3 className="ml-2 mb-3">Perfil completo</h3>
+          <Col>
             <CompletedUsers dispatch={dispatch} />
           </Col>
-          <Col className="col-12">
-            <h3 className="ml-2 mb-3">Perfil incompleto</h3>
+          <Col>
             <NotCompletedUsers dispatch={dispatch} />
           </Col>
         </Row>

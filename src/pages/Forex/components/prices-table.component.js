@@ -1,52 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardBody } from "reactstrap";
 import moment from "moment-timezone";
 import { convertRate } from "../../../helpers/functions";
+import { pricesColumns } from "../../../helpers/tables/columns";
 //Components
-import Table from "../../../components/UI/Table";
+import { Table } from "../../../components/UI/tables/table.component";
 
-const Prices = (props) => {
-  const data = {
-    columns: [
-      {
-        title: "Par",
-        field: "forex",
-        width: 160,
-      },
-      {
-        title: "Compra",
-        field: "buy",
-        cellStyle: { fontWeight: "bold" },
-        width: 130,
-      },
-      {
-        title: "Venta",
-        field: "sell",
-        cellStyle: { fontWeight: "bold" },
-        width: 130,
-      },
-      {
-        title: "Fecha",
-        field: "date",
-        width: 170,
-      },
-    ],
-    rows: [],
-  };
+const Prices = ({ rates, isLoading }) => {
+  const [data, setData] = useState([]);
 
-  if (props.rates.length > 0) {
-    data.rows = props.rates.map((rate) => ({
-      forex: rate.currencyOne + "/" + rate.currencyTwo,
-      buy: convertRate(rate.buy),
-      sell: convertRate(rate.sell),
-      date: moment(rate.createdAt).format("DD/MM/YYYY HH:mm a"),
-    }));
-  }
+  useEffect(() => {
+    if (rates.length > 0) {
+      setData(
+        rates.map((rate) => ({
+          forex: rate.currencyOne + "/" + rate.currencyTwo,
+          buy: convertRate(rate.buy),
+          sell: convertRate(rate.sell),
+          date: moment(rate.createdAt).format("DD/MM/YYYY HH:mm a"),
+        }))
+      );
+    }
+  }, [rates]);
 
   return (
     <Card>
       <CardBody>
-        <Table columns={data.columns} rows={data.rows} isLoading={props.isLoading} options={{ sorting: true, loadingType: "linear" }} />
+        <div className="table-responsive">
+          <Table title="Lista de precios" columns={pricesColumns} data={data} isLoading={isLoading} />
+        </div>
       </CardBody>
     </Card>
   );
