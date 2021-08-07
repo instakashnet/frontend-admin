@@ -28,7 +28,7 @@ const CouponsList = ({ coupons, isLoading, onForm, onDisable }) => {
 
   return (
     <>
-      <Button className="btn-primary my-3" onClick={onForm}>
+      <Button className="btn-primary my-3" onClick={() => onForm()}>
         Agregar cupón
       </Button>
       <Card>
