@@ -9,7 +9,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 import { Search } from "./search.component";
 
-export const Table = ({ title, columns, data, sorted, search, isLoading, pagination, getData }) => {
+export const Table = ({ title, columns, data, sorted, search, setSearch, isLoading, pagination, getData }) => {
   const tableColumns = useMemo(() => columns, [columns]);
   const tableData = useMemo(() => data, [data]);
   const [page, setPage] = useState(pagination ? 1 : 0);
@@ -37,7 +37,7 @@ export const Table = ({ title, columns, data, sorted, search, isLoading, paginat
     <>
       <div className="flex items-center justify-between">
         <CardTitle className="mb-4">{title}</CardTitle>
-        {search && <Search onSearch={getData} isLoading={isLoading} />}
+        {search && <Search onSearch={getData} setSearch={setSearch} isLoading={isLoading} />}
       </div>
       {isLoading && <LinearProgress />}
       <table className="table table-bordered table-centered table-nowrap mb-0" {...getTableProps()}>

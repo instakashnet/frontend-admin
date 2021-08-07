@@ -4,7 +4,7 @@ import { exchangeInstance } from "../../helpers/AuthType/axios";
 import { formatAmount } from "../../helpers/functions";
 
 export const getAllOrders = ({ search, pageCount }) => {
-  return new Promise(async (resolve) => {
+  return new Promise(async (resolve, reject) => {
     let orders = [];
     let URL = `/order?page=${pageCount}&qty=50`;
     if (search) URL = `${URL}&search=${search.toLowerCase()}`;
@@ -31,7 +31,7 @@ export const getAllOrders = ({ search, pageCount }) => {
 
       resolve(orders);
     } catch (error) {
-      throw error;
+      reject(error);
     }
   });
 };

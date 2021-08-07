@@ -16,13 +16,14 @@ export const ExchangesScreen = () => {
   const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [search, setSearch] = useState(null);
   const [data, setData] = useState([]);
   const isProcessing = useSelector((state) => state.CurrencyExchange.isProcessing);
   const user = useSelector((state) => state.Login.user);
   const [role] = useRole(user);
 
   const getTableData = useCallback(
-    async (search = null, pageCount = 1) => {
+    async (_, pageCount = 1) => {
       setIsLoading(true);
 
       try {
@@ -35,12 +36,23 @@ export const ExchangesScreen = () => {
         setIsLoading(false);
       }
     },
-    [dispatch]
+    [dispatch, search]
   );
 
   useEffect(() => {
     getTableData();
   }, [getTableData]);
+
+  useEffect(() => {
+    let interval;
+
+    if (!search) interval = setInterval(getTableData, 45000);
+    if (search && interval) clearInterval(interval);
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [getTableData, search]);
 
   return (
     <div className="page-content">
@@ -69,6 +81,7 @@ export const ExchangesScreen = () => {
                     isLoading={isLoading}
                     getData={getTableData}
                     search
+                    setSearch={setSearch}
                     pagination={{ pageSize: PAGE_SIZE, async: true }}
                   />
                 </div>
