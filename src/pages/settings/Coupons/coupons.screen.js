@@ -5,7 +5,6 @@ import { getCouponsInit, disableCouponInit, deleteCouponInit } from "../../../st
 import { authInstance } from "../../../helpers/AuthType/axios";
 
 import CouponsList from "./components/coupons-table.component";
-import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import EditCoupon from "./components/forms/edit-coupon.component";
 
 export const CouponsScreen = () => {
@@ -47,7 +46,6 @@ export const CouponsScreen = () => {
       <Container fluid>
         <Row>
           <Col lg="12">
-            <Breadcrumbs title="Cupones" breadcrumbItem="Cupones de descuento" />
             <CouponsList
               coupons={coupons}
               isLoading={isLoading}

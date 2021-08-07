@@ -22,7 +22,7 @@ export const ScheduleScreen = () => {
       <Container fluid>
         <Row>
           <Col md="8">
-            <ScheduleTable edit={setEditData} data={schedule} isLoading={isLoading} />
+            <ScheduleTable onEdit={setEditData} schedule={schedule} isLoading={isLoading} />
           </Col>
           <Col md="4">{editData && <EditSchedule data={editData} onEdit={editScheduleHandler} isProcessing={isProcessing} />}</Col>
         </Row>

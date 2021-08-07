@@ -16,6 +16,8 @@ export const CreateExcel = ({ isProcessing, dispatch }) => {
     { value: "interbank", label: "Interbank" },
   ];
 
+  const date = new Date();
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -24,7 +26,7 @@ export const CreateExcel = ({ isProcessing, dispatch }) => {
           error={formik.errors.start}
           name="start"
           showTimeSelect
-          maxDate={new Date()}
+          maxDate={date}
           onChange={(date) => onChangeDateHandler("start", date)}
           label="Fecha desde"
           dateFormat="dd-MM-yyyy HH:mm"
@@ -34,7 +36,7 @@ export const CreateExcel = ({ isProcessing, dispatch }) => {
           error={formik.errors.end}
           name="end"
           showTimeSelect
-          minDate={new Date()}
+          minDate={new Date(formik.values.start || date.setMonth(date.getMonth - 5))}
           onChange={(date) => onChangeDateHandler("end", date)}
           label="Fecha hasta"
           dateFormat="dd-MM-yyyy HH:mm"

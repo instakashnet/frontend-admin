@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { disableClientInit, getClientDetails } from "../../../../store/actions";
+import { disableClientInit, getClientDetails, getClientExchanges, getClientAccounts } from "../../../../store/actions";
 
 import Breadcrumbs from "../../../../components/Common/Breadcrumb";
 import LoadingPage from "../../../LoadingPage";
-import ExchangesTable from "../components/details/exchanges-table.component";
-import AccountsTable from "../components/details/accounts-table.component";
+import { UserTransactions } from "../../../orders/components/details/exchange/user-transactions.component";
+import { UserAccounts } from "../components/tables/user-accounts-table.component";
 import { AddDocument } from "../components/forms/add-document.component";
 import EditUserProfile from "../components/forms/edit-profile.component";
 import EditCompanyProfile from "../components/forms/edit-company.component";
@@ -48,6 +48,8 @@ export const ClientDetailsScreen = (props) => {
 
   useEffect(() => {
     dispatch(getClientDetails(id));
+    dispatch(getClientExchanges(id));
+    dispatch(getClientAccounts(id));
   }, [dispatch, id]);
 
   const disableClientHandler = (id, active) => dispatch(disableClientInit(id, active));
@@ -92,10 +94,10 @@ export const ClientDetailsScreen = (props) => {
             {userProfile && (
               <Row>
                 <Col lg="6">
-                  <AccountsTable userId={id} accounts={accounts} isLoading={isLoading} />
+                  <UserAccounts accounts={accounts} isLoading={isLoading} />
                 </Col>
                 <Col lg="12">
-                  <ExchangesTable id={id} exchanges={exchanges} isLoading={isLoading} />
+                  <UserTransactions exchanges={exchanges} isLoading={isLoading} />
                 </Col>
               </Row>
             )}

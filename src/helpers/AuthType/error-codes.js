@@ -31,6 +31,14 @@ const authCodes = [
     code: 2009,
     message: "Ese código de afiliado ya existe en otro usuario.",
   },
+  {
+    code: 2014,
+    message: "El usuario que intentas editar no existe.",
+  },
+  {
+    code: 2015,
+    message: "El código de afiliado que intentas usar no existe en ningún usuario.",
+  },
 ];
 
 const exchangeCodes = [
