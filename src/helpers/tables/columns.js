@@ -361,11 +361,6 @@ export const exchangesColumns = [
     Cell: ({ cell }) => <img width={70} src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} alt={cell.value} />,
   },
   {
-    Header: "F",
-    accessor: "invoice",
-    Cell: ({ cell }) => <span className={`${cell.value ? "text-success" : "text-warning"}`}>{cell.value ? "SI" : "NO"}</span>,
-  },
-  {
     Header: "Estado",
     accessor: "status",
     Cell: ({ row }) => (
@@ -379,6 +374,11 @@ export const exchangesColumns = [
         {row.original.revision ? "En Revisión" : row.original.statusName.toLowerCase()}
       </Badge>
     ),
+  },
+  {
+    Header: "F",
+    accessor: "invoice",
+    Cell: ({ cell }) => <span className={`${cell.value ? "text-success" : "text-warning"}`}>{cell.value ? "SI" : "NO"}</span>,
   },
   {
     Header: "Acción",
