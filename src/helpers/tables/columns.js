@@ -69,21 +69,21 @@ export const usersAccountsColumns = [
 
 export const userAccountsColumns = [
   {
-    Header: "bank",
-    accessor: "Banco",
+    accessor: "bank",
+    Header: "Banco",
     render: ({ cell }) => <img src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} width={70} alt={cell.value.toLowerCase()} />,
   },
   {
-    Header: "currency",
-    accessor: "Moneda",
+    accessor: "currency",
+    Header: "Moneda",
   },
   {
-    Header: "account_number",
-    accessor: "Número de cuenta",
+    accessor: "account_number",
+    Header: "Número de cuenta",
   },
   {
-    Header: "account_type",
-    accessor: "Tipo de cuenta",
+    accessor: "account_type",
+    Header: "Tipo de cuenta",
   },
 ];
 
