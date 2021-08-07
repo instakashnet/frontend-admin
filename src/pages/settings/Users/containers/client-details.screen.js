@@ -97,7 +97,7 @@ export const ClientDetailsScreen = (props) => {
                   <UserAccounts accounts={accounts} isLoading={isLoading} />
                 </Col>
                 <Col lg="12">
-                  <UserTransactions exchanges={exchanges} isLoading={isLoading} />
+                  <UserTransactions orders={exchanges} isLoading={isLoading} />
                 </Col>
               </Row>
             )}
