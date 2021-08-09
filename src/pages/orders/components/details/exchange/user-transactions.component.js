@@ -17,6 +17,7 @@ export const UserTransactions = ({ orders, isLoading, details }) => {
 
       setData(
         filteredOrders.reverse().map((order) => ({
+          id: order.id,
           date: moment(order.created).format("DD/MM/YYYY HH:mm a"),
           bankSent: order.bankSent,
           bankReceive: order.bankReceive,
