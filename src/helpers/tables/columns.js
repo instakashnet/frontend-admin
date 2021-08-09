@@ -325,7 +325,7 @@ export const clientsNotCompletedColumns = [
 
 export const exchangesColumns = [
   {
-    Header: "Operación",
+    Header: "Nro. de orden",
     accessor: "pedidoId",
     Cell: ({ cell }) => <p className="font-bold text-white">{cell.value}</p>,
   },
