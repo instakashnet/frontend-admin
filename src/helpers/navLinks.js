@@ -23,7 +23,7 @@ export const ordersLinks = [
   {
     path: "/exchanges/all",
     icon: "bx bx-list-check",
-    label: "Operaciones recibidas",
+    label: "Ordenes recibidas",
     roles: ["admin", "officers", "manager", "orders"],
   },
   {
