@@ -337,7 +337,7 @@ export const exchangesColumns = [
   {
     Header: "Usuario",
     accessor: "user",
-    width: 20,
+    style: { whiteSpace: "unset" },
     Cell: ({ cell, row }) => <p className="text-white capitalize">{row.original.companyName.toLowerCase() || cell.value.toLowerCase()}</p>,
   },
   {
@@ -367,8 +367,8 @@ export const exchangesColumns = [
       <Badge
         className="font-size-13 capitalize py-2"
         style={{
-          color: row.original.revision ? "#fff" : shadeColor(row.original.statusColor, 40),
-          backgroundColor: convertHexToRGBA(row.original.revision ? "#F93154" : row.original.statusColor, 24),
+          color: "#fff",
+          backgroundColor: row.original.revision ? "#BA55D3" : row.original.statusColor,
         }}
         pill>
         {row.original.revision ? "En Revisión" : row.original.statusName.toLowerCase()}
@@ -384,7 +384,7 @@ export const exchangesColumns = [
     Header: "Acción",
     accessor: "id",
     Cell: ({ cell }) => (
-      <Link className="btn py-1 px-2 btn-rounded btn-action" to={`/exchange-details/${cell.value}`}>
+      <Link className="btn py-1 px-2 btn-action w-20" to={`/exchange-details/${cell.value}`}>
         Ver más
       </Link>
     ),

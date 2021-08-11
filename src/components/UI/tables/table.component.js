@@ -40,7 +40,7 @@ export const Table = ({ title, columns, data, sorted, search, setSearch, isLoadi
         {search && <Search onSearch={getData} setSearch={setSearch} isLoading={isLoading} />}
       </div>
       {isLoading && <LinearProgress />}
-      <table className="table table-bordered table-centered table-nowrap mb-0" {...getTableProps()}>
+      <table className="table table-bordered table-centered mb-0" {...getTableProps()}>
         <thead className="thead-light">
           {headerGroups.map((group) => (
             <tr {...group.getHeaderGroupProps()}>
