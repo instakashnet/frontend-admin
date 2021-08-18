@@ -73,7 +73,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
               </Col>
               <Col sm="6">
                 <div className="text-sm-right mt-4 mt-sm-0">
-                  <p className="text-muted mb-2">Cuenta no.</p>
+                  <p className="text-muted mb-2">Cuenta {details.thirdParty ? "de tercero" : ""} no.</p>
                   <h5>
                     {details.accountToRaw} <CopyButton textToCopy={details.accountToRaw} />
                   </h5>
@@ -102,6 +102,26 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                   )}
                 </div>
               </Col>
+              {details.thirdParty && (
+                <>
+                  <Col sm="6" className="mt-3">
+                    <p className="text-muted mb-2">Nombre del titular</p>
+                    <h5>{details.thirdParty.name}</h5>
+                  </Col>
+                  <Col sm="6" className="mt-3">
+                    <div className="text-sm-right">
+                      <p className="text-muted mb-2">Documento</p>
+                      <h5>
+                        {details.thirdParty.documentType} {details.thirdParty.documentNumber}
+                      </h5>
+                    </div>
+                  </Col>
+                  <Col className="mt-3">
+                    <p className="text-muted mb-2">Correo de contacto</p>
+                    <h5>{details.thirdParty.email}</h5>
+                  </Col>
+                </>
+              )}
             </Row>
           </>
         )}

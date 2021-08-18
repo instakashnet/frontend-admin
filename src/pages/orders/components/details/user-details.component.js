@@ -1,5 +1,7 @@
 import React from "react";
 import { Card, CardBody, Media } from "reactstrap";
+import { Person } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 import Male from "../../../../assets/images/profile-male.svg";
 import Female from "../../../../assets/images/profile-female.svg";
@@ -19,7 +21,12 @@ const User = ({ user }) => {
           </div>
           <Media body className="align-self-center">
             <div className="text-muted">
-              <h5>{user.firstName + " " + user.lastName}</h5>
+              <h5>
+                {user.firstName + " " + user.lastName}
+                <Link to={`/user-details/${user.userId}`} className="ml-2 relative bottom-0.5">
+                  <Person />
+                </Link>
+              </h5>
               <p className="mb-1">
                 {user.email} <CopyButton textToCopy={user.email} />
               </p>
