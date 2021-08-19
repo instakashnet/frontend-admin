@@ -84,7 +84,12 @@ export const Table = ({ title, columns, data, sorted, search, setSearch, isLoadi
       {isLoading && <LinearProgress />}
       {pagination && (
         <div className="text-white flex justify-end items-center my-2">
-          <Pagination count={data.length < pagination.pageSize ? 1 : 10} page={page} color="primary" onChange={onPageChange} />
+          <Pagination
+            count={data.length < pagination.pageSize ? 1 : pagination.async ? 10 : Math.ceil(+data.length / +pagination.pageSize)}
+            page={page}
+            color="primary"
+            onChange={onPageChange}
+          />
         </div>
       )}
     </>
