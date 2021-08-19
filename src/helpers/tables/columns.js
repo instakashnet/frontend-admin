@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Badge } from "reactstrap";
-import { Edit, AccountBalanceWallet, Check, Block, Clear } from "@material-ui/icons";
+import { Edit, AccountBalanceWallet, Check, Block, Clear, Close } from "@material-ui/icons";
 import moment from "moment-timezone";
 import { convertHexToRGBA, shadeColor } from "../functions";
 
@@ -103,6 +103,11 @@ export const pricesColumns = [
   {
     Header: "Fecha",
     accessor: "date",
+  },
+  {
+    Header: "Activa",
+    accessor: "active",
+    Cell: ({ cell }) => (cell.value ? <Check htmlColor="#69bea0" fontSize="large" /> : <Close color="error" fontSize="large" />),
   },
 ];
 
