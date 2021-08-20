@@ -5,7 +5,8 @@ import { exchangeInstance } from "../../helpers/AuthType/axios";
 export const getAllWithdrawals = ({ search, pageCount }) => {
   return new Promise(async (resolve) => {
     let withdrawals = [];
-    let URL = `/withdrawals`;
+    let URL = `/withdrawals?page=${pageCount}&qty=50`;
+    if (search) URL = `${URL}&search=${search.toLowerCase()}`;
 
     try {
       const res = await exchangeInstance.get(URL);

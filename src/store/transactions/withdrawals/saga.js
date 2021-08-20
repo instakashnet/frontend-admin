@@ -6,19 +6,6 @@ import { exchangeInstance } from "../../../helpers/AuthType/axios";
 import Swal from "sweetalert2";
 import camelize from "camelize";
 
-function* getWithdrawals() {
-  try {
-    const res = yield exchangeInstance.get("/withdrawals");
-    if (res.status === 200) {
-      const withdrawals = camelize(res.data);
-      yield put(actions.getWithdrawsSuccess(withdrawals));
-    }
-  } catch (error) {
-    yield put(setAlert("danger", error.message));
-    yield put(actions.withdrawalsError());
-  }
-}
-
 function* getWithdrawalDetails({ id }) {
   try {
     const res = yield exchangeInstance.get(`/withdrawals/${id}`);
@@ -71,10 +58,6 @@ function* changeWithdrawalStatus({ id, statusId, values, toggle }) {
   }
 }
 
-export function* watchGetWithdrawals() {
-  yield takeEvery(types.GET_WITHDRAWS_INIT, getWithdrawals);
-}
-
 export function* watchGetWithdrawalDetails() {
   yield takeEvery(types.GET_WITHDRAW_DETAILS_INIT, getWithdrawalDetails);
 }
@@ -84,5 +67,5 @@ export function* watchChangeWithdrawalStatus() {
 }
 
 export default function* withdrawalsSaga() {
-  yield all([fork(watchGetWithdrawals), fork(watchGetWithdrawalDetails), fork(watchChangeWithdrawalStatus)]);
+  yield all([fork(watchGetWithdrawalDetails), fork(watchChangeWithdrawalStatus)]);
 }
