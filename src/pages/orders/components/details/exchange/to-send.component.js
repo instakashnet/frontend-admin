@@ -106,7 +106,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                 <>
                   <Col sm="6" className="mt-3">
                     <p className="text-muted mb-2">Nombre del titular</p>
-                    <h5>{details.thirdParty.name}</h5>
+                    <h5>{details.thirdParty.name || details.thirdParty.razonSocial}</h5>
                   </Col>
                   <Col sm="6" className="mt-3">
                     <div className="text-sm-right">
