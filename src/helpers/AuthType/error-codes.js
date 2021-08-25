@@ -1,4 +1,4 @@
-const authCodes = [
+const errorCodes = [
   {
     code: 2001,
     message: "El correo que intentas colocar ya está registrado en otro usuario.",
@@ -39,29 +39,16 @@ const authCodes = [
     code: 2015,
     message: "El código de afiliado que intentas usar no existe en ningún usuario.",
   },
-];
-
-const exchangeCodes = [
+  { code: 4006, message: "No existe saldo suficiente para el monto que el cliente desea recibir." },
   { code: 4014, message: "La nota no puede superar los 150 caracteres. Por favor valide los datos." },
   { code: 4015, message: "Este operador no puede ser asignado para operación, verifica que el monto del pedido se encuentre en el rango para el operador." },
   { code: 4016, message: "La moneda de la cuenta que deseas reasignar es diferente a la monda que recibe el usuario." },
   { code: 4017, message: "El formato de archivo permitido es solamente PDF, JPG o PNG" },
 ];
 
-export const getCodeMessage = (code, type) => {
-  let selectedCode;
-  let message;
+export const getCodeMessage = (code) => {
+  const selectedCode = errorCodes.find((c) => c.code === code);
+  const message = selectedCode ? selectedCode.message : "Ha ocurrido un error inesperado, por favor intente de nuevo. Si el problema persiste contacte a soporte.";
 
-  switch (type) {
-    case "auth":
-      selectedCode = authCodes.find((c) => c.code === code);
-      message = selectedCode ? selectedCode.message : "Ha ocurrido un error inesperado, por favor intente de nuevo. Si el problema persiste contacte a soporte.";
-      return message;
-    case "exchange":
-      selectedCode = exchangeCodes.find((c) => c.code === code);
-      message = selectedCode ? selectedCode.message : "Ha ocurrido un error inesperado, por favor intente de nuevo. Si el problema persiste contacte a soporte.";
-      return message;
-    default:
-      return "";
-  }
+  return message;
 };
