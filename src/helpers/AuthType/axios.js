@@ -17,7 +17,7 @@ const reqInterceptor = (instance) =>
     (error) => Promise.reject(error)
   );
 
-const resInterceptor = (instance, type) =>
+const resInterceptor = (instance) =>
   instance.interceptors.response.use(
     (res) => res,
     (error) => {
@@ -29,7 +29,7 @@ const resInterceptor = (instance, type) =>
 
       if (error.response) {
         const code = error.response.data.code;
-        if (code) message = getCodeMessage(code, type);
+        if (code) message = getCodeMessage(code);
 
         error.response.message = message;
         return Promise.reject(error.response);
@@ -45,18 +45,18 @@ const authInstance = axios.create({
   baseURL: `${process.env.NODE_ENV !== "production" ? process.env.REACT_APP_TEST_AUTH_API : process.env.REACT_APP_AUTH_API}/admin`,
 });
 reqInterceptor(authInstance);
-resInterceptor(authInstance, "auth");
+resInterceptor(authInstance);
 
 const exchangeInstance = axios.create({
   baseURL: `${process.env.NODE_ENV !== "production" ? process.env.REACT_APP_TEST_EXCHANGE_API : process.env.REACT_APP_EXCHANGE_API}/admin`,
 });
 reqInterceptor(exchangeInstance);
-resInterceptor(exchangeInstance, "exchange");
+resInterceptor(exchangeInstance);
 
 const accountsInstance = axios.create({
   baseURL: `${process.env.NODE_ENV !== "production" ? process.env.REACT_APP_TEST_ACCOUNTS_API : process.env.REACT_APP_ACCOUNTS_API}/admin`,
 });
 reqInterceptor(accountsInstance);
-resInterceptor(accountsInstance, "accounts");
+resInterceptor(accountsInstance);
 
 export { authInstance, exchangeInstance, accountsInstance };
