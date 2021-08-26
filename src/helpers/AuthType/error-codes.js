@@ -40,6 +40,7 @@ const errorCodes = [
     message: "El código de afiliado que intentas usar no existe en ningún usuario.",
   },
   { code: 4006, message: "No existe saldo suficiente para el monto que el cliente desea recibir." },
+  { code: 4007, message: "El nro. de operación que intentas agregar ya ha sido usado el dia de hoy en otra opreración." },
   { code: 4014, message: "La nota no puede superar los 150 caracteres. Por favor valide los datos." },
   { code: 4015, message: "Este operador no puede ser asignado para operación, verifica que el monto del pedido se encuentre en el rango para el operador." },
   { code: 4016, message: "La moneda de la cuenta que deseas reasignar es diferente a la monda que recibe el usuario." },
