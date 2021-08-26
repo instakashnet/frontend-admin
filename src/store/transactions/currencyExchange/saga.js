@@ -11,9 +11,7 @@ import { exchangeInstance, authInstance } from "../../../helpers/AuthType/axios"
 import { getClientExchanges } from "../../settings/clients/actions";
 
 function* getExchangesRelation({ values }) {
-  const startDate = moment(values.start).subtract(5, "hours").format();
-  const endDate = moment(values.end).subtract(5, "hours").format();
-  let URL = `/users/clients/orders/download?start=${startDate}&end=${endDate}`;
+  let URL = `/users/clients/orders/download?start=${values.start}&end=${values.end}`;
 
   if (values.bank) URL += `&bank=${values.bank}`;
 
