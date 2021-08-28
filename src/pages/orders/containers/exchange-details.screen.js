@@ -96,7 +96,7 @@ export const ExchangeDetailsScreen = (props) => {
                     <p className="mb-2">
                       <span className="text-muted mr-1">Operador asignado: </span> {details.operatorName || "Sin asignar"}
                     </p>
-                    {(details.stateId === 3 || details.stateId === 4) && (
+                    {details.stateId !== 6 && (
                       <button type="button" className="mt-1 border-2 border-gray-400 py-2 px-4 text-sm rounded-md" onClick={() => showFormHandler("revision")}>
                         <Edit fontSize="small" className="mr-1" /> {details.orderNotes ? "Editar" : "Agregar"} revisión
                       </button>

@@ -46,7 +46,7 @@ export const ExchangesScreen = () => {
   useEffect(() => {
     let interval;
 
-    if (!search) interval = setInterval(getTableData, 45000);
+    if (!search) interval = setInterval(getTableData, 60000);
     if (search && interval) clearInterval(interval);
 
     return () => {

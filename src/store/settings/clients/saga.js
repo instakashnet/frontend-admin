@@ -94,8 +94,9 @@ function* uploadDocument({ values, userId, uploadType, close, setPercentage }) {
     });
     if (res.status === 200) {
       yield call(getClientDetails, { userId });
+      yield put(actions.uploadDocumentSuccess());
       yield call(close);
-      yield call([Swal, "fire"], "Exitoso", `Documento agregado correctamente.`, "success");
+      yield call([Swal, "fire"], "Exitoso", `El documento fue agregado correctamente.`, "success");
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));
