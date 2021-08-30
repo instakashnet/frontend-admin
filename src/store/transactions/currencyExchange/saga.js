@@ -140,8 +140,7 @@ function* approveExchange({ orderId, closeModal }) {
       yield put(actions.approveExchangeSuccess());
     }
   } catch (error) {
-    yield put(setAlert("danger", error.message));
-    yield put(actions.apiError());
+    throw error;
   }
 }
 

@@ -16,7 +16,7 @@ function* getSchedule() {
 
 function* editSchedule({ values, id, setState }) {
   try {
-    const res = yield exchangeInstance.put(`/schedules/${id}`, values, { timeout: 1000 });
+    const res = yield exchangeInstance.put(`/schedules/${id}`, values);
     if (res.status === 200) {
       yield put(actions.getSchedule());
       yield call(setState, false);
