@@ -35,7 +35,7 @@ function* listenForMessages() {
     socket = yield call(createConnection, token);
     channel = yield call(createSocketChannel, socket);
 
-    console.log("Connection established.");
+    console.log("Connection established!.");
 
     while (true) {
       const payload = yield take(channel);
