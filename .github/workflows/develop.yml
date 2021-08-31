@@ -14,7 +14,7 @@ jobs:
       REACT_APP_AUTH_API: ${{ secrets.TEST_AUTH_API }}
       REACT_APP_ACCOUNTS_API: ${{ secrets.TEST_ACCOUNTS_API }}
       REACT_APP_EXCHANGE_API: ${{ secrets.TEST_EXCHANGE_API }}
-      REACT_APP_TEST_SOCKET_CONN: ws://socket-manager-ms-swe5i.ondigitalocean.app/ws
+      REACT_APP_TEST_SOCKET_CONN: wss://socket-manager-ms-swe5i.ondigitalocean.app/ws
     strategy:
       matrix:
         node-version: [15.x]
