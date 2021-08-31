@@ -1,5 +1,7 @@
 import { all } from "redux-saga/effects";
 
+import socketConnectSaga from "./transactions/websocket/saga";
+
 //public
 import AuthSaga from "./auth/login/saga";
 import LayoutSaga from "./layout/saga";
@@ -9,7 +11,6 @@ import DataSaga from "./settings/data/saga";
 // settings
 import CurrencyExchangeSaga from "./transactions/currencyExchange/saga";
 import WithdrawalsSaga from "./transactions/withdrawals/saga";
-
 import BankAccountsSaga from "./bankAccounts/saga";
 
 // private
@@ -24,6 +25,8 @@ import ChartsSaga from "./charts/saga";
 
 export default function* rootSaga() {
   yield all([
+    socketConnectSaga(),
+
     //public
     AuthSaga(),
     //private

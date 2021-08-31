@@ -19,6 +19,7 @@ export * from "./forex/actions";
 export * from "./transactions/currencyExchange/actions";
 export * from "./transactions/withdrawals/actions";
 export * from "./charts/actions";
+export * from "./transactions/websocket/actions";
 
 // Authentication module
 export * from "./auth/login/actions";
