@@ -8,7 +8,7 @@ import Female from "../../../../assets/images/profile-female.svg";
 import Company from "../../../../assets/images/profile-company.svg";
 import CopyButton from "../../../../components/UI/CopyButton";
 
-const User = ({ user }) => {
+const User = ({ user, role }) => {
   let Avatar = user.type === "juridica" ? Company : Male;
   if (user.type === "natural") Avatar = user.identitySex === "male" ? Male : Female;
 
@@ -23,9 +23,11 @@ const User = ({ user }) => {
             <div className="text-muted">
               <h5>
                 {user.firstName + " " + user.lastName}
-                <Link to={`/user-details/${user.userId}`} className="ml-2 relative bottom-0.5">
-                  <Person />
-                </Link>
+                {(role === "admin" || role === "manager") && (
+                  <Link to={`/user-details/${user.userId}`} className="ml-2 relative bottom-0.5">
+                    <Person />
+                  </Link>
+                )}
               </h5>
               <p className="mb-1">
                 {user.email} <CopyButton textToCopy={user.email} />

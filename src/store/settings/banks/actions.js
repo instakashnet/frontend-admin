@@ -20,14 +20,25 @@ export const addBankSuccess = (msg) => ({
   payload: msg,
 });
 
-export const editBank = (id, values, reset) => ({
+export const editBank = (id, values, close) => ({
   type: actionTypes.EDIT_BANK,
-  payload: { id, values, reset },
+  id,
+  values,
+  close,
 });
 
-export const editBankSuccess = (msg) => ({
+export const editBankSuccess = () => ({
   type: actionTypes.EDIT_BANK_SUCCESS,
-  payload: msg,
+});
+
+export const toggleBank = (id, enabled) => ({
+  type: actionTypes.TOGGLE_BANK,
+  id,
+  enabled,
+});
+
+export const toggleBankSuccess = () => ({
+  type: actionTypes.TOGGLE_BANK_SUCCESS,
 });
 
 export const deleteBank = (id) => ({

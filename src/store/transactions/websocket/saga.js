@@ -6,8 +6,6 @@ import { CONNECT_SOCKET, DISCONNECT_SOCKET } from "./types";
 
 const createConnection = (token) =>
   new Promise((resolve, reject) => {
-    console.log(process.env.REACT_APP_TEST_SOCKET_CONN);
-
     const socket = new WebSocket(process.env.REACT_APP_TEST_SOCKET_CONN + "?token=" + token);
 
     socket.onopen = () => resolve(socket);
@@ -43,12 +41,11 @@ function* listenForMessages() {
     }
   } catch (error) {
     console.log(error);
+    yield put(setAlert("danger", "connection closed due error."));
   } finally {
     if (yield cancelled()) {
       channel.close();
       socket.close();
-    } else {
-      yield put(setAlert("danger", "connection closed due error."));
     }
   }
 }

@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery, fork } from "redux-saga/effects";
+import { all, call, put, takeEvery, fork, takeLatest } from "redux-saga/effects";
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
 import { setAlert } from "../../actions";
@@ -31,32 +31,33 @@ function* addBank({ values, setState }) {
   }
 }
 
-function* editBank({ payload }) {
-  // const { id, values, reset } = payload;
-  // const data = new FormData();
-  // data.append("idBank", id);
-  // data.append("name", values.name);
-  // data.append("min", 13);
-  // data.append("max", 14);
-  // data.append("image", values.bankImage || null);
-  // data.append("isDirect", true);
-  // data.append("isAccount", values.addAccount);
-  // data.append("ispayments", values.paymentOption);
-  // data.append("rate", 3.0);
-  // try {
-  //   const res = yield clientAxios.post("/Banco/EditarBanco", data);
-  //   if (res.status === 200) {
-  //     yield put(actions.editBankSuccess("Banco agregado correctamente!"));
-  //     yield call(reset);
-  //     yield put(actions.getBanks());
-  //     yield delay(4000);
-  //     yield put(actions.clearBankSuccessAlert());
-  //   }
-  // } catch (error) {
-  //   yield put(actions.apiError("Ha ocurrido un error editando el banco."));
-  //   yield delay(4000);
-  //   yield put(actions.clearBankErrorAlert());
-  // }
+function* editBank({ id, values, close }) {
+  try {
+    const res = yield accountsInstance.put(`/banks/${id}`, values);
+    if (res.status === 201) {
+      yield call(getBanks);
+      yield call(close);
+      yield put(setAlert("success", `El banco fue editado correctamente.`));
+      yield put(actions.editBankSuccess());
+    }
+  } catch (error) {
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
+
+function* toggleBank({ id, enabled }) {
+  try {
+    const res = yield accountsInstance.put(`enabled-banks/${id}`, { enabled });
+    if (res.status === 200) {
+      yield call(getBanks);
+      yield put(setAlert("success", `El banco fue ${enabled ? "habilitado" : "deshabilitado"} correctamente.`));
+      yield put(actions.toggleBankSuccess());
+    }
+  } catch (error) {
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
 }
 
 function* deleteBank({ payload }) {
@@ -99,10 +100,14 @@ export function* watchAddBank() {
   yield takeEvery(actionTypes.ADD_BANK, addBank);
 }
 
+export function* watchToggleBank() {
+  yield takeLatest(actionTypes.TOGGLE_BANK, toggleBank);
+}
+
 export function* watchGetBanks() {
   yield takeEvery(actionTypes.GET_BANKS, getBanks);
 }
 
 export default function* banksSaga() {
-  yield all([fork(watchGetBanks), fork(watchAddBank), fork(watchDeleteBank), fork(watichEditBank)]);
+  yield all([fork(watchGetBanks), fork(watchAddBank), fork(watchDeleteBank), fork(watichEditBank), fork(watchToggleBank)]);
 }

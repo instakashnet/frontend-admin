@@ -7,6 +7,9 @@ export const ADD_BANK_SUCCESS = "ADD_BANK_SUCCESS";
 export const EDIT_BANK = "EDIT_BANK";
 export const EDIT_BANK_SUCCESS = "EDIT_BANK_SUCCESS";
 
+export const TOGGLE_BANK = "TOGGLE_BANK";
+export const TOGGLE_BANK_SUCCESS = "TOGGLE_BANK_SUCCESS";
+
 export const DELETE_BANK = "DELETE_BANK";
 export const DELETE_BANK_SUCCESS = "DELETE_BANK_SUCCESS";
 
