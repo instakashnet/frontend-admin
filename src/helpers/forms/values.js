@@ -23,13 +23,6 @@ export const currencyPriceValues = (toBuy, toSell) => ({
   toSell5: +toSell[5] || 0,
 });
 
-export const bankValues = {
-  name: "",
-  active: false,
-  countryId: "",
-  currencies: [],
-};
-
 export const limitsValues = (values) => ({
   idCurrency: values.idCurrency || "",
   transactionLimit: +values.transactionLimit || "",

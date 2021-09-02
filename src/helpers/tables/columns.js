@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Badge } from "reactstrap";
-import { Edit, AccountBalanceWallet, Check, Block, Clear, Close } from "@material-ui/icons";
+import { Edit, AccountBalanceWallet, Check, Block, Clear, Close, PowerSettingsNewOutlined } from "@material-ui/icons";
 import moment from "moment-timezone";
 import { convertHexToRGBA, shadeColor } from "../functions";
 
@@ -222,7 +222,7 @@ export const couponsColumns = ({ onDisable, onForm }) => [
   },
 ];
 
-export const banksColumns = ({ onEdit, onDisable }) => [
+export const banksColumns = ({ onForm, onToggle }) => [
   {
     Header: "Banco",
     accessor: "bankName",
@@ -239,17 +239,22 @@ export const banksColumns = ({ onEdit, onDisable }) => [
   {
     Header: "Directo",
     accessor: "isDirect",
+    Cell: ({ cell }) => (cell.value ? "SI" : "NO"),
+  },
+  {
+    Header: "Habilitado",
+    accessor: "enabled",
     Cell: ({ cell }) => (cell.value ? <Check color="primary" fontSize="large" /> : <Clear color="error" fontSize="large" />),
   },
   {
     Header: "Acciones",
     Cell: ({ row }) => (
       <div className="flex items-center justify-center">
-        <button className="mx-2" onClick={() => console.log(row)}>
+        <button className="mx-2" onClick={() => onForm(row.original)}>
           <Edit htmlColor="#f1b44c" />
         </button>
-        <button className="mx-2" onClick={() => console.log(row)}>
-          <Block color="error" />
+        <button className="mx-2" onClick={() => onToggle(row.original.id, !row.original.enabled)}>
+          {row.original.enabled ? <Block color="error" /> : <PowerSettingsNewOutlined htmlColor="#20a2a5" />}
         </button>
       </div>
     ),

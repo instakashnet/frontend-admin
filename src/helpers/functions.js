@@ -44,4 +44,4 @@ export const checkInterplaza = (bank, accNumber) => {
   ) : null;
 };
 
-export const formatAmount = (amount) => Number(amount).toLocaleString("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+export const formatAmount = (amount) => Number(amount).toFixed(2);

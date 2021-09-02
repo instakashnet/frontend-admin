@@ -1,19 +1,24 @@
 import React from "react";
-import { Card, CardBody, Spinner, Button } from "reactstrap";
+import { Card, CardBody, CardTitle, Spinner, Button } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useFormik } from "formik";
-import { bankValues } from "../../../../../helpers/forms/values";
-import { addBank } from "../../../../../store/actions";
+import { addBank, editBank } from "../../../../../store/actions";
 
 import Input from "../../../../../components/UI/FormItems/Input";
 import CustomSelect from "../../../../../components/UI/FormItems/CustomSelect";
 import Checkbox from "../../../../../components/UI/FormItems/Checkbox";
-import Breadcrumbs from "../../../../../components/Common/Breadcrumb";
 
-const AddBank = ({ setAddState, editState, isProcessing }) => {
+const AddBank = ({ closeModal, bankValues, isProcessing }) => {
   const dispatch = useDispatch();
 
-  const formik = useFormik({ initialValues: bankValues, onSubmit: (values) => dispatch(addBank(values, setAddState)) });
+  let values = { name: "", active: false, enabled: true, countryId: 172, currencies: [] };
+  if (bankValues) values = { name: bankValues.name, active: bankValues.active, countryId: 172, enabled: bankValues.enabled, currencies: bankValues.currencies.map((c) => c.id) };
+
+  const formik = useFormik({
+    initialValues: values,
+    enableReinitialize: true,
+    onSubmit: (values) => dispatch(bankValues ? editBank(bankValues.id, values, closeModal) : addBank(values, closeModal)),
+  });
   const { countries, currencies } = useSelector((state) => state.Data);
 
   const countryOptions = countries.map((country) => ({ label: country.name, value: country.id }));
@@ -29,17 +34,23 @@ const AddBank = ({ setAddState, editState, isProcessing }) => {
 
   return (
     <>
-      <Breadcrumbs title="Bancos" breadcrumbItem={`${editState ? "Editar" : "Agregar"} banco`} />
       <Card>
+        <CardTitle>{bankValues ? "Agregar" : "Editar"} banco</CardTitle>
         <CardBody>
           <form onSubmit={formik.handleSubmit}>
             <Input name="name" label="Nombre del banco" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} />
-            <CustomSelect name="countryId" label="Pais activo" value={formik.values.countryId} onChange={onCountryChange} options={countryOptions} />
-            <CustomSelect name="currencies" label="Monedas activas" value={formik.values.currencies} onChange={onCurrencyChange} options={currencyOptions} isMulti />
+            {!bankValues && (
+              <>
+                <CustomSelect name="countryId" label="Pais activo" value={formik.values.countryId} onChange={onCountryChange} options={countryOptions} />
+                <CustomSelect name="currencies" label="Monedas activas" value={formik.values.currencies} onChange={onCurrencyChange} options={currencyOptions} isMulti />
+              </>
+            )}
             <Checkbox name="active" label="¿Es directo?" onChange={formik.handleChange} value={formik.values.active} />
-            <Button type="submit" disabled={isProcessing} className="btn-primary">
-              {isProcessing ? <Spinner size="sm" /> : editState ? "Editar banco" : "Agregar banco"}
-            </Button>
+            <div className="flex justify-center">
+              <Button type="submit" disabled={isProcessing} className="btn-primary">
+                {isProcessing ? <Spinner size="sm" /> : bankValues ? "Editar banco" : "Agregar banco"}
+              </Button>
+            </div>
           </form>
         </CardBody>
       </Card>

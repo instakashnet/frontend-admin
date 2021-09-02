@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Edit } from "@material-ui/icons";
-import { getExchangeDetails, createInvoice, approveExchange, validateExchange, declineExchange } from "../../../store/actions";
 import { Container, Row, Col, Badge, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { getExchangeDetails, createInvoice, approveExchange, validateExchange, declineExchange } from "../../../store/actions";
+import { useRole } from "../../../hooks/useRole";
 
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
@@ -21,13 +22,15 @@ import { RevisionNote } from "../components/details/revision-note.component";
 
 export const ExchangeDetailsScreen = (props) => {
   const { id } = props.match.params;
+  const { details, isLoading, isProcessing } = useSelector((state) => state.CurrencyExchange);
+  const { exchanges, isLoading: dataLoading } = useSelector((state) => state.Clients);
+  const user = useSelector((state) => state.Login.user);
+
   const dispatch = useDispatch();
   const history = useHistory();
   const [modal, setModal] = useState(false);
   const [formType, setFormType] = useState(null);
-
-  const { details, isLoading, isProcessing } = useSelector((state) => state.CurrencyExchange);
-  const { exchanges, isLoading: dataLoading } = useSelector((state) => state.Clients);
+  const [role] = useRole(user);
 
   const showFormHandler = (formType = null) => {
     setModal((prev) => !prev);
@@ -74,11 +77,11 @@ export const ExchangeDetailsScreen = (props) => {
                       isProcessing={isProcessing}
                       hasInvoice
                     />
-                    <UserInfo user={details.user} />
+                    <UserInfo user={details.user} role={role} />
                   </>
                 )}
               </Col>
-              {details.orderNotes && (
+              {details && details.orderNotes && (
                 <Col lg="4">
                   <RevisionNote note={details.orderNotes} onEdit={() => showFormHandler("revision")} />
                 </Col>
