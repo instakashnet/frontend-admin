@@ -4,7 +4,7 @@ import { banksColumns } from "../../../../helpers/tables/columns";
 
 import { Table } from "../../../../components/UI/tables/table.component";
 
-const BanksList = ({ isLoading, data: banks, onAdd }) => {
+const BanksList = ({ isLoading, isProcessing, data: banks, onForm, onToggle }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -16,6 +16,7 @@ const BanksList = ({ isLoading, data: banks, onAdd }) => {
           country: bank.country.name,
           currencies: bank.currencies.map((currency) => currency.ISO).join(", "),
           isDirect: bank.active,
+          enabled: bank.enabled,
         }))
       );
     }
@@ -23,13 +24,13 @@ const BanksList = ({ isLoading, data: banks, onAdd }) => {
 
   return (
     <>
-      <Button className="btn-primary mb-3" onClick={onAdd}>
+      <Button className="btn-primary mb-3" onClick={() => onForm()}>
         Agregar banco
       </Button>
       <Card>
         <CardBody>
           <div className="table-responsive">
-            <Table title="Bancos aceptados" columns={banksColumns({})} data={data} isLoading={isLoading} />
+            <Table title="Bancos aceptados" columns={banksColumns({ onToggle, onForm })} data={data} isLoading={isLoading ? isLoading : isProcessing} />
           </div>
         </CardBody>
       </Card>

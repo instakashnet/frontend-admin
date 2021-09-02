@@ -18,11 +18,14 @@ export default function banksReducer(state = initialState, action) {
       return { ...state, banks: payload.banks, isLoading: false };
 
     case actionTypes.ADD_BANK:
+    case actionTypes.EDIT_BANK:
+    case actionTypes.TOGGLE_BANK:
       return { ...state, isProcessing: true };
 
     case actionTypes.ADD_BANK_SUCCESS:
     case actionTypes.EDIT_BANK_SUCCESS:
-      return { ...state, isProcessing: false, success: payload };
+    case actionTypes.TOGGLE_BANK_SUCCESS:
+      return { ...state, isProcessing: false };
 
     case actionTypes.API_ERROR:
       return { ...state, isLoading: false, isProcessing: false };

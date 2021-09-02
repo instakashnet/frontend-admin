@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRole } from "../../../hooks/useRole";
 import { getAllOrders } from "../../../services/orders/exchanges.service";
 import { exchangesColumns } from "../../../helpers/tables/columns";
-import { setAlert } from "../../../store/actions";
+import { setAlert, connectWs } from "../../../store/actions";
 
 //Components
 import { CreateExcel } from "../components/forms/ create-excel.component";
@@ -40,8 +40,8 @@ export const ExchangesScreen = () => {
   );
 
   useEffect(() => {
-    getTableData();
-  }, [getTableData]);
+    dispatch(connectWs());
+  }, [dispatch]);
 
   useEffect(() => {
     let interval;
