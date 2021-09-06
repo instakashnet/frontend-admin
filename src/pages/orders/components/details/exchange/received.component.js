@@ -76,11 +76,11 @@ const Received = ({ isLoading, details, onShowForm }) => {
                 <p className="text-muted mb-2">Envía desde</p>
                 <h5 className="flex items-center justify-end">
                   <img
-                    src={`${process.env.PUBLIC_URL}/images/banks/${details.amountSent > 0 ? details.bankReceive.toLowerCase() : "kash"}.svg`}
-                    alt={details.bankReceive}
+                    src={`${process.env.PUBLIC_URL}/images/banks/${details.amountSent > 0 ? details.bankFromName.toLowerCase() : "kash"}.svg`}
+                    alt={details.bankFromName}
                     width={details.amountSent > 0 ? 80 : 50}
                   />
-                  <span className="ml-2 text-muted">{details.amountSent > 0 ? `${details.bankReceive} ${details.currencySentSymbol}` : "KASH"}</span>
+                  <span className="ml-2 text-muted">{details.amountSent > 0 ? `${details.bankFromName} ${details.currencySentSymbol}` : "KASH"}</span>
                 </h5>
               </div>
             </Col>
