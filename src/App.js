@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Switch, Router } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useRole } from "./hooks/useRole";
-import { getCountriesInit, loadUser } from "./store/actions";
+import { getCountriesInit, getBanks, getCurrenciesInit, loadUser } from "./store/actions";
 import history from "./helpers/history";
 
 // Import Routes
@@ -26,7 +26,11 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (token) dispatch(getCountriesInit());
+    if (token) {
+      dispatch(getCountriesInit());
+      dispatch(getCurrenciesInit());
+      dispatch(getBanks());
+    }
   }, [token, dispatch]);
 
   useEffect(() => {

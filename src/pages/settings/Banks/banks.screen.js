@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Col, Row, Container, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { getBanks, getCurrenciesInit, toggleBank } from "../../../store/actions";
+import { toggleBank } from "../../../store/actions";
 
 import BanksTable from "./components/banks-table.component";
 import AddBank from "./components/forms/add-bank.component";
@@ -12,11 +12,6 @@ export const BanksScreen = () => {
   const [bankValues, setBankValues] = useState(null);
 
   const { isLoading, isProcessing, banks } = useSelector((state) => state.Banks);
-
-  useEffect(() => {
-    dispatch(getBanks());
-    dispatch(getCurrenciesInit());
-  }, [dispatch]);
 
   const onFormHandler = (selectedBank = null) => {
     let values = selectedBank;

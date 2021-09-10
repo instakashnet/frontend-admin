@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getCbAccounts, getBanks, getCurrenciesInit } from "../../store/actions";
+import { getCbAccounts } from "../../store/actions";
 import { Container, Col, Row } from "reactstrap";
 
 import AccountsTable from "./components/accounts-table.component";
@@ -29,8 +29,6 @@ export const BankAccountsScreen = () => {
 
   useEffect(() => {
     dispatch(getCbAccounts());
-    dispatch(getBanks());
-    dispatch(getCurrenciesInit());
   }, [dispatch]);
 
   let FormComponent;

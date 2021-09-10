@@ -452,6 +452,41 @@ export const oldExchangesColumns = [
   },
 ];
 
+export const bankOrdersColumns = [
+  {
+    Header: "Nro. de orden",
+    accesor: "orderId",
+  },
+  {
+    Header: "Fecha",
+    accesor: "date",
+  },
+  {
+    Header: "Monto a enviar",
+    accesor: "amountToSend",
+  },
+  {
+    Header: "Monto a recibir",
+    accesor: "amountToReceive",
+  },
+  {
+    Header: "Origen",
+    accesor: "bankOrigin",
+  },
+  {
+    Header: "Destino",
+    accesor: "bankDestination",
+  },
+  {
+    Header: "Tasa",
+    accesor: "rate",
+  },
+  {
+    Header: "Estado",
+    accesor: "status",
+  },
+];
+
 export const withdrawalsColumns = [
   {
     Header: "Operación",
