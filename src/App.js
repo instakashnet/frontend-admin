@@ -21,7 +21,7 @@ import "./assets/scss/theme.scss";
 import "./assets/scss/custom.scss";
 
 const App = () => {
-  const { isLoading, token, user } = useSelector((state) => state.Login);
+  const { token, user } = useSelector((state) => state.Login);
   const [role] = useRole(user);
   const dispatch = useDispatch();
 
@@ -37,12 +37,10 @@ const App = () => {
     <Router history={history}>
       <Switch>
         {routes.public.map((route) => (
-          <AppRoute isLoading={isLoading} path={route.path} layout={NonAuthLayout} component={route.component} key={route.path} isAuthProtected={false} />
+          <AppRoute path={route.path} layout={NonAuthLayout} component={route.component} key={route.path} isAuthProtected={false} />
         ))}
         {role &&
-          routes[role].map((route) => (
-            <AppRoute exact isLoading={isLoading} path={route.path} layout={VerticalLayout} component={LazyComponent(route.component)} key={route.path} isAuthProtected />
-          ))}
+          routes[role].map((route) => <AppRoute exact path={route.path} layout={VerticalLayout} component={LazyComponent(route.component)} key={route.path} isAuthProtected />)}
       </Switch>
       {history.location.pathname !== "/login" && <CustomAlert className="fixed-alert" />}
     </Router>

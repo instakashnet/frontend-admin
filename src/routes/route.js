@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeAlert } from "../store/actions";
 import { Route, Redirect, useHistory } from "react-router-dom";
 
-import LoadingPage from "../pages/LoadingPage";
-
-const AppRoute = ({ component: Component, layout: Layout, isAuthProtected, isLoading, ...rest }) => {
+const AppRoute = ({ component: Component, layout: Layout, isAuthProtected, ...rest }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const showAlert = useSelector((state) => state.Alert.show);
@@ -20,8 +18,6 @@ const AppRoute = ({ component: Component, layout: Layout, isAuthProtected, isLoa
     <Route
       {...rest}
       render={(props) => {
-        if (isLoading) return <LoadingPage />;
-
         if (isAuthProtected && !localStorage.getItem("authUser")) {
           return <Redirect to={{ pathname: "/login", state: { from: props.location } }} />;
         }

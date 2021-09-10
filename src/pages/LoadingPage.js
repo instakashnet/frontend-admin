@@ -1,18 +1,18 @@
 import React from "react";
-import { Container, Row, Col, Spinner } from "reactstrap";
+import { Row, Col, Spinner } from "reactstrap";
 
 import Logo from "../assets/images/logo-light.svg";
 
 const LoadingPage = () => {
   return (
-    <Container>
+    <div className="loading-screen">
       <Row>
-        <Col className='col-12 d-flex flex-column justify-content-center align-items-center vh-100'>
-          <img src={Logo} alt='Instakash' width={220} className='mb-5' />
+        <Col className="flex flex-col vh-100 justify-center items-center">
+          <img src={Logo} alt="Instakash" width={220} className="mb-4" />
           <Spinner />
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 };
 
