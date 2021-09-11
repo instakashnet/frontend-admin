@@ -12,6 +12,12 @@ export const generalLinks = [
     roles: ["admin", "officers", "manager"],
   },
   {
+    path: "/bank-orders",
+    icon: "bx bx-dollar",
+    label: "Pedidos a caja",
+    roles: ["admin", "officers"],
+  },
+  {
     path: "/forex",
     icon: "bx bx-dollar-circle",
     label: "Precio del dolar",

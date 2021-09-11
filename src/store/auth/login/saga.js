@@ -5,6 +5,7 @@ import { LOGIN_USER, LOGOUT_USER, LOAD_USER, SET_ONLINE_INIT } from "./actionTyp
 import * as actions from "./actions";
 import { setAlert } from "../../actions";
 import { authInstance } from "../../../helpers/AuthType/axios";
+import history from "../../../helpers/history";
 
 function setRoleRedirect(role) {
   let route = "/dashboard";
@@ -13,7 +14,7 @@ function setRoleRedirect(role) {
   return route;
 }
 
-function* loadUser({ history }) {
+function* loadUser() {
   const authUser = yield call([localStorage, "getItem"], "authUser");
 
   if (!authUser) {
@@ -52,7 +53,7 @@ function* setAuthTimeout(timeout) {
 }
 
 function* loginUser({ payload }) {
-  const { user, history } = payload;
+  const { user } = payload;
   try {
     const res = yield authInstance.post("/auth/signin", user);
 
@@ -64,7 +65,7 @@ function* loginUser({ payload }) {
     };
 
     yield call([localStorage, "setItem"], "authUser", JSON.stringify(userObj));
-    yield call(loadUser, { history });
+    yield call(loadUser);
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -88,7 +89,7 @@ function* setOnline() {
   }
 }
 
-function* logoutUser({ payload: { history } }) {
+function* logoutUser() {
   try {
     yield authInstance.post("/auth/logout");
   } catch (error) {

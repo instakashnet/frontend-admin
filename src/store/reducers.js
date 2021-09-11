@@ -19,6 +19,7 @@ import Counters from "./activity/counters/reducer";
 // Transactions
 import CurrencyExchange from "./transactions/currencyExchange/reducer";
 import Withdrawals from "./transactions/withdrawals/reducer";
+import { bankOrdersReducer } from "./transactions/bankOrders/reducer";
 import Charts from "./charts/reducer";
 
 // Authentication
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   // transactions
   CurrencyExchange,
   Withdrawals,
+  bankOrdersReducer,
   // settings
   Forex,
   BankAccounts,

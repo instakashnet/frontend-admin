@@ -20,6 +20,7 @@ export * from "./transactions/currencyExchange/actions";
 export * from "./transactions/withdrawals/actions";
 export * from "./charts/actions";
 export * from "./transactions/websocket/actions";
+export * from "./transactions/bankOrders/actions";
 
 // Authentication module
 export * from "./auth/login/actions";
