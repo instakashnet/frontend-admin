@@ -29,12 +29,12 @@ export default function* rootSaga() {
     socketConnectSaga(),
 
     //public
+    LayoutSaga(),
     AuthSaga(),
     //private
     DataSaga(),
     AdminUsersSaga(),
     BanksSaga(),
-    LayoutSaga(),
     // transacions
     CurrencyExchangeSaga(),
     WithdrawalsSaga(),

@@ -10,6 +10,7 @@ const initialState = {
 const login = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.LOAD_USER:
+    case actionTypes.SET_ONLINE_INIT:
       return { ...state, isLoading: true };
 
     case actionTypes.LOGIN_USER:
@@ -26,6 +27,9 @@ const login = (state = initialState, action) => {
       return { ...state };
     case actionTypes.LOGOUT_USER_SUCCESS:
       return { ...state, isLoading: false, user: null, token: null };
+
+    case actionTypes.SET_ONLINE_SUCCESS:
+      return { ...state, user: action.user, isLoading: false };
 
     case actionTypes.LOAD_USER_FAILED:
       return { ...state, isLoading: false };

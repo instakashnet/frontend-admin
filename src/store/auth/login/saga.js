@@ -1,7 +1,7 @@
-import { takeEvery, fork, put, all, call, delay } from "redux-saga/effects";
+import { takeEvery, takeLatest, fork, put, all, call, delay } from "redux-saga/effects";
 
 // Login Redux States
-import { LOGIN_USER, LOGOUT_USER, LOAD_USER } from "./actionTypes";
+import { LOGIN_USER, LOGOUT_USER, LOAD_USER, SET_ONLINE_INIT } from "./actionTypes";
 import * as actions from "./actions";
 import { setAlert } from "../../actions";
 import { authInstance } from "../../../helpers/AuthType/axios";
@@ -35,10 +35,10 @@ function* loadUser() {
 
   try {
     const res = yield authInstance.get("/users/session");
+    const userData = { ...user, isOnline: res.data.online };
 
-    yield call([sessionStorage, "setItem"], "session", JSON.stringify(res.data.activityUser));
-    const redirectRoute = yield call(setRoleRedirect, user.role);
-    yield put(actions.loginSuccess(user, accessToken));
+    const redirectRoute = yield call(setRoleRedirect, userData.role);
+    yield put(actions.loginSuccess(userData, accessToken));
     yield history && history.push(redirectRoute);
     yield call(setAuthTimeout, expTime.getTime() - new Date().getTime());
   } catch (error) {
@@ -72,6 +72,23 @@ function* loginUser({ payload }) {
   }
 }
 
+function* setOnline() {
+  try {
+    const res = yield authInstance.put("/auth/online");
+    if (res.status === 200) {
+      const authUser = yield call([localStorage, "getItem"], "authUser");
+      const { user } = JSON.parse(authUser);
+
+      const res = yield authInstance.get("/users/session");
+      const userData = { ...user, isOnline: res.data.online };
+      yield put(actions.setOnlineSuccess(userData));
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(actions.apiError());
+  }
+}
+
 function* logoutUser() {
   try {
     yield authInstance.post("/auth/logout");
@@ -90,7 +107,11 @@ export function* watchLoadUser() {
 }
 
 export function* watchUserLogin() {
-  yield takeEvery(LOGIN_USER, loginUser);
+  yield takeLatest(LOGIN_USER, loginUser);
+}
+
+export function* watchSetOnline() {
+  yield takeLatest(SET_ONLINE_INIT, setOnline);
 }
 
 export function* watchUserLogout() {
@@ -98,5 +119,5 @@ export function* watchUserLogout() {
 }
 
 export default function* authSaga() {
-  yield all([fork(watchLoadUser), fork(watchUserLogin), fork(watchUserLogout)]);
+  yield all([fork(watchLoadUser), fork(watchUserLogin), fork(watchUserLogout), fork(watchSetOnline)]);
 }
