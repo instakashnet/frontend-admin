@@ -61,7 +61,7 @@ const IconOption = (props) => {
   );
 };
 
-const CustomSelect = ({ label, touched, error, options, value, onChange, ...rest }) => {
+const CustomSelect = ({ label, touched, name, error, options, value, onChange, ...rest }) => {
   return (
     <FormGroup>
       <Label>{label}</Label>
@@ -69,7 +69,7 @@ const CustomSelect = ({ label, touched, error, options, value, onChange, ...rest
         placeholder="Seleccionar"
         className={`${touched && error ? "is-invalid" : ""}`}
         styles={styles}
-        onChange={onChange}
+        onChange={(option) => onChange(option, name)}
         value={options.find((option) => option.value === value)}
         options={options}
         components={{ Option: IconOption, ValueContainer: CustomValueContainer }}

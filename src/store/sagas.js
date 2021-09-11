@@ -8,10 +8,11 @@ import LayoutSaga from "./layout/saga";
 import BanksSaga from "./settings/banks/saga";
 import DataSaga from "./settings/data/saga";
 
-// settings
+// Transactions
 import CurrencyExchangeSaga from "./transactions/currencyExchange/saga";
 import WithdrawalsSaga from "./transactions/withdrawals/saga";
 import BankAccountsSaga from "./bankAccounts/saga";
+import { bankOrdersSaga } from "./transactions/bankOrders/saga";
 
 // private
 import AdminUsersSaga from "./auth/admin/saga";
@@ -37,6 +38,7 @@ export default function* rootSaga() {
     // transacions
     CurrencyExchangeSaga(),
     WithdrawalsSaga(),
+    bankOrdersSaga(),
 
     CouponsSaga(),
     forexSaga(),

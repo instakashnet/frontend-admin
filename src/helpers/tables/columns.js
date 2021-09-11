@@ -455,35 +455,57 @@ export const oldExchangesColumns = [
 export const bankOrdersColumns = [
   {
     Header: "Nro. de orden",
-    accesor: "orderId",
+    accessor: "orderId",
   },
   {
     Header: "Fecha",
-    accesor: "date",
+    accessor: "date",
   },
   {
     Header: "Monto a enviar",
-    accesor: "amountToSend",
+    accessor: "amountToSend",
   },
   {
     Header: "Monto a recibir",
-    accesor: "amountToReceive",
+    accessor: "amountToReceive",
   },
   {
     Header: "Origen",
-    accesor: "bankOrigin",
+    accessor: "bankOrigin",
+    Cell: ({ cell }) => <img width={70} src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} alt={cell.value} />,
   },
   {
     Header: "Destino",
-    accesor: "bankDestination",
+    accessor: "bankDestination",
+    Cell: ({ cell }) => <img width={70} src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} alt={cell.value} />,
   },
   {
     Header: "Tasa",
-    accesor: "rate",
+    accessor: "rate",
   },
   {
     Header: "Estado",
-    accesor: "status",
+    accessor: "status",
+    Cell: ({ row }) => (
+      <Badge
+        className="font-size-13 capitalize py-2"
+        style={{
+          color: "#fff",
+          backgroundColor: row.original.revision ? "#BA55D3" : row.original.statusColor,
+        }}
+        pill>
+        {row.original.revision ? "En Revisión" : row.original.statusName.toLowerCase()}
+      </Badge>
+    ),
+  },
+  {
+    Header: "Acción",
+    accessor: "id",
+    Cell: ({ cell }) => (
+      <Link className="btn py-1 px-2 btn-action w-20" to={`/bank-order-details/${cell.value}`}>
+        Ver más
+      </Link>
+    ),
   },
 ];
 
