@@ -27,7 +27,7 @@ export const UserTransactions = ({ orders, isLoading, details }) => {
           statusColor: order.stateColor,
         }))
       );
-    }
+    } else setData([]);
   }, [details, orders]);
 
   return (

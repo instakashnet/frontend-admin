@@ -452,6 +452,63 @@ export const oldExchangesColumns = [
   },
 ];
 
+export const bankOrdersColumns = [
+  {
+    Header: "Nro. de orden",
+    accessor: "orderId",
+  },
+  {
+    Header: "Fecha",
+    accessor: "date",
+  },
+  {
+    Header: "Monto a enviar",
+    accessor: "amountToSend",
+  },
+  {
+    Header: "Monto a recibir",
+    accessor: "amountToReceive",
+  },
+  {
+    Header: "Origen",
+    accessor: "bankOrigin",
+    Cell: ({ cell }) => <img width={70} src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} alt={cell.value} />,
+  },
+  {
+    Header: "Destino",
+    accessor: "bankDestination",
+    Cell: ({ cell }) => <img width={70} src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} alt={cell.value} />,
+  },
+  {
+    Header: "Tasa",
+    accessor: "rate",
+  },
+  {
+    Header: "Estado",
+    accessor: "status",
+    Cell: ({ row }) => (
+      <Badge
+        className="font-size-13 capitalize py-2"
+        style={{
+          color: "#fff",
+          backgroundColor: row.original.revision ? "#BA55D3" : row.original.statusColor,
+        }}
+        pill>
+        {row.original.revision ? "En Revisión" : row.original.statusName.toLowerCase()}
+      </Badge>
+    ),
+  },
+  {
+    Header: "Acción",
+    accessor: "id",
+    Cell: ({ cell }) => (
+      <Link className="btn py-1 px-2 btn-action w-20" to={`/bank-order-details/${cell.value}`}>
+        Ver más
+      </Link>
+    ),
+  },
+];
+
 export const withdrawalsColumns = [
   {
     Header: "Operación",

@@ -3,7 +3,7 @@ import { EDIT_INTERPLAZA_INIT, EDIT_INTERPLAZA_SUCCESS } from "../../settings/cl
 
 const initialState = {
   allOrders: [],
-  details: null,
+  details: {},
   isLoading: true,
   isProcessing: false,
 };
@@ -34,7 +34,7 @@ export default function currencyExchangeReducer(state = initialState, action) {
       return { ...state, isProcessing: false };
 
     case actionTypes.GET_EXCHANGE_DETAILS:
-      return { ...state, isLoading: true, details: null };
+      return { ...state, isLoading: true, details: {} };
 
     case actionTypes.GET_EXCHANGE_DETAILS_SUCCESS:
       return { ...state, details: payload.details, isLoading: false };

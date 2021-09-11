@@ -13,12 +13,16 @@ const { ExchangesScreen } = lazily(() => import("../pages/orders/containers/exch
 const { ExchangeDetailsScreen } = lazily(() => import("../pages/orders/containers/exchange-details.screen"));
 const { WithdrawalsScreen } = lazily(() => import("../pages/orders/containers/withdrawals.screen"));
 const { WithdrawalDetailsScreen } = lazily(() => import("../pages/orders/containers/withdrawal-details.screen"));
+const { BankOrdersScreen } = lazily(() => import("../pages/orders/containers/bank-orders.screen"));
+const { BankOrderDetailsScreen } = lazily(() => import("../pages/orders/containers/bank-order-details.screen"));
 const { ClientDetailsScreen } = lazily(() => import("../pages/settings/Users/containers/client-details.screen"));
 
 const adminRoutes = [
   { path: "/dashboard", component: DashboardScreen },
   { path: "/bank-accounts", component: BankAccountsScreen },
   { path: "/forex", component: ForexScreen },
+  { path: "/bank-orders", component: BankOrdersScreen },
+  { path: "/bank-order-details/:id", component: BankOrderDetailsScreen },
   { path: "/exchanges/all", component: ExchangesScreen },
   { path: "/exchange-details/:id", component: ExchangeDetailsScreen },
   { path: "/withdrawals/all", component: WithdrawalsScreen },
@@ -41,6 +45,8 @@ const officersRoutes = [
   { path: "/dashboard", component: DashboardScreen },
   { path: "/bank-accounts", component: BankAccountsScreen },
   { path: "/forex", component: ForexScreen },
+  { path: "/bank-orders", component: BankOrdersScreen },
+  { path: "/bank-order-details/:id", component: BankOrderDetailsScreen },
   { path: "/exchanges/all", component: ExchangesScreen },
   { path: "/exchange-details/:id", component: ExchangeDetailsScreen },
   { path: "/withdrawals/all", component: WithdrawalsScreen },
