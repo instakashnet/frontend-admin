@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { useRole } from "../../hooks/useRole";
 
 import { ConnectedStatus } from "../CommonForBoth/connected.component";
 import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
@@ -15,9 +14,6 @@ import { toggleRightSidebar, setOnline } from "../../store/actions";
 
 const Header = ({ user, toggleMenuCallback, setOnline }) => {
   const toggleMenu = () => toggleMenuCallback();
-
-  const [role] = useRole(user);
-  console.log(role);
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement && /* alternative standard method */ !document.mozFullScreenElement && !document.webkitFullscreenElement) {
@@ -68,7 +64,7 @@ const Header = ({ user, toggleMenuCallback, setOnline }) => {
             </div>
 
             <NotificationDropdown user={user} notifications={null} />
-            <ConnectedStatus isOnline={user.isOnline} setIsOnline={setOnline} />
+            {user.role === "ROLE_OPERATOR" && <ConnectedStatus isOnline={user.isOnline} setIsOnline={setOnline} />}
             <ProfileMenu user={user} />
           </div>
         </div>
