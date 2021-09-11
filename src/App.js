@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import { Switch, Router } from "react-router-dom";
+import { Switch, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useRole } from "./hooks/useRole";
 import { getCountriesInit, getBanks, getCurrenciesInit, loadUser } from "./store/actions";
-import history from "./helpers/history";
 
 // Import Routes
 import * as routes from "./routes/";
@@ -21,9 +20,10 @@ import "./assets/scss/theme.scss";
 import "./assets/scss/custom.scss";
 
 const App = () => {
-  const { isLoading, token, user } = useSelector((state) => state.Login);
+  const { token, user } = useSelector((state) => state.Login);
   const [role] = useRole(user);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     if (token) {
@@ -34,22 +34,20 @@ const App = () => {
   }, [token, dispatch]);
 
   useEffect(() => {
-    dispatch(loadUser(history));
+    dispatch(loadUser());
   }, [dispatch]);
 
   return (
-    <Router history={history}>
+    <>
       <Switch>
         {routes.public.map((route) => (
-          <AppRoute isLoading={isLoading} path={route.path} layout={NonAuthLayout} component={route.component} key={route.path} isAuthProtected={false} />
+          <AppRoute path={route.path} layout={NonAuthLayout} component={route.component} key={route.path} isAuthProtected={false} />
         ))}
         {role &&
-          routes[role].map((route) => (
-            <AppRoute exact isLoading={isLoading} path={route.path} layout={VerticalLayout} component={LazyComponent(route.component)} key={route.path} isAuthProtected />
-          ))}
+          routes[role].map((route) => <AppRoute exact path={route.path} layout={VerticalLayout} component={LazyComponent(route.component)} key={route.path} isAuthProtected />)}
       </Switch>
       {history.location.pathname !== "/login" && <CustomAlert className="fixed-alert" />}
-    </Router>
+    </>
   );
 };
 

@@ -25,6 +25,8 @@ export default function clientsReducer(state = initialState, action) {
     case actionTypes.GET_CLIENT_DETAILS_SUCCESS:
       return { ...state, details: payload.data, isLoading: false };
 
+    case actionTypes.GET_CLIENT_EXCHANGES:
+      return { ...state, exchanges: [], isLoading: true };
     case actionTypes.GET_CLIENT_EXCHANGES_SUCCESS:
       return { ...state, exchanges: action.orders, isLoading: false };
 

@@ -30,8 +30,8 @@ function* getExchangeDetails({ id }) {
     const res = yield exchangeInstance.get(`/order/${id}`);
     if (res.status === 200) {
       const exchangeDetails = camelize(res.data);
-      yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
       yield put(getClientExchanges(res.data.userId));
+      yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));

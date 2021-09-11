@@ -2,16 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
 import { Provider } from "react-redux";
+import history from "./helpers/history";
 
+import { HistoryListener } from "./hoc/HistoryListener";
 import store from "./store";
 
 const app = (
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Router history={history}>
+      <HistoryListener history={history}>
+        <App />
+      </HistoryListener>
+    </Router>
   </Provider>
 );
 

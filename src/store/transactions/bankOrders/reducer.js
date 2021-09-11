@@ -15,8 +15,12 @@ export const bankOrdersReducer = (state = initialState, action = {}) => {
       return { ...state, isLoading: true, bankOrderDetails: {} };
     case types.GET_BANK_ORDER_DETAILS_SUCCESS:
       return { ...state, isLoading: false, bankOrderDetails: action.details };
+    case types.CHANGE_BANK_ORDER_STATUS_INIT:
+      return { ...state, isProcessing: true };
+    case types.CHANGE_BANK_ORDER_STATUS_SUCCESS:
+      return { ...state, isProcessing: false };
     case types.API_ERROR:
-      return { isProcessing: false, isLoading: false };
+      return { ...state, isProcessing: false, isLoading: false };
     default:
       return state;
   }
