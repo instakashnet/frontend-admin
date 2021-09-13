@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Edit } from "@material-ui/icons";
-import { Container, Row, Col, Badge, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Container, Row, Col, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { getExchangeDetails, createInvoice, approveExchange, validateExchange, declineExchange } from "../../../store/actions";
 import { useRole } from "../../../hooks/useRole";
 
@@ -12,11 +11,11 @@ import UserInfo from "../components/details/user-details.component";
 import Received from "../components/details/exchange/received.component";
 import ToSend from "../components/details/exchange/to-send.component";
 import { UserTransactions } from "../components/details/exchange/user-transactions.component";
+import { StatusInfo } from "../components/details/exchange/status.component";
 import CompleteOrder from "../components/forms/complete-order.component";
 import EditOrder from "../components/forms/edit-order.component";
 import ReassignOrder from "../components/forms/reassign-order.component";
 import SetRevision from "../components/forms/set-revision.component";
-import LoadingPage from "../../LoadingPage";
 import { ActionButtons } from "../components/details/action-buttons.component";
 import { RevisionNote } from "../components/details/revision-note.component";
 
@@ -36,6 +35,8 @@ export const ExchangeDetailsScreen = (props) => {
     setModal((prev) => !prev);
     setFormType(formType);
   };
+
+  console.log(details);
 
   const changeStatusHandler = () => {
     if (details.stateId === 3) return dispatch(validateExchange(details.id, history));
@@ -57,73 +58,43 @@ export const ExchangeDetailsScreen = (props) => {
   if (formType === "revision") FormComponent = <SetRevision note={details.orderNotes} isProcessing={isProcessing} onShowForm={showFormHandler} orderId={id} />;
 
   return (
-    <div className="page-content">
-      <Container fluid>
-        {(isLoading || dataLoading) && <LoadingPage />}
-        {!isLoading && !dataLoading && (
-          <>
-            <Breadcrumbs title="Detalles del cambio" breadcrumbItem="Detalles del cambio de divisa" />
-            <Row>
-              <Col lg="8">
-                {details && (
-                  <>
-                    <ActionButtons
-                      goBack={() => history.goBack()}
-                      statusId={details.stateId}
-                      billCreated={details.billAssigned}
-                      onDecline={onDeclineExchange}
-                      onCreateInvoice={onCreateInvoice}
-                      onChangeStatus={changeStatusHandler}
-                      isProcessing={isProcessing}
-                      hasInvoice
-                    />
-                    <UserInfo user={details.user} role={role} />
-                  </>
-                )}
+    <div className="relative">
+      <div className="page-content">
+        <Container fluid>
+          <Breadcrumbs title="Detalles del cambio" breadcrumbItem="Detalles del cambio de divisa" />
+          <Row>
+            <Col lg="8">
+              <ActionButtons
+                goBack={() => history.goBack()}
+                statusId={details.stateId}
+                billCreated={details.billAssigned}
+                onDecline={onDeclineExchange}
+                onCreateInvoice={onCreateInvoice}
+                onChangeStatus={changeStatusHandler}
+                isProcessing={isProcessing}
+                hasInvoice
+              />
+              <UserInfo user={details.user} role={role} isLoading={isLoading} />
+            </Col>
+            {details.orderNotes && (
+              <Col lg="4">
+                <RevisionNote note={details.orderNotes} onEdit={() => showFormHandler("revision")} />
               </Col>
-              {details && details.orderNotes && (
-                <Col lg="4">
-                  <RevisionNote note={details.orderNotes} onEdit={() => showFormHandler("revision")} />
-                </Col>
-              )}
-            </Row>
-            <Row className="mb-3">
-              <Col lg="8" className="d-flex flex-wrap justify-content-between items-center">
-                {details && (
-                  <Badge className="py-2 font-size-15 w-full max-w-xs" style={{ color: "#fff", backgroundColor: details.stateColor }}>
-                    {`${details.stateNme} ${details.orderNotes ? " - EN REVISIÓN" : ""}`}
-                  </Badge>
-                )}
-                {details && (
-                  <div className="flex flex-col items-end">
-                    <p className="mb-2">
-                      <span className="text-muted mr-1">Operador asignado: </span> {details.operatorName || "Sin asignar"}
-                    </p>
-                    {details.stateId !== 6 && (
-                      <button type="button" className="mt-1 border-2 border-gray-400 py-2 px-4 text-sm rounded-md" onClick={() => showFormHandler("revision")}>
-                        <Edit fontSize="small" className="mr-1" /> {details.orderNotes ? "Editar" : "Agregar"} revisión
-                      </button>
-                    )}
-                  </div>
-                )}
-              </Col>
-            </Row>
-            <Row>
-              <Col lg="5" xl="4">
-                <Received details={details} onShowForm={showFormHandler} isProcessing={isProcessing} isLoading={isLoading} />
-              </Col>
-              <Col lg="5" xl="4">
-                <ToSend details={details} onShowForm={showFormHandler} isLoading={isLoading} />
-              </Col>
-            </Row>
-            <Row>
-              <Col lg="10" xl="8">
-                <UserTransactions isLoading={dataLoading} details={details} orders={exchanges} />
-              </Col>
-            </Row>
-          </>
-        )}
-      </Container>
+            )}
+          </Row>
+          <StatusInfo onShowForm={() => showFormHandler("revision")} details={details} isLoading={isLoading} />
+
+          <Row>
+            <Received details={details} onShowForm={showFormHandler} isLoading={isLoading} />
+            <ToSend details={details} isLoading={isLoading} isProcessing={isProcessing} onShowForm={showFormHandler} />
+          </Row>
+          <Row>
+            <Col lg="10" xl="8">
+              <UserTransactions isLoading={dataLoading} orders={exchanges} />
+            </Col>
+          </Row>
+        </Container>
+      </div>
       <Modal isOpen={modal} role="dialog" autoFocus centered tabIndex="-1" toggle={showFormHandler}>
         <ModalHeader toggle={showFormHandler}>Formulario</ModalHeader>
         <ModalBody>{FormComponent}</ModalBody>

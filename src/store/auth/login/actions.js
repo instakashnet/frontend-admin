@@ -33,6 +33,15 @@ export const logoutUserSuccess = () => {
   };
 };
 
+export const setOnline = () => ({
+  type: actionTypes.SET_ONLINE_INIT,
+});
+
+export const setOnlineSuccess = (user) => ({
+  type: actionTypes.SET_ONLINE_SUCCESS,
+  user,
+});
+
 export const apiError = () => {
   return {
     type: actionTypes.API_ERROR,

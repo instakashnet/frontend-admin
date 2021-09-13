@@ -1,42 +1,42 @@
-import React from 'react';
-import { FormGroup, Label } from 'reactstrap';
-import Select, { components } from 'react-select';
+import React from "react";
+import { FormGroup, Label } from "reactstrap";
+import Select, { components } from "react-select";
 
 const { Option, ValueContainer, Placeholder } = components;
 
 const styles = {
   option: (provided, state) => ({
     ...provided,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    fontSize: '.8rem',
-    backgroundColor: state.isFocused ? '#32394e' : 'transparent',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    fontSize: ".8rem",
+    backgroundColor: state.isFocused ? "#32394e" : "transparent",
   }),
   singleValue: (provided) => ({
     ...provided,
-    color: '#a6b0cf',
+    color: "#a6b0cf",
   }),
   menu: (provided) => ({
     ...provided,
-    backgroundColor: '#2e3548',
+    backgroundColor: "#2e3548",
   }),
   input: (provided) => ({
     ...provided,
-    color: '#fff',
+    color: "#fff",
   }),
   control: (provided) => ({
     ...provided,
-    backgroundColor: '#2e3548',
-    color: '#a6b0cf',
-    borderColor: '#32394e',
+    backgroundColor: "#2e3548",
+    color: "#a6b0cf",
+    borderColor: "#32394e",
   }),
   placeholder: (provided, state) => {
     const isValid = state.isFocused || state.hasValue || state.selectProps.inputValue;
     return {
       ...provided,
-      display: isValid ? 'none' : 'inline-block',
-      color: '#a6b0cf',
+      display: isValid ? "none" : "inline-block",
+      color: "#a6b0cf",
     };
   },
 };
@@ -55,27 +55,27 @@ const CustomValueContainer = ({ children, ...props }) => {
 const IconOption = (props) => {
   return (
     <Option {...props}>
-      {props.data.image && <img src={props.data.image} alt={props.data.label} style={{ width: '55px', marginRIght: '10px', display: 'inline-block' }} />}
-      <span className='ml-2'>{props.data.label}</span>
+      <span className="ml-2">{props.data.label}</span>
+      {props.data.image && <img src={props.data.image} alt={props.data.label} style={{ width: "50px" }} />}
     </Option>
   );
 };
 
-const CustomSelect = ({ label, touched, error, options, value, onChange, ...rest }) => {
+const CustomSelect = ({ label, touched, name, error, options, value, onChange, ...rest }) => {
   return (
     <FormGroup>
       <Label>{label}</Label>
       <Select
-        placeholder='Seleccionar'
-        className={`${touched && error ? 'is-invalid' : ''}`}
+        placeholder="Seleccionar"
+        className={`${touched && error ? "is-invalid" : ""}`}
         styles={styles}
-        onChange={onChange}
+        onChange={(option) => onChange(option, name)}
         value={options.find((option) => option.value === value)}
         options={options}
         components={{ Option: IconOption, ValueContainer: CustomValueContainer }}
         {...rest}
       />
-      {touched && error && <span className='invalid-feedback'>{error}</span>}
+      {touched && error && <span className="invalid-feedback">{error}</span>}
     </FormGroup>
   );
 };

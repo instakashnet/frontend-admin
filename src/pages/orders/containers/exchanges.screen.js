@@ -7,7 +7,7 @@ import { exchangesColumns } from "../../../helpers/tables/columns";
 import { setAlert } from "../../../store/actions";
 
 //Components
-import { CreateExcel } from "../components/forms/ create-excel.component";
+import { CreateExcel } from "../components/forms/create-excel.component";
 import { Table } from "../../../components/UI/tables/table.component";
 
 const PAGE_SIZE = 50;

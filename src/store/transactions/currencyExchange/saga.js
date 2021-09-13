@@ -30,8 +30,8 @@ function* getExchangeDetails({ id }) {
     const res = yield exchangeInstance.get(`/order/${id}`);
     if (res.status === 200) {
       const exchangeDetails = camelize(res.data);
-      yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
       yield put(getClientExchanges(res.data.userId));
+      yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -122,7 +122,7 @@ function* uploadVoucher({ orderId, values, closeModal }) {
 
     if (result.isConfirmed) {
       const res = yield exchangeInstance.post(`/bills/order/attach-voucher/${orderId}`, formData);
-      if (res.status === 201) yield call(approveExchange, { orderId, closeModal });
+      if (res.status === 201) yield call(approveExchange, { orderId, transactionCode: values.transactionCodeFinalized, closeModal });
     } else yield put(actions.apiError());
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -130,9 +130,9 @@ function* uploadVoucher({ orderId, values, closeModal }) {
   }
 }
 
-function* approveExchange({ orderId, closeModal }) {
+function* approveExchange({ orderId, transactionCode, closeModal }) {
   try {
-    const res = yield exchangeInstance.put(`/order/status/${orderId}`, { status: 6 });
+    const res = yield exchangeInstance.put(`/order/status/${orderId}`, { status: 6, transactionCodeFinalized: transactionCode, finalizedAt: new Date() });
     if (res.status === 200) {
       yield call(getExchangeDetails, { id: orderId });
       yield call(closeModal);
