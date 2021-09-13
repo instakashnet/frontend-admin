@@ -122,6 +122,14 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                   </>
                 )}
               </Row>
+              {details.transactionCodeFinalized && (
+                <Row>
+                  <Col>
+                    <p className="text-muted mb-2">Nro. de operación saliente</p>
+                    <h5>{details.transactionCodeFinalized}</h5>
+                  </Col>
+                </Row>
+              )}
             </CardBody>
           </>
         )}
