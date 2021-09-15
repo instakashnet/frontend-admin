@@ -14,6 +14,7 @@ function* getExchangesRelation({ values }) {
   let URL = `/users/clients/orders/download?start=${values.start}&end=${values.end}`;
 
   if (values.bank) URL += `&bank=${values.bank}`;
+  if (values.statusId) URL += `&status=${values.statusId}`;
 
   try {
     const res = yield authInstance.get(URL, { responseType: "arraybuffer" });
