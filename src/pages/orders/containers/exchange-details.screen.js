@@ -36,8 +36,6 @@ export const ExchangeDetailsScreen = (props) => {
     setFormType(formType);
   };
 
-  console.log(details);
-
   const changeStatusHandler = () => {
     if (details.stateId === 3) return dispatch(validateExchange(details.id, history));
     showFormHandler("complete");
