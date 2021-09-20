@@ -19,10 +19,12 @@ import AdminUsersSaga from "./auth/admin/saga";
 import forexSaga from "./forex/saga";
 import ClientsSaga from "./settings/clients/saga";
 import StatusSaga from "./settings/status/saga";
-import CountersSaga from "./activity/counters/saga";
 import ScheduleSaga from "./settings/schedule/saga";
 import CouponsSaga from "./settings/coupons/saga";
+// Activity
+import CountersSaga from "./activity/counters/saga";
 import ChartsSaga from "./charts/saga";
+import { revenueSaga } from "./activity/revenue/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -45,8 +47,10 @@ export default function* rootSaga() {
     BankAccountsSaga(),
     ClientsSaga(),
     StatusSaga(),
-    CountersSaga(),
     ScheduleSaga(),
+    // Activity
+    revenueSaga(),
+    CountersSaga(),
     ChartsSaga(),
   ]);
 }

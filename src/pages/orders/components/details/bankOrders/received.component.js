@@ -16,7 +16,7 @@ export const Received = ({ details, isLoading }) => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-muted mb-2">Monto a recibir</p>
-                <h5>{`${details.currencyReceivedSymbol} ${formatAmount(details.amountReceived)}`}</h5>
+                <h5>{`${details.currencySentSymbol} ${formatAmount(details.amountSent)}`}</h5>
               </div>
               <div>
                 <p className="text-muted mb-2">Tasa</p>
@@ -28,7 +28,7 @@ export const Received = ({ details, isLoading }) => {
                 <p className="text-muted mb-2">Banco a recibir</p>
                 <div className="mb-2 flex items-center">
                   <img src={`${process.env.PUBLIC_URL}/images/banks/${details.accToBankName.toLowerCase()}.svg`} alt={details.accToBankName} width={80} className="mr-2" />
-                  <span className="text-muted">{details.currencyReceivedSymbol}</span>
+                  <span className="text-muted">{details.currencySentSymbol}</span>
                 </div>
               </section>
               <section>

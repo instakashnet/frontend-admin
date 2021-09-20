@@ -11,6 +11,7 @@ export * from "./settings/coupons/actions";
 
 // Activity
 export * from "./activity/counters/actions";
+export * from "./activity/revenue/actions";
 
 export * from "./bankAccounts/actions";
 export * from "./forex/actions";

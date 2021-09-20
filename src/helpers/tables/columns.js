@@ -462,11 +462,11 @@ export const bankOrdersColumns = [
     accessor: "date",
   },
   {
-    Header: "Monto a enviar",
+    Header: "Monto a recibir",
     accessor: "amountToSend",
   },
   {
-    Header: "Monto a recibir",
+    Header: "Monto enviado",
     accessor: "amountToReceive",
   },
   {

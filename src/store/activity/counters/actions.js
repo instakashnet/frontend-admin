@@ -1,4 +1,4 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from "./actionTypes";
 
 export const getCounters = () => ({
   type: actionTypes.GET_COUNTERS,
@@ -6,7 +6,7 @@ export const getCounters = () => ({
 
 export const getCountersSuccess = (data) => ({
   type: actionTypes.GET_COUNTERS_SUCCESS,
-  payload: { data },
+  data,
 });
 
 export const getTotalKashInit = () => ({
