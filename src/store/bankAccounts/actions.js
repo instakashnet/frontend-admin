@@ -40,6 +40,16 @@ export const editCbBalanceSuccess = () => ({
   type: actionTypes.EDIT_CB_BALANCE_SUCCESS,
 });
 
+export const closeBalance = (open) => ({
+  type: actionTypes.CLOSE_BALANCE_INIT,
+  open,
+});
+
+export const closeBalanceSuccess = (data) => ({
+  type: actionTypes.CLOSE_BALANCE_SUCCESS,
+  data,
+});
+
 export const apiError = () => ({
   type: actionTypes.API_ERROR,
 });

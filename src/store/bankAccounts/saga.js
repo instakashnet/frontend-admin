@@ -2,7 +2,7 @@ import { put, all, fork, takeEvery, call } from "redux-saga/effects";
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
 import { setAlert } from "../actions";
-import { accountsInstance } from "../../helpers/AuthType/axios";
+import { accountsInstance, exchangeInstance } from "../../helpers/AuthType/axios";
 import Swal from "sweetalert2";
 
 function* getCbAccounts() {
@@ -65,6 +65,19 @@ function* editCbBalance({ values, accountId, setState }) {
   }
 }
 
+function* closeBalance({ open }) {
+  try {
+    const res = yield exchangeInstance.get("/closing-balances");
+    if (res.status === 200) {
+      yield put(actions.closeBalanceSuccess(res.data));
+      yield call(open);
+    }
+  } catch (error) {
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
+
 export function* watchGetCbAccounts() {
   yield takeEvery(actionTypes.GET_CB_ACCOUNTS, getCbAccounts);
 }
@@ -81,6 +94,10 @@ export function* watchEditCbBalance() {
   yield takeEvery(actionTypes.EDIT_CB_BALANCE, editCbBalance);
 }
 
+function* watchCloseBalance() {
+  yield takeEvery(actionTypes.CLOSE_BALANCE_INIT, closeBalance);
+}
+
 export default function* bankAccountsSaga() {
-  yield all([fork(watchGetCbAccounts), fork(watchAddCbAccount), fork(watchEditCbBalance), fork(watchEditCbAccount)]);
+  yield all([fork(watchGetCbAccounts), fork(watchAddCbAccount), fork(watchEditCbBalance), fork(watchEditCbAccount), fork(watchCloseBalance)]);
 }

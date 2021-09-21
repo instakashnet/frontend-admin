@@ -22,8 +22,6 @@ export const DailyEarning = ({ dispatch }) => {
     }
   }, [revenueData]);
 
-  console.log(percentage);
-
   return (
     <Card>
       <CardBody>
