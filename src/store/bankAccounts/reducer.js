@@ -1,6 +1,7 @@
 import * as actionTypes from "./actionTypes";
 const initialState = {
   accounts: [],
+  closedBalances: {},
   success: "",
   isLoading: true,
   isProcessing: false,
@@ -13,12 +14,14 @@ export default function bankAccountsReducer(state = initialState, action) {
     case actionTypes.ADD_CB_ACCOUNT:
     case actionTypes.EDIT_CB_BALANCE:
     case actionTypes.EDIT_CB_ACCOUNT:
+    case actionTypes.CLOSE_BALANCE_INIT:
       return { ...state, isProcessing: true };
     case actionTypes.ADD_CB_ACCOUNT_SUCCESS:
     case actionTypes.EDIT_CB_BALANCE_SUCCESS:
     case actionTypes.EDIT_CB_ACCOUNT_SUCCESS:
       return { ...state, isProcessing: false };
-
+    case actionTypes.CLOSE_BALANCE_SUCCESS:
+      return { ...state, isProcessing: false, closedBalances: action.data };
     case actionTypes.GET_CB_ACCOUNTS:
       return { ...state, isLoading: true };
     case actionTypes.GET_CB_ACCOUNTS_SUCCESS:

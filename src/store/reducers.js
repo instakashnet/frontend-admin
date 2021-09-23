@@ -14,7 +14,10 @@ import Coupons from "./settings/coupons/reducer";
 
 import BankAccounts from "./bankAccounts/reducer";
 import Forex from "./forex/reducer";
+
+// Dashboard
 import Counters from "./activity/counters/reducer";
+import { revenueReducer } from "./activity/revenue/reducer";
 
 // Transactions
 import CurrencyExchange from "./transactions/currencyExchange/reducer";
@@ -44,9 +47,12 @@ const rootReducer = combineReducers({
   BankAccounts,
   Clients,
   Status,
-  Counters,
   Schedule,
+
+  // Activity
+  Counters,
   Charts,
+  revenueReducer,
   // coupons
   Coupons,
 });
