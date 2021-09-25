@@ -1,57 +1,51 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-class ApexRadial extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      options: {
-        plotOptions: {
-          radialBar: {
-            startAngle: -135,
-            endAngle: 135,
-            dataLabels: {
-              name: {
-                fontSize: "13px",
-                color: void 0,
-                offsetY: 60,
-              },
-              value: {
-                offsetY: 22,
-                fontSize: "16px",
-                color: void 0,
-                formatter: function (e) {
-                  return e + "%";
-                },
-              },
-            },
+export const RadialChart = ({ percentage }) => {
+  const [options] = useState({
+    plotOptions: {
+      radialBar: {
+        startAngle: -135,
+        endAngle: 135,
+        dataLabels: {
+          name: {
+            fontSize: "13px",
+            color: void 0,
+            offsetY: 60,
+          },
+          value: {
+            offsetY: 22,
+            fontSize: "16px",
+            fontWeight: "bold",
+            color: "#ccc",
+            formatter: (e) => e + "%",
           },
         },
-        colors: ["#556ee6"],
-        fill: {
-          type: "gradient",
-          gradient: {
-            shade: "dark",
-            shadeIntensity: 0.15,
-            inverseColors: !1,
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 50, 65, 91],
-          },
-        },
-        stroke: {
-          dashArray: 4,
-        },
-        labels: ["Diferencia"],
       },
-      series: [157.5],
-    };
-  }
+    },
+    colors: ["#20A2A5"],
+    fill: {
+      type: "gradient",
+      gradient: {
+        shade: "dark",
+        shadeIntensity: 0.15,
+        inverseColors: !1,
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 50, 65, 91],
+      },
+    },
+    stroke: {
+      dashArray: 4,
+    },
+    labels: ["Cobertura de gasto"],
+  });
 
-  render() {
-    return <ReactApexChart options={this.state.options} series={this.state.series} type="radialBar" height="143" />;
-  }
-}
+  const [series, setSeries] = useState([0]);
 
-export default ApexRadial;
+  useEffect(() => {
+    if (percentage) setSeries([percentage]);
+  }, [percentage]);
+
+  return <ReactApexChart options={options} series={series} type="radialBar" height="163" />;
+};

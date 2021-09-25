@@ -32,12 +32,12 @@ export const CreateOrder = ({ isProcessing, dispatch, accounts, currencies, getT
         <Select name="to" label="Caja a enviar" value={formik.values.to} onChange={formik.handleChange} options={banksOptions} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Input type="number" label="Monto a enviar" value={formik.values.amountSend} name="amountSend" onChange={formik.handleChange} onBlur={formik.handleBlur} />
-        <CustomSelect label="Moneda envio" name="currencySend" value={formik.values.currencySend} options={currencyOptions} onChange={onSelectChange} />
+        <Input type="number" label="Monto a enviar" value={formik.values.amountReceived} name="amountReceived" onChange={formik.handleChange} onBlur={formik.handleBlur} />
+        <CustomSelect label="Moneda envio" name="currencyReceive" value={formik.values.currencyReceive} options={currencyOptions} onChange={onSelectChange} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Input type="number" label="Monto a recibir" value={formik.values.amountReceived} name="amountReceived" onChange={formik.handleChange} onBlur={formik.handleBlur} />
-        <CustomSelect label="Moneda recibe" name="currencyReceive" value={formik.values.currencyReceive} options={currencyOptions} onChange={onSelectChange} />
+        <Input type="number" label="Monto a recibir" value={formik.values.amountSend} name="amountSend" onChange={formik.handleChange} onBlur={formik.handleBlur} />
+        <CustomSelect label="Moneda recibe" name="currencySend" value={formik.values.currencySend} options={currencyOptions} onChange={onSelectChange} />
       </div>
       <CustomSelect label="Cuenta que envia" name="accountSend" value={formik.values.accountSend} options={accountOptions} onChange={onSelectChange} />
       <CustomSelect label="Cuenta que recibe" name="accountReceive" value={formik.values.accountReceive} options={accountOptions} onChange={onSelectChange} />

@@ -16,7 +16,7 @@ export const ToSend = ({ details, isLoading }) => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-muted mb-2">Monto a enviar</p>
-                <h5>{`${details.currencySentSymbol} ${formatAmount(details.amountSent)}`}</h5>
+                <h5>{`${details.currencyReceivedSymbol} ${formatAmount(details.amountReceived)}`}</h5>
               </div>
               <div>
                 <p className="text-muted mb-2">Caja</p>
@@ -27,7 +27,7 @@ export const ToSend = ({ details, isLoading }) => {
               <p className="text-muted mb-2">Banco que envia</p>
               <div className="mb-2 flex items-center">
                 <img src={`${process.env.PUBLIC_URL}/images/banks/${details.accFromBankName.toLowerCase()}.svg`} alt={details.accFromBankName} width={80} className="mr-2" />
-                <span className="text-muted">{details.currencySentSymbol}</span>
+                <span className="text-muted">{details.currencyReceivedSymbol}</span>
               </div>
             </div>
           </CardBody>

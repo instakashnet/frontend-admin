@@ -1,0 +1,4 @@
+export const GET_REVENUE_INIT = "GET_REVENUE_INIT";
+export const GET_REVENUE_SUCCESS = "GET_REVENUE_SUCCESS";
+
+export const API_ERROR = "REVENUE_ERROR";
