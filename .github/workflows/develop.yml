@@ -2,8 +2,6 @@ name: developCI
 
 on:
   push:
-    paths-ignore:
-      - ".github/**"
     branches:
       - "develop"
 
