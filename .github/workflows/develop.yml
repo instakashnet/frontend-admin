@@ -28,8 +28,13 @@ jobs:
         run: yarn install
       - name: Build de application
         run: yarn build
-      - name: Build admin om netlify
+      - uses: jakejarvis/s3-sync-action@master
+        name: Upload the app to S3 bucket
+        with:
+          args: --acl public-read --follow-symlinks --delete
         env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: npx netlify-cli deploy --dir=build --prod
+          AWS_S3_BUCKET: ${{ secrets.DEV_AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ env.AWS_REGION }}
+          SOURCE_DIR: "build"
