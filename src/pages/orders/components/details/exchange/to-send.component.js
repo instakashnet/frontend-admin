@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardBody, Row, Col, Button } from "reactstrap";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
-import { formatAmount, checkInterplaza, convertRate } from "../../../../../helpers/functions";
+import { formatAmount, convertRate } from "../../../../../helpers/functions";
 import { editInterplazaInit } from "../../../../../store/actions";
 
 import CopyButton from "../../../../../components/UI/CopyButton";
@@ -10,17 +10,18 @@ import Radio from "../../../../../components/UI/FormItems/Radio";
 import { SkeletonComponent } from "../../../../../components/UI/skeleton.component";
 
 const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
-  const dispatch = useDispatch();
-  const [editState, setEditState] = useState(false);
-  let interplaza;
-  let accToInterbank;
-  if (details.bankSent) {
-    if (checkInterplaza(details.bankSent, details.accountToRaw)) interplaza = true;
-    accToInterbank = !!+details.accToInterbank;
-  }
+  const dispatch = useDispatch(),
+    [editState, setEditState] = useState(false),
+    [interplaza, setInterplaza] = useState(false);
 
+  // EFFECTS
+  useEffect(() => {
+    setInterplaza(!!Number(details.accToInterbank));
+  }, [details]);
+
+  // FORMIK
   const formik = useFormik({
-    initialValues: { interbank: null, accountId: details && details.accountToId },
+    initialValues: { interbank: null, accountId: details.accountToId },
     enableReinitialize: true,
     onSubmit: (values) => dispatch(editInterplazaInit(values, "exchange", details.id, setEditState)),
   });
@@ -89,16 +90,10 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                         </Button>
                       </form>
                     )}
-                    {interplaza && (
-                      <>
-                        {!editState && details.accToInterbank === null && <small className="text-danger">* Parece que esta es una cuenta interplaza.</small>}
-                        {!editState && accToInterbank && <small className="text-danger">* Cuenta interplaza.</small>}
-                        <br />
-                        <button className="text-success mt-2" onClick={() => setEditState((prev) => !prev)}>
-                          <i className="fas fa-edit" /> Editar cuenta
-                        </button>
-                      </>
-                    )}
+                    {interplaza && <small className="text-danger">* Esta cuenta es interplaza.</small>}
+                    <button className="text-success mt-2" onClick={() => setEditState((prev) => !prev)}>
+                      <i className="fas fa-edit" /> Editar cuenta
+                    </button>
                   </div>
                 </Col>
                 {details.thirdParty && (
