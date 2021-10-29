@@ -13,6 +13,8 @@ jobs:
       REACT_APP_ACCOUNTS_API: ${{ secrets.TEST_ACCOUNTS_API }}
       REACT_APP_EXCHANGE_API: ${{ secrets.TEST_EXCHANGE_API }}
       REACT_APP_TEST_SOCKET_CONN: wss://socket-manager-ms-swe5i.ondigitalocean.app/ws
+      AWS_CF_DISTRIBUTION_ID: E216R31QM6ITZB
+      AWS_REGION: us-east-2
     strategy:
       matrix:
         node-version: [15.x]
@@ -36,3 +38,11 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ env.AWS_REGION }}
           SOURCE_DIR: "build"
+      - name: Create Cloudfront cache invalidation
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          DISTRIBUTION: ${{ env.AWS_CF_DISTRIBUTION_ID }}
+          PATHS: "/*"
+          AWS_REGION: ${{ env.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

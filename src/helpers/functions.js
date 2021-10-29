@@ -1,5 +1,3 @@
-import React from "react";
-
 export const convertHexToRGBA = (hexCode, opacity) => {
   let hex = hexCode.replace("#", "");
 
@@ -39,9 +37,7 @@ export const convertRate = (amount) => Number(amount).toFixed(4);
 export const checkInterplaza = (bank, accNumber) => {
   const firstAccNumber = accNumber.substring(0, 1);
 
-  return bank.toLowerCase() === "interbank" && +firstAccNumber >= 3 && +firstAccNumber <= 7 ? (
-    <p className="text-danger">* La cuenta parece ser de provincia. Contactar al usuario.</p>
-  ) : null;
+  return bank.toLowerCase() === "interbank" && +firstAccNumber >= 3 && +firstAccNumber <= 7;
 };
 
 export const formatAmount = (amount) => Number(amount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
