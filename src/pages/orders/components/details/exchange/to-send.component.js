@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardBody, Row, Col, Button } from "reactstrap";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
-import { formatAmount, convertRate } from "../../../../../helpers/functions";
+import { formatAmount, convertRate, checkInterplaza } from "../../../../../helpers/functions";
 import { editInterplazaInit } from "../../../../../store/actions";
 
 import CopyButton from "../../../../../components/UI/CopyButton";
@@ -90,10 +90,15 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                         </Button>
                       </form>
                     )}
-                    {interplaza && <small className="text-danger">* Esta cuenta es interplaza.</small>}
-                    <button className="text-success mt-2" onClick={() => setEditState((prev) => !prev)}>
-                      <i className="fas fa-edit" /> Editar cuenta
-                    </button>
+                    {checkInterplaza(details.bankReceive, details.accountToRaw) && !interplaza && (
+                      <small className="text-danger">* Parece ser que esta cuenta es de provincia.</small>
+                    )}
+                    {interplaza && <small className="text-danger">* Esta cuenta es de provincia.</small>}
+                    {(checkInterplaza(details.bankReceive, details.accountToRaw) || interplaza) && (
+                      <button className="text-success mt-1 block ml-auto" onClick={() => setEditState((prev) => !prev)}>
+                        editar <i className="fas fa-edit" />
+                      </button>
+                    )}
                   </div>
                 </Col>
                 {details.thirdParty && (
