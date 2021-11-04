@@ -47,9 +47,7 @@ const App = () => {
           <PublicRoute path={route.path} layout={NonAuthLayout} component={route.component} token={token} key={route.path} />
         ))}
         {role &&
-          routes[role].map((route) => (
-            <PrivateRoute exact path={route.path} layout={VerticalLayout} component={LazyComponent(route.component)} key={route.path} token={token} isAuthProtected />
-          ))}
+          routes[role].map((route) => <PrivateRoute exact path={route.path} layout={VerticalLayout} component={LazyComponent(route.component)} key={route.path} token={token} />)}
       </Switch>
       {history.location.pathname !== "/login" && <CustomAlert className="fixed-alert" />}
     </>
