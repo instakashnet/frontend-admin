@@ -20,6 +20,8 @@ import "./assets/css/app.css";
 import "./assets/scss/theme.scss";
 import "./assets/scss/custom.scss";
 
+console.log(process.env.REACT_APP_STAGE);
+
 const App = () => {
   const { token, user } = useSelector((state) => state.Login);
   const [role] = useRole(user);
