@@ -54,7 +54,7 @@ reqInterceptor(exchangeInstance);
 resInterceptor(exchangeInstance);
 
 const accountsInstance = axios.create({
-  baseURL: process.env.REACT_APP_STAGE === "prod" ? `${process.env.REACT_APP_ACCOUNTS_API}` : `${process.env.REACT_APP_DEV_API_URL}/accounts-service/api/v1/admin`,
+  baseURL: process.env.REACT_APP_STAGE === "prod" ? `${process.env.REACT_APP_ACCOUNTS_API}/admin` : `${process.env.REACT_APP_DEV_API_URL}/accounts-service/api/v1/admin`,
 });
 reqInterceptor(accountsInstance);
 resInterceptor(accountsInstance);
