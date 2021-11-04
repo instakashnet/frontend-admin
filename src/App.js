@@ -6,18 +6,21 @@ import { getCountriesInit, getBanks, getCurrenciesInit, loadUser } from "./store
 
 // Import Routes
 import * as routes from "./routes/";
-import { CustomAlert } from "./components/UI/Alert";
-import AppRoute from "./routes/route";
-import LazyComponent from "./helpers/lazyComponent";
+import { PublicRoute } from "./routes/public";
+import { PrivateRoute } from "./routes/private";
 
-// layouts
+// layouts & components
+import LazyComponent from "./helpers/lazyComponent";
 import VerticalLayout from "./components/VerticalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
+import { CustomAlert } from "./components/UI/Alert";
 
 // Import scss
 import "./assets/css/app.css";
 import "./assets/scss/theme.scss";
 import "./assets/scss/custom.scss";
+
+console.log(process.env.REACT_APP_STAGE);
 
 const App = () => {
   const { token, user } = useSelector((state) => state.Login);
@@ -41,10 +44,10 @@ const App = () => {
     <>
       <Switch>
         {routes.public.map((route) => (
-          <AppRoute path={route.path} layout={NonAuthLayout} component={route.component} key={route.path} isAuthProtected={false} />
+          <PublicRoute path={route.path} layout={NonAuthLayout} component={route.component} token={token} key={route.path} />
         ))}
         {role &&
-          routes[role].map((route) => <AppRoute exact path={route.path} layout={VerticalLayout} component={LazyComponent(route.component)} key={route.path} isAuthProtected />)}
+          routes[role].map((route) => <PrivateRoute exact path={route.path} layout={VerticalLayout} component={LazyComponent(route.component)} key={route.path} token={token} />)}
       </Switch>
       {history.location.pathname !== "/login" && <CustomAlert className="fixed-alert" />}
     </>

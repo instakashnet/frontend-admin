@@ -98,7 +98,6 @@ function* logoutUser() {
 
   yield call([localStorage, "removeItem"], "authUser");
   yield call([sessionStorage, "removeItem"], "session");
-  yield call([history, "push"], "/login");
   yield put(actions.logoutUserSuccess());
 }
 
