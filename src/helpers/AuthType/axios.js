@@ -42,19 +42,19 @@ const resInterceptor = (instance) =>
   );
 
 const authInstance = axios.create({
-  baseURL: process.env.REACT_APP_STAGE === "prod" ? `${process.env.REACT_APP_AUTH_API}/admin` : `${process.env.REACT_APP_DEV_API_URL}/auth-service/api/v1/admin`,
+  baseURL: `${process.env.REACT_APP_STAGE === "prod" ? process.env.REACT_APP_API_URL : process.env.REACT_APP_DEV_API_URL}/auth-service/api/v1/admin`,
 });
 reqInterceptor(authInstance);
 resInterceptor(authInstance);
 
 const exchangeInstance = axios.create({
-  baseURL: process.env.REACT_APP_STAGE === "prod" ? `${process.env.REACT_APP_EXCHANGE_API}/admin` : `${process.env.REACT_APP_DEV_API_URL}/exchange-service/api/v1/admin`,
+  baseURL: `${process.env.REACT_APP_STAGE === "prod" ? process.env.REACT_APP_API_URL : process.env.REACT_APP_DEV_API_URL}/exchange-service/api/v1/admin`,
 });
 reqInterceptor(exchangeInstance);
 resInterceptor(exchangeInstance);
 
 const accountsInstance = axios.create({
-  baseURL: process.env.REACT_APP_STAGE === "prod" ? `${process.env.REACT_APP_ACCOUNTS_API}/admin` : `${process.env.REACT_APP_DEV_API_URL}/accounts-service/api/v1/admin`,
+  baseURL: `${process.env.REACT_APP_STAGE === "prod" ? process.env.REACT_APP_API_URL : process.env.REACT_APP_DEV_API_URL}/accounts-service/api/v1/admin`,
 });
 reqInterceptor(accountsInstance);
 resInterceptor(accountsInstance);
