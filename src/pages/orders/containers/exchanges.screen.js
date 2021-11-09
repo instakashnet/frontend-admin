@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Card, CardBody, Col, Row, Container, Button, Modal, ModalHeader, ModalBody } from "reactstrap";
+import { Card, CardBody, Col, Row, Container, Button, Modal, ModalHeader, ModalBody, Spinner } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useRole } from "../../../hooks/useRole";
 import { getAllOrders } from "../../../services/orders/exchanges.service";
@@ -60,8 +60,8 @@ export const ExchangesScreen = () => {
         <Row>
           <Col lg="12">
             <div className="flex items-center">
-              <Button onClick={() => getTableData()} className="mb-4 btn-primary">
-                Actualizar operaciones
+              <Button onClick={() => getTableData()} className="mb-4 btn-primary" disabled={isLoading}>
+                {isLoading ? <Spinner size="sm" /> : "Actualizar operaciones"}
               </Button>
 
               {(role === "admin" || role === "officers") && (
