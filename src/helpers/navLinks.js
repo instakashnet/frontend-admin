@@ -77,7 +77,7 @@ export const configLinks = [
     path: "/banks",
     icon: "mdi mdi-bank-outline",
     label: "Bancos aceptados",
-    roles: ["admin"],
+    roles: ["admin", "officers"],
   },
   {
     path: "/status",

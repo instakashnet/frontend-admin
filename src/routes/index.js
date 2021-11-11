@@ -52,6 +52,9 @@ const officersRoutes = [
   { path: "/withdrawals/all", component: WithdrawalsScreen },
   { path: "/withdrawal-details/:id", component: WithdrawalDetailsScreen },
 
+  // SETTINGS
+  { path: "/banks", component: BanksScreen },
+
   // // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 ];

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Row, Col, Modal, ModalBody, ModalHeader, Button, Card, CardBody } from "reactstrap";
+import { Container, Row, Col, Modal, ModalBody, ModalHeader, Button, Card, CardBody, Spinner } from "reactstrap";
 import { bankOrdersColumns } from "../../../helpers/tables/columns";
 import { getCbAccounts, setAlert } from "../../../store/actions";
 import { getAllOrders } from "../../../services/orders/exchanges.service";
@@ -52,8 +52,8 @@ export const BankOrdersScreen = () => {
         <Row>
           <Col lg="12">
             <div className="flex items-center justify-between mb-3 mx-3">
-              <Button onClick={() => {}} className="btn-primary">
-                Actualizar operaciones
+              <Button onClick={() => {}} className="btn-primary" disabled={isLoading}>
+                {isLoading ? <Spinner size="sm" /> : "Actualizar operaciones"}
               </Button>
 
               <Button onClick={() => setModal(true)} className="btn-primary">
