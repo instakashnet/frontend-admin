@@ -72,7 +72,7 @@ export const ExchangeDetailsScreen = (props) => {
                 isProcessing={isProcessing}
                 hasInvoice
               />
-              <UserInfo user={details.user} role={role} isLoading={isLoading} />
+              {details.user && <UserInfo user={details.user} role={role} isLoading={isLoading} />}
             </Col>
             {details.orderNotes && (
               <Col lg="4">
@@ -83,8 +83,12 @@ export const ExchangeDetailsScreen = (props) => {
           <StatusInfo onShowForm={() => showFormHandler("revision")} details={details} isLoading={isLoading} />
 
           <Row>
-            <Received details={details} onShowForm={showFormHandler} isLoading={isLoading} />
-            <ToSend details={details} isLoading={isLoading} isProcessing={isProcessing} onShowForm={showFormHandler} />
+            {details.bankSent && details.bankReceived && (
+              <>
+                <Received details={details} onShowForm={showFormHandler} isLoading={isLoading} />
+                <ToSend details={details} isLoading={isLoading} isProcessing={isProcessing} onShowForm={showFormHandler} />
+              </>
+            )}
           </Row>
           <Row>
             <Col lg="10" xl="8">

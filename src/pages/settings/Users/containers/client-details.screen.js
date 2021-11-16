@@ -17,17 +17,17 @@ import ProfileInfo from "../components/details/profile-info.component";
 import CompanyInfo from "../components/details/company-info.component";
 
 export const ClientDetailsScreen = (props) => {
-  const history = useHistory();
-  const [modal, setModal] = useState(false);
-  const [modalType, setModalType] = useState(null);
-  const [profileDetails, setProfileDetails] = useState({});
-  const [documentType, setDocumentType] = useState("");
-  const dispatch = useDispatch();
-  const { id } = props.match.params;
-  const { details, accounts, exchanges, isProcessing, isLoading } = useSelector((state) => state.Clients);
+  const history = useHistory(),
+    dispatch = useDispatch(),
+    [modal, setModal] = useState(false),
+    [modalType, setModalType] = useState(null),
+    [profileDetails, setProfileDetails] = useState({}),
+    [documentType, setDocumentType] = useState(""),
+    { id } = props.match.params,
+    { details, accounts, exchanges, isProcessing, isLoading } = useSelector((state) => state.Clients);
 
-  let companyProfiles = [];
-  let userProfile;
+  let companyProfiles = [],
+    userProfile;
 
   if (details && details.profiles) {
     userProfile = details.profiles.find((profile) => profile.type === "natural");
