@@ -83,12 +83,8 @@ export const ExchangeDetailsScreen = (props) => {
           <StatusInfo onShowForm={() => showFormHandler("revision")} details={details} isLoading={isLoading} />
 
           <Row>
-            {details.bankSent && details.bankReceived && (
-              <>
-                <Received details={details} onShowForm={showFormHandler} isLoading={isLoading} />
-                <ToSend details={details} isLoading={isLoading} isProcessing={isProcessing} onShowForm={showFormHandler} />
-              </>
-            )}
+            <Received details={details} onShowForm={showFormHandler} isLoading={isLoading} />
+            <ToSend details={details} isLoading={isLoading} isProcessing={isProcessing} onShowForm={showFormHandler} />
           </Row>
           <Row>
             <Col lg="10" xl="8">
