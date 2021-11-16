@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Switch, useHistory } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useRole } from "./hooks/useRole";
 import { getCountriesInit, getBanks, getCurrenciesInit, loadUser } from "./store/actions";
@@ -20,13 +20,10 @@ import "./assets/css/app.css";
 import "./assets/scss/theme.scss";
 import "./assets/scss/custom.scss";
 
-console.log(process.env.REACT_APP_STAGE);
-
 const App = () => {
   const { token, user } = useSelector((state) => state.Login);
   const [role] = useRole(user);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     if (token) {
@@ -49,7 +46,7 @@ const App = () => {
         {role &&
           routes[role].map((route) => <PrivateRoute exact path={route.path} layout={VerticalLayout} component={LazyComponent(route.component)} key={route.path} token={token} />)}
       </Switch>
-      {history.location.pathname !== "/login" && <CustomAlert className="fixed-alert" />}
+      <CustomAlert className="fixed-alert" />
     </>
   );
 };
