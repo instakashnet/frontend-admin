@@ -91,7 +91,6 @@ export const validateCbAccountValues = Yup.object().shape({
 
 export const couponValidations = Yup.object().shape({
   name: Yup.string().required("Debes colocar un nombre de cupón."),
-  discount: Yup.number().required("Debes colocar un número."),
   qty_uses: Yup.number().when("indefinite", {
     is: false,
     then: Yup.number().required("Debes colocar un número."),
