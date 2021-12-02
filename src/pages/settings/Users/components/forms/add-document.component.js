@@ -17,6 +17,7 @@ export const AddDocument = ({ type, userId, closeModal, isProcessing }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <FileUpload
+        fileType={type === "identity_photo" ? "frontal" : "trasera"}
         label={`Agregar foto ${type === "identity_photo" ? "frontal" : "trasera"}`}
         placeholder="Selecciona un archivo"
         accept="image/jpeg,image/png,application/pdf"
