@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import { FormGroup, Label } from "reactstrap";
 import { Input } from "reactstrap";
 
-export const FileUpload = ({ name, onChange, placeholder, label, onBlur, error, touched, ...rest }) => {
+export const FileUpload = ({ name, onChange, placeholder, label, onBlur, error, touched, fileType, ...rest }) => {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
 
   const onFileChange = (e) => {
     if (!e.currentTarget.files[0]) return;
     setFilePreview(URL.createObjectURL(e.currentTarget.files[0]));
+
+    const renamedFiles = Array.from(e.currentTarget.files).map((file) => new File([file], fileType, { type: file.type }));
     setFile(e.currentTarget.files[0]);
-    onChange(e.currentTarget.files[0]);
+    onChange(renamedFiles[0]);
   };
 
   return (
