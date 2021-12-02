@@ -82,6 +82,7 @@ const managerRoutes = [
   { path: "/users-list", component: ClientsScreen },
   { path: "/users-accounts", component: ClientsAccountsScreen },
   { path: "/user-details/:id", component: ClientDetailsScreen },
+  { path: "/coupons", component: CouponsScreen },
 
   // // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },

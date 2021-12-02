@@ -71,7 +71,7 @@ export const configLinks = [
     path: "/coupons",
     icon: "bx bxs-discount",
     label: "Cupones de descuento",
-    roles: ["admin"],
+    roles: ["admin", "manager"],
   },
   {
     path: "/banks",
