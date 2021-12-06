@@ -43,7 +43,7 @@ const errorCodes = [
   { code: 4006, message: "No existe saldo suficiente para el monto que el cliente desea recibir." },
   { code: 4007, message: "El nro. de operación que intentas agregar ya ha sido usado el dia de hoy en otra opreración." },
   { code: 4014, message: "La nota no puede superar los 150 caracteres. Por favor valide los datos." },
-  { code: 4015, message: "Este operador no puede ser asignado para operación, verifica que el monto del pedido se encuentre en el rango para el operador." },
+  { code: 4015, message: "No hay operador disponible para poder asignar esta orden. Verifica que existe operador disponible para este banco y este monto." },
   { code: 4016, message: "La moneda de la cuenta que deseas reasignar es diferente a la monda que recibe el usuario." },
   { code: 4017, message: "El formato de archivo permitido es solamente PDF, JPG o PNG" },
 ];
