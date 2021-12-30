@@ -13,14 +13,15 @@ import { Table } from "../../../components/UI/tables/table.component";
 const PAGE_SIZE = 50;
 
 export const ExchangesScreen = () => {
-  const dispatch = useDispatch();
-  const [modal, setModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState(null);
-  const [data, setData] = useState([]);
-  const isProcessing = useSelector((state) => state.CurrencyExchange.isProcessing);
-  const user = useSelector((state) => state.Login.user);
-  const [role] = useRole(user);
+  const dispatch = useDispatch(),
+    [modal, setModal] = useState(false),
+    [isLoading, setIsLoading] = useState(true),
+    [search, setSearch] = useState(null),
+    [excelType, setExcelType] = useState(""),
+    [data, setData] = useState([]),
+    isProcessing = useSelector((state) => state.CurrencyExchange.isProcessing),
+    user = useSelector((state) => state.Login.user),
+    [role] = useRole(user);
 
   const getTableData = useCallback(
     async (_, pageCount = 1) => {
@@ -54,6 +55,11 @@ export const ExchangesScreen = () => {
     };
   }, [getTableData, search]);
 
+  const onCreateExcel = (type) => {
+    setExcelType(type);
+    setModal(true);
+  };
+
   return (
     <div className="page-content">
       <Container fluid>
@@ -65,7 +71,7 @@ export const ExchangesScreen = () => {
               </Button> */}
 
               {(role === "admin" || role === "officers") && (
-                <Button onClick={() => setModal(true)} className="mb-4 ml-4 btn-primary">
+                <Button onClick={() => onCreateExcel("data")} className="mb-4 ml-4 btn-primary">
                   Descargar relación
                 </Button>
               )}
@@ -93,7 +99,7 @@ export const ExchangesScreen = () => {
       <Modal isOpen={modal} role="dialog" autoFocus centered tabIndex="-1" toggle={() => setModal((prev) => !prev)}>
         <ModalHeader>Descargar Relación</ModalHeader>
         <ModalBody>
-          <CreateExcel dispatch={dispatch} isProcessing={isProcessing} />
+          <CreateExcel dispatch={dispatch} isProcessing={isProcessing} excelType={excelType} />
         </ModalBody>
       </Modal>
     </div>
