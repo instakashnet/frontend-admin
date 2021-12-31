@@ -1,8 +1,9 @@
 import * as actionTypes from "./actionTypes";
 
-export const getExchangesRelationInit = (values) => ({
+export const getExchangesRelationInit = (values, excelType) => ({
   type: actionTypes.GET_EXCHANGES_RELATION_INIT,
   values,
+  excelType,
 });
 
 export const getExchangesRelationSuccess = () => ({

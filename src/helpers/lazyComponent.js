@@ -1,11 +1,11 @@
 import React, { Suspense } from "react";
 import BlockUI from "react-block-ui";
 
-const asyncComponent = (Component) => {
+export const asyncComponent = (Component) => {
   return (props) => (
     <Suspense
       fallback={
-        <BlockUI tag='div' blocking={true}>
+        <BlockUI tag="div" blocking={true}>
           {" "}
         </BlockUI>
       }
@@ -14,5 +14,3 @@ const asyncComponent = (Component) => {
     </Suspense>
   );
 };
-
-export default asyncComponent;

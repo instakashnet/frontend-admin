@@ -1,6 +1,8 @@
 import React from "react";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+
+// REDUX
+import { useSelector, useDispatch } from "react-redux";
 
 import { ConnectedStatus } from "../CommonForBoth/connected.component";
 import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
@@ -10,9 +12,13 @@ import logo from "../../assets/images/logo-light.svg";
 import icon from "../../assets/images/icon-light.svg";
 
 // Redux Store
-import { toggleRightSidebar, setOnline } from "../../store/actions";
+import { setOnline } from "../../store/actions";
 
-const Header = ({ user, toggleMenuCallback, setOnline }) => {
+const Header = ({ toggleMenuCallback }) => {
+  const dispatch = useDispatch(),
+    { isProcessing, user } = useSelector((state) => state.Login);
+
+  // HANDLERS
   const toggleMenu = () => toggleMenuCallback();
 
   const toggleFullscreen = () => {
@@ -64,7 +70,7 @@ const Header = ({ user, toggleMenuCallback, setOnline }) => {
             </div>
 
             <NotificationDropdown user={user} notifications={null} />
-            {user.role === "ROLE_OPERATOR" && <ConnectedStatus isOnline={user.isOnline} setIsOnline={setOnline} />}
+            {user.role === "ROLE_OPERATOR" && <ConnectedStatus isProcessing={isProcessing} isOnline={user.isOnline} setIsOnline={() => dispatch(setOnline())} />}
             <ProfileMenu user={user} />
           </div>
         </div>
@@ -73,10 +79,4 @@ const Header = ({ user, toggleMenuCallback, setOnline }) => {
   );
 };
 
-const mapStatetoProps = (state) => {
-  const { layoutType } = state.Layout;
-  const { user } = state.Login;
-  return { layoutType, user };
-};
-
-export default connect(mapStatetoProps, { toggleRightSidebar, setOnline })(Header);
+export default Header;

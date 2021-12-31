@@ -10,14 +10,19 @@ import { setAlert } from "../../actions";
 import { exchangeInstance, authInstance } from "../../../helpers/AuthType/axios";
 import { getClientExchanges } from "../../settings/clients/actions";
 
-function* getExchangesRelation({ values }) {
-  let URL = `/users/clients/orders/download?start=${values.start}&end=${values.end}`;
+function* getExchangesRelation({ values, excelType }) {
+  let URL;
+
+  if (excelType === "coupon" && values.couponName) {
+    URL = `/users/clients/coupons/${values.couponName.toUpperCase()}/download`;
+  } else URL = `/users/clients/orders/download?start=${values.start}&end=${values.end}`;
 
   if (values.bank) URL += `&bank=${values.bank}`;
   if (values.statusId) URL += `&status=${values.statusId}`;
 
   try {
     const res = yield authInstance.get(URL, { responseType: "arraybuffer" });
+
     yield call(fileDownload, res.data, `relacion_ordenes_${moment(values.start).format("DD-MM-YYYY HH:mm")}_${moment(values.end).format("DD-MM-YYYY HH:mm")}.xlsx`);
     yield put(actions.getExchangesRelationSuccess());
   } catch (error) {
