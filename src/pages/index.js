@@ -3,12 +3,37 @@ import { LoginScreen } from "./Authentication/login.screen";
 // Private screens
 import { DashboardScreen } from "./Dashboard/dashboard.screen";
 import { BankAccountsScreen } from "./BankAccounts/bank-accounts.screen";
+import { BankOrderDetailsScreen } from "./orders/containers/bank-order-details.screen";
+import { BankOrdersScreen } from "./orders/containers/bank-orders.screen";
 import { ForexScreen } from "./Forex/forex.screen";
 import { ScheduleScreen } from "./settings/Schedule/schedule.screen";
 import { CouponsScreen } from "./settings/Coupons/coupons.screen";
 import { BanksScreen } from "./settings/Banks/banks.screen";
 import { ClientsScreen } from "./settings/Users/containers/clients.screen";
+import { ClientDetailsScreen } from "./settings/Users/containers/client-details.screen";
 import { ClientsAccountsScreen } from "./settings/Users/containers/accounts.screen";
+import { ExchangesScreen } from "./orders/containers/exchanges.screen";
+import { ExchangeDetailsScreen } from "./orders/containers/exchange-details.screen";
+import { WithdrawalDetailsScreen } from "./orders/containers/withdrawal-details.screen";
+import { WithdrawalsScreen } from "./orders/containers/withdrawals.screen";
 import { StatusScreen } from "./settings/Status/status.screen";
 
-export { LoginScreen, DashboardScreen, BankAccountsScreen, ForexScreen, ScheduleScreen, CouponsScreen, BanksScreen, ClientsScreen, ClientsAccountsScreen, StatusScreen };
+export {
+  LoginScreen,
+  DashboardScreen,
+  BankAccountsScreen,
+  ForexScreen,
+  ScheduleScreen,
+  CouponsScreen,
+  BanksScreen,
+  ClientsScreen,
+  ClientDetailsScreen,
+  ClientsAccountsScreen,
+  StatusScreen,
+  BankOrdersScreen,
+  BankOrderDetailsScreen,
+  ExchangeDetailsScreen,
+  ExchangesScreen,
+  WithdrawalsScreen,
+  WithdrawalDetailsScreen,
+};
