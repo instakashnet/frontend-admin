@@ -39,10 +39,11 @@ function* loadUser() {
 
     const redirectRoute = yield call(setRoleRedirect, userData.role);
     yield put(actions.loginSuccess(userData, accessToken));
-    yield history && history.push(redirectRoute);
+    yield history.push(redirectRoute);
     yield call(setAuthTimeout, expTime.getTime() - new Date().getTime());
   } catch (error) {
-    yield put(actions.logoutUser(history));
+    console.log(error);
+    yield put(actions.logoutUser());
     yield put(actions.loadUserError());
   }
 }
@@ -91,15 +92,15 @@ function* setOnline() {
 
 function* logoutUser() {
   try {
-    yield authInstance.post("/auth/logout");
+    authInstance.post("/auth/logout");
   } catch (error) {
     console.log(error);
   }
 
   yield call([localStorage, "removeItem"], "authUser");
   yield call([sessionStorage, "removeItem"], "session");
-  yield call([history, "push"], "/login");
   yield put(actions.logoutUserSuccess());
+  yield call([history, "push"], "/login");
 }
 
 export function* watchLoadUser() {
