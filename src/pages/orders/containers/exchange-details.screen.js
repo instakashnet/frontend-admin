@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Container, Row, Col, Modal, ModalBody, ModalHeader } from "reactstrap";
-import { getExchangeDetails, createInvoice, approveExchange, validateExchange, declineExchange } from "../../../store/actions";
+import { getExchangeDetails, getClientExchanges, createInvoice, approveExchange, validateExchange, declineExchange } from "../../../store/actions";
 import { useRole } from "../../../hooks/useRole";
 
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
@@ -88,7 +88,7 @@ export const ExchangeDetailsScreen = (props) => {
           </Row>
           <Row>
             <Col lg="10" xl="8">
-              <UserTransactions isLoading={dataLoading} orders={exchanges} role={user.role} />
+              <UserTransactions getTransactions={() => dispatch(getClientExchanges(details.userId))} isLoading={dataLoading} orders={exchanges} />
             </Col>
           </Row>
         </Container>
