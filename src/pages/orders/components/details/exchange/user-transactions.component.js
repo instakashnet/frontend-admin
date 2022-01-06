@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardBody } from "reactstrap";
 import moment from "moment-timezone";
+import { Button } from "reactstrap";
 import { formatAmount } from "../../../../../helpers/functions";
 import { oldExchangesColumns } from "../../../../../helpers/tables/columns";
 
@@ -8,7 +9,7 @@ import { Table } from "../../../../../components/UI/tables/table.component";
 
 const PAGE_SIZE = 5;
 
-export const UserTransactions = ({ orders, isLoading, details }) => {
+export const UserTransactions = ({ orders, isLoading, details, getTransactions }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -31,10 +32,15 @@ export const UserTransactions = ({ orders, isLoading, details }) => {
   }, [details, orders]);
 
   return (
-    <Card>
-      <CardBody>
-        <Table title="Operaciones realizadas" columns={oldExchangesColumns} isLoading={isLoading} data={data} pagination={{ pageSize: PAGE_SIZE, async: false }} />
-      </CardBody>
-    </Card>
+    <>
+      <Button type="buttom" color="primary" onClick={getTransactions} className="my-3">
+        Obtener operaciones
+      </Button>
+      <Card>
+        <CardBody>
+          <Table title="Operaciones realizadas" columns={oldExchangesColumns} isLoading={isLoading} data={data} pagination={{ pageSize: PAGE_SIZE, async: false }} />
+        </CardBody>
+      </Card>
+    </>
   );
 };

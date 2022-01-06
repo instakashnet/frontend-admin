@@ -4,7 +4,7 @@ const initialState = {
   accounts: [],
   exchanges: [],
   widthdrawals: [],
-  isLoading: true,
+  isLoading: false,
   isProcessing: false,
 };
 
