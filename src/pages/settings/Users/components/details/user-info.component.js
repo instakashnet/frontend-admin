@@ -4,9 +4,9 @@ import { Col, Card, CardBody, Button } from "reactstrap";
 import Male from "../../../../../assets/images/profile-male.svg";
 import Female from "../../../../../assets/images/profile-female.svg";
 
-const BasicInfo = ({ user, profile, openModal, onDisable }) => {
+const BasicInfo = ({ user, openModal, onDisable }) => {
   let Avatar = Male;
-  if (profile && profile.identity_sex === "female") Avatar = Female;
+  if (user.identity_sex === "female") Avatar = Female;
 
   return (
     <Col lg="6">
@@ -19,12 +19,12 @@ const BasicInfo = ({ user, profile, openModal, onDisable }) => {
             KASH acumulados = <b>{user.kashAcumulated || 0}</b>
           </p>
           <div className="flex items-center justify-center">
-            {!profile && (
-              <Button type="button" className="btn-primary mr-3" onClick={() => openModal("addNatural", {})}>
-                Agregar perfil
+            {!user.document_type && (
+              <Button type="button" className="btn-primary mr-3" onClick={() => openModal("editUser")}>
+                Agregar datos
               </Button>
             )}
-            <Button type="button" className="btn-secondary" onClick={() => openModal("editInfo", profile)}>
+            <Button type="button" className="btn-secondary" onClick={() => openModal("editInfo")}>
               Editar datos
             </Button>
             <Button type="button" className="btn-danger ml-3" onClick={() => onDisable(user.id, !!+user.active)}>

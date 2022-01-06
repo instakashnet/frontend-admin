@@ -31,7 +31,6 @@ export const ExchangesScreen = () => {
         const tableData = await getAllOrders({ search, pageCount });
         setData(tableData);
       } catch (error) {
-        console.log(error);
         dispatch(setAlert("danger", "Ha ocurrido un error obteniendo la lista de ordenes. Por favor intenta de nuevo o contacta a soporte."));
       } finally {
         setIsLoading(false);
