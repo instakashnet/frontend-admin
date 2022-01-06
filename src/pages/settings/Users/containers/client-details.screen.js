@@ -26,14 +26,6 @@ export const ClientDetailsScreen = (props) => {
     { id } = props.match.params,
     { details, accounts, exchanges, isProcessing, isLoading } = useSelector((state) => state.Clients);
 
-  let companyProfiles = [],
-    userProfile;
-
-  if (details && details.profiles) {
-    userProfile = details.profiles.find((profile) => profile.type === "natural");
-    companyProfiles = details.profiles.filter((profile) => profile.type !== "natural");
-  }
-
   const openModal = (modalType, profileData = {}, document = "") => {
     setProfileDetails(profileData);
     setModalType(modalType);
@@ -56,14 +48,8 @@ export const ClientDetailsScreen = (props) => {
 
   let ModalComponent;
 
-  if (modalType === "addNatural") ModalComponent = <EditUserProfile userId={id} details={profileDetails} isProcessing={isProcessing} closeModal={closeModal} />;
-  if (modalType === "editProfile")
-    ModalComponent =
-      profileDetails.type === "natural" ? (
-        <EditUserProfile userId={id} isProcessing={isProcessing} closeModal={closeModal} details={profileDetails} />
-      ) : (
-        <EditCompanyProfile userId={id} isProcessing={isProcessing} closeModal={closeModal} details={profileDetails} />
-      );
+  if (modalType === "editUser") ModalComponent = <EditUserProfile userId={id} details={details} isProcessing={isProcessing} closeModal={closeModal} />;
+  if (modalType === "editProfile") ModalComponent = <EditCompanyProfile userId={id} isProcessing={isProcessing} closeModal={closeModal} details={profileDetails} />;
 
   if (modalType === "editInfo") ModalComponent = <EditUserInfo userId={id} isProcessing={isProcessing} details={details} closeModal={closeModal} />;
   if (modalType === "addDocument") ModalComponent = <AddDocument userId={id} type={documentType} isProcessing={isProcessing} closeModal={closeModal} />;
@@ -78,29 +64,33 @@ export const ClientDetailsScreen = (props) => {
               <i className="fas fa-arrow-left label-icon"></i> Regresar
             </button>
             <Row>
-              {details && <BasicInfo user={details} profile={userProfile} onDisable={disableClientHandler} openModal={openModal} />}
-              {userProfile && <ProfileInfo profile={userProfile} openModal={openModal} />}
+              {details && (
+                <>
+                  <BasicInfo user={details} onDisable={disableClientHandler} openModal={openModal} />
+                  <ProfileInfo profile={details} openModal={openModal} />
+                </>
+              )}
             </Row>
             <Row>
-              {companyProfiles.length > 0 && (
+              {details && details.profiles.length > 0 && (
                 <Col lg="12">
                   <Breadcrumbs title="Perfiles de empresa" breadcrumbItem="Empresas" />
                 </Col>
               )}
-              {companyProfiles.map((company) => (
-                <CompanyInfo key={company.id} company={company} openModal={openModal} />
-              ))}
+              {details && details.profiles.map((company) => <CompanyInfo key={company.id} company={company} openModal={openModal} />)}
             </Row>
-            {userProfile && (
-              <Row>
+            <Row>
+              {accounts.length > 0 && (
                 <Col lg="6">
                   <UserAccounts accounts={accounts} isLoading={isLoading} />
                 </Col>
+              )}
+              {exchanges.length > 0 && (
                 <Col lg="12">
                   <UserTransactions orders={exchanges} isLoading={isLoading} />
                 </Col>
-              </Row>
-            )}
+              )}
+            </Row>
           </Container>
 
           <Modal isOpen={modal} role="dialog" autoFocus={true} centered={true} tabIndex="-1" toggle={closeModal}>

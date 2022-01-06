@@ -8,7 +8,6 @@ import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
 import { setAlert } from "../../actions";
 import { exchangeInstance, authInstance } from "../../../helpers/AuthType/axios";
-import { getClientExchanges } from "../../settings/clients/actions";
 
 function* getExchangesRelation({ values, excelType }) {
   let URL;
@@ -36,7 +35,6 @@ function* getExchangeDetails({ id }) {
     const res = yield exchangeInstance.get(`/order/${id}`);
     if (res.status === 200) {
       const exchangeDetails = camelize(res.data);
-      yield put(getClientExchanges(res.data.userId));
       yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
     }
   } catch (error) {

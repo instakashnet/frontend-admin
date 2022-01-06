@@ -88,7 +88,7 @@ export const ExchangeDetailsScreen = (props) => {
           </Row>
           <Row>
             <Col lg="10" xl="8">
-              <UserTransactions isLoading={dataLoading} orders={exchanges} />
+              <UserTransactions isLoading={dataLoading} orders={exchanges} role={user.role} />
             </Col>
           </Row>
         </Container>
