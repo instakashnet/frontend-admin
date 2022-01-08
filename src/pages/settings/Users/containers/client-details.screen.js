@@ -64,20 +64,20 @@ export const ClientDetailsScreen = (props) => {
               <i className="fas fa-arrow-left label-icon"></i> Regresar
             </button>
             <Row>
-              {details && (
-                <>
-                  <BasicInfo user={details} onDisable={disableClientHandler} openModal={openModal} />
-                  <ProfileInfo user={details} openModal={openModal} />
-                </>
-              )}
+              {details && <BasicInfo user={details} onDisable={disableClientHandler} openModal={openModal} />}
+              {details?.completed && <ProfileInfo user={details} openModal={openModal} />}
             </Row>
             <Row>
-              {details && details.profiles.length > 0 && (
-                <Col lg="12">
-                  <Breadcrumbs title="Perfiles de empresa" breadcrumbItem="Empresas" />
-                </Col>
+              {details?.profiles && details.profiles.length > 0 && (
+                <>
+                  <Col lg="12">
+                    <Breadcrumbs title="Perfiles de empresa" breadcrumbItem="Empresas" />
+                  </Col>
+                  {details.profiles.map((company) => (
+                    <CompanyInfo key={company.id} company={company} openModal={openModal} />
+                  ))}
+                </>
               )}
-              {details && details.profiles.map((company) => <CompanyInfo key={company.id} company={company} openModal={openModal} />)}
             </Row>
             <Row>
               {accounts.length > 0 && (
