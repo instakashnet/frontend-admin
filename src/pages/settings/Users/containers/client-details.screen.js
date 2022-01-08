@@ -67,7 +67,7 @@ export const ClientDetailsScreen = (props) => {
               {details && (
                 <>
                   <BasicInfo user={details} onDisable={disableClientHandler} openModal={openModal} />
-                  <ProfileInfo profile={details} openModal={openModal} />
+                  <ProfileInfo user={details} openModal={openModal} />
                 </>
               )}
             </Row>
