@@ -15,7 +15,7 @@ const EditUser = ({ details, userId, closeModal, isProcessing }) => {
       type: "natural",
       userId: +userId,
       identity_sex: details.identity_sex || "",
-      profileId: details.id || "",
+      profileId: details.profileId || "",
       first_name: details.first_name || "",
       last_name: details.last_name || "",
       document_type: details.document_type || "",

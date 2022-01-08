@@ -3,7 +3,7 @@ import { Photo } from "@material-ui/icons";
 import moment from "moment";
 import { Col, Card, CardBody, CardTitle, Button, Table } from "reactstrap";
 
-const ProfileInfo = ({ profile, openModal }) => {
+const ProfileInfo = ({ user, openModal }) => {
   return (
     <Col lg="6">
       <Card>
@@ -20,86 +20,86 @@ const ProfileInfo = ({ profile, openModal }) => {
               <tbody>
                 <tr>
                   <th scope="row">Nombre completo:</th>
-                  <td>{`${profile.first_name} ${profile.last_name}`}</td>
+                  <td>{`${user.first_name} ${user.last_name}`}</td>
                 </tr>
-                {profile.date_birth && (
+                {user.date_birth && (
                   <tr>
                     <th scope="row">Fecha de nacimiento</th>
-                    <td>{moment(profile.date_birth).format("Do MMMM YYYY")}</td>
+                    <td>{moment(user.date_birth).format("Do MMMM YYYY")}</td>
                   </tr>
                 )}
                 <tr>
                   <th scope="row">Dirección</th>
-                  <td>{profile.address || ""}</td>
+                  <td>{user.address || ""}</td>
                 </tr>
                 <tr>
                   <th scope="row">Ocupación</th>
-                  <td>{profile.job || ""}</td>
+                  <td>{user.job || ""}</td>
                 </tr>
                 <tr>
                   <th scope="row">Profesión</th>
-                  <td>{profile.profession || ""}</td>
+                  <td>{user.profession || ""}</td>
                 </tr>
                 <tr>
                   <th scope="row">¿Persona políticamente expuesta?</th>
-                  <td>{profile.pep ? "SI" : "NO"}</td>
+                  <td>{user.pep ? "SI" : "NO"}</td>
                 </tr>
                 <tr>
                   <th scope="row">Documento</th>
-                  <td>{`${profile.document_type} ${profile.document_identification}`}</td>
+                  <td>{`${user.document_type} ${user.document_identification}`}</td>
                 </tr>
               </tbody>
             </Table>
           </div>
           <CardTitle className="text-center">Fotos de documento</CardTitle>
 
-          {profile.identityDocumentValidation !== "success" ? (
+          {user.identityDocumentValidation !== "success" ? (
             <div className="flex flex-wrap items-center justify-center mt-4">
-              {profile.document_type !== "pasaporte" ? (
+              {user.document_type !== "pasaporte" ? (
                 <>
-                  <button className="underline mx-6" onClick={() => openModal("addDocument", profile, "identity_photo")}>
+                  <button className="underline mx-6" onClick={() => openModal("addDocument", user, "identity_photo")}>
                     Agregar foto frontal
                   </button>
-                  <button className="underline mx-6" onClick={() => openModal("addDocument", profile, "identity_photo_two")}>
+                  <button className="underline mx-6" onClick={() => openModal("addDocument", user, "identity_photo_two")}>
                     Agregar foto trasera
                   </button>
                 </>
               ) : (
-                <button className="underline mx-6" onClick={() => openModal("addDocument", profile, "identity_photo")}>
+                <button className="underline mx-6" onClick={() => openModal("addDocument", user, "identity_photo")}>
                   Agregar foto pasaporte
                 </button>
               )}
             </div>
           ) : (
             <div className="flex flex-wrap items-center justify-center mt-4">
-              {profile.document_type !== "pasaporte" ? (
+              {user.document_type !== "pasaporte" ? (
                 <>
                   <div className="flex flex-col items-center mx-6">
-                    <a className="flex flex-col items-center justify-center" href={profile.identity_photo_front} target="_blank" rel="noopener noreferrer">
+                    <a className="flex flex-col items-center justify-center" href={user.identity_photo_front} target="_blank" rel="noopener noreferrer">
                       <Photo size={35} />
                       <p className="text-muted mb-1">Foto frontal</p>
                     </a>
-                    <button className="underline" onClick={() => openModal("addDocument", profile, "identity_photo")}>
+                    <button className="underline" onClick={() => openModal("addDocument", user, "identity_photo")}>
                       Cambiar foto
                     </button>
                   </div>
                   <div className="flex flex-col items-center mx-6">
-                    <a className="flex flex-col items-center justify-center" href={profile.identity_photo_back} target="_blank" rel="noopener noreferrer">
+                    <a className="flex flex-col items-center justify-center" href={user.identity_photo_back} target="_blank" rel="noopener noreferrer">
                       <Photo size={35} />
                       <p className="text-muted mb-1">Foto trasera</p>
                     </a>
-                    <button className="underline" onClick={() => openModal("addDocument", profile, "identity_photo_two")}>
+                    <button className="underline" onClick={() => openModal("addDocument", user, "identity_photo_two")}>
                       Cambiar foto
                     </button>
                   </div>
                 </>
               ) : (
                 <div className="flex flex-col items-center mx-6">
-                  <a className="flex flex-col items-center justify-center" href={profile.identity_photo_front} target="_blank" rel="noopener noreferrer">
+                  <a className="flex flex-col items-center justify-center" href={user.identity_photo_front} target="_blank" rel="noopener noreferrer">
                     <Photo size={35} />
                     <p className="text-muted mb-1">Foto pasaporte</p>
                   </a>
-                  <button className="underline" onClick={() => openModal("addDocument", profile, "identity_photo")}>
+                  <button className="underline" onClick={() => openModal("addDocument", user, "identity_photo")}>
                     Cambiar foto
                   </button>
                 </div>
