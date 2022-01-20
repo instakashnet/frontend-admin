@@ -29,27 +29,24 @@ function* loadUser() {
     yield put(actions.loadUserError());
   }
 
-  const date = new Date();
-  const expTime = new Date(date.setMilliseconds(tokenExp * 1000));
-  if (expTime <= new Date()) return yield put(actions.logoutUser(history));
+  if (new Date(tokenExp) <= new Date()) return yield put(actions.logoutUser(history));
 
   try {
     const res = yield authInstance.get("/users/session");
     const userData = { ...user, isOnline: res.data.online };
-
     const redirectRoute = yield call(setRoleRedirect, userData.role);
+
     yield put(actions.loginSuccess(userData, accessToken));
     yield history.push(redirectRoute);
-    yield call(setAuthTimeout, expTime.getTime() - new Date().getTime());
+    yield call(setAuthTimeout, new Date(tokenExp).getTime() - new Date().getTime());
   } catch (error) {
-    console.log(error);
     yield put(actions.logoutUser());
     yield put(actions.loadUserError());
   }
 }
 
 function* setAuthTimeout(timeout) {
-  yield delay(timeout - 6000);
+  yield delay(timeout - 60000);
   yield call(logoutUser);
 }
 
@@ -58,10 +55,11 @@ function* loginUser({ payload }) {
   try {
     const res = yield authInstance.post("/auth/signin", user);
 
+    const date = new Date();
     const userObj = {
       accessToken: res.data.accessToken,
       userId: res.data.id,
-      tokenExp: res.data.expiresIn,
+      tokenExp: new Date(date.setSeconds(date.getSeconds() + res.data.expiresIn)),
       user: { name: res.data.name, email: res.data.email, role: res.data.roles[0] },
     };
 
