@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Card, CardBody, Col, Row, Container, Button, Modal, ModalHeader, ModalBody } from "reactstrap";
+import { Card, CardBody, Col, Row, Container, Spinner, Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useRole } from "../../../hooks/useRole";
 import { getAllOrders } from "../../../services/orders/exchanges.service";
@@ -12,7 +12,7 @@ import { Table } from "../../../components/UI/tables/table.component";
 
 const PAGE_SIZE = 50;
 
-export const ExchangesScreen = () => {
+export const AllExchangesScreen = () => {
   const dispatch = useDispatch(),
     [modal, setModal] = useState(false),
     [isLoading, setIsLoading] = useState(true),
@@ -43,17 +43,6 @@ export const ExchangesScreen = () => {
     getTableData();
   }, [getTableData]);
 
-  useEffect(() => {
-    let interval;
-
-    if (!search) interval = setInterval(getTableData, 60000);
-    if (search && interval) clearInterval(interval);
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [getTableData, search]);
-
   const onCreateExcel = (type) => {
     setExcelType(type);
     setModal(true);
@@ -65,9 +54,9 @@ export const ExchangesScreen = () => {
         <Row>
           <Col lg="12">
             <div className="flex items-center">
-              {/* <Button onClick={() => getTableData()} className="mb-4 btn-primary" disabled={isLoading}>
+              <Button onClick={() => getTableData()} className="mb-4 btn-primary" disabled={isLoading}>
                 {isLoading ? <Spinner size="sm" /> : "Actualizar operaciones"}
-              </Button> */}
+              </Button>
 
               {(role === "admin" || role === "officers") && (
                 <Button onClick={() => onCreateExcel("data")} className="mb-4 ml-4 btn-primary">

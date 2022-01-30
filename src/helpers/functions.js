@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const convertHexToRGBA = (hexCode, opacity) => {
   let hex = hexCode.replace("#", "");
 
@@ -41,3 +43,40 @@ export const checkInterplaza = (bank, accNumber) => {
 };
 
 export const formatAmount = (amount) => Number(amount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+export const formatOrders = (ordersData, type) => {
+  let orders = [];
+
+  if (type === "bank-orders") {
+    orders = ordersData.map((order) => ({
+      id: order.id,
+      orderId: order.uuid,
+      date: moment(order.created).format("DD/MM/YYYY hh:mm a"),
+      amountToSend: `${order.currencySentSymbol} ${formatAmount(order.amountSent)}`,
+      amountToReceive: `${order.currencyReceivedSymbol} ${formatAmount(order.amountReceived)}`,
+      bankOrigin: order.accFromBankName,
+      bankDestination: order.accToBankName,
+      rate: order.rate,
+      statusName: order.stateName,
+      statusColor: order.stateColor,
+    }));
+  } else {
+    orders = ordersData.map((order) => ({
+      id: order.id,
+      pedidoId: order.uuid,
+      date: order.completedAt ? moment(order.completedAt).format("DD/MM/YY hh:mm a") : "Sin completar",
+      user: order.firstName + " " + order.lastName,
+      revision: order.orderNotes,
+      amountSent: order.amountSent > 0 ? `${order.currencySentSymbol} ${formatAmount(order.amountSent)}` : `${order.kashUsed} KASH`,
+      amountReceived: `${order.currencyReceivedSymbol} ${formatAmount(order.amountReceived)}`,
+      originBank: order.amountSent > 0 ? order.bankFromName : "kash",
+      destinationBank: order.accToBankName,
+      statusName: order.stateName,
+      statusColor: order.stateColor,
+      invoice: order.billAssigned,
+      companyName: order.razonSocial || "",
+    }));
+  }
+
+  return orders;
+};

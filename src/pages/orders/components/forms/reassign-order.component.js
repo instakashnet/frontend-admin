@@ -19,8 +19,6 @@ const ReassignOrder = ({ details, isProcessing, onShowForm }) => {
     dispatch(getClientAccounts(userId));
   }, [dispatch, userId]);
 
-  console.log(clientAccounts);
-
   const operatorOptions = operators.map((operator) => ({ label: `${operator.name} - ${operator.email}`, value: operator.userId }));
   const clientAccountOptions = clientAccounts.map((clientAccount) => ({
     label: `${clientAccount.account_number || clientAccount.cci} - ${clientAccount.currency.Symbol}`,
