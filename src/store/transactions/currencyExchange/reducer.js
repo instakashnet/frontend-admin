@@ -21,6 +21,7 @@ export default function currencyExchangeReducer(state = initialState, action) {
     case actionTypes.SET_REVISION_INIT:
     case actionTypes.REASSIGN_ORDER_INIT:
     case actionTypes.GET_EXCHANGES_RELATION_INIT:
+    case actionTypes.CHANGE_ORDER_STATUS_INIT:
       return { ...state, isProcessing: true };
 
     case actionTypes.VALIDATE_EXCHANGE_SUCCESS:
@@ -31,6 +32,7 @@ export default function currencyExchangeReducer(state = initialState, action) {
     case actionTypes.SET_REVISION_SUCCESS:
     case actionTypes.REASSIGN_ORDER_SUCCESS:
     case actionTypes.GET_EXCHANGES_RELATION_SUCCESS:
+    case actionTypes.CHANGE_ORDER_STATUS_SUCCESS:
       return { ...state, isProcessing: false };
 
     case actionTypes.GET_EXCHANGE_DETAILS:

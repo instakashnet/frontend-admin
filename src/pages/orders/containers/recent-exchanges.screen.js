@@ -14,6 +14,7 @@ import { exchangesColumns } from "../../../helpers/tables/columns";
 import { Table } from "../../../components/UI/tables/table.component";
 
 const PAGE_SIZE = 50;
+const WS_URL = process.env.REACT_APP_STAGE === "prod" ? process.env.REACT_APP_WS_URL : process.env.REACT_APP_WS_DEV_URL;
 
 export const RecentExchangesScreen = () => {
   const websocket = useRef(null),
@@ -22,7 +23,7 @@ export const RecentExchangesScreen = () => {
     { token } = useSelector((state) => state.Login);
 
   useEffect(() => {
-    websocket.current = new WebSocket(`wss://ws.dev.instakash.net/ws?token=${token}`);
+    websocket.current = new WebSocket(`${WS_URL}/ws?token=${token}`);
 
     websocket.current.onopen = (event) => console.log("WebSocket connection established.");
 
