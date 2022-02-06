@@ -11,12 +11,12 @@ export const generalLinks = [
     label: "Cuentas bancarias",
     roles: ["admin", "officers", "manager"],
   },
-  {
-    path: "/bank-orders",
-    icon: "bx bx-dollar",
-    label: "Pedidos a caja",
-    roles: ["admin", "officers"],
-  },
+  // {
+  //   path: "/bank-orders",
+  //   icon: "bx bx-dollar",
+  //   label: "Pedidos a caja",
+  //   roles: ["admin", "officers"],
+  // },
   {
     path: "/forex",
     icon: "bx bx-dollar-circle",
@@ -27,10 +27,24 @@ export const generalLinks = [
 
 export const ordersLinks = [
   {
-    path: "/exchanges/all",
-    icon: "bx bx-list-check",
-    label: "Ordenes recibidas",
+    path: "/!#",
+    icon: "bx bx-money",
+    label: "Ordenes",
     roles: ["admin", "officers", "manager", "orders"],
+    subNavs: [
+      {
+        path: "/exchanges/recent",
+        icon: "bx bx-list-ol",
+        label: "Ordenes recientes",
+        roles: ["admin", "officers", "manager", "orders"],
+      },
+      {
+        path: "/exchanges/all",
+        icon: "bx bx-list-check",
+        label: "Lista de ordenes",
+        roles: ["admin", "officers", "manager", "orders"],
+      },
+    ],
   },
   {
     path: "/withdrawals/all",

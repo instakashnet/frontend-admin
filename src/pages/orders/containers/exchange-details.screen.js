@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Container, Row, Col, Modal, ModalBody, ModalHeader } from "reactstrap";
-import { getExchangeDetails, getClientExchanges, createInvoice, approveExchange, validateExchange, declineExchange } from "../../../store/actions";
+import { getExchangeDetails, getClientExchanges, createInvoice, approveExchange, validateExchange, declineExchange, changeOrderStatus } from "../../../store/actions";
 import { useRole } from "../../../hooks/useRole";
 
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
@@ -36,11 +36,23 @@ export const ExchangeDetailsScreen = (props) => {
     setFormType(formType);
   };
 
-  const changeStatusHandler = () => {
-    if (details.stateId === 3) return dispatch(validateExchange(details.id, history));
-    showFormHandler("complete");
-  };
-  const onDeclineExchange = () => dispatch(declineExchange(details.id, history));
+  const changeStatusHandler = useCallback(
+    (status, type = null) => {
+      if (type === "change") return dispatch(changeOrderStatus(details.id, status));
+
+      switch (status) {
+        case 4:
+          return dispatch(validateExchange(details.id, history));
+        case 5:
+          return dispatch(declineExchange(details.id, history));
+        case 6:
+          return showFormHandler("complete");
+        default:
+          break;
+      }
+    },
+    [details, dispatch, history]
+  );
   const onApproveExchange = (values) => dispatch(approveExchange(id, values, showFormHandler));
   const onCreateInvoice = () => dispatch(createInvoice(id));
 
@@ -66,10 +78,10 @@ export const ExchangeDetailsScreen = (props) => {
                 goBack={() => history.goBack()}
                 statusId={details.stateId}
                 billCreated={details.billAssigned}
-                onDecline={onDeclineExchange}
                 onCreateInvoice={onCreateInvoice}
                 onChangeStatus={changeStatusHandler}
                 isProcessing={isProcessing}
+                role={role}
                 hasInvoice
               />
               {details.user && <UserInfo user={details.user} role={role} isLoading={isLoading} />}

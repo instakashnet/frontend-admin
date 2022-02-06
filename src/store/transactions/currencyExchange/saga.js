@@ -59,6 +59,21 @@ function* editExchange({ id, values, closeModal }) {
   }
 }
 
+function* changeOrderStatus({ status, id }) {
+  try {
+    const res = yield exchangeInstance.put(`/order/update-status/${id}`, { status });
+
+    if (res.status === 200) {
+      yield call(getExchangeDetails, { id });
+      yield Swal.fire("Exitoso", `La operación ha cambiado de estado.`, "success");
+      yield put(actions.changeOrderStatusSuccess());
+    }
+  } catch (error) {
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
+
 function* validateExchange({ orderId }) {
   try {
     const result = yield Swal.fire({
@@ -212,6 +227,10 @@ export function* watchExchangeDetails() {
   yield takeEvery(actionTypes.GET_EXCHANGE_DETAILS, getExchangeDetails);
 }
 
+export function* watchChangeOrderStatus() {
+  yield takeLatest(actionTypes.CHANGE_ORDER_STATUS_INIT, changeOrderStatus);
+}
+
 export function* watchValidateExchange() {
   yield takeEvery(actionTypes.VALIDATE_EXCHANGE, validateExchange);
 }
@@ -243,6 +262,7 @@ export default function* currencyExchangeSaga() {
     fork(watchApproveExchange),
     fork(watchValidateExchange),
     fork(watchDeclineExchange),
+    fork(watchChangeOrderStatus),
     fork(watchEditExchange),
     fork(watchCreateInvoice),
     fork(watchReassignOrder),
