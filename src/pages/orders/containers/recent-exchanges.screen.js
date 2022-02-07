@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardBody, Col, Row, Container } from "reactstrap";
-import camelize from "camelize";
 
 // REDUX
 import { useSelector } from "react-redux";
@@ -25,9 +24,9 @@ export const RecentExchangesScreen = () => {
   useEffect(() => {
     websocket.current = new WebSocket(`${WS_URL}/ws?token=${token}`);
 
-    websocket.current.onopen = (event) => console.log("WebSocket connection established.");
+    websocket.current.onopen = () => console.log("WebSocket connection established.");
 
-    websocket.current.onclose = (event) => {
+    websocket.current.onclose = () => {
       console.log("connection closed.");
       setIsLoading(false);
     };
@@ -46,8 +45,7 @@ export const RecentExchangesScreen = () => {
       setIsLoading(true);
 
       const data = JSON.parse(event.data),
-        ordersData = camelize(JSON.parse(data.data)),
-        orders = formatOrders(ordersData, "orders");
+        orders = formatOrders(JSON.parse(data.data), "orders");
 
       setData(orders);
       setIsLoading(false);

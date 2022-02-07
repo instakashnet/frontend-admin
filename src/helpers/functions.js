@@ -1,4 +1,5 @@
 import moment from "moment";
+import camelize from "camelize";
 
 export const convertHexToRGBA = (hexCode, opacity) => {
   let hex = hexCode.replace("#", "");
@@ -46,9 +47,10 @@ export const formatAmount = (amount) => Number(amount).toLocaleString("en-US", {
 
 export const formatOrders = (ordersData, type) => {
   let orders = [];
+  const ordersInfo = camelize(ordersData);
 
   if (type === "bank-orders") {
-    orders = ordersData.map((order) => ({
+    orders = ordersInfo.map((order) => ({
       id: order.id,
       orderId: order.uuid,
       date: moment(order.created).format("DD/MM/YYYY hh:mm a"),
@@ -61,7 +63,11 @@ export const formatOrders = (ordersData, type) => {
       statusColor: order.stateColor,
     }));
   } else {
-    orders = ordersData.map((order) => ({
+    const revisedOrders = ordersInfo.filter((ords) => ords.orderNotes).sort((o1, o2) => new Date(o2.created) - new Date(o1.created)),
+      notRevisedOrders = ordersInfo.filter((o) => !o.orderNotes),
+      arrangedOrders = revisedOrders.concat(notRevisedOrders);
+
+    orders = arrangedOrders.map((order) => ({
       id: order.id,
       pedidoId: order.uuid,
       date: order.completedAt ? moment(order.completedAt).format("DD/MM/YY hh:mm a") : "Sin completar",
