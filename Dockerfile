@@ -1,15 +1,9 @@
 FROM node:14 as build
 WORKDIR  /usr/src/app
-ARG REACT_APP_DEV_API_URL="https://api.dev.instakash.net"
-ARG REACT_APP_STAGE="dev"
-ARG REACT_APP_API_URL="https://api.dev.instakash.net"
-ENV REACT_APP_DEV_API_URL=$REACT_APP_DEV_API_URL
-ENV REACT_APP_API_URL=$REACT_APP_API_URL
-ENV REACT_APP_STAGE=$REACT_APP_STAGE
 COPY package.json yarn.lock ./
 RUN yarn
 COPY ./ ./
-RUN yarn build
+RUN yarn build:prod
 
 FROM nginx:1.21.5-alpine
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
