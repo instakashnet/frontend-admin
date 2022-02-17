@@ -1,7 +1,7 @@
 import * as types from "./types";
 import * as actions from "./actions";
 import { all, fork, put, takeEvery } from "redux-saga/effects";
-import { authInstance } from "../../../helpers/AuthType/axios";
+import { authInstance } from "../../../api/axios";
 
 function* getOperators() {
   try {

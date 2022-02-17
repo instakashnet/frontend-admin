@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Row, Container, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { getCouponsInit, disableCouponInit, deleteCouponInit } from "../../../store/actions";
-import { authInstance } from "../../../helpers/AuthType/axios";
+import { authInstance } from "../../../api/axios";
 
 import CouponsList from "./components/coupons-table.component";
 import EditCoupon from "./components/forms/edit-coupon.component";

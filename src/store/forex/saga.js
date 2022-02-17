@@ -2,7 +2,7 @@ import { fork, all, put, takeEvery, call, takeLatest } from "redux-saga/effects"
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
 import { setAlert } from "../actions";
-import { exchangeInstance } from "../../helpers/AuthType/axios";
+import { exchangeInstance } from "../../api/axios";
 
 function* getForex() {
   try {

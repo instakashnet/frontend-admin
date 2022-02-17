@@ -1,10 +1,9 @@
-import { takeEvery, takeLatest, fork, put, all, call, delay } from "redux-saga/effects";
+import { takeEvery, takeLatest, put, all, call } from "redux-saga/effects";
 
 // Login Redux States
-import { LOGIN_USER, LOGOUT_USER, LOAD_USER, SET_ONLINE_INIT } from "./actionTypes";
+import { LOGIN_USER, LOGOUT_USER, LOAD_USER, SET_ONLINE_INIT, REFRESH_TOKEN } from "./actionTypes";
 import * as actions from "./actions";
-import { setAlert } from "../../actions";
-import { authInstance } from "../../../helpers/AuthType/axios";
+import { authInstance } from "../../../api/axios";
 import history from "../../../helpers/history";
 
 function setRoleRedirect(role) {
@@ -14,59 +13,39 @@ function setRoleRedirect(role) {
   return route;
 }
 
-function* loadUser() {
-  const authUser = yield call([localStorage, "getItem"], "authUser");
-
-  if (!authUser) {
-    yield call([history, "push"], "/login");
-    return yield put(actions.loadUserError());
-  }
-
-  const { accessToken, tokenExp, user } = JSON.parse(authUser);
-
-  if (!accessToken) {
-    yield put(actions.logoutUser(history));
-    yield put(actions.loadUserError());
-  }
-
-  if (new Date(tokenExp) <= new Date()) return yield put(actions.logoutUser(history));
-
+function* refreshToken() {
   try {
-    const res = yield authInstance.get("/users/session");
-    const userData = { ...user, isOnline: res.data.online };
-    const redirectRoute = yield call(setRoleRedirect, userData.role);
+    const res = yield authInstance.post("/auth/refresh");
 
-    yield put(actions.loginSuccess(userData, accessToken));
+    if (res.status === 200) {
+      yield put(actions.refreshTokenSuccess(res.data.accessToken));
+      yield call(loadUser);
+    }
+  } catch (error) {
+    yield put(actions.logoutUserSuccess());
+  }
+}
+
+function* loadUser() {
+  try {
+    const res = yield authInstance.get("/users/session"),
+      userData = { ...res.data },
+      redirectRoute = yield call(setRoleRedirect, userData.roles);
+
+    yield put(actions.loadUserSuccess(userData));
     yield history.push(redirectRoute);
-    yield call(setAuthTimeout, new Date(tokenExp).getTime() - new Date().getTime());
   } catch (error) {
     yield put(actions.logoutUser());
-    yield put(actions.loadUserError());
   }
 }
 
-function* setAuthTimeout(timeout) {
-  yield delay(timeout - 60000);
-  yield call(logoutUser);
-}
-
-function* loginUser({ payload }) {
-  const { user } = payload;
+function* loginUser({ values }) {
   try {
-    const res = yield authInstance.post("/auth/signin", user);
+    const res = yield authInstance.post("/auth/signin", values);
 
-    const date = new Date();
-    const userObj = {
-      accessToken: res.data.accessToken,
-      userId: res.data.id,
-      tokenExp: new Date(date.setSeconds(date.getSeconds() + res.data.expiresIn)),
-      user: { name: res.data.name, email: res.data.email, role: res.data.roles[0] },
-    };
-
-    yield call([localStorage, "setItem"], "authUser", JSON.stringify(userObj));
+    yield put(actions.loginSuccess(res.data.accessToken));
     yield call(loadUser);
   } catch (error) {
-    yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -75,11 +54,8 @@ function* setOnline() {
   try {
     const res = yield authInstance.put("/auth/online");
     if (res.status === 200) {
-      const authUser = yield call([localStorage, "getItem"], "authUser");
-      const { user } = JSON.parse(authUser);
-
       const res = yield authInstance.get("/users/session");
-      const userData = { ...user, isOnline: res.data.online };
+      const userData = { ...res.data };
       yield put(actions.setOnlineSuccess(userData));
     }
   } catch (error) {
@@ -95,28 +71,16 @@ function* logoutUser() {
     console.log(error);
   }
 
-  yield call([localStorage, "removeItem"], "authUser");
-  yield call([sessionStorage, "removeItem"], "session");
   yield put(actions.logoutUserSuccess());
   yield call([history, "push"], "/login");
 }
 
-export function* watchLoadUser() {
-  yield takeEvery(LOAD_USER, loadUser);
-}
-
-export function* watchUserLogin() {
-  yield takeLatest(LOGIN_USER, loginUser);
-}
-
-export function* watchSetOnline() {
-  yield takeLatest(SET_ONLINE_INIT, setOnline);
-}
-
-export function* watchUserLogout() {
-  yield takeEvery(LOGOUT_USER, logoutUser);
-}
-
 export default function* authSaga() {
-  yield all([fork(watchLoadUser), fork(watchUserLogin), fork(watchUserLogout), fork(watchSetOnline)]);
+  yield all([
+    yield takeEvery(LOAD_USER, loadUser),
+    yield takeLatest(LOGIN_USER, loginUser),
+    yield takeLatest(SET_ONLINE_INIT, setOnline),
+    yield takeEvery(LOGOUT_USER, logoutUser),
+    yield takeEvery(REFRESH_TOKEN.INIT, refreshToken),
+  ]);
 }
