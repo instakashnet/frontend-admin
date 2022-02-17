@@ -4,7 +4,7 @@ import * as actions from "./actions";
 import { setAlert } from "../../actions";
 import Swal from "sweetalert2";
 import fileDownload from "js-file-download";
-import { exchangeInstance, authInstance, accountsInstance } from "../../../helpers/AuthType/axios";
+import { exchangeInstance, authInstance, accountsInstance } from "../../../api/axios";
 import { getExchangeDetails } from "../../transactions/currencyExchange/actions";
 import { getWithdrawalDetailsInit } from "../../transactions/withdrawals/actions";
 

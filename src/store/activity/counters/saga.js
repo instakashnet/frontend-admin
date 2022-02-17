@@ -1,7 +1,7 @@
 import { put, all, fork, takeEvery } from "redux-saga/effects";
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
-import { exchangeInstance, accountsInstance } from "../../../helpers/AuthType/axios";
+import { exchangeInstance, accountsInstance } from "../../../api/axios";
 
 function* getCounters() {
   try {

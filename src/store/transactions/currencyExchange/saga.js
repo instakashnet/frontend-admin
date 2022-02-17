@@ -7,7 +7,7 @@ import moment from "moment";
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
 import { setAlert, getClientExchangesSuccess } from "../../actions";
-import { exchangeInstance, authInstance } from "../../../helpers/AuthType/axios";
+import { exchangeInstance, authInstance } from "../../../api/axios";
 
 function* getExchangesRelation({ values, excelType }) {
   let URL;
@@ -36,7 +36,7 @@ function* getExchangeDetails({ id }) {
     if (res.status === 200) {
       const exchangeDetails = camelize(res.data);
       yield put(getClientExchangesSuccess([]));
-      yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
+      return yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));

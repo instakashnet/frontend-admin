@@ -37,7 +37,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
               <h5>Datos para enviar</h5>
               <div className="flex items-center justify-between">
                 <div className="mb-2 flex items-center">
-                  <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankSent.toLowerCase()}.svg`} alt={details.bankSent} width={80} className="mr-2" />
+                  <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankSent?.toLowerCase()}.svg`} alt={details.bankSent} width={80} className="mr-2" />
                   <span className="text-muted">
                     {details.currencyReceivedSymbol} - {details.accTypeTo === "savings" ? "ahorros" : "corriente"}
                   </span>
