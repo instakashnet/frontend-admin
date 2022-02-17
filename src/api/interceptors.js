@@ -1,4 +1,4 @@
-import { logoutUserSuccess } from "../store/actions";
+import { logoutUserSuccess, setAlert } from "../store/actions";
 
 let store;
 const requestLog = (config) => (process.env.REACT_APP_STAGE !== "prod" ? console.log(`Request sent to ${config.url}`) : false);
@@ -22,15 +22,17 @@ export const setAxiosInterceptor = (instance) => {
     (res) => res,
     (error) => {
       console.log(error);
+
       const originalRequest = error.config,
         status = error.status || error.response.status;
 
       if (status === 418 && !originalRequest._retry) {
         originalRequest._retry = true;
-        store.dispatch(logoutUserSuccess());
+        return store.dispatch(logoutUserSuccess());
       } else {
         let message;
         let code;
+
         if (error.response) {
           if (error.response.data.error) {
             message = error.response.data.error.message;
@@ -38,8 +40,9 @@ export const setAxiosInterceptor = (instance) => {
           } else message = "Ha ocurrido un error inesperado, por favor intenta de nuevo. Si el problema persiste contacte a soporte.";
         } else if (error.request) message = "Se ha caido la conexión, por favor revise su conexión a internet. Si el problema persiste contacte a soporte.";
 
-        error.message = message;
         error.code = code;
+
+        if (!originalRequest.url.includes("/refresh")) store.dispatch(setAlert("danger", message));
       }
 
       return Promise.reject(error);

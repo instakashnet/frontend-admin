@@ -3,7 +3,6 @@ import { takeEvery, takeLatest, put, all, call } from "redux-saga/effects";
 // Login Redux States
 import { LOGIN_USER, LOGOUT_USER, LOAD_USER, SET_ONLINE_INIT, REFRESH_TOKEN } from "./actionTypes";
 import * as actions from "./actions";
-import { setAlert } from "../../actions";
 import { authInstance } from "../../../api/axios";
 import history from "../../../helpers/history";
 
@@ -47,7 +46,6 @@ function* loginUser({ values }) {
     yield put(actions.loginSuccess(res.data.accessToken));
     yield call(loadUser);
   } catch (error) {
-    yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
