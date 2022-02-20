@@ -25,10 +25,10 @@ const login = (state = initialState, action) => {
     case actionTypes.LOGIN_SUCCESS:
       return { ...state, token: action.token, isProcessing: false };
     case actionTypes.LOGOUT_USER_SUCCESS:
-      return { ...state, isLoading: false, isSignedIn: false, user: null, token: null };
+      return { ...state, isLoading: false, isProcessing: false, isSignedIn: false, user: null, token: null };
 
     case actionTypes.SET_ONLINE_SUCCESS:
-      return { ...state, user: action.user, isLoading: false };
+      return { ...state, user: action.user, isProcessing: false };
 
     case actionTypes.API_ERROR:
       return { ...state, isLoading: false, isProcessing: false };

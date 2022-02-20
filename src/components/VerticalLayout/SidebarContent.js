@@ -14,25 +14,43 @@ const SidebarContent = () => {
   return (
     <div id="sidebar-menu">
       <ul className="metismenu list-unstyled" id="side-menu">
-        {(role === "admin" || role === "manager" || role === "officers") && <li className="menu-title">{"Principal"}</li>}
-
-        {generalLinks.map((link) => {
+        {generalLinks.map((link, i) => {
           const isRole = link.roles.find((linkRole) => linkRole === role);
-          return isRole ? <NavItem link={link} key={link.path} /> : null;
+          return isRole ? (
+            i === 0 ? (
+              <li key={link.title} className="menu-title">
+                {link.title}
+              </li>
+            ) : (
+              <NavItem link={link} key={link.path} />
+            )
+          ) : null;
         })}
 
-        <li className="menu-title">{"Cambios de divisa"}</li>
-
-        {ordersLinks.map((link) => {
+        {ordersLinks.map((link, i) => {
           const isRole = link.roles.find((linkRole) => linkRole === role);
-          return isRole ? <NavItem link={link} isRole={isRole} key={link.path} /> : null;
+          return isRole ? (
+            i === 0 ? (
+              <li key={link.title} className="menu-title">
+                {link.title}
+              </li>
+            ) : (
+              <NavItem link={link} isRole={isRole} key={link.path} />
+            )
+          ) : null;
         })}
 
-        {(role === "admin" || role === "manager" || role === "officers") && <li className="menu-title">Configuraciones generales</li>}
-
-        {configLinks.map((link) => {
+        {configLinks.map((link, i) => {
           const isRole = link.roles.find((linkRole) => linkRole === role);
-          return isRole ? <NavItem link={link} isRole={isRole} key={link.path} /> : null;
+          return isRole ? (
+            i === 0 ? (
+              <li key={link.title} className="menu-title">
+                {link.title}
+              </li>
+            ) : (
+              <NavItem link={link} isRole={isRole} key={link.path} />
+            )
+          ) : null;
         })}
       </ul>
     </div>

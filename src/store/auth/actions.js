@@ -30,9 +30,8 @@ export const loginSuccess = (token) => {
   };
 };
 
-export const logoutUser = (history) => ({
+export const logoutUser = () => ({
   type: actionTypes.LOGOUT_USER,
-  payload: { history },
 });
 
 export const logoutUserSuccess = () => {
