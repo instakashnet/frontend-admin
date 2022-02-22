@@ -12,21 +12,21 @@ function* getAdminsWorker() {
   }
 }
 
-function* getOperatorsWorker() {
+function* getOperatorsWorker({ online }) {
   try {
-    const res = yield authInstance.get("/users/operators");
-    if (res.status === 200) yield put(actions.getOperatorsSuccess(res.data.result));
+    const res = yield authInstance.get(`/users/operators${online ? "?online=true" : ""}`);
+    if (res.status === 200) yield put(actions.getOperatorsSuccess(res.data.admins));
   } catch (error) {
     yield put(actions.getOperatorsError());
   }
 }
 
-function* setAdminOnline({ userId }) {
+function* setOperatorOnline({ userId }) {
   try {
     const res = yield authInstance.put(`/auth/online/${userId}`);
-    if (res.status === 200) yield put(actions.getAdminsInit());
+    if (res.status === 200) yield put(actions.getOperatorsInit());
   } catch (error) {
-    yield put(actions.setAdminOnlineError());
+    yield put(actions.setOperatorOnlineError());
   }
 }
 
@@ -34,6 +34,6 @@ export function* adminsSaga() {
   yield all([
     yield takeEvery(types.GET_ADMINS.INIT, getAdminsWorker),
     yield takeEvery(types.GET_OPERATORS.INIT, getOperatorsWorker),
-    yield takeEvery(types.SET_ONLINE.INIT, setAdminOnline),
+    yield takeEvery(types.SET_ONLINE.INIT, setOperatorOnline),
   ]);
 }

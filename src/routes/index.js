@@ -17,7 +17,7 @@ import {
   ExchangeDetailsScreen,
   WithdrawalsScreen,
   WithdrawalDetailsScreen,
-  AdministratorsScreen,
+  OperatorsScreen,
   // BankOrdersScreen,
   BankOrderDetailsScreen,
   ClientDetailsScreen,
@@ -42,7 +42,7 @@ export const routes = [
   { path: "/users-list", component: ClientsScreen, roles: ["admin", "manager"] },
   { path: "/users-accounts", component: ClientsAccountsScreen, roles: ["admin", "manager"] },
   { path: "/user-details/:id", component: ClientDetailsScreen, roles: ["admin", "manager"] },
-  { path: "/administrators", component: AdministratorsScreen, roles: ["admin", "manager"] },
+  { path: "/operators", component: OperatorsScreen, roles: ["admin", "manager"] },
   { path: "/status", component: StatusScreen, roles: ["admin"] },
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 ];

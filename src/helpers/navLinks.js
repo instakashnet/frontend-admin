@@ -80,9 +80,9 @@ export const configLinks = [
     ],
   },
   {
-    path: "/administrators",
+    path: "/operators",
     icon: "bx bx-user-circle",
-    label: "Lista de administradores",
+    label: "Lista de operadores",
     roles: ["admin", "manager"],
   },
   {

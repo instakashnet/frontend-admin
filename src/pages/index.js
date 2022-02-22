@@ -18,7 +18,7 @@ import { ExchangeDetailsScreen } from "./orders/containers/exchange-details.scre
 import { WithdrawalDetailsScreen } from "./orders/containers/withdrawal-details.screen";
 import { WithdrawalsScreen } from "./orders/containers/withdrawals.screen";
 import { StatusScreen } from "./settings/Status/status.screen";
-import { AdministratorsScreen } from "./settings/Administrators/administrators.screen";
+import { OperatorsScreen } from "./settings/Operators/operators.screen";
 
 export {
   LoginScreen,
@@ -32,7 +32,7 @@ export {
   ClientDetailsScreen,
   ClientsAccountsScreen,
   StatusScreen,
-  AdministratorsScreen,
+  OperatorsScreen,
   // BankOrdersScreen,
   BankOrderDetailsScreen,
   ExchangeDetailsScreen,

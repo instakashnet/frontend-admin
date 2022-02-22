@@ -138,7 +138,7 @@ export const statusColumns = ({ onEdit }) => [
   },
 ];
 
-export const administratorsColumns = ({ onSetOnline }) => [
+export const operatorsColumns = ({ onSetOnline }) => [
   {
     accessor: "name",
     Header: "Usuario",
@@ -154,7 +154,7 @@ export const administratorsColumns = ({ onSetOnline }) => [
   {
     Header: "Banco",
     accessor: "bankName",
-    Cell: ({ cell }) => (cell.value ? <img src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} width={70} alt="banco" /> : <p>No disponible</p>),
+    Cell: ({ cell }) => (cell.value ? <img src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} width={70} alt={cell.value} /> : <p>No disponible</p>),
   },
   {
     Header: "Disponible",

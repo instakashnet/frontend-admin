@@ -17,8 +17,9 @@ export const getAdminsError = () => ({
 // --------------- //
 
 // GET OPERATORS ACTIONS
-export const getOperatorsInit = () => ({
+export const getOperatorsInit = (online) => ({
   type: types.GET_OPERATORS.INIT,
+  online,
 });
 
 export const getOperatorsSuccess = (operators) => ({
@@ -32,16 +33,16 @@ export const getOperatorsError = () => ({
 
 // --------------- //
 
-// SET ADMIN ONLINE ACTIONS
-export const setAdminOnlineInit = (userId) => ({
+// SET OPERATOR ONLINE ACTIONS
+export const setOperatorOnlineInit = (userId) => ({
   type: types.SET_ONLINE.INIT,
   userId,
 });
 
-export const setAdminOnlineSuccess = () => ({
+export const setOperatorOnlineSuccess = () => ({
   type: types.SET_ONLINE.SUCCESS,
 });
 
-export const setAdminOnlineError = () => ({
+export const setOperatorOnlineError = () => ({
   type: types.SET_ONLINE.ERROR,
 });
