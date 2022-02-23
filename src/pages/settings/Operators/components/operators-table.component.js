@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, CardBody } from "reactstrap";
 import moment from "moment-timezone";
 import { operatorsColumns } from "../../../../helpers/tables/columns";
+import { formatAmount } from "../../../../helpers/functions";
 
 import { Table } from "../../../../components/UI/tables/table.component";
 
@@ -20,6 +21,7 @@ export const OperatorsTable = ({ operators, isLoading, onSetOnline }) => {
           createdAt: moment(o.createdAt).format("DD-MM-YYYY"),
           online: o.online,
           bankName: o.bankName,
+          amountRange: `${formatAmount(o.minAmount)} - ${o.maxAmount > 1000000 ? "restante" : formatAmount(o.maxAmount)}`,
         }))
       );
     }

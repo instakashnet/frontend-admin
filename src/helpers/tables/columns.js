@@ -157,6 +157,10 @@ export const operatorsColumns = ({ onSetOnline }) => [
     Cell: ({ cell }) => (cell.value ? <img src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} width={70} alt={cell.value} /> : <p>No disponible</p>),
   },
   {
+    accessor: "amountRange",
+    Header: "Rango (USD)",
+  },
+  {
     Header: "Disponible",
     Cell: ({ row }) => <ConnectedStatus isOnline={!!row.original.online} setIsOnline={() => onSetOnline(row.original.id)} />,
   },
