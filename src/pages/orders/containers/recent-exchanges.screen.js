@@ -22,7 +22,7 @@ export const RecentExchangesScreen = () => {
     { token } = useSelector((state) => state.Login);
 
   useEffect(() => {
-    websocket.current = new WebSocket(`${WS_URL}/ws?token=${token}&service=orders`);
+    websocket.current = new WebSocket(`${WS_URL}/ws?token=${token}`);
 
     websocket.current.onopen = () => console.log("WebSocket connection established.");
 
