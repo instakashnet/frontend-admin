@@ -3,8 +3,8 @@ import { takeEvery, takeLatest, put, all, call } from "redux-saga/effects";
 // Login Redux States
 import { LOGIN_USER, LOGOUT_USER, LOAD_USER, SET_ONLINE_INIT, REFRESH_TOKEN } from "./actionTypes";
 import * as actions from "./actions";
-import { authInstance } from "../../../api/axios";
-import history from "../../../helpers/history";
+import { authInstance } from "../../api/axios";
+import history from "../../helpers/history";
 
 function setRoleRedirect(role) {
   let route = "/dashboard";
@@ -54,8 +54,9 @@ function* setOnline() {
   try {
     const res = yield authInstance.put("/auth/online");
     if (res.status === 200) {
-      const res = yield authInstance.get("/users/session");
-      const userData = { ...res.data };
+      const session = yield authInstance.get("/users/session"),
+        userData = { ...session.data };
+
       yield put(actions.setOnlineSuccess(userData));
     }
   } catch (error) {
@@ -66,7 +67,7 @@ function* setOnline() {
 
 function* logoutUser() {
   try {
-    authInstance.post("/auth/logout");
+    yield authInstance.post("/auth/logout");
   } catch (error) {
     console.log(error);
   }

@@ -1,4 +1,6 @@
 export const generalLinks = [
+  { title: "Principal", roles: ["admin", "officers", "manager"] },
+
   {
     path: "/dashboard",
     icon: "bx bx-home-circle",
@@ -26,6 +28,7 @@ export const generalLinks = [
 ];
 
 export const ordersLinks = [
+  { title: "Ordenes y retiros", roles: ["admin", "officers", "manager", "orders"] },
   {
     path: "/!#",
     icon: "bx bx-money",
@@ -55,6 +58,7 @@ export const ordersLinks = [
 ];
 
 export const configLinks = [
+  { title: "Configuraciones generales", roles: ["admin", "manager"] },
   {
     path: "/!#",
     icon: "bx bx-user",
@@ -74,6 +78,12 @@ export const configLinks = [
         roles: ["admin", "manager"],
       },
     ],
+  },
+  {
+    path: "/operators",
+    icon: "bx bx-user-circle",
+    label: "Lista de operadores",
+    roles: ["admin", "manager"],
   },
   {
     path: "/schedule",
