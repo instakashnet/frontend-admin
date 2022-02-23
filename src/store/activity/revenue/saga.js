@@ -1,7 +1,7 @@
 import { put, takeEvery } from "redux-saga/effects";
 import * as actions from "./actions";
 import * as types from "./types";
-import { exchangeInstance } from "../../../helpers/AuthType/axios";
+import { exchangeInstance } from "../../../api/axios";
 
 function* getRevenue({ rate }) {
   try {

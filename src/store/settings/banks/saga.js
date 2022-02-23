@@ -3,7 +3,7 @@ import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
 import { setAlert } from "../../actions";
 import Swal from "sweetalert2";
-import { accountsInstance } from "../../../helpers/AuthType/axios";
+import { accountsInstance } from "../../../api/axios";
 
 function* getBanks() {
   try {
