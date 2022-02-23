@@ -16,7 +16,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
 
   // EFFECTS
   useEffect(() => {
-    setInterplaza(details.accToInterbank);
+    setInterplaza(!!Number(details.accToInterbank));
   }, [details]);
 
   // FORMIK
@@ -37,7 +37,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
               <h5>Datos para enviar</h5>
               <div className="flex items-center justify-between">
                 <div className="mb-2 flex items-center">
-                  <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankSent?.toLowerCase()}.svg`} alt={details.bankSent} width={80} className="mr-2" />
+                  <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankSent.toLowerCase()}.svg`} alt={details.bankSent} width={80} className="mr-2" />
                   <span className="text-muted">
                     {details.currencyReceivedSymbol} - {details.accTypeTo === "savings" ? "ahorros" : "corriente"}
                   </span>
@@ -67,7 +67,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                   <div>
                     <p className="text-muted mb-2">Monto a enviar</p>
                     <h5>
-                      {`${details.currencyReceivedSymbol} ${formatAmount(details.amountReceived)}`} <CopyButton textToCopy={details.amountReceived?.toFixed(2)} />
+                      {`${details.currencyReceivedSymbol} ${formatAmount(details.amountReceived)}`} <CopyButton textToCopy={details.amountReceived.toFixed(2)} />
                     </h5>
                   </div>
                 </Col>
@@ -90,12 +90,11 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                         </Button>
                       </form>
                     )}
-                    {interplaza ? (
-                      <small className="text-danger">* Esta cuenta es de provincia.</small>
-                    ) : checkInterplaza(details.bankSent, details.accountToRaw) ? (
+                    {checkInterplaza(details.bankReceive, details.accountToRaw) && !interplaza && (
                       <small className="text-danger">* Parece ser que esta cuenta es de provincia.</small>
-                    ) : null}
-                    {(checkInterplaza(details.bankSent, details.accountToRaw) || interplaza) && (
+                    )}
+                    {interplaza && <small className="text-danger">* Esta cuenta es de provincia.</small>}
+                    {(checkInterplaza(details.bankReceive, details.accountToRaw) || interplaza) && (
                       <button className="text-success mt-1 block ml-auto" onClick={() => setEditState((prev) => !prev)}>
                         editar <i className="fas fa-edit" />
                       </button>

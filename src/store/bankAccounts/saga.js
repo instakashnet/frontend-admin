@@ -1,9 +1,9 @@
 import { put, all, fork, takeEvery, call } from "redux-saga/effects";
-import Swal from "sweetalert2";
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
 import { setAlert } from "../actions";
-import { accountsInstance, exchangeInstance } from "../../api/axios";
+import { accountsInstance, exchangeInstance } from "../../helpers/AuthType/axios";
+import Swal from "sweetalert2";
 
 function* getCbAccounts() {
   try {

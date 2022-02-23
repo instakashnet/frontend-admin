@@ -1,6 +1,6 @@
 import camelize from "camelize";
 import { formatOrders } from "../../helpers/functions";
-import { exchangeInstance } from "../../api/axios";
+import { exchangeInstance } from "../../helpers/AuthType/axios";
 
 export const getAllOrders = ({ search, pageCount, type }) => {
   return new Promise(async (resolve, reject) => {

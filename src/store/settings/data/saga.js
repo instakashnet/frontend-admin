@@ -1,7 +1,7 @@
 import * as types from "./types";
 import { put, fork, takeEvery, all } from "redux-saga/effects";
 import * as actions from "./actions";
-import { accountsInstance } from "../../../api/axios";
+import { accountsInstance } from "../../../helpers/AuthType/axios";
 
 function* getCountries() {
   try {
