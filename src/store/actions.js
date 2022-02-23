@@ -24,5 +24,5 @@ export * from "./transactions/websocket/actions";
 export * from "./transactions/bankOrders/actions";
 
 // Authentication module
-export * from "./auth/actions";
-export * from "./settings/admin/actions";
+export * from "./auth/login/actions";
+export * from "./auth/admin/actions";

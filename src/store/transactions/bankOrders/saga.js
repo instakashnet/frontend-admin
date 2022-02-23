@@ -1,7 +1,7 @@
 import { put, call, takeLatest, takeEvery, fork, all } from "redux-saga/effects";
 import Swal from "sweetalert2";
 
-import { exchangeInstance } from "../../../api/axios";
+import { exchangeInstance } from "../../../helpers/AuthType/axios";
 import * as actions from "./actions";
 import * as types from "./types";
 import { setAlert } from "../../actions";

@@ -1,5 +1,5 @@
 import moment from "moment";
-import { accountsInstance } from "../../api/axios";
+import { accountsInstance } from "../../helpers/AuthType/axios";
 
 export const getClientsAccounts = ({ search, pageCount }) =>
   new Promise(async (resolve) => {

@@ -1,4 +1,4 @@
-import { authInstance } from "../../api/axios";
+import { authInstance } from "../../helpers/AuthType/axios";
 
 export const getClients = ({ search, pageCount, completed }) =>
   new Promise(async (resolve, reject) => {

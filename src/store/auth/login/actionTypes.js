@@ -1,10 +1,5 @@
-export const REFRESH_TOKEN = {
-  INIT: "login/REFRESH_TOKEN_INIT",
-  SUCCESS: "login/REFRESH_TOKEN_SUCCESS",
-};
-
 export const LOAD_USER = "LOAD_USER";
-export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
+export const LOAD_USER_FAILED = "LOAD_USER_FAILED";
 
 export const LOGIN_USER = "LOGIN_USER";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";

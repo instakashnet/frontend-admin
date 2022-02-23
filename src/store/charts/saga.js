@@ -1,8 +1,7 @@
 import { all, fork, put, takeEvery } from "redux-saga/effects";
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
-
-import { exchangeInstance } from "../../api/axios";
+import { exchangeInstance } from "../../helpers/AuthType/axios";
 
 function* getCurrencyBarChart({ chartType }) {
   try {

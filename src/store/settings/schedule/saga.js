@@ -2,7 +2,7 @@ import { put, all, fork, takeEvery, call } from "redux-saga/effects";
 import * as actionTypes from "./actionTypes";
 import * as actions from "./actions";
 import { setAlert } from "../../actions";
-import { exchangeInstance } from "../../../api/axios";
+import { exchangeInstance } from "../../../helpers/AuthType/axios";
 
 function* getSchedule() {
   try {

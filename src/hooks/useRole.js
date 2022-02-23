@@ -4,10 +4,10 @@ export const useRole = (user) => {
   const [role, setRole] = useState(null);
 
   useEffect(() => {
-    if (user && user.roles) {
-      let roleName = user.roles;
-      if (user.roles === "ROLE_OPERATOR" || user.roles === "ROLE_ANALYST" || user.roles === "ROLE_SIGNATORY") roleName = "orders";
-      if (user.roles === "ROLE_APPRAISER" || user.roles === "ROLE_OFFICER") roleName = "officers";
+    if (user && user.role) {
+      let roleName = user.role;
+      if (user.role === "ROLE_OPERATOR" || user.role === "ROLE_ANALYST" || user.role === "ROLE_SIGNATORY") roleName = "orders";
+      if (user.role === "ROLE_APPRAISER" || user.role === "ROLE_OFFICER") roleName = "officers";
       setRole(roleName.replace("ROLE_", "").toLowerCase());
     }
   }, [user]);
