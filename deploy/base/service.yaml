@@ -7,9 +7,15 @@ metadata:
 spec:
   ports:
     - name: http
+<<<<<<< HEAD
       port: 8080
       protocol: TCP
       targetPort: 8080
+=======
+      port: 80
+      protocol: TCP
+      targetPort: 80
+>>>>>>> 8159f66 (Added k8s base)
   selector:
     app: frontend-admin
   type: "ClusterIP"
