@@ -33,7 +33,7 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
       - name: frontend
-        image: 160743850946.dkr.ecr.us-east-2.amazonaws.com/frontend-admin-repo:prod-latest
+        image: 160743850946.dkr.ecr.us-east-2.amazonaws.com/frontend-client-repo:prod-$CODEBUILD_BUILD_NUMBER
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
