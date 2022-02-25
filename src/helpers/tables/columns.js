@@ -4,6 +4,9 @@ import { Edit, AccountBalanceWallet, Check, Block, Clear, Close, PowerSettingsNe
 import moment from "moment-timezone";
 import { convertHexToRGBA, shadeColor } from "../functions";
 
+// COMPONENTS
+import { ConnectedStatus } from "../../components/CommonForBoth/connected.component";
+
 export const companyAccountsColumns = (showForm) => [
   {
     Header: "Banco",
@@ -132,6 +135,34 @@ export const statusColumns = ({ onEdit }) => [
         <Edit htmlColor="#f1b44c" className="cursor-pointer" />
       </button>
     ),
+  },
+];
+
+export const operatorsColumns = ({ onSetOnline }) => [
+  {
+    accessor: "name",
+    Header: "Usuario",
+  },
+  {
+    accessor: "email",
+    Header: "Correo de acceso",
+  },
+  {
+    accessor: "createdAt",
+    Header: "Fecha de registro",
+  },
+  {
+    Header: "Banco",
+    accessor: "bankName",
+    Cell: ({ cell }) => (cell.value ? <img src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} width={70} alt={cell.value} /> : <p>No disponible</p>),
+  },
+  {
+    accessor: "amountRange",
+    Header: "Rango (USD)",
+  },
+  {
+    Header: "Disponible",
+    Cell: ({ row }) => <ConnectedStatus isOnline={!!row.original.online} setIsOnline={() => onSetOnline(row.original.id)} />,
   },
 ];
 
@@ -380,7 +411,8 @@ export const exchangesColumns = [
           color: "#fff",
           backgroundColor: row.original.revision ? "#BA55D3" : row.original.statusColor,
         }}
-        pill>
+        pill
+      >
         {row.original.revision ? "En Revisión" : row.original.statusName.toLowerCase()}
       </Badge>
     ),
@@ -436,7 +468,8 @@ export const oldExchangesColumns = [
           color: shadeColor(row.original.statusColor, 40),
           backgroundColor: convertHexToRGBA(row.original.statusColor, 24),
         }}
-        pill>
+        pill
+      >
         {row.original.statusName.toLowerCase()}
       </Badge>
     ),
@@ -493,7 +526,8 @@ export const bankOrdersColumns = [
           color: "#fff",
           backgroundColor: row.original.revision ? "#BA55D3" : row.original.statusColor,
         }}
-        pill>
+        pill
+      >
         {row.original.revision ? "En Revisión" : row.original.statusName.toLowerCase()}
       </Badge>
     ),
@@ -543,7 +577,8 @@ export const withdrawalsColumns = [
           color: shadeColor(row.original.statusColor, 40),
           backgroundColor: convertHexToRGBA(row.original.statusColor, 24),
         }}
-        pill>
+        pill
+      >
         {row.original.statusName.toLowerCase()}
       </Badge>
     ),

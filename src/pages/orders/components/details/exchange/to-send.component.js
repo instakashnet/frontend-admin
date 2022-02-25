@@ -16,7 +16,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
 
   // EFFECTS
   useEffect(() => {
-    setInterplaza(!!Number(details.accToInterbank));
+    setInterplaza(details.accToInterbank);
   }, [details]);
 
   // FORMIK
@@ -90,11 +90,12 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                         </Button>
                       </form>
                     )}
-                    {checkInterplaza(details.bankReceive, details.accountToRaw) && !interplaza && (
+                    {interplaza ? (
+                      <small className="text-danger">* Esta cuenta es de provincia.</small>
+                    ) : checkInterplaza(details.bankSent, details.accountToRaw) ? (
                       <small className="text-danger">* Parece ser que esta cuenta es de provincia.</small>
-                    )}
-                    {interplaza && <small className="text-danger">* Esta cuenta es de provincia.</small>}
-                    {(checkInterplaza(details.bankReceive, details.accountToRaw) || interplaza) && (
+                    ) : null}
+                    {(checkInterplaza(details.bankSent, details.accountToRaw) || interplaza) && (
                       <button className="text-success mt-1 block ml-auto" onClick={() => setEditState((prev) => !prev)}>
                         editar <i className="fas fa-edit" />
                       </button>
