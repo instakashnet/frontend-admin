@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-admin
+  namespace: app
+  labels:
+    app: frontend-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-admin
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: frontend-admin
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodegroup
+                operator: In
+                values:
+                - app
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      containers:
+      - name: frontend
+        image: 160743850946.dkr.ecr.us-east-2.amazonaws.com/frontend-admin-repo:prod-$CODEBUILD_BUILD_NUMBER
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: 128M
+            cpu: 128m
+        #readinessProbe:
+        #  httpGet:
+        #    path: frontend-admins-service/api/v1/healthcheck
+        #    port: 3000
+        #  initialDelaySeconds: 5
+        #  periodSeconds: 10
+        #  failureThreshold: 5
+        #livenessProbe:
+        #  httpGet:
+        #    path: frontend-admins-service/api/v1/healthcheck
+        #    port: 3000
+        #  initialDelaySeconds: 10
+        #  periodSeconds: 60
+        #  failureThreshold: 5
+        env:
+        - name: REACT_APP_STAGE
+          value: prod
+        - name: REACT_APP_AUTH_API
+          value: https://api.instakash.net
+        - name: REACT_APP_ACCOUNTS_API
+          value: https://api.instakash.net
+        - name: REACT_APP_EXCHANGE_API
+          value: https://api.instakash.net
+
