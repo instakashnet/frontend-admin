@@ -1,50 +1,16 @@
-import moment from "moment";
 import camelize from "camelize";
+import { formatOrders } from "../../helpers/functions";
 import { exchangeInstance } from "../../helpers/AuthType/axios";
-import { formatAmount } from "../../helpers/functions";
 
 export const getAllOrders = ({ search, pageCount, type }) => {
   return new Promise(async (resolve, reject) => {
-    let orders = [];
     let URL = `/order?page=${pageCount}&qty=50`;
     if (search) URL = `${URL}&search=${search.toLowerCase()}`;
 
     try {
-      const res = await exchangeInstance.get(URL);
-      let ordersData = [];
-
-      if (type === "bank-orders") {
-        ordersData = camelize(res.data.cashWithdrawals);
-        orders = ordersData.map((order) => ({
-          id: order.id,
-          orderId: order.uuid,
-          date: moment(order.created).format("DD/MM/YYYY hh:mm a"),
-          amountToSend: `${order.currencySentSymbol} ${formatAmount(order.amountSent)}`,
-          amountToReceive: `${order.currencyReceivedSymbol} ${formatAmount(order.amountReceived)}`,
-          bankOrigin: order.accFromBankName,
-          bankDestination: order.accToBankName,
-          rate: order.rate,
-          statusName: order.stateName,
-          statusColor: order.stateColor,
-        }));
-      } else {
-        ordersData = camelize(res.data.orders);
-        orders = ordersData.map((order) => ({
-          id: order.id,
-          pedidoId: order.uuid,
-          date: order.completedAt ? moment(order.completedAt).format("DD/MM/YY hh:mm a") : "Sin completar",
-          user: order.firstName + " " + order.lastName,
-          revision: order.orderNotes,
-          amountSent: order.amountSent > 0 ? `${order.currencySentSymbol} ${formatAmount(order.amountSent)}` : `${order.kashUsed} KASH`,
-          amountReceived: `${order.currencyReceivedSymbol} ${formatAmount(order.amountReceived)}`,
-          originBank: order.amountSent > 0 ? order.bankFromName : "kash",
-          destinationBank: order.accToBankName,
-          statusName: order.stateName,
-          statusColor: order.stateColor,
-          invoice: order.billAssigned,
-          companyName: order.razonSocial || "",
-        }));
-      }
+      const res = await exchangeInstance.get(URL),
+        ordersData = camelize(res.data.orders),
+        orders = formatOrders(ordersData, type);
 
       resolve(orders);
     } catch (error) {

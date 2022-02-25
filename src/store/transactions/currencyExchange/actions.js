@@ -71,6 +71,16 @@ export const editExchangeSuccess = () => ({
   type: actionTypes.EDIT_EXCHANGE_SUCCESS,
 });
 
+export const changeOrderStatus = (id, status) => ({
+  type: actionTypes.CHANGE_ORDER_STATUS_INIT,
+  id,
+  status,
+});
+
+export const changeOrderStatusSuccess = () => ({
+  type: actionTypes.CHANGE_ORDER_STATUS_SUCCESS,
+});
+
 export const createInvoice = (orderId) => ({
   type: actionTypes.CREATE_INVOICE,
   orderId,
