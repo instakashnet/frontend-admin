@@ -1,0 +1,17 @@
+export const GET_ADMINS = {
+  INIT: "admin/GET_ADMINS_INIT",
+  SUCCESS: "admin/GET_ADMINS_SUCCESS",
+  ERROR: "admin/GET_ADMINS_ERROR",
+};
+
+export const GET_OPERATORS = {
+  INIT: "admin/GET_OPERATORS_INIT",
+  SUCCESS: "admin/GET_OPERATORS_SUCCESS",
+  ERROR: "admin/GET_OPERATORS_ERROR",
+};
+
+export const SET_ONLINE = {
+  INIT: "admin/SET_ONLINE_INIT",
+  SUCCESS: "admin/SET_ONLINE_SUCCESS",
+  ERROR: "admin/SET_ONLINE_ERROR",
+};

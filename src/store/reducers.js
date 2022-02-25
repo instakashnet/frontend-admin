@@ -26,8 +26,8 @@ import { bankOrdersReducer } from "./transactions/bankOrders/reducer";
 import Charts from "./charts/reducer";
 
 // Authentication
-import Login from "./auth/login/reducer";
-import AdminUsers from "./auth/admin/reducer";
+import Login from "./auth/reducer";
+import AdminUsers from "./settings/admin/reducer";
 
 const rootReducer = combineReducers({
   // public

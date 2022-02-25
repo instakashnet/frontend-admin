@@ -1,6 +1,6 @@
 import moment from "moment";
 import camelize from "camelize";
-import { exchangeInstance } from "../../helpers/AuthType/axios";
+import { exchangeInstance } from "../../api/axios";
 
 export const getAllWithdrawals = ({ search, pageCount }) => {
   return new Promise(async (resolve) => {

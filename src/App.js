@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getCountriesInit, getBanks, getCurrenciesInit, loadUser } from "./store/actions";
+import { getCountriesInit, getBanks, getCurrenciesInit } from "./store/actions";
 
 // Import Routes
 import { Route } from "react-router-dom";
@@ -13,6 +13,7 @@ import { LoginScreen } from "./pages/Authentication/login.screen";
 import VerticalLayout from "./components/VerticalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
 import { CustomAlert } from "./components/UI/Alert";
+import { RefreshSession } from "./hoc/refresh-session.component";
 
 // Import scss
 import "./assets/css/app.css";
@@ -24,10 +25,6 @@ const App = () => {
     dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadUser());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (isSignedIn) {
       dispatch(getCountriesInit());
       dispatch(getCurrenciesInit());
@@ -36,7 +33,7 @@ const App = () => {
   }, [isSignedIn, dispatch]);
 
   return (
-    <>
+    <RefreshSession>
       <Switch>
         <Route exact path="/login">
           <NonAuthLayout>
@@ -48,7 +45,7 @@ const App = () => {
         ))}
       </Switch>
       <CustomAlert className="fixed-alert" />
-    </>
+    </RefreshSession>
   );
 };
 

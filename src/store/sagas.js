@@ -3,7 +3,7 @@ import { all } from "redux-saga/effects";
 import socketConnectSaga from "./transactions/websocket/saga";
 
 //public
-import AuthSaga from "./auth/login/saga";
+import AuthSaga from "./auth/saga";
 import LayoutSaga from "./layout/saga";
 import BanksSaga from "./settings/banks/saga";
 import DataSaga from "./settings/data/saga";
@@ -15,7 +15,7 @@ import BankAccountsSaga from "./bankAccounts/saga";
 import { bankOrdersSaga } from "./transactions/bankOrders/saga";
 
 // private
-import AdminUsersSaga from "./auth/admin/saga";
+import { adminsSaga } from "./settings/admin/saga";
 import forexSaga from "./forex/saga";
 import ClientsSaga from "./settings/clients/saga";
 import StatusSaga from "./settings/status/saga";
@@ -33,21 +33,23 @@ export default function* rootSaga() {
     //public
     LayoutSaga(),
     AuthSaga(),
+
     //private
     DataSaga(),
-    AdminUsersSaga(),
+    adminsSaga(),
     BanksSaga(),
+
     // transacions
     CurrencyExchangeSaga(),
     WithdrawalsSaga(),
     bankOrdersSaga(),
-
     CouponsSaga(),
     forexSaga(),
     BankAccountsSaga(),
     ClientsSaga(),
     StatusSaga(),
     ScheduleSaga(),
+
     // Activity
     revenueSaga(),
     CountersSaga(),
