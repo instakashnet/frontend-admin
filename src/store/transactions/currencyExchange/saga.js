@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import camelize from "camelize";
 import fileDownload from "js-file-download";
 import moment from "moment";
+import axios from "axios";
 
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
@@ -26,6 +27,37 @@ function* getExchangesRelation({ values, excelType }) {
     yield put(actions.getExchangesRelationSuccess());
   } catch (error) {
     yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
+
+function* uploadBankConciliation({ values, setUploaded }) {
+  const { conciliationFiles } = values,
+    formData = new FormData();
+
+  formData.append("Archivos", conciliationFiles);
+
+  try {
+    const res = yield axios.post("https://instacash-api.openplata.com/api/v1/banco/procesos/archivo-cargar", formData, {
+      headers: { "Content-Type": "mutipart/form-data" },
+    });
+
+    console.log(res);
+  } catch (error) {
+    yield put(setAlert("danger", "Ha ocurrido un error subiendo los archivos de conciliación"));
+    yield put(actions.apiError());
+  }
+}
+
+function* downloadBankConciliation({ date }) {
+  const formattedDate = moment(date).format("YYYY-MM-DD");
+
+  try {
+    const res = yield axios.get(`https://instacash-api.openplata.com/api/v1/banco/procesos/conciliacion-xlsx-descargar?CuentaId=0&amp;Fecha=${formattedDate}`);
+
+    console.log(res);
+  } catch (error) {
+    yield put(setAlert("danger", "Ha ocurrido un error descargando la conciliación"));
     yield put(actions.apiError());
   }
 }
@@ -223,6 +255,14 @@ export function* watchExchangesRelation() {
   yield takeEvery(actionTypes.GET_EXCHANGES_RELATION_INIT, getExchangesRelation);
 }
 
+export function* watchUploadBankConciliation() {
+  yield takeLatest(actionTypes.UPLOAD_CONCILIATION.INIT, uploadBankConciliation);
+}
+
+export function* watchDownloadBankConciliation() {
+  yield takeLatest(actionTypes.DOWNLOAD_CONCILIATION.INIT, downloadBankConciliation);
+}
+
 export function* watchExchangeDetails() {
   yield takeEvery(actionTypes.GET_EXCHANGE_DETAILS, getExchangeDetails);
 }
@@ -259,6 +299,8 @@ export default function* currencyExchangeSaga() {
   yield all([
     fork(watchExchangeDetails),
     fork(watchExchangesRelation),
+    fork(watchUploadBankConciliation),
+    fork(watchDownloadBankConciliation),
     fork(watchApproveExchange),
     fork(watchValidateExchange),
     fork(watchDeclineExchange),

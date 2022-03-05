@@ -22,6 +22,8 @@ export default function currencyExchangeReducer(state = initialState, action) {
     case actionTypes.REASSIGN_ORDER_INIT:
     case actionTypes.GET_EXCHANGES_RELATION_INIT:
     case actionTypes.CHANGE_ORDER_STATUS_INIT:
+    case actionTypes.UPLOAD_CONCILIATION.INIT:
+    case actionTypes.DOWNLOAD_CONCILIATION.INIT:
       return { ...state, isProcessing: true };
 
     case actionTypes.VALIDATE_EXCHANGE_SUCCESS:
@@ -33,6 +35,8 @@ export default function currencyExchangeReducer(state = initialState, action) {
     case actionTypes.REASSIGN_ORDER_SUCCESS:
     case actionTypes.GET_EXCHANGES_RELATION_SUCCESS:
     case actionTypes.CHANGE_ORDER_STATUS_SUCCESS:
+    case actionTypes.UPLOAD_CONCILIATION.SUCCESS:
+    case actionTypes.DOWNLOAD_CONCILIATION.SUCCESS:
       return { ...state, isProcessing: false };
 
     case actionTypes.GET_EXCHANGE_DETAILS:
