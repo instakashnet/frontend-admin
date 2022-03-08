@@ -10,6 +10,18 @@ import * as actionTypes from "./actionTypes";
 import { setAlert, getClientExchangesSuccess } from "../../actions";
 import { exchangeInstance, authInstance } from "../../../api/axios";
 
+// UTILS
+function base64ToArrayBuffer(base64) {
+  var binaryString = window.atob(base64);
+  var binaryLen = binaryString.length;
+  var bytes = new Uint8Array(binaryLen);
+  for (var i = 0; i < binaryLen; i++) {
+    var ascii = binaryString.charCodeAt(i);
+    bytes[i] = ascii;
+  }
+  return bytes;
+}
+
 function* getExchangesRelation({ values, excelType }) {
   let URL;
 
@@ -42,7 +54,10 @@ function* uploadBankConciliation({ values, setUploaded }) {
       headers: { "Content-Type": "mutipart/form-data" },
     });
 
-    console.log(res);
+    if (res.status === 200) {
+      yield put(setAlert("success", "Todos los archivos fueron cargados correctamente."));
+      yield put(actions.uploadBankConciliationSuccess());
+    }
   } catch (error) {
     yield put(setAlert("danger", "Ha ocurrido un error subiendo los archivos de conciliación"));
     yield put(actions.apiError());
@@ -53,9 +68,14 @@ function* downloadBankConciliation({ date }) {
   const formattedDate = moment(date).format("YYYY-MM-DD");
 
   try {
-    const res = yield axios.get(`https://instacash-api.openplata.com/api/v1/banco/procesos/conciliacion-xlsx-descargar?CuentaId=0&amp;Fecha=${formattedDate}`);
+    const res = yield axios.get(`https://instacash-api.openplata.com/api/v1/banco/procesos/conciliacion-xlsx-descargar?CuentaId=0&Fecha=${formattedDate}`);
 
-    console.log(res);
+    if (res.status === 200) {
+      const fileArray = base64ToArrayBuffer(res.data.data.contentByte);
+
+      yield call(fileDownload, fileArray, res.data.data.fileName);
+      yield put(actions.downloadBankConciliationSuccess());
+    }
   } catch (error) {
     yield put(setAlert("danger", "Ha ocurrido un error descargando la conciliación"));
     yield put(actions.apiError());
