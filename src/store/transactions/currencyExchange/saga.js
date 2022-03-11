@@ -47,6 +47,8 @@ function* uploadBankConciliation({ values, setUploaded }) {
   const { conciliationFiles } = values,
     formData = new FormData();
 
+  console.log(conciliationFiles);
+
   formData.append("Archivos", conciliationFiles);
 
   try {
