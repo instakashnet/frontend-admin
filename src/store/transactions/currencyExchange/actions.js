@@ -10,6 +10,25 @@ export const getExchangesRelationSuccess = () => ({
   type: actionTypes.GET_EXCHANGES_RELATION_SUCCESS,
 });
 
+export const uploadBankConciliation = (values, setUploaded) => ({
+  type: actionTypes.UPLOAD_CONCILIATION.INIT,
+  values,
+  setUploaded,
+});
+
+export const uploadBankConciliationSuccess = () => ({
+  type: actionTypes.UPLOAD_CONCILIATION.SUCCESS,
+});
+
+export const downloadBankConciliation = (date) => ({
+  type: actionTypes.DOWNLOAD_CONCILIATION.INIT,
+  date,
+});
+
+export const downloadBankConciliationSuccess = () => ({
+  type: actionTypes.DOWNLOAD_CONCILIATION.SUCCESS,
+});
+
 export const getExchangeDetails = (id) => ({
   type: actionTypes.GET_EXCHANGE_DETAILS,
   id,
