@@ -8,6 +8,7 @@ import { setAlert } from "../../../store/actions";
 
 //Components
 import { CreateExcel } from "../components/forms/create-excel.component";
+import { BankReconciliation } from "../components/forms/bank-reconciliation.component";
 import { Table } from "../../../components/UI/tables/table.component";
 
 const PAGE_SIZE = 50;
@@ -17,11 +18,16 @@ export const AllExchangesScreen = () => {
     [modal, setModal] = useState(false),
     [isLoading, setIsLoading] = useState(true),
     [search, setSearch] = useState(null),
-    [excelType, setExcelType] = useState(""),
+    [modalType, setModalType] = useState(""),
     [data, setData] = useState([]),
     isProcessing = useSelector((state) => state.CurrencyExchange.isProcessing),
     user = useSelector((state) => state.Login.user),
     [role] = useRole(user);
+
+  const onCreateExcel = (type) => {
+    setModalType(type);
+    setModal(true);
+  };
 
   const getTableData = useCallback(
     async (_, pageCount = 1) => {
@@ -39,14 +45,10 @@ export const AllExchangesScreen = () => {
     [dispatch, search]
   );
 
+  // EFFECTS
   useEffect(() => {
     getTableData();
   }, [getTableData]);
-
-  const onCreateExcel = (type) => {
-    setExcelType(type);
-    setModal(true);
-  };
 
   return (
     <div className="page-content">
@@ -58,11 +60,19 @@ export const AllExchangesScreen = () => {
                 {isLoading ? <Spinner size="sm" /> : "Actualizar operaciones"}
               </Button>
 
-              {(role === "admin" || role === "officers") && (
-                <Button onClick={() => onCreateExcel("data")} className="mb-4 ml-4 btn-primary">
-                  Descargar relación
-                </Button>
-              )}
+              <div className="flex w-full ml-auto items-center justify-end">
+                {(role === "admin" || role === "officers") && (
+                  <Button onClick={() => onCreateExcel("relation")} className="mb-4 ml-4 btn-primary">
+                    Descargar relación
+                  </Button>
+                )}
+
+                {(role === "admin" || role === "officers") && (
+                  <Button onClick={() => onCreateExcel("conciliation")} className="mb-4 ml-4 btn-primary">
+                    Conciliar
+                  </Button>
+                )}
+              </div>
             </div>
 
             <Card>
@@ -85,9 +95,13 @@ export const AllExchangesScreen = () => {
         </Row>
       </Container>
       <Modal isOpen={modal} role="dialog" autoFocus centered tabIndex="-1" toggle={() => setModal((prev) => !prev)}>
-        <ModalHeader>Descargar Relación</ModalHeader>
+        <ModalHeader>{modalType === "relation" ? "Descargar relación" : "Conciliar bancos"}</ModalHeader>
         <ModalBody>
-          <CreateExcel dispatch={dispatch} isProcessing={isProcessing} excelType={excelType} />
+          {modalType === "relation" ? (
+            <CreateExcel dispatch={dispatch} isProcessing={isProcessing} excelType="orders" />
+          ) : (
+            <BankReconciliation dispatch={dispatch} isProcessing={isProcessing} />
+          )}
         </ModalBody>
       </Modal>
     </div>
