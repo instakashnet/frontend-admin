@@ -2,7 +2,7 @@ import { all, put, takeEvery, takeLatest, fork, select, call } from "redux-saga/
 import * as types from "./types";
 import * as actions from "./actions";
 import { setAlert } from "../../actions";
-import { exchangeInstance } from "../../../helpers/AuthType/axios";
+import { exchangeInstance } from "../../../api/axios";
 import Swal from "sweetalert2";
 
 function* getCoupons() {

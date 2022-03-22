@@ -15,7 +15,7 @@ const ReassignOrder = ({ details, isProcessing, onShowForm }) => {
   const formik = useFormik({ initialValues: { operatorAssigned: "", accountId: "" }, onSubmit: (values) => dispatch(reassignOrderInit(values, details.id, onShowForm)) });
 
   useEffect(() => {
-    dispatch(getOperatorsInit());
+    dispatch(getOperatorsInit(true));
     dispatch(getClientAccounts(userId));
   }, [dispatch, userId]);
 

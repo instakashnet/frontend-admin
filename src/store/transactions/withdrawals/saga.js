@@ -2,7 +2,7 @@ import { put, all, fork, call, takeEvery } from "redux-saga/effects";
 import * as types from "./types";
 import * as actions from "./actions";
 import { setAlert } from "../../actions";
-import { exchangeInstance } from "../../../helpers/AuthType/axios";
+import { exchangeInstance } from "../../../api/axios";
 import Swal from "sweetalert2";
 import camelize from "camelize";
 

@@ -4,13 +4,11 @@ import { logoutUser } from "../../../store/actions";
 import { withRouter } from "react-router-dom";
 import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 
-const ProfileMenu = (props) => {
-  const dispatch = useDispatch();
+const ProfileMenu = ({ user }) => {
+  const dispatch = useDispatch(),
+    [menu, setMenu] = useState(false);
 
-  const { user } = props;
-
-  const [menu, setMenu] = useState(false);
-
+  // HANDLERS
   const toggle = () => {
     setMenu((prevState) => !prevState);
   };
@@ -31,7 +29,7 @@ const ProfileMenu = (props) => {
         </DropdownToggle>
         <DropdownMenu right>
           <div className="dropdown-divider"></div>
-          <button onClick={() => dispatch(logoutUser(props.history))} className="dropdown-item">
+          <button onClick={() => dispatch(logoutUser())} className="dropdown-item">
             <i className="bx bx-power-off font-size-16 align-middle mr-1 text-danger"></i>
             <span>Cerrar sesión</span>
           </button>

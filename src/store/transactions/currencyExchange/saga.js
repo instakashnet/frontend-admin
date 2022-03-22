@@ -3,11 +3,24 @@ import Swal from "sweetalert2";
 import camelize from "camelize";
 import fileDownload from "js-file-download";
 import moment from "moment";
+import axios from "axios";
 
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
 import { setAlert, getClientExchangesSuccess } from "../../actions";
-import { exchangeInstance, authInstance } from "../../../helpers/AuthType/axios";
+import { exchangeInstance, authInstance } from "../../../api/axios";
+
+// UTILS
+function base64ToArrayBuffer(base64) {
+  var binaryString = window.atob(base64);
+  var binaryLen = binaryString.length;
+  var bytes = new Uint8Array(binaryLen);
+  for (var i = 0; i < binaryLen; i++) {
+    var ascii = binaryString.charCodeAt(i);
+    bytes[i] = ascii;
+  }
+  return bytes;
+}
 
 function* getExchangesRelation({ values, excelType }) {
   let URL;
@@ -30,13 +43,59 @@ function* getExchangesRelation({ values, excelType }) {
   }
 }
 
+function* uploadBankConciliation({ values, setUploaded }) {
+  const { conciliationFiles } = values,
+    formData = new FormData();
+
+  conciliationFiles.forEach((file) => formData.append(file.name, file));
+
+  try {
+    const res = yield axios.post("https://instacash-api.openplata.com/api/v1/banco/procesos/archivo-cargar", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      onUploadProgress: (progressEvent) => console.log(progressEvent),
+    });
+
+    if (res.status === 200) {
+      yield put(setAlert("success", "Todos los archivos fueron cargados correctamente."));
+      yield call(setUploaded, true);
+      yield put(actions.uploadBankConciliationSuccess());
+    }
+  } catch (error) {
+    yield put(setAlert("danger", "Ha ocurrido un error subiendo los archivos de conciliación"));
+    yield put(actions.apiError());
+  }
+}
+
+function* downloadBankConciliation({ date }) {
+  const formattedDate = moment(date).format("YYYY-MM-DD");
+
+  try {
+    const res = yield axios.get(`https://instacash-api.openplata.com/api/v1/banco/procesos/conciliacion-xlsx-descargar?CuentaId=0&Fecha=${formattedDate}`, {
+      onDownloadProgress: (progressEvent) => {
+        const { loaded, total } = progressEvent;
+        console.log(loaded, total);
+      },
+    });
+
+    if (res.status === 200) {
+      const fileArray = base64ToArrayBuffer(res.data.data.contentByte);
+
+      yield call(fileDownload, fileArray, res.data.data.fileName);
+      yield put(actions.downloadBankConciliationSuccess());
+    }
+  } catch (error) {
+    yield put(setAlert("danger", "Ha ocurrido un error descargando la conciliación. Verifica la fecha correcta."));
+    yield put(actions.apiError());
+  }
+}
+
 function* getExchangeDetails({ id }) {
   try {
     const res = yield exchangeInstance.get(`/order/${id}`);
     if (res.status === 200) {
       const exchangeDetails = camelize(res.data);
       yield put(getClientExchangesSuccess([]));
-      yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
+      return yield put(actions.getExchangeDetailsSuccess(exchangeDetails));
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -223,6 +282,14 @@ export function* watchExchangesRelation() {
   yield takeEvery(actionTypes.GET_EXCHANGES_RELATION_INIT, getExchangesRelation);
 }
 
+export function* watchUploadBankConciliation() {
+  yield takeLatest(actionTypes.UPLOAD_CONCILIATION.INIT, uploadBankConciliation);
+}
+
+export function* watchDownloadBankConciliation() {
+  yield takeLatest(actionTypes.DOWNLOAD_CONCILIATION.INIT, downloadBankConciliation);
+}
+
 export function* watchExchangeDetails() {
   yield takeEvery(actionTypes.GET_EXCHANGE_DETAILS, getExchangeDetails);
 }
@@ -259,6 +326,8 @@ export default function* currencyExchangeSaga() {
   yield all([
     fork(watchExchangeDetails),
     fork(watchExchangesRelation),
+    fork(watchUploadBankConciliation),
+    fork(watchDownloadBankConciliation),
     fork(watchApproveExchange),
     fork(watchValidateExchange),
     fork(watchDeclineExchange),

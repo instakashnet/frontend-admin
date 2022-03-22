@@ -30,7 +30,7 @@ const TransferInvoice = ({ onApprove, isProcessing }) => {
           label="Nro. de operación"
         />
       </div>
-      <Dropzone error={formik.errors.file} touched={formik.touched.file} label="Arrastra aquí el comprobante o haz click para subir." onDrop={fileDropHandler} />
+      <Dropzone error={formik.errors.file} touched={formik.touched.file} maxFiles={1} label="Arrastra aquí el comprobante o haz click para subir." onDrop={fileDropHandler} />
       <Button type="submit" className="btn-primary my-3" disabled={!formik.isValid || isProcessing}>
         {isProcessing ? <Spinner size="sm" /> : "Aprobar operación"}
       </Button>

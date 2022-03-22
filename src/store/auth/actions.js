@@ -1,29 +1,37 @@
 import * as actionTypes from "./actionTypes";
 
-export const loadUser = (history) => ({
+export const refreshToken = () => ({
+  type: actionTypes.REFRESH_TOKEN.INIT,
+});
+
+export const refreshTokenSuccess = (token) => ({
+  type: actionTypes.REFRESH_TOKEN.SUCCESS,
+  token,
+});
+
+export const loadUser = () => ({
   type: actionTypes.LOAD_USER,
-  history,
 });
 
-export const loadUserError = () => ({
-  type: actionTypes.LOAD_USER_FAILED,
+export const loadUserSuccess = (user) => ({
+  type: actionTypes.LOAD_USER_SUCCESS,
+  user,
 });
 
-export const loginUser = (user, history) => ({
+export const loginUser = (values) => ({
   type: actionTypes.LOGIN_USER,
-  payload: { user, history },
+  values,
 });
 
-export const loginSuccess = (user, token) => {
+export const loginSuccess = (token) => {
   return {
     type: actionTypes.LOGIN_SUCCESS,
-    payload: { user, token },
+    token,
   };
 };
 
-export const logoutUser = (history) => ({
+export const logoutUser = () => ({
   type: actionTypes.LOGOUT_USER,
-  payload: { history },
 });
 
 export const logoutUserSuccess = () => {

@@ -70,7 +70,7 @@ const Header = ({ toggleMenuCallback }) => {
             </div>
 
             <NotificationDropdown user={user} notifications={null} />
-            {user.role === "ROLE_OPERATOR" && <ConnectedStatus isProcessing={isProcessing} isOnline={user.isOnline} setIsOnline={() => dispatch(setOnline())} />}
+            {user.roles === "ROLE_OPERATOR" && <ConnectedStatus label isProcessing={isProcessing} isOnline={!!user.online} setIsOnline={() => dispatch(setOnline())} />}
             <ProfileMenu user={user} />
           </div>
         </div>

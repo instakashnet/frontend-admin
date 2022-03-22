@@ -2,6 +2,7 @@ import * as actionTypes from "./actionTypes";
 
 const initialState = {
   user: null,
+  role: null,
   token: null,
   isSignedIn: false,
   isLoading: false,
@@ -11,30 +12,24 @@ const initialState = {
 const login = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.LOAD_USER:
+    case actionTypes.REFRESH_TOKEN.INIT:
       return { ...state, isLoading: true };
+    case actionTypes.LOAD_USER_SUCCESS:
+      return { ...state, user: action.user, isSignedIn: true, isLoading: false };
+    case actionTypes.REFRESH_TOKEN.SUCCESS:
+      return { ...state, token: action.token, isLoading: false };
 
     case actionTypes.LOGIN_USER:
     case actionTypes.SET_ONLINE_INIT:
       return { ...state, isProcessing: true };
     case actionTypes.LOGIN_SUCCESS:
-      return {
-        ...state,
-        user: action.payload.user,
-        token: action.payload.token,
-        isSignedIn: true,
-        isLoading: false,
-        isProcessing: false,
-      };
-    case actionTypes.LOGOUT_USER:
-      return { ...state };
+      return { ...state, token: action.token, isProcessing: false };
     case actionTypes.LOGOUT_USER_SUCCESS:
-      return { ...state, isLoading: false, isSignedIn: false, user: null, token: null };
+      return { ...state, isLoading: false, isProcessing: false, isSignedIn: false, user: null, token: null };
 
     case actionTypes.SET_ONLINE_SUCCESS:
-      return { ...state, user: action.user, isLoading: false };
+      return { ...state, user: action.user, isProcessing: false };
 
-    case actionTypes.LOAD_USER_FAILED:
-      return { ...state, isLoading: false };
     case actionTypes.API_ERROR:
       return { ...state, isLoading: false, isProcessing: false };
     default:

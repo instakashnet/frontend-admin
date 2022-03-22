@@ -26,3 +26,9 @@ spec:
                 port:
                   number: 8080
             path: /
+                  number: 80
+            path: /
+  tls:
+    - secretName: client.dev.instakash.net
+      hosts:
+      - client.dev.instakash.net
