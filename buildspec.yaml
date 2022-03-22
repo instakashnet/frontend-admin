@@ -8,6 +8,7 @@ phases:
   pre_build:
     run-as: root
     commands:
+      - echo "ready for merge"
       - echo "Agent is ready"
       - aws --version
       - export KUBECONFIG=$HOME/.kube/config
