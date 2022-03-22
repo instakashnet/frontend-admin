@@ -15,7 +15,7 @@ RUN \
     pip3 install --upgrade pip
 
 WORKDIR  /usr/src/app
-RUN npm i -g node-sass
+RUN npm i --unsafe-perm node-sass
 COPY package.json yarn.lock ./
 RUN yarn
 COPY ./ ./
