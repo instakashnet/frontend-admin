@@ -13,7 +13,7 @@ import { exchangesColumns } from "../../../helpers/tables/columns";
 import { Table } from "../../../components/UI/tables/table.component";
 
 const PAGE_SIZE = 50;
-const WS_URL = process.env.REACT_APP_STAGE === "prod" ? process.env.REACT_APP_WS_URL : process.env.REACT_APP_WS_DEV_URL;
+const WS_URL = process.env.REACT_APP_STAGE === "prod" ? "wss://ws.instakash.net" : "wss://ws.dev.instakash.net";
 
 export const RecentExchangesScreen = () => {
   const websocket = useRef(null),

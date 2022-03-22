@@ -61,13 +61,13 @@ export const AllExchangesScreen = () => {
               </Button>
 
               <div className="flex w-full ml-auto items-center justify-end">
-                {(role === "admin" || role === "officers") && (
+                {(role === "admin" || role === "officers" || role === "accountant") && (
                   <Button onClick={() => onCreateExcel("relation")} className="mb-4 ml-4 btn-primary">
                     Descargar relación
                   </Button>
                 )}
 
-                {(role === "admin" || role === "officers") && (
+                {(role === "admin" || role === "officers" || role === "accountant") && (
                   <Button onClick={() => onCreateExcel("conciliation")} className="mb-4 ml-4 btn-primary">
                     Conciliar
                   </Button>
