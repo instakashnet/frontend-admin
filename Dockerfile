@@ -2,7 +2,7 @@ FROM 160743850946.dkr.ecr.us-east-2.amazonaws.com/docker-library:node14-alpine-a
 
 ## Docker argunments for build:
 
-ARG REACT_APP_STAGE="dev"
+ARG REACT_APP_STAGE="test"
 
 ## Docker environment variables:
 
@@ -11,12 +11,10 @@ ENV REACT_APP_STAGE=$REACT_APP_STAGE
 RUN \
     apk update && \
     apk add build-base gcc wget git && \
-    apk add --no-cache python3 py3-pip && \
-    pip3 install --upgrade pip
+    apk add --no-cache python2 py-pip && \
+    pip install --upgrade pip
 
 WORKDIR  /usr/src/app
-RUN \
-    npm upgrade --global yarn 
 COPY package.json yarn.lock ./
 RUN yarn
 COPY ./ ./
