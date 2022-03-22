@@ -28,24 +28,24 @@ export const generalLinks = [
 ];
 
 export const ordersLinks = [
-  { title: "Ordenes y retiros", roles: ["admin", "officers", "manager", "orders", "accountant", "marketing"] },
+  { title: "Ordenes y retiros", roles: ["admin", "officers", "manager", "orders", "signatory", "accountant", "marketing"] },
   {
     path: "/!#",
     icon: "bx bx-money",
     label: "Ordenes",
-    roles: ["admin", "officers", "manager", "orders", "accountant", "marketing"],
+    roles: ["admin", "officers", "manager", "orders", "signatory", "accountant", "marketing"],
     subNavs: [
       {
         path: "/exchanges/recent",
         icon: "bx bx-list-ol",
         label: "Ordenes recientes",
-        roles: ["admin", "officers", "manager", "orders", "accountant"],
+        roles: ["admin", "officers", "manager", "signatory", "orders", "accountant"],
       },
       {
         path: "/exchanges/all",
         icon: "bx bx-list-check",
         label: "Lista de ordenes",
-        roles: ["admin", "officers", "manager", "orders", "accountant", "marketing"],
+        roles: ["admin", "officers", "manager", "signatory", "orders", "accountant", "marketing"],
       },
     ],
   },
@@ -53,12 +53,12 @@ export const ordersLinks = [
     path: "/withdrawals/all",
     icon: "bx bx-list-ol",
     label: "Retiros KASH",
-    roles: ["admin", "officers", "manager", "orders", "accountant"],
+    roles: ["admin", "officers", "manager", "signatory", "orders", "accountant"],
   },
 ];
 
 export const configLinks = [
-  { title: "Configuraciones generales", roles: ["admin", "manager", "accountant", "marketing"] },
+  { title: "Configuraciones generales", roles: ["admin", "manager", "signatory", "accountant", "marketing"] },
   {
     path: "/!#",
     icon: "bx bx-user",
@@ -83,7 +83,7 @@ export const configLinks = [
     path: "/operators",
     icon: "bx bx-user-circle",
     label: "Lista de operadores",
-    roles: ["admin", "manager"],
+    roles: ["admin", "manager", "signatory"],
   },
   {
     path: "/schedule",

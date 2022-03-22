@@ -29,11 +29,11 @@ export const routes = [
   { path: "/forex", component: ForexScreen, roles: ["admin", "officers", "manager", "accountant"] },
   // { path: "/bank-orders", component: BankOrdersScreen, roles: ["admin", "officers"] },
   { path: "/bank-order-details/:id", component: BankOrderDetailsScreen, roles: ["admin", "officers", "accountant"] },
-  { path: "/exchanges/recent", component: RecentExchangesScreen, roles: ["admin", "officers", "orders", "manager", "accountant"] },
-  { path: "/exchanges/all", component: AllExchangesScreen, roles: ["admin", "officers", "orders", "manager", "marketing", "accountant"] },
-  { path: "/exchange-details/:id", component: ExchangeDetailsScreen, roles: ["admin", "officers", "orders", "manager", "marketing", "accountant"] },
-  { path: "/withdrawals/all", component: WithdrawalsScreen, roles: ["admin", "officers", "orders", "manager", "accountant"] },
-  { path: "/withdrawal-details/:id", component: WithdrawalDetailsScreen, roles: ["admin", "officers", "orders", "manager", "accountant"] },
+  { path: "/exchanges/recent", component: RecentExchangesScreen, roles: ["admin", "officers", "orders", "manager", "signatory", "accountant"] },
+  { path: "/exchanges/all", component: AllExchangesScreen, roles: ["admin", "officers", "orders", "manager", "signatory", "marketing", "accountant"] },
+  { path: "/exchange-details/:id", component: ExchangeDetailsScreen, roles: ["admin", "officers", "orders", "manager", "signatory", "marketing", "accountant"] },
+  { path: "/withdrawals/all", component: WithdrawalsScreen, roles: ["admin", "officers", "orders", "manager", "signatory", "accountant"] },
+  { path: "/withdrawal-details/:id", component: WithdrawalDetailsScreen, roles: ["admin", "officers", "orders", "signatory", "manager", "accountant"] },
 
   // Settings
   { path: "/schedule", component: ScheduleScreen, roles: ["admin"] },
@@ -42,7 +42,7 @@ export const routes = [
   { path: "/users-list", component: ClientsScreen, roles: ["admin", "manager", "marketing"] },
   { path: "/users-accounts", component: ClientsAccountsScreen, roles: ["admin", "manager"] },
   { path: "/user-details/:id", component: ClientDetailsScreen, roles: ["admin", "manager", "marketing"] },
-  { path: "/operators", component: OperatorsScreen, roles: ["admin", "manager"] },
+  { path: "/operators", component: OperatorsScreen, roles: ["admin", "manager", "signatory"] },
   { path: "/status", component: StatusScreen, roles: ["admin"] },
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 ];
