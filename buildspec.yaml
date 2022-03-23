@@ -1,24 +1,22 @@
 version: 0.2
 
-phases: 
+phases:
   install:
-    commands: 
+    commands:
       - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
       - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
-      - apt-get install gettext-base
-
   pre_build:
     run-as: root
     commands:
+      - echo "ready for merge"
       - echo "Agent is ready"
       - aws --version
       - export KUBECONFIG=$HOME/.kube/config
-
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 160743850946.dkr.ecr.us-east-2.amazonaws.com
   build:
     run-as: root
     commands:
-      - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 160743850946.dkr.ecr.us-east-2.amazonaws.com
       - cd $CODEBUILD_SRC_DIR
       - echo 'Building image...'
       - docker build -t 160743850946.dkr.ecr.us-east-2.amazonaws.com/frontend-admin-repo:$ENVIRONMENT-$CODEBUILD_BUILD_NUMBER -t 160743850946.dkr.ecr.us-east-2.amazonaws.com/frontend-admin-repo:$ENVIRONMENT-latest .
@@ -26,10 +24,12 @@ phases:
       - docker push 160743850946.dkr.ecr.us-east-2.amazonaws.com/frontend-admin-repo --all-tags
   post_build:
     commands:
-      - cd $CODEBUILD_SRC_DIR/deploy/base
+      - bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"
+      - cd $CODEBUILD_SRC_DIR/deploy/$K8S_CLUSTER
       - envsubst < deployment.template > deployment.yaml
       - cat deployment.yaml
+      - rm deployment.template
       - aws eks update-kubeconfig --region us-east-2 --name $K8S_CLUSTER 
-      - kubectl apply -f deployment.yaml -n app
+      - kubectl apply -f . -n $K8S_NAMESPACE
 
 

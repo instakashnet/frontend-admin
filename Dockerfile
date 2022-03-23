@@ -1,11 +1,27 @@
-FROM node:14 as build
+FROM 160743850946.dkr.ecr.us-east-2.amazonaws.com/docker-library:node14-alpine-arm64 as build
+
+## Docker argunments for build:
+
+ARG REACT_APP_STAGE="test"
+
+## Docker environment variables:
+
+ENV REACT_APP_STAGE=$REACT_APP_STAGE
+
+RUN \
+    apk update && \
+    apk add build-base gcc wget git && \
+    apk add --no-cache python2 py-pip && \
+    pip install --upgrade pip
+
 WORKDIR  /usr/src/app
 COPY package.json yarn.lock ./
 RUN yarn
 COPY ./ ./
-RUN yarn build:prod
+RUN yarn build:$REACT_APP_STAGE
 
-FROM nginx:1.21.5-alpine
+FROM 160743850946.dkr.ecr.us-east-2.amazonaws.com/docker-library:nginx-alpine-arm64
+
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
 COPY container /
 RUN \
