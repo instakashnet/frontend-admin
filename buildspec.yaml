@@ -19,7 +19,7 @@ phases:
     commands:
       - cd $CODEBUILD_SRC_DIR
       - echo 'Building image...'
-      - docker build -t 160743850946.dkr.ecr.us-east-2.amazonaws.com/frontend-admin-repo:$ENVIRONMENT-$CODEBUILD_BUILD_NUMBER -t 160743850946.dkr.ecr.us-east-2.amazonaws.com/frontend-admin-repo:$ENVIRONMENT-latest .
+      - docker build -t 160743850946.dkr.ecr.us-east-2.amazonaws.com/frontend-admin-repo:$ENVIRONMENT-$CODEBUILD_BUILD_NUMBER -t 160743850946.dkr.ecr.us-east-2.amazonaws.com/frontend-admin-repo:$ENVIRONMENT-latest --build-arg REACT_APP_STAGE=$ENVIRONMENT .
       - echo 'Pushing image into ECR...' 
       - docker push 160743850946.dkr.ecr.us-east-2.amazonaws.com/frontend-admin-repo --all-tags
   post_build:
