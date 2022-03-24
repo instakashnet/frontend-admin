@@ -11,7 +11,6 @@ metadata:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/cors-allow-headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization, x-access-token
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-    nginx.ingress.kubernetes.io/cors-allow-origin: https://dev-client.instakash.net, https://admin-client.instakash.net, https://adminprod.instakash.net, https://app.instakash.net
     nginx.ingress.kubernetes.io/proxy-body-size: 20m
   name: frontend-admin
 spec:
@@ -26,9 +25,3 @@ spec:
                 port:
                   number: 8080
             path: /
-                  number: 80
-            path: /
-  tls:
-    - secretName: client.dev.instakash.net
-      hosts:
-      - client.dev.instakash.net
