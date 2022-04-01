@@ -33,7 +33,7 @@ function* attachVoucher({ id, values }) {
 function* changeWithdrawalStatus({ id, statusId, values, toggle }) {
   try {
     const result = yield call([Swal, "fire"], {
-      title: `¿Deseas ${statusId === 3 ? "cancelar" : "aprobar"} esta operación?`,
+      title: `¿Deseas ${statusId === 5 ? "cancelar" : "aprobar"} esta operación?`,
       text: "Al continuar no podrás revertir este estado.",
       icon: "warning",
       showCancelButton: true,
@@ -49,7 +49,7 @@ function* changeWithdrawalStatus({ id, statusId, values, toggle }) {
         yield call(getWithdrawalDetails, { id });
         yield put(actions.changeWithdrawalStatusSuccess());
         if (statusId === 6) yield call(toggle, false);
-        yield Swal.fire("Exitoso", `El retiro fue ${statusId === 3 ? "cancelado" : "aprobado"} correctamente.`, "success");
+        yield Swal.fire("Exitoso", `El retiro fue ${statusId === 5 ? "cancelado" : "aprobado"} correctamente.`, "success");
       }
     } else yield put(actions.withdrawalsError());
   } catch (error) {
