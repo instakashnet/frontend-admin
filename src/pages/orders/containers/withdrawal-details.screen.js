@@ -22,7 +22,12 @@ export const WithdrawalDetailsScreen = ({ match, history }) => {
     dispatch(getWithdrawalDetailsInit(id));
   }, [dispatch, id]);
 
-  const declineWithdrawalHandler = () => dispatch(changeWithdrawalStatusInit(details.id, 5));
+  const handleChangeStatus = (statusId, values = {}) => {
+    if (statusId === 5) return dispatch(changeWithdrawalStatusInit(details.id, 5));
+
+    setModal(true);
+  };
+
   const approveWithdrawalHandler = (values) => dispatch(changeWithdrawalStatusInit(details.id, 6, values, toggleModal));
 
   return isLoading ? (
@@ -33,13 +38,7 @@ export const WithdrawalDetailsScreen = ({ match, history }) => {
         <Container fluid>
           <Row>
             <Col lg="8" xl="6">
-              <ActionButtons
-                goBack={() => history.goBack()}
-                statusId={details.statusID}
-                onDecline={declineWithdrawalHandler}
-                onChangeStatus={() => setModal(true)}
-                isProcessing={isProcessing}
-              />
+              <ActionButtons goBack={() => history.goBack()} statusId={details.statusID} onChangeStatus={handleChangeStatus} isProcessing={isProcessing} />
               <UserInfo user={details.user} />
             </Col>
           </Row>
