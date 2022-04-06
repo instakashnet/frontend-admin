@@ -27,7 +27,7 @@ function* getExchangesRelation({ values, excelType }) {
 
   if (excelType === "coupon" && values.couponName) {
     URL = `/users/clients/coupons/${values.couponName.toUpperCase()}/download`;
-  } else URL = `/users/clients/orders/download?start=${values.start}&end=${values.end}`;
+  } else URL = `/users/clients/orders/download?isDay=${values.isDay}&start=${values.start}&end=${values.end}`;
 
   if (values.bank) URL += `&bank=${values.bank}`;
   if (values.statusId) URL += `&status=${values.statusId}`;
