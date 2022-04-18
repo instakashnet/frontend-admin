@@ -1,11 +1,11 @@
-import { put, all, takeEvery, fork, call } from "redux-saga/effects";
-import * as actionTypes from "./actionTypes";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { getAxiosInstance } from "../../../api/axios";
 import * as actions from "./actions";
-import { exchangeInstance } from "../../../api/axios";
+import * as actionTypes from "./actionTypes";
 
 function* getStatus() {
   try {
-    const res = yield exchangeInstance.get("/status");
+    const res = yield getAxiosInstance("exchange", "v1").get("/status");
     if (res.status === 200) yield put(actions.getStatusSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError(error.message));
@@ -14,7 +14,7 @@ function* getStatus() {
 
 function* editStatus({ values, id, setState }) {
   try {
-    const res = yield exchangeInstance.put(`/status/${id}`, values);
+    const res = yield getAxiosInstance("exchange", "v1").put(`/status/${id}`, values);
     if (res.status === 200) {
       yield put(actions.editStatusSuccess("Estado actualizado correctamente!"));
       yield put(actions.getStatus());

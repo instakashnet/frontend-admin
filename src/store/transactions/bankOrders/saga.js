@@ -1,19 +1,17 @@
-import { put, call, takeLatest, takeEvery, fork, all } from "redux-saga/effects";
+import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
 import Swal from "sweetalert2";
-
-import { exchangeInstance } from "../../../api/axios";
+import { getAxiosInstance } from "../../../api/axios";
+import { setAlert } from "../../actions";
 import * as actions from "./actions";
 import * as types from "./types";
-import { setAlert } from "../../actions";
 
 function* createBankOrder({ values, getData, closeModal }) {
   const orderValues = {
     ...values,
     rate: +values.rate,
   };
-
   try {
-    const res = yield exchangeInstance.post("/order/cashwithdraw", orderValues);
+    const res = yield getAxiosInstance("exchange", "v1").post("/order/cashwithdraw", orderValues);
     if (res.status === 201) {
       yield call(getData);
       yield put(actions.createBankOrderSuccess());
@@ -28,7 +26,7 @@ function* createBankOrder({ values, getData, closeModal }) {
 
 function* getBankOrderDetails({ id }) {
   try {
-    const res = yield exchangeInstance.get(`/order/cashwithdraw/${id}`);
+    const res = yield getAxiosInstance("exchange", "v1").get(`/order/cashwithdraw/${id}`);
     if (res.status === 200) yield put(actions.getBankOrderDetailsSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError());
@@ -47,9 +45,8 @@ function* changeBankOrderStatus({ id, statusId }) {
       cancelButtonText: "No, cancelar.",
       cancelButtonColor: "#f46a6a",
     });
-
     if (result.isConfirmed) {
-      const res = yield exchangeInstance.put("/order/cashwithdraw", { id, status: statusId });
+      const res = yield getAxiosInstance("exchange", "v1").put("/order/cashwithdraw", { id, status: statusId });
       if (res.status === 200) {
         yield put(actions.getBankOrderDetails(id));
         yield put(actions.changeBankOrderStatusSuccess());

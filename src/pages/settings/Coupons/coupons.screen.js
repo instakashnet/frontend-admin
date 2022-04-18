@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Row, Container, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { getCouponsInit, disableCouponInit, deleteCouponInit } from "../../../store/actions";
-import { authInstance } from "../../../api/axios";
+import { getAxiosInstance } from "../../../api/axios";
 
 import CouponsList from "./components/coupons-table.component";
 import EditCoupon from "./components/forms/edit-coupon.component";
@@ -28,7 +28,7 @@ export const CouponsScreen = () => {
     new Promise(async (resolve, reject) => {
       try {
         let clients = [];
-        const res = await authInstance.get(`/users?type=client&page=1&qty=10000000&completed=true&search=${inputValue}`);
+        const res = await getAxiosInstance("auth", "v1").get(`/users?type=client&page=1&qty=10000000&completed=true&search=${inputValue}`);
         if (res.status === 200) {
           const clientOptions = res.data.users.map((client) => ({ value: client.id, label: client.email }));
           clients = clientOptions;

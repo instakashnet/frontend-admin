@@ -1,11 +1,11 @@
-import * as types from "./types";
-import { put, fork, takeEvery, all } from "redux-saga/effects";
+import { all, fork, put, takeEvery } from "redux-saga/effects";
+import { getAxiosInstance } from "../../../api/axios";
 import * as actions from "./actions";
-import { accountsInstance } from "../../../api/axios";
+import * as types from "./types";
 
 function* getCountries() {
   try {
-    const res = yield accountsInstance.get("/countries");
+    const res = yield getAxiosInstance("accounts", "v1").get("/countries");
     if (res.status === 200) yield put(actions.getCountriesSuccess(res.data.countries));
   } catch (error) {
     yield put(actions.apiError());
@@ -14,7 +14,7 @@ function* getCountries() {
 
 function* getCurrencies() {
   try {
-    const res = yield accountsInstance.get("/currencies");
+    const res = yield getAxiosInstance("accounts", "v1").get("/currencies");
     if (res.status === 200) yield put(actions.getCurrenciesSuccess(res.data.currencies));
   } catch (error) {
     yield put(actions.apiError());

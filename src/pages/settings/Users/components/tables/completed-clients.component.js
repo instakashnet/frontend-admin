@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
 import { CloudDownload } from "@material-ui/icons";
-import { Card, CardBody, Button } from "reactstrap";
-import { downloadClientsInit, setAlert } from "../../../../../store/actions";
-import { getClients } from "../../../../../services/clients/clients.service";
-import { clientsCompletedColumns } from "../../../../../helpers/tables/columns";
-
+import React, { useCallback, useEffect, useState } from "react";
+import { Button, Card, CardBody } from "reactstrap";
+import { getClients } from "../../../../../api/services/auth.service";
 import { Table } from "../../../../../components/UI/tables/table.component";
+import { clientsCompletedColumns } from "../../../../../helpers/tables/columns";
+import { downloadClientsInit, setAlert } from "../../../../../store/actions";
 
 const PAGE_SIZE = 10;
 
@@ -18,8 +17,18 @@ const Completed = ({ dispatch }) => {
       setIsLoading(true);
 
       try {
-        const tableData = await getClients({ search, pageCount, completed: true });
-        setData(tableData);
+        const tableData = await getClients(pageCount, search, true),
+          users = tableData.map((user) => ({
+            id: user.id,
+            userName: user.first_name + " " + user.last_name,
+            email: user.email,
+            document: user.document_type + " " + user.document_identification,
+            phone: user.phone,
+            date: user.createdAt,
+            status: !!+user.active,
+          }));
+
+        setData(users);
       } catch (error) {
         console.log(error);
         dispatch(setAlert("danger", "Ha ocurrido un error obteniendo la lista de clientes. Por favor intenta de nuevo o contacta a soporte."));

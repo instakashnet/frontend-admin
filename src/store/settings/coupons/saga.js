@@ -1,13 +1,13 @@
-import { all, put, takeEvery, takeLatest, fork, select, call } from "redux-saga/effects";
-import * as types from "./types";
-import * as actions from "./actions";
-import { setAlert } from "../../actions";
-import { exchangeInstance } from "../../../api/axios";
+import { all, call, fork, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 import Swal from "sweetalert2";
+import { getAxiosInstance } from "../../../api/axios";
+import { setAlert } from "../../actions";
+import * as actions from "./actions";
+import * as types from "./types";
 
 function* getCoupons() {
   try {
-    const res = yield exchangeInstance.get("/coupons");
+    const res = yield getAxiosInstance("exchange", "v1").get("/coupons");
     if (res.status === 200) yield put(actions.getCouponsSuccess(res.data));
   } catch (error) {
     yield put(actions.couponsError());
@@ -25,14 +25,13 @@ function* addCoupon({ values, closeModal }) {
     qty_uses: values.qty_uses || 0,
     users: values.users && values.users.length > 0 ? values.users : [0],
   };
-
   try {
-    const res = yield exchangeInstance.post("/coupons", couponValues);
+    const res = yield getAxiosInstance("exchange", "v1").post("/coupons", couponValues);
     if (res.status === 201) {
-      yield put(actions.addCouponSuccess());
       yield call(getCoupons);
       yield call(closeModal);
       yield call([Swal, "fire"], "Exitoso!", "Cupón agregado correctamente", "success");
+      yield put(actions.addCouponSuccess());
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -59,14 +58,13 @@ function* editCoupon({ id, values, active, closeModal }) {
     minAmountSell: values.minAmountSell || 0,
     endDate: values.endDate ? new Date(values.endDate).getTime() : 0,
   };
-
   try {
-    const res = yield exchangeInstance.put(`/coupons/edit/${id}`, couponValues);
+    const res = yield getAxiosInstance("exchange", "v1").put(`/coupons/edit/${id}`, couponValues);
     if (res.status === 200) {
-      yield put(actions.editCouponSuccess());
       yield call(getCoupons);
       yield call(closeModal);
       yield call([Swal, "fire"], "Exitoso!", "Cupón editado correctamente", "success");
+      yield put(actions.editCouponSuccess());
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -83,9 +81,8 @@ function* deleteCoupon({ id }) {
       cancelButtonText: "Cancelar",
       confirmButtonText: "Si, eliminar",
     });
-
     if (result.isConfirmed) {
-      const res = yield exchangeInstance.delete(`/coupons/${id}`);
+      const res = yield getAxiosInstance("exchange", "v1").delete(`/coupons/${id}`);
       if (res.status === 200) {
         yield call(getCoupons);
         yield call([Swal, "fire"], "Exitoso", "El cupón ha sido eliminado.", "success");
@@ -106,9 +103,8 @@ function* disableCoupon({ id, active }) {
       cancelButtonText: "Cancelar",
       confirmButtonText: `Si, ${active ? "habilitar" : "deshabilitar"}`,
     });
-
     if (result.isConfirmed) {
-      const res = yield exchangeInstance.put(`/coupons/${id}`, { active });
+      const res = yield getAxiosInstance("exchange", "v1").put(`/coupons/${id}`, { active });
       if (res.status === 200) {
         yield call(getCoupons);
         yield call([Swal, "fire"], "Exitoso!", `El cupón ha sido ${active ? "habilitado" : "deshabilitado"}.`, "success");

@@ -1,12 +1,12 @@
-import { put, all, fork, takeEvery, call } from "redux-saga/effects";
-import * as actionTypes from "./actionTypes";
-import * as actions from "./actions";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { getAxiosInstance } from "../../../api/axios";
 import { setAlert } from "../../actions";
-import { exchangeInstance } from "../../../api/axios";
+import * as actions from "./actions";
+import * as actionTypes from "./actionTypes";
 
 function* getSchedule() {
   try {
-    const res = yield exchangeInstance.get("/schedules");
+    const res = yield getAxiosInstance("exchange", "v1").get("/schedules");
     if (res.status === 200) yield put(actions.getScheduleSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError());
@@ -16,7 +16,7 @@ function* getSchedule() {
 
 function* editSchedule({ values, id, setState }) {
   try {
-    const res = yield exchangeInstance.put(`/schedules/${id}`, values);
+    const res = yield getAxiosInstance("exchange", "v1").put(`/schedules/${id}`, values);
     if (res.status === 200) {
       yield put(actions.getSchedule());
       yield call(setState, false);

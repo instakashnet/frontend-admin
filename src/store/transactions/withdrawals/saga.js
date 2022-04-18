@@ -1,14 +1,14 @@
-import { put, all, fork, call, takeEvery } from "redux-saga/effects";
-import * as types from "./types";
-import * as actions from "./actions";
-import { setAlert } from "../../actions";
-import { exchangeInstance } from "../../../api/axios";
-import Swal from "sweetalert2";
 import camelize from "camelize";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import Swal from "sweetalert2";
+import { getAxiosInstance } from "../../../api/axios";
+import { setAlert } from "../../actions";
+import * as actions from "./actions";
+import * as types from "./types";
 
 function* getWithdrawalDetails({ id }) {
   try {
-    const res = yield exchangeInstance.get(`/withdrawals/${id}`);
+    const res = yield getAxiosInstance("exchange", "v1").get(`/withdrawals/${id}`);
     if (res.status === 200) {
       const withdrawalDetails = camelize(res.data);
       yield put(actions.getWithdrawalDetailsSuccess(withdrawalDetails));
@@ -22,9 +22,8 @@ function* getWithdrawalDetails({ id }) {
 function* attachVoucher({ id, values }) {
   const formData = new FormData();
   formData.append("file", values.file);
-
   try {
-    yield exchangeInstance.post(`/withdrawals/order/attach-voucher/${id}`, formData);
+    yield getAxiosInstance("exchange", "v1").post(`/withdrawals/order/attach-voucher/${id}`, formData);
   } catch (error) {
     throw error;
   }
@@ -41,10 +40,9 @@ function* changeWithdrawalStatus({ id, statusId, values, toggle }) {
       cancelButtonText: "No, regresar",
       cancelButtonColor: "#f46a6a",
     });
-
     if (result.isConfirmed) {
       if (statusId === 6) yield call(attachVoucher, { id, values, toggle });
-      const res = yield exchangeInstance.put("/withdrawals/status", { id, status: statusId });
+      const res = yield getAxiosInstance("exchange", "v1").put("/withdrawals/status", { id, status: statusId });
       if (res.status === 200) {
         yield call(getWithdrawalDetails, { id });
         yield put(actions.changeWithdrawalStatusSuccess());

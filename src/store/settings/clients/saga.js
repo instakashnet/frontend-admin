@@ -1,16 +1,16 @@
-import { put, all, fork, takeEvery, takeLatest, call } from "redux-saga/effects";
-import * as actionTypes from "./actionTypes";
-import * as actions from "./actions";
-import { setAlert } from "../../actions";
-import Swal from "sweetalert2";
 import fileDownload from "js-file-download";
-import { exchangeInstance, authInstance, accountsInstance } from "../../../api/axios";
+import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
+import Swal from "sweetalert2";
+import { getAxiosInstance } from "../../../api/axios";
+import { setAlert } from "../../actions";
 import { getExchangeDetails } from "../../transactions/currencyExchange/actions";
 import { getWithdrawalDetailsInit } from "../../transactions/withdrawals/actions";
+import * as actions from "./actions";
+import * as actionTypes from "./actionTypes";
 
 function* getClientDetails({ userId }) {
   try {
-    const res = yield authInstance.get(`/users/user/${userId}`);
+    const res = yield getAxiosInstance("auth", "v1").get(`/users/user/${userId}`);
     if (res.status === 200) yield put(actions.getClientDetailsSuccess(res.data.user));
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -20,7 +20,7 @@ function* getClientDetails({ userId }) {
 
 function* getClientExchanges({ userId }) {
   try {
-    const res = yield exchangeInstance.get(`/order/user/${userId}`);
+    const res = yield getAxiosInstance("exchange", "v1").get(`/order/user/${userId}`);
     if (res.status === 200) yield put(actions.getClientExchangesSuccess(res.data));
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -30,12 +30,12 @@ function* getClientExchanges({ userId }) {
 
 function* addClientProfile({ values, closeModal }) {
   try {
-    const res = yield authInstance.post(`/users/profiles`, values);
+    const res = yield getAxiosInstance("auth", "v1").post(`/users/profiles`, values);
     if (res.status === 200) {
-      yield put(actions.addProfileSuccess());
-      yield call(closeModal);
       yield call(getClientDetails, { userId: values.userId });
+      yield call(closeModal);
       yield Swal.fire("Exitoso", "El perfil fue agregado correctamente.", "success");
+      yield put(actions.addProfileSuccess());
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -48,14 +48,13 @@ function* editClientInfo({ userId, values, closeModal }) {
     ...values,
     phone: values.phone.replace("+", ""),
   };
-
   try {
-    const res = yield authInstance.put(`/users/user/${userId}`, profileValues);
+    const res = yield getAxiosInstance("auth", "v1").put(`/users/user/${userId}`, profileValues);
     if (res.status === 200) {
-      yield put(actions.editClientInfoSuccess());
-      yield call(closeModal);
       yield call(getClientDetails, { userId });
+      yield call(closeModal);
       yield Swal.fire("Exitoso", "Los datos del usuario fueron editados correctamente.", "success");
+      yield put(actions.editClientInfoSuccess());
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -65,12 +64,12 @@ function* editClientInfo({ userId, values, closeModal }) {
 
 function* editClientProfile({ values, closeModal }) {
   try {
-    const res = yield authInstance.put("/users/profiles", values);
+    const res = yield getAxiosInstance("auth", "v1").put("/users/profiles", values);
     if (res.status === 200) {
-      yield put(actions.editProfileSuccess());
-      yield call(closeModal);
       yield call(getClientDetails, { userId: values.userId });
+      yield call(closeModal);
       yield Swal.fire("Exitoso", "Los datos del perfil fueron editados correctamente.", "success");
+      yield put(actions.editProfileSuccess());
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -80,12 +79,10 @@ function* editClientProfile({ values, closeModal }) {
 
 function* uploadDocument({ values, userId, uploadType, close, setPercentage }) {
   let URL = `/users/${uploadType === "identity_photo" ? "upload-identity-photo" : "upload-identity-photo-two"}/${userId}`;
-
   const formData = new FormData();
   formData.append(uploadType === "identity_photo" ? "file-one" : "file-two", values[uploadType]);
-
   try {
-    const res = yield authInstance.post(URL, formData, {
+    const res = yield getAxiosInstance("auth", "v1").post(URL, formData, {
       timeout: 99999,
       onUploadProgress: ({ loaded, total }) => {
         const percentage = Math.floor((loaded * 100) / total);
@@ -94,9 +91,9 @@ function* uploadDocument({ values, userId, uploadType, close, setPercentage }) {
     });
     if (res.status === 200) {
       yield call(getClientDetails, { userId });
-      yield put(actions.uploadDocumentSuccess());
       yield call(close);
       yield call([Swal, "fire"], "Exitoso", `El documento fue agregado correctamente.`, "success");
+      yield put(actions.uploadDocumentSuccess());
     }
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -106,7 +103,7 @@ function* uploadDocument({ values, userId, uploadType, close, setPercentage }) {
 
 function* getClientAccounts({ id }) {
   try {
-    const res = yield accountsInstance.get(`/accounts/${id}`);
+    const res = yield getAxiosInstance("accounts", "v1").get(`/accounts/${id}`);
     yield put(actions.getClientAccountsSuccess(res.data.accounts));
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -116,13 +113,11 @@ function* getClientAccounts({ id }) {
 
 function* downloadClients({ fileType }) {
   let URL;
-
   if (fileType === "companies") URL = "/users/companies/download";
   if (fileType === "clients") URL = "/users/clients/download";
-
   try {
     if (!URL) return;
-    const res = yield authInstance.get(URL, { responseType: "arraybuffer" });
+    const res = yield getAxiosInstance("auth", "v1").get(URL, { responseType: "arraybuffer" });
     fileDownload(res.data, `${fileType}.xlsx`);
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -132,7 +127,7 @@ function* downloadClients({ fileType }) {
 
 function* editInterplaza({ values, detailsType, id, setState }) {
   try {
-    const res = yield accountsInstance.put(`/accounts/${values.accountId}`, { interbank: values.interbank });
+    const res = yield getAxiosInstance("accounts", "v1").put(`/accounts/${values.accountId}`, { interbank: values.interbank });
     if (res.status === 200) {
       if (detailsType === "exchange") yield put(getExchangeDetails(id));
       if (detailsType === "withdrawal") yield put(getWithdrawalDetailsInit(id));
@@ -156,13 +151,12 @@ function* disableClient({ userId, active }) {
       cancelButtonColor: "#d9534f",
       confirmButtonText: "Si, continuar",
     });
-
     if (result.isConfirmed) {
-      const res = yield authInstance.put("/users/access", { userId, active: !active });
+      const res = yield getAxiosInstance("auth", "v1").put("/users/access", { userId, active: !active });
       if (res.status === 200) {
-        yield put(actions.disableClientSuccess());
         yield call(getClientDetails, { userId });
         yield Swal.fire("Exitoso", `Usuario ${active ? "deshabilitado" : "habilitado"}.`, "success");
+        yield put(actions.disableClientSuccess());
       }
     } else yield put(actions.apiError());
   } catch (error) {
