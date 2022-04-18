@@ -1,10 +1,10 @@
+import moment from "moment";
 import React, { useCallback, useEffect, useState } from "react";
 import { Card, CardBody } from "reactstrap";
-import { setAlert } from "../../../../../store/actions";
-import { getClientsAccounts } from "../../../../../services/clients/accounts.service";
-import { usersAccountsColumns } from "../../../../../helpers/tables/columns";
-
+import { getClientsAccounts } from "../../../../../api/services/accounts.service";
 import { Table } from "../../../../../components/UI/tables/table.component";
+import { usersAccountsColumns } from "../../../../../helpers/tables/columns";
+import { setAlert } from "../../../../../store/actions";
 
 const PAGE_SIZE = 50;
 
@@ -17,10 +17,21 @@ export const AccountsTable = ({ dispatch }) => {
       setIsLoading(true);
 
       try {
-        const tableData = await getClientsAccounts({ search, pageCount });
-        setData(tableData);
+        const tableData = await getClientsAccounts(pageCount, search);
+
+        console.log(tableData);
+
+        const accounts = tableData.map((acc) => ({
+          accountNumber: acc.accountNumber || acc.accountNumberCCI,
+          accountType: `${acc.accountType === "checking" ? "Corriente" : "Ahorros"} - ${acc.currencySymbol}`,
+          bankName: acc.bankName,
+          createdAt: moment(acc.createdAt).format("DD-MM-YYYY HH:mm"),
+          userName: acc.userName,
+          userEmail: acc.userEmail,
+        }));
+
+        setData(accounts);
       } catch (error) {
-        console.log(error);
         dispatch(setAlert("danger", "Ha ocurrido un error obteniendo la lista de cuentas. Por favor, intentelo más tarde."));
       } finally {
         setIsLoading(false);

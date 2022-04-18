@@ -1,11 +1,11 @@
-import * as types from "./types";
-import * as actions from "./actions";
 import { all, put, takeEvery } from "redux-saga/effects";
-import { authInstance } from "../../../api/axios";
+import { getAxiosInstance } from "../../../api/axios";
+import * as actions from "./actions";
+import * as types from "./types";
 
 function* getAdminsWorker() {
   try {
-    const res = yield authInstance.get("/users/admins");
+    const res = yield getAxiosInstance("auth", "v1").get("/users/admins");
     if (res.status === 200) yield put(actions.getAdminsSuccess(res.data.admins));
   } catch (error) {
     yield put(actions.getAdminsError());
@@ -14,7 +14,7 @@ function* getAdminsWorker() {
 
 function* getOperatorsWorker({ online }) {
   try {
-    const res = yield authInstance.get(`/users/operators${online ? "?online=true" : ""}`);
+    const res = yield getAxiosInstance("auth", "v1").get(`/users/operators${online ? "?online=true" : ""}`);
     if (res.status === 200) yield put(actions.getOperatorsSuccess(res.data.admins));
   } catch (error) {
     yield put(actions.getOperatorsError());
@@ -23,7 +23,7 @@ function* getOperatorsWorker({ online }) {
 
 function* setOperatorOnline({ userId }) {
   try {
-    const res = yield authInstance.put(`/auth/online/${userId}`);
+    const res = yield getAxiosInstance("auth", "v1").put(`/auth/online/${userId}`);
     if (res.status === 200) yield put(actions.getOperatorsInit());
   } catch (error) {
     yield put(actions.setOperatorOnlineError());
