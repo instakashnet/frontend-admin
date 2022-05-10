@@ -1,10 +1,9 @@
-import { takeEvery, takeLatest, put, all, call } from "redux-saga/effects";
-
-// Login Redux States
-import { LOGIN_USER, LOGOUT_USER, LOAD_USER, SET_ONLINE_INIT, REFRESH_TOKEN } from "./actionTypes";
-import * as actions from "./actions";
-import { authInstance } from "../../api/axios";
+import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import { getAxiosInstance } from "../../api/axios";
 import history from "../../helpers/history";
+import * as actions from "./actions";
+// Login Redux States
+import { LOAD_USER, LOGIN_USER, LOGOUT_USER, REFRESH_TOKEN, SET_ONLINE_INIT } from "./actionTypes";
 
 function setRoleRedirect(role) {
   let route = "/dashboard";
@@ -15,8 +14,7 @@ function setRoleRedirect(role) {
 
 function* refreshToken() {
   try {
-    const res = yield authInstance.post("/auth/refresh");
-
+    const res = yield getAxiosInstance("auth", "v1").post("/auth/refresh");
     if (res.status === 200) {
       yield put(actions.refreshTokenSuccess(res.data.accessToken));
       yield call(loadUser);
@@ -28,10 +26,9 @@ function* refreshToken() {
 
 function* loadUser() {
   try {
-    const res = yield authInstance.get("/users/session"),
+    const res = yield getAxiosInstance("auth", "v1").get("/users/session"),
       userData = { ...res.data },
       redirectRoute = yield call(setRoleRedirect, userData.roles);
-
     yield put(actions.loadUserSuccess(userData));
     yield history.push(redirectRoute);
   } catch (error) {
@@ -41,8 +38,7 @@ function* loadUser() {
 
 function* loginUser({ values }) {
   try {
-    const res = yield authInstance.post("/auth/signin", values);
-
+    const res = yield getAxiosInstance("auth", "v1").post("/auth/signin", values);
     yield put(actions.loginSuccess(res.data.accessToken));
     yield call(loadUser);
   } catch (error) {
@@ -52,11 +48,10 @@ function* loginUser({ values }) {
 
 function* setOnline() {
   try {
-    const res = yield authInstance.put("/auth/online");
+    const res = yield getAxiosInstance("auth", "v1").put("/auth/online");
     if (res.status === 200) {
-      const session = yield authInstance.get("/users/session"),
+      const session = yield getAxiosInstance("auth", "v1").get("/users/session"),
         userData = { ...session.data };
-
       yield put(actions.setOnlineSuccess(userData));
     }
   } catch (error) {
@@ -67,11 +62,10 @@ function* setOnline() {
 
 function* logoutUser() {
   try {
-    yield authInstance.post("/auth/logout");
+    yield getAxiosInstance("auth", "v1").post("/auth/logout");
   } catch (error) {
     console.log(error);
   }
-
   yield put(actions.logoutUserSuccess());
   yield call([history, "push"], "/login");
 }

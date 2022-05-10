@@ -1,12 +1,12 @@
-import { fork, all, put, takeEvery, call, takeLatest } from "redux-saga/effects";
-import * as actionTypes from "./actionTypes";
-import * as actions from "./actions";
+import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
+import { getAxiosInstance } from "../../api/axios";
 import { setAlert } from "../actions";
-import { exchangeInstance } from "../../api/axios";
+import * as actions from "./actions";
+import * as actionTypes from "./actionTypes";
 
 function* getForex() {
   try {
-    const res = yield exchangeInstance.get("/forex");
+    const res = yield getAxiosInstance("exchange", "v1").get("/forex");
     yield put(actions.getForexSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError());
@@ -15,7 +15,7 @@ function* getForex() {
 
 function* getAllRates() {
   try {
-    const res = yield exchangeInstance.get("/rates/all");
+    const res = yield getAxiosInstance("exchange", "v1").get("/rates/all");
     yield put(actions.getAllRateSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError());
@@ -24,7 +24,7 @@ function* getAllRates() {
 
 function* getforexRates({ forexId }) {
   try {
-    const res = yield exchangeInstance.get(`/rates/forex/${forexId}`);
+    const res = yield getAxiosInstance("exchange", "v1").get(`/rates/forex/${forexId}`);
     const ratesArray = res.data.map((rates) => ({
       ...rates,
       buy: +rates.buy,
@@ -42,9 +42,8 @@ function* addCurrencyPrice({ values }) {
     buy: values.buy.toFixed(4),
     sell: values.sell.toFixed(4),
   };
-
   try {
-    const res = yield exchangeInstance.post("/rates", ratesValues);
+    const res = yield getAxiosInstance("exchange", "v1").post("/rates", ratesValues);
     if (res.status === 201) {
       yield call(getforexRates, { forexId: values.forexId });
       yield call(getAllRates);

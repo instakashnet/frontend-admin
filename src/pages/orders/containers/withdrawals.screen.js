@@ -1,8 +1,9 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
+import moment from "moment";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { setAlert } from "../../../store/actions";
-import { getAllWithdrawals } from "../../../services/orders/withdrawals.service";
+import { getAllWithdrawals } from "../../../api/services/exchange.service";
 import { withdrawalsColumns } from "../../../helpers/tables/columns";
 
 import { Table } from "../../../components/UI/tables/table.component";
@@ -19,7 +20,18 @@ export const WithdrawalsScreen = () => {
       setIsLoading(true);
 
       try {
-        const withdrawals = await getAllWithdrawals({ search, pageCount });
+        const tableData = await getAllWithdrawals(pageCount, search),
+          withdrawals = tableData.map((withdrawal) => ({
+            id: withdrawal.id,
+            pedidoId: withdrawal.uuid,
+            date: moment(withdrawal.createdAt).format("DD-MM-YYYY HH:mm"),
+            user: withdrawal.firstName + " " + withdrawal.lastName,
+            destinationBank: withdrawal.bankName.toLowerCase(),
+            statusColor: withdrawal.statusColor,
+            statusName: withdrawal.statusName,
+            kashQty: withdrawal.kashQty + " KASH",
+          }));
+
         setData(withdrawals);
       } catch (error) {
         dispatch(setAlert("danger", "Ha ocurrido un nerror obteniendo los retiros. Por favor intente más tarde."));

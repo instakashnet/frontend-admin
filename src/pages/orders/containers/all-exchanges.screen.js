@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Card, CardBody, Col, Row, Container, Spinner, Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useRole } from "../../../hooks/useRole";
-import { getAllOrders } from "../../../services/orders/exchanges.service";
+import { getAllOrders } from "../../../api/services/exchange.service";
 import { exchangesColumns } from "../../../helpers/tables/columns";
 import { setAlert } from "../../../store/actions";
+import { formatOrders } from "../../../helpers/functions";
 
 //Components
 import { CreateExcel } from "../components/forms/create-excel.component";
@@ -34,8 +35,10 @@ export const AllExchangesScreen = () => {
       setIsLoading(true);
 
       try {
-        const tableData = await getAllOrders({ search, pageCount });
-        setData(tableData);
+        const tableData = await getAllOrders(pageCount, search),
+          orders = formatOrders(tableData, "orders");
+
+        setData(orders);
       } catch (error) {
         dispatch(setAlert("danger", "Ha ocurrido un error obteniendo la lista de ordenes. Por favor intenta de nuevo o contacta a soporte."));
       } finally {

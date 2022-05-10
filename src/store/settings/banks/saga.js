@@ -1,13 +1,13 @@
-import { all, call, put, takeEvery, fork, takeLatest } from "redux-saga/effects";
-import * as actionTypes from "./actionTypes";
-import * as actions from "./actions";
-import { setAlert } from "../../actions";
+import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
 import Swal from "sweetalert2";
-import { accountsInstance } from "../../../api/axios";
+import { getAxiosInstance } from "../../../api/axios";
+import { setAlert } from "../../actions";
+import * as actions from "./actions";
+import * as actionTypes from "./actionTypes";
 
 function* getBanks() {
   try {
-    const res = yield accountsInstance.get("/banks");
+    const res = yield getAxiosInstance("accounts", "v1").get("/banks");
     if (res.status === 200) yield put(actions.getBanksSuccess(res.data.banks));
   } catch (error) {
     yield put(setAlert("danger", error.message));
@@ -17,8 +17,7 @@ function* getBanks() {
 
 function* addBank({ values, setState }) {
   try {
-    const res = yield accountsInstance.post("/banks", values);
-
+    const res = yield getAxiosInstance("accounts", "v1").post("/banks", values);
     if (res.status === 201) {
       yield put(actions.addBankSuccess());
       yield call(getBanks);
@@ -33,7 +32,7 @@ function* addBank({ values, setState }) {
 
 function* editBank({ id, values, close }) {
   try {
-    const res = yield accountsInstance.put(`/banks/${id}`, values);
+    const res = yield getAxiosInstance("accounts", "v1").put(`/banks/${id}`, values);
     if (res.status === 201) {
       yield call(getBanks);
       yield call(close);
@@ -48,7 +47,7 @@ function* editBank({ id, values, close }) {
 
 function* toggleBank({ id, enabled }) {
   try {
-    const res = yield accountsInstance.put(`enabled-banks/${id}`, { enabled });
+    const res = yield getAxiosInstance("accounts", "v1").put(`enabled-banks/${id}`, { enabled });
     if (res.status === 200) {
       yield call(getBanks);
       yield put(setAlert("success", `El banco fue ${enabled ? "habilitado" : "deshabilitado"} correctamente.`));
