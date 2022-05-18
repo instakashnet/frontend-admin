@@ -20,9 +20,9 @@ const Completed = ({ dispatch }) => {
         const tableData = await getClients(pageCount, search, true),
           users = tableData.map((user) => ({
             id: user.id,
-            userName: user.first_name + " " + user.last_name,
+            userName: user.firstName + " " + user.lastName,
             email: user.email,
-            document: user.document_type + " " + user.document_identification,
+            document: user.documentType + " " + user.documentIdentification,
             phone: user.phone,
             date: user.createdAt,
             status: !!+user.active,

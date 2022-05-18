@@ -1,16 +1,16 @@
-import React from "react";
 import { useFormik } from "formik";
-import { Button, Spinner } from "reactstrap";
+import React from "react";
 import { useDispatch } from "react-redux";
+import { Button, Spinner } from "reactstrap";
+import Input from "../../../../../components/UI/FormItems/Input";
 import { editProfileInit } from "../../../../../store/actions";
 
-import Input from "../../../../../components/UI/FormItems/Input";
 
 const EditCompanyProfile = ({ details, isProcessing, closeModal, userId }) => {
   const dispatch = useDispatch();
 
   const formik = useFormik({
-    initialValues: { userId: +userId, profileId: details.id, type: "juridica", razon_social: details.razon_social, ruc: details.ruc, address: details.address },
+    initialValues: { userId: +userId, profileId: details.id, type: "juridica", razon_social: details.razonSocial, ruc: details.ruc, address: details.address },
     onSubmit: (values) => dispatch(editProfileInit(values, closeModal)),
   });
 

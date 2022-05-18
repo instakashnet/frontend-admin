@@ -1,11 +1,10 @@
-import React from "react";
 import { useFormik } from "formik";
-import { Button, Spinner } from "reactstrap";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { editProfileInit, addProfileInit } from "../../../../../store/actions";
-
+import { Button, Spinner } from "reactstrap";
 import Input from "../../../../../components/UI/FormItems/Input";
 import Select from "../../../../../components/UI/FormItems/Select";
+import { addProfileInit, editProfileInit } from "../../../../../store/actions";
 
 const EditUser = ({ details, userId, closeModal, isProcessing }) => {
   const dispatch = useDispatch();
@@ -14,14 +13,15 @@ const EditUser = ({ details, userId, closeModal, isProcessing }) => {
     initialValues: {
       type: "natural",
       userId: +userId,
-      identity_sex: details.identity_sex || "",
+      identity_sex: details.identitySex || "",
       profileId: details.profileId || "",
-      first_name: details.first_name || "",
-      last_name: details.last_name || "",
-      document_type: details.document_type || "",
-      document_identification: details.document_identification || "",
-      occupation: details.occupation || "",
+      first_name: details.firstName || "",
+      last_name: details.lastName || "",
+      document_type: details.documentType || "",
+      document_identification: details.documentIdentification || "",
+      job: details.job || "",
       profession: details.profession || "",
+      address: details.address || "",
     },
     onSubmit: (values) => dispatch(details.id ? editProfileInit(values, closeModal) : addProfileInit(values, closeModal)),
   });
@@ -66,7 +66,7 @@ const EditUser = ({ details, userId, closeModal, isProcessing }) => {
         />
         {details.id && (
           <>
-            <Input type="text" name="occupation" value={formik.values.occupation} onChange={formik.handleChange} onBlur={formik.handleBlur} label="Ocupación" />
+            <Input type="text" name="job" value={formik.values.job} onChange={formik.handleChange} onBlur={formik.handleBlur} label="Ocupación" />
             <Input type="text" name="profession" value={formik.values.profession} onChange={formik.handleChange} onBlur={formik.handleBlur} label="Profesión" />
             <Input type="text" name="address" value={formik.values.address} onChange={formik.handleChange} onBlur={formik.handleBlur} label="Dirección corta" />
           </>
