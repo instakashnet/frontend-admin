@@ -1,16 +1,15 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Container, Row, Col } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Col, Container, Row } from "reactstrap";
+//Import Breadcrumb
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { useRole } from "../../hooks/useRole";
-
 // COMPONENTS
 import ExchangesChart from "./components/charts/exchanges-chart.component";
 import UsersChart from "./components/charts/users-chart.component";
-import { DailyEarning } from "./components/daily-earning.component";
 import Counters from "./components/counters.component";
+import { DailyEarning } from "./components/daily-earning.component";
 
-//Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 export const DashboardScreen = () => {
   const dispatch = useDispatch();
@@ -18,7 +17,6 @@ export const DashboardScreen = () => {
   const { user } = useSelector((state) => state.Login);
 
   const [role] = useRole(user);
-
   return (
     <div className="page-content">
       <Container fluid>

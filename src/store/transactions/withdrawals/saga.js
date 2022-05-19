@@ -1,18 +1,14 @@
-import camelize from "camelize";
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import Swal from "sweetalert2";
-import { getAxiosInstance } from "../../../api/axios";
+import { attachVoucherSvc, changeWithdrawalStatusSvc, getWithdrawalDetailsSvc } from "../../../api/services/exchange.service";
 import { setAlert } from "../../actions";
 import * as actions from "./actions";
 import * as types from "./types";
 
 function* getWithdrawalDetails({ id }) {
   try {
-    const res = yield getAxiosInstance("exchange", "v1").get(`/withdrawals/${id}`);
-    if (res.status === 200) {
-      const withdrawalDetails = camelize(res.data);
-      yield put(actions.getWithdrawalDetailsSuccess(withdrawalDetails));
-    }
+    const res = yield call(getWithdrawalDetailsSvc, id);
+    yield put(actions.getWithdrawalDetailsSuccess(res));
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.withdrawalsError());
@@ -23,7 +19,7 @@ function* attachVoucher({ id, values }) {
   const formData = new FormData();
   formData.append("file", values.file);
   try {
-    yield getAxiosInstance("exchange", "v1").post(`/withdrawals/order/attach-voucher/${id}`, formData);
+    yield call(attachVoucherSvc, id, formData);
   } catch (error) {
     throw error;
   }
@@ -36,19 +32,17 @@ function* changeWithdrawalStatus({ id, statusId, values, toggle }) {
       text: "Al continuar no podrás revertir este estado.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: `Si, continuar`,
+      confirmButtonText: `Sí, continuar`,
       cancelButtonText: "No, regresar",
       cancelButtonColor: "#f46a6a",
     });
     if (result.isConfirmed) {
       if (statusId === 6) yield call(attachVoucher, { id, values, toggle });
-      const res = yield getAxiosInstance("exchange", "v1").put("/withdrawals/status", { id, status: statusId });
-      if (res.status === 200) {
-        yield call(getWithdrawalDetails, { id });
-        yield put(actions.changeWithdrawalStatusSuccess());
-        if (statusId === 6) yield call(toggle, false);
-        yield Swal.fire("Exitoso", `El retiro fue ${statusId === 5 ? "cancelado" : "aprobado"} correctamente.`, "success");
-      }
+      yield call(changeWithdrawalStatusSvc, id, statusId);
+      yield call(getWithdrawalDetails, { id });
+      yield put(actions.changeWithdrawalStatusSuccess());
+      if (statusId === 6) yield call(toggle, false);
+      yield Swal.fire("Exitoso", `El retiro fue ${statusId === 5 ? "cancelado" : "aprobado"} correctamente.`, "success");
     } else yield put(actions.withdrawalsError());
   } catch (error) {
     yield put(setAlert("danger", error.message));

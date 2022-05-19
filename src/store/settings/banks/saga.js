@@ -1,14 +1,14 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
 import Swal from "sweetalert2";
-import { getAxiosInstance } from "../../../api/axios";
+import { addBankSvc, editBankSvc, getBanksSvc, toggleBankSvc } from "../../../api/services/accounts.service";
 import { setAlert } from "../../actions";
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
 
 function* getBanks() {
   try {
-    const res = yield getAxiosInstance("accounts", "v1").get("/banks");
-    if (res.status === 200) yield put(actions.getBanksSuccess(res.data.banks));
+    const res = yield call(getBanksSvc);
+    yield put(actions.getBanksSuccess(res));
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -17,13 +17,11 @@ function* getBanks() {
 
 function* addBank({ values, setState }) {
   try {
-    const res = yield getAxiosInstance("accounts", "v1").post("/banks", values);
-    if (res.status === 201) {
-      yield put(actions.addBankSuccess());
-      yield call(getBanks);
-      yield call(setState);
-      yield Swal.fire("Exitoso", "El banco ha sido agregado correctamente.", "success");
-    }
+    yield call(addBankSvc, values);
+    yield put(actions.addBankSuccess());
+    yield call(getBanks);
+    yield call(setState);
+    yield Swal.fire("Exitoso", "El banco ha sido agregado correctamente.", "success");
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -32,13 +30,11 @@ function* addBank({ values, setState }) {
 
 function* editBank({ id, values, close }) {
   try {
-    const res = yield getAxiosInstance("accounts", "v1").put(`/banks/${id}`, values);
-    if (res.status === 201) {
-      yield call(getBanks);
-      yield call(close);
-      yield put(setAlert("success", `El banco fue editado correctamente.`));
-      yield put(actions.editBankSuccess());
-    }
+    yield call(editBankSvc, id, values);
+    yield call(getBanks);
+    yield call(close);
+    yield put(setAlert("success", `El banco fue editado correctamente.`));
+    yield put(actions.editBankSuccess());
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -47,12 +43,10 @@ function* editBank({ id, values, close }) {
 
 function* toggleBank({ id, enabled }) {
   try {
-    const res = yield getAxiosInstance("accounts", "v1").put(`enabled-banks/${id}`, { enabled });
-    if (res.status === 200) {
-      yield call(getBanks);
-      yield put(setAlert("success", `El banco fue ${enabled ? "habilitado" : "deshabilitado"} correctamente.`));
-      yield put(actions.toggleBankSuccess());
-    }
+    yield call(toggleBankSvc, id, enabled);
+    yield call(getBanks);
+    yield put(setAlert("success", `El banco fue ${enabled ? "habilitado" : "deshabilitado"} correctamente.`));
+    yield put(actions.toggleBankSuccess());
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());

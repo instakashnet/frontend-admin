@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Card, CardBody, Button, Spinner } from "reactstrap";
 import { useFormik } from "formik";
 import moment from "moment";
-import { addCouponInit, getCouponsDetailsInit, editCouponInit } from "../../../../../store/actions";
-import { couponValidations } from "../../../../../helpers/forms/validation";
-
-import Input from "../../../../../components/UI/FormItems/Input";
-import Checkbox from "../../../../../components/UI/FormItems/Checkbox";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Card, CardBody, Spinner } from "reactstrap";
 import AsyncSelect from "../../../../../components/UI/FormItems/AsyncSelect";
+import Checkbox from "../../../../../components/UI/FormItems/Checkbox";
+import Input from "../../../../../components/UI/FormItems/Input";
 import Select from "../../../../../components/UI/FormItems/Select";
+import { couponValidations } from "../../../../../helpers/forms/validation";
+import { addCouponInit, editCouponInit, getCouponsDetailsInit } from "../../../../../store/actions";
+
 
 const EditCoupon = ({ couponId, isProcessing, onShowForm, clients }) => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const EditCoupon = ({ couponId, isProcessing, onShowForm, clients }) => {
     initialValues: {
       name: details.name || "",
       discount: details.discount || "",
-      qty_uses: details.qty_uses || "",
+      qty_uses: details.qtyUses || "",
       affiliates: details.affiliates || false,
       indefinite: details.endDate <= 0 || false,
       users: details.users && details.users.length > 0 ? details.users : [],

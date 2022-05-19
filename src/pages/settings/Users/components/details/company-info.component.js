@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Card, CardBody, CardTitle, Button, Table } from 'reactstrap';
+import { Button, Card, CardBody, CardTitle, Col, Table } from 'reactstrap';
 
 const CompanyInfo = ({ company, openModal }) => {
   return (
@@ -18,7 +18,7 @@ const CompanyInfo = ({ company, openModal }) => {
               <tbody>
                 <tr>
                   <th scope='row'>Empresa</th>
-                  <td>{company.razon_social}</td>
+                  <td>{company.razonSocial}</td>
                 </tr>
                 <tr>
                   <th scope='row'>RUC</th>

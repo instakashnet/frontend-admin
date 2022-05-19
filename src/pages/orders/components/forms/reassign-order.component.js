@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
 import { useFormik } from "formik";
-import { useSelector, useDispatch } from "react-redux";
-import { Card, CardBody, Spinner, Button } from "reactstrap";
-import { getOperatorsInit, getClientAccounts, reassignOrderInit } from "../../../../store/actions";
-
-import Select from "../../../../components/UI/FormItems/Select";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Card, CardBody, Spinner } from "reactstrap";
 import CustomSelect from "../../../../components/UI/FormItems/CustomSelect";
+import Select from "../../../../components/UI/FormItems/Select";
+import { getClientAccounts, getOperatorsInit, reassignOrderInit } from "../../../../store/actions";
+
 
 const ReassignOrder = ({ details, isProcessing, onShowForm }) => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const ReassignOrder = ({ details, isProcessing, onShowForm }) => {
 
   const operatorOptions = operators.map((operator) => ({ label: `${operator.name} - ${operator.email}`, value: operator.userId }));
   const clientAccountOptions = clientAccounts.map((clientAccount) => ({
-    label: `${clientAccount.account_number || clientAccount.cci} - ${clientAccount.currency.Symbol}`,
+    label: `${clientAccount.accountNumber || clientAccount.cci} - ${clientAccount.currency.Symbol}`,
     image: `${process.env.PUBLIC_URL}/images/banks/${clientAccount.bank.name.toLowerCase()}.svg`,
     value: clientAccount.id,
   }));

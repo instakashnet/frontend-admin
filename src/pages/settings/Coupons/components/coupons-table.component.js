@@ -12,10 +12,10 @@ const CouponsList = ({ coupons, isLoading, onForm, onDisable }) => {
     if (coupons.length > 0) {
       setData(
         coupons.map((coupon) => ({
-          id: coupon._id,
+          id: coupon.Id,
           couponName: coupon.name,
           discount: coupon.discount,
-          uses: coupon.qty_uses,
+          uses: coupon.qtyUses,
           affiliates: coupon.affiliates,
           profileType: coupon.profileType,
           active: coupon.active,

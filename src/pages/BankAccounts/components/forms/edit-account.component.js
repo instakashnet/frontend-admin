@@ -1,20 +1,20 @@
+import { useFormik } from "formik";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Card, CardBody, Button, Spinner } from "reactstrap";
-import { useFormik } from "formik";
-import { editCbAccount } from "../../../../store/actions";
-import Input from "../../../../components/UI/FormItems/Input";
+import { Button, Card, CardBody, Spinner } from "reactstrap";
 import Breadcrumbs from "../../../../components/Common/Breadcrumb";
+import Input from "../../../../components/UI/FormItems/Input";
+import { editCbAccount } from "../../../../store/actions";
 
 const EditAccount = ({ onHideForm, account, isProcessing }) => {
   const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
-      accountId: account ? account.id : "",
-      account_number: account ? account.accNumber : "",
-      balance: account ? account.balanceNumber : "",
-      cci: account ? account.cci : "",
+      accountId: account && account.id ? account.id : "",
+      account_number: account && account.accNumber ? account.accNumber : "",
+      balance: account && account.balanceNumber ? account.balanceNumber : "",
+      cci: account && account.cci ? account.cci : "",
     },
     enableReinitialize: true,
     onSubmit: (values) => dispatch(editCbAccount(values, onHideForm)),

@@ -1,5 +1,5 @@
 import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { getAxiosInstance } from "../../api/axios";
+import { loadUserSvc, loginUserSvc, logoutUserSvc, refreshTokenSvc, setOnlineSvc } from "../../api/services/auth.service";
 import history from "../../helpers/history";
 import * as actions from "./actions";
 // Login Redux States
@@ -14,11 +14,9 @@ function setRoleRedirect(role) {
 
 function* refreshToken() {
   try {
-    const res = yield getAxiosInstance("auth", "v1").post("/auth/refresh");
-    if (res.status === 200) {
-      yield put(actions.refreshTokenSuccess(res.data.accessToken));
-      yield call(loadUser);
-    }
+    const res = yield call(refreshTokenSvc);
+    yield put(actions.refreshTokenSuccess(res));
+    yield call(loadUser);
   } catch (error) {
     yield put(actions.logoutUserSuccess());
   }
@@ -26,9 +24,10 @@ function* refreshToken() {
 
 function* loadUser() {
   try {
-    const res = yield getAxiosInstance("auth", "v1").get("/users/session"),
-      userData = { ...res.data },
+    const res = yield call(loadUserSvc),
+      userData = { ...res },
       redirectRoute = yield call(setRoleRedirect, userData.roles);
+
     yield put(actions.loadUserSuccess(userData));
     yield history.push(redirectRoute);
   } catch (error) {
@@ -38,8 +37,8 @@ function* loadUser() {
 
 function* loginUser({ values }) {
   try {
-    const res = yield getAxiosInstance("auth", "v1").post("/auth/signin", values);
-    yield put(actions.loginSuccess(res.data.accessToken));
+    const res = yield call(loginUserSvc, values);
+    yield put(actions.loginSuccess(res));
     yield call(loadUser);
   } catch (error) {
     yield put(actions.apiError());
@@ -48,12 +47,10 @@ function* loginUser({ values }) {
 
 function* setOnline() {
   try {
-    const res = yield getAxiosInstance("auth", "v1").put("/auth/online");
-    if (res.status === 200) {
-      const session = yield getAxiosInstance("auth", "v1").get("/users/session"),
-        userData = { ...session.data };
-      yield put(actions.setOnlineSuccess(userData));
-    }
+    yield call(setOnlineSvc);
+    const session = yield call(loadUserSvc),
+      userData = { ...session };
+    yield put(actions.setOnlineSuccess(userData));
   } catch (error) {
     console.log(error);
     yield put(actions.apiError());
@@ -62,7 +59,7 @@ function* setOnline() {
 
 function* logoutUser() {
   try {
-    yield getAxiosInstance("auth", "v1").post("/auth/logout");
+    yield call(logoutUserSvc);
   } catch (error) {
     console.log(error);
   }

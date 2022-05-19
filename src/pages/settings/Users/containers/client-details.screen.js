@@ -33,18 +33,17 @@ export const ClientDetailsScreen = (props) => {
     setDocumentType(document);
   };
 
+  useEffect(() => {
+    dispatch(getClientDetails(id));
+    dispatch(getClientAccounts(id));
+  }, [dispatch, id]);
+
   const closeModal = () => {
     setProfileDetails({});
     setModal(false);
   };
-
-  useEffect(() => {
-    dispatch(getClientDetails(id));
-    dispatch(getClientExchanges(id));
-    dispatch(getClientAccounts(id));
-  }, [dispatch, id]);
-
   const disableClientHandler = (id, active) => dispatch(disableClientInit(id, active));
+  const getTransactions = () => dispatch(getClientExchanges(id));
 
   let ModalComponent;
 
@@ -85,11 +84,9 @@ export const ClientDetailsScreen = (props) => {
                   <UserAccounts accounts={accounts} isLoading={isLoading} />
                 </Col>
               )}
-              {exchanges.length > 0 && (
-                <Col lg="12">
-                  <UserTransactions orders={exchanges} isLoading={isLoading} />
-                </Col>
-              )}
+              <Col lg="12">
+                <UserTransactions orders={exchanges} isLoading={isLoading} getTransactions={getTransactions} />
+              </Col>
             </Row>
           </Container>
 

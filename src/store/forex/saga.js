@@ -1,13 +1,13 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { getAxiosInstance } from "../../api/axios";
+import { addCurrencyPriceSvc, getAllRatesSvc, getForexRatesSvc, getForexSvc } from "../../api/services/exchange.service";
 import { setAlert } from "../actions";
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
 
 function* getForex() {
   try {
-    const res = yield getAxiosInstance("exchange", "v1").get("/forex");
-    yield put(actions.getForexSuccess(res.data));
+    const res = yield call(getForexSvc);
+    yield put(actions.getForexSuccess(res));
   } catch (error) {
     yield put(actions.apiError());
   }
@@ -15,8 +15,8 @@ function* getForex() {
 
 function* getAllRates() {
   try {
-    const res = yield getAxiosInstance("exchange", "v1").get("/rates/all");
-    yield put(actions.getAllRateSuccess(res.data));
+    const res = yield call(getAllRatesSvc);
+    yield put(actions.getAllRateSuccess(res));
   } catch (error) {
     yield put(actions.apiError());
   }
@@ -24,13 +24,13 @@ function* getAllRates() {
 
 function* getforexRates({ forexId }) {
   try {
-    const res = yield getAxiosInstance("exchange", "v1").get(`/rates/forex/${forexId}`);
-    const ratesArray = res.data.map((rates) => ({
+    const res = yield call(getForexRatesSvc, forexId);
+    const ratesArray = res.map((rates) => ({
       ...rates,
       buy: +rates.buy,
       sell: +rates.sell,
     }));
-    if (res.status === 200) yield put(actions.getForexRatesSuccess(ratesArray));
+    yield put(actions.getForexRatesSuccess(ratesArray));
   } catch (error) {
     yield put(actions.apiError());
   }
@@ -43,13 +43,11 @@ function* addCurrencyPrice({ values }) {
     sell: values.sell.toFixed(4),
   };
   try {
-    const res = yield getAxiosInstance("exchange", "v1").post("/rates", ratesValues);
-    if (res.status === 201) {
-      yield call(getforexRates, { forexId: values.forexId });
-      yield call(getAllRates);
-      yield put(setAlert("success", "Se ha actualizado el precio correctamente."));
-      yield put(actions.addCurrencyPriceSuccess());
-    }
+    yield call(addCurrencyPriceSvc, ratesValues);
+    yield call(getforexRates, { forexId: values.forexId });
+    yield call(getAllRates);
+    yield put(setAlert("success", "Se ha actualizado el precio correctamente."));
+    yield put(actions.addCurrencyPriceSuccess());
   } catch (error) {
     yield put(setAlert("danger", error.message));
   }
