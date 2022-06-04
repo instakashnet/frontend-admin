@@ -1,36 +1,57 @@
 import React from "react";
-import { Button, Card, CardBody, Col } from "reactstrap";
-import Female from "../../../../../assets/images/profile-female.svg";
-import Male from "../../../../../assets/images/profile-male.svg";
-
+import { Card, CardBody, Col } from "reactstrap";
+// ASSETS
+import Female from "../../../../../assets/images/female-dark.svg";
+import Male from "../../../../../assets/images/male-dark.svg";
+// CLASSES
+import sharedClasses from "../modules/details/user-details.module.scss";
 
 const BasicInfo = ({ user, openModal, onDisable }) => {
+  const clientName = user.firstName || user.lastName ? `${user.firstName.split(" ")[0]} ${user.lastName.split(" ")[0]}` : "Sin nombre";
+
   let Avatar = Male;
   if (user.identitySex === "female") Avatar = Female;
 
   return (
     <Col lg="6">
-      <Card className="text-center">
+      <Card>
         <CardBody>
-          <div className="avatar-sm mx-auto mb-4">{Avatar && <img src={Avatar} alt="profile" className="img-thumbnail rounded-circle" width={85} height={85} />}</div>
-          <p className="text-muted mb-2">{user.email}</p>
-          <span className="badge badge-primary font-size-14 m-1 mb-2">{user.phone || "Sin teléfono"}</span>
-          <p className="text-muted">
-            KASH acumulados = <b>{user.kashAcumulated || 0}</b>
-          </p>
-          <div className="flex items-center justify-center">
+          <div className="d-flex justify-end items-center">
             {!user.documentType && (
-              <Button type="button" className="btn-primary mr-3" onClick={() => openModal("editUser")}>
+              <button type="button" className="underline text-primary mr-3" onClick={() => openModal("editUser")}>
                 Agregar datos
-              </Button>
+              </button>
             )}
-            <Button type="button" className="btn-secondary" onClick={() => openModal("editInfo")}>
-              Editar datos
-            </Button>
-            <Button type="button" className="btn-danger ml-3" onClick={() => onDisable(user.id, !!+user.active)}>
+            <button type="button" className={`d-flex items-center ${sharedClasses.editBtn}`} onClick={() => openModal("editInfo")}>
+              <i className="bx bxs-edit-alt"></i><span className="underline ml-1">Editar</span>
+            </button>
+            <button type="button" className={`${!!+user.active ? "text-danger" : "text-info"} underline ml-3`} onClick={() => onDisable(user.id, !!+user.active)}>
               {!!+user.active ? "Deshabilitar" : "Habilitar"}
-            </Button>
+            </button>
           </div>
+          <section className="grid grid-cols-2">
+            <div className="avatar-lg">{Avatar && <img src={Avatar} alt="profile" className="rounded-circle ml-3" width={85} height={85} />}</div>
+            <p className="self-center mb-0">
+              #{user.username}
+              <span className={`d-block ${sharedClasses.textMuted}`}>Código</span>
+            </p>
+            <p>
+              {clientName}
+              <span className={`d-block ${sharedClasses.textMuted}`}>Nombre y apellido</span>
+            </p>
+            <p>
+              {user.phone || "Sin teléfono"}
+              <span className={`d-block ${sharedClasses.textMuted}`}>Teléfono</span>
+            </p>
+            <p>
+              {user.documentType} {user.documentIdentification || "No tiene"}
+              <span className={`d-block ${sharedClasses.textMuted}`}>Documento</span>
+            </p>
+            <p>
+              {user.email || "Sin correo"}
+              <span className={`d-block ${sharedClasses.textMuted}`}>Correo electrónico</span>
+            </p>
+          </section>
         </CardBody>
       </Card>
     </Col>

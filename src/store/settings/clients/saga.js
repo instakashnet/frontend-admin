@@ -2,7 +2,7 @@ import fileDownload from "js-file-download";
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
 import Swal from "sweetalert2";
 import { editInterplazaSvc, getClientAccountsSvc } from "../../../api/services/accounts.service";
-import { addClientProfileSvc, disableClientSvc, downloadClientsSvc, editClientInfoSvc, editClientProfileSvc, getClientDetailsSvc, uploadDocumentSvc } from "../../../api/services/auth.service";
+import { addClientProfileSvc, deleteClientProfileSvc, disableClientSvc, downloadClientsSvc, editClientInfoSvc, editClientProfileSvc, getClientDetailsSvc, uploadDocumentSvc } from "../../../api/services/auth.service";
 import { getClientExchangesSvc } from "../../../api/services/exchange.service";
 import { setAlert } from "../../actions";
 import { getExchangeDetails } from "../../transactions/currencyExchange/actions";
@@ -149,6 +149,33 @@ function* disableClient({ userId, active }) {
   }
 }
 
+function* deleteClientProfile({ userId, profileId }) {
+  const bodyRequest = {
+    userId: parseFloat(userId),
+  };
+
+  try {
+    const result = yield Swal.fire({
+      icon: "warning",
+      title: "¿Desea eliminar este perfil de compañía?",
+      showCancelButton: true,
+      cancelButtonText: "Regresar",
+      cancelButtonColor: "#d9534f",
+      confirmButtonText: "Sí, continuar",
+    });
+
+    if (result.isConfirmed) {
+      yield call(deleteClientProfileSvc, profileId, bodyRequest);
+      yield call(getClientDetails, { userId });
+      yield put(actions.deleteProfileSuccess());
+      yield Swal.fire("Exitoso", "Perfil eliminado.", "success");
+    }
+  } catch (error) {
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
+
 export function* watchGetClientExchanges() {
   yield takeEvery(actionTypes.GET_CLIENT_EXCHANGES, getClientExchanges);
 }
@@ -189,6 +216,10 @@ export function* watchDisableClient() {
   yield takeLatest(actionTypes.DISABLE_CLIENT_INIT, disableClient);
 }
 
+export function* watchDeleteClientProfile() {
+  yield takeEvery(actionTypes.DELETE_PROFILE_INIT, deleteClientProfile);
+}
+
 export default function* clientsSaga() {
   yield all([
     fork(watchGetClientDetails),
@@ -201,5 +232,6 @@ export default function* clientsSaga() {
     fork(watchDownloadClients),
     fork(watchEditInterplaza),
     fork(watchDisableClient),
+    fork(watchDeleteClientProfile),
   ]);
 }

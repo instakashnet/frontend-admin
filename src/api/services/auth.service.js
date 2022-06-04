@@ -184,3 +184,12 @@ export const disableClientSvc = async (values) => {
     throw error;
   }
 };
+
+export const deleteClientProfileSvc = async (profileId, values) => {
+  try {
+    const response = await getAxiosInstance("auth", "v1").delete(`/users/active/${profileId}`, { data: { ...values, active: false } });
+    if (response.status >= 400) throw new Error(response.errors[0]);
+  } catch (error) {
+    throw error;
+  }
+};

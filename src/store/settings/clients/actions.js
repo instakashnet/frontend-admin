@@ -105,6 +105,16 @@ export const disableClientSuccess = () => ({
   type: actionTypes.DISABLE_CLIENT_SUCCESS,
 });
 
+export const deleteProfileInit = (userId, profileId) => ({
+  type: actionTypes.DELETE_PROFILE_INIT,
+  userId,
+  profileId,
+});
+
+export const deleteProfileSuccess = () => ({
+  type: actionTypes.DELETE_PROFILE_SUCCESS,
+});
+
 export const apiError = () => ({
   type: actionTypes.API_ERROR,
 });

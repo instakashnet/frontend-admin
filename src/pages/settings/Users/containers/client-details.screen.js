@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Modal, ModalBody, ModalHeader } from "reactstrap";
+// REDUX
 import { useDispatch, useSelector } from "react-redux";
+// HISTORY
 import { useHistory } from "react-router-dom";
-import { disableClientInit, getClientDetails, getClientExchanges, getClientAccounts } from "../../../../store/actions";
-
-import Breadcrumbs from "../../../../components/Common/Breadcrumb";
+// REACTSTRAP
+import { Col, Container, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
+// REDUX ACTIONS
+import { disableClientInit, getClientAccounts, getClientDetails, getClientExchanges } from "../../../../store/actions";
+// COMPONENTS
 import LoadingPage from "../../../LoadingPage";
 import { UserTransactions } from "../../../orders/components/details/exchange/user-transactions.component";
-import { UserAccounts } from "../components/tables/user-accounts-table.component";
+import CompanyInfo from "../components/details/company-info.component";
+import ProfileInfo from "../components/details/profile-info.component";
+import BasicInfo from "../components/details/user-info.component";
 import { AddDocument } from "../components/forms/add-document.component";
-import EditUserProfile from "../components/forms/edit-profile.component";
 import EditCompanyProfile from "../components/forms/edit-company.component";
 import EditUserInfo from "../components/forms/edit-info.component";
-import BasicInfo from "../components/details/user-info.component";
-import ProfileInfo from "../components/details/profile-info.component";
-import CompanyInfo from "../components/details/company-info.component";
+import EditUserProfile from "../components/forms/edit-profile.component";
+import { UserAccounts } from "../components/tables/user-accounts-table.component";
+
 
 export const ClientDetailsScreen = (props) => {
   const history = useHistory(),
@@ -67,15 +71,8 @@ export const ClientDetailsScreen = (props) => {
               {details?.completed && <ProfileInfo user={details} openModal={openModal} />}
             </Row>
             <Row>
-              {details?.profiles && details.profiles.length > 0 && (
-                <>
-                  <Col lg="12">
-                    <Breadcrumbs title="Perfiles de empresa" breadcrumbItem="Empresas" />
-                  </Col>
-                  {details.profiles.map((company) => (
-                    <CompanyInfo key={company.id} company={company} openModal={openModal} />
-                  ))}
-                </>
+              {details?.profiles?.length > 0 && details?.profiles?.length <= 3 && (
+                <CompanyInfo details={details} openModal={openModal} dispatch={dispatch} />
               )}
             </Row>
             <Row>

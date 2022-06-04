@@ -1,5 +1,5 @@
-import moment from "moment";
 import camelize from "camelize";
+import moment from "moment";
 
 export const convertHexToRGBA = (hexCode, opacity) => {
   let hex = hexCode.replace("#", "");

@@ -2,7 +2,9 @@ import { useFormik } from "formik";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Button, Spinner } from "reactstrap";
+// COMPONENTS
 import Input from "../../../../../components/UI/FormItems/Input";
+// REDUX ACTIONS
 import { editProfileInit } from "../../../../../store/actions";
 
 
@@ -24,7 +26,7 @@ const EditCompanyProfile = ({ details, isProcessing, closeModal, userId }) => {
 
       <div className="flex justify-center">
         <Button className="btn-primary" type="submit" disabled={!formik.isValid || isProcessing}>
-          {isProcessing ? <Spinner size="sm" /> : "Edtiar datos de empresa"}
+          {isProcessing ? <Spinner size="sm" /> : "Editar datos de empresa"}
         </Button>
       </div>
     </form>

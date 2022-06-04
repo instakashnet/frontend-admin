@@ -2,8 +2,11 @@ import { useFormik } from "formik";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Button, Spinner } from "reactstrap";
+// COMPONENTS
+import { DateInput } from "../../../../../components/UI/FormItems/date-picker.component";
 import Input from "../../../../../components/UI/FormItems/Input";
 import Select from "../../../../../components/UI/FormItems/Select";
+// REDUX ACTIONS
 import { addProfileInit, editProfileInit } from "../../../../../store/actions";
 
 const EditUser = ({ details, userId, closeModal, isProcessing }) => {
@@ -15,60 +18,33 @@ const EditUser = ({ details, userId, closeModal, isProcessing }) => {
       userId: +userId,
       identity_sex: details.identitySex || "",
       profileId: details.profileId || "",
-      first_name: details.firstName || "",
-      last_name: details.lastName || "",
-      document_type: details.documentType || "",
-      document_identification: details.documentIdentification || "",
       job: details.job || "",
       profession: details.profession || "",
       address: details.address || "",
+      date_birth: details?.dateBirth ? new Date(details.dateBirth) : "",
     },
     onSubmit: (values) => dispatch(details.id ? editProfileInit(values, closeModal) : addProfileInit(values, closeModal)),
   });
-
-  const documentOptions = [
-    { label: "DNI", value: "DNI" },
-    { label: "Carnet de Extranjería", value: "CE" },
-    { label: "PTP", value: "PTP" },
-    { label: "Pasaporte", value: "pasaporte" },
-  ];
 
   const sexOptions = [
     { value: "male", label: "Hombre" },
     { value: "female", label: "Mujer" },
   ];
 
+  const onDateChange = (value) => formik.setFieldValue("date_birth", new Date(value));
+
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Input value={formik.values.first_name} name="first_name" label="Nombre(s)" type="text" onChange={formik.handleChange} onBlur={formik.handleBlur} />
-        <Input value={formik.values.last_name} name="last_name" label="Apellido(s)" type="text" onChange={formik.handleChange} onBlur={formik.handleBlur} />
-      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {!details.id && (
           <Select values={formik.values.identity_sex} name="identity_sex" label="Sexo" options={sexOptions} onChange={formik.handleChange} onBlur={formik.handleBlur} />
         )}
-        <Select
-          value={formik.values.document_type}
-          name="document_type"
-          label="Tipo de documento"
-          options={documentOptions}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        <Input
-          value={formik.values.document_identification}
-          name="document_identification"
-          label="Nro. de documento"
-          type="text"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
         {details.id && (
           <>
             <Input type="text" name="job" value={formik.values.job} onChange={formik.handleChange} onBlur={formik.handleBlur} label="Ocupación" />
             <Input type="text" name="profession" value={formik.values.profession} onChange={formik.handleChange} onBlur={formik.handleBlur} label="Profesión" />
             <Input type="text" name="address" value={formik.values.address} onChange={formik.handleChange} onBlur={formik.handleBlur} label="Dirección corta" />
+            <DateInput value={formik.values.date_birth} error={formik.errors.date_birth} onChange={onDateChange} label="Fecha de nacimiento" />
           </>
         )}
       </div>
