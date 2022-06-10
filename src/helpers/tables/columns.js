@@ -1,11 +1,15 @@
+import { AccountBalanceWallet, Block, Check, Clear, Close, Edit, PowerSettingsNewOutlined } from "@material-ui/icons";
+import moment from "moment-timezone";
 import { Link } from "react-router-dom";
 import { Badge } from "reactstrap";
-import { Edit, AccountBalanceWallet, Check, Block, Clear, Close, PowerSettingsNewOutlined } from "@material-ui/icons";
-import moment from "moment-timezone";
-import { convertHexToRGBA, shadeColor } from "../functions";
-
 // COMPONENTS
 import { ConnectedStatus } from "../../components/CommonForBoth/connected.component";
+// CLASSES
+import userAccountsClasses from "../../pages/settings/Users/components/modules/details/user-accounts-table.module.scss";
+import userDetailsClasses from "../../pages/settings/Users/components/modules/details/user-details.module.scss";
+// FUNCTIONS
+import { convertHexToRGBA, shadeColor } from "../functions";
+
 
 export const companyAccountsColumns = (showForm) => [
   {
@@ -70,23 +74,44 @@ export const usersAccountsColumns = [
   },
 ];
 
+// COLUMNS SEEN IN CLIENT DETAILS SCREEN
 export const userAccountsColumns = [
-  {
-    accessor: "bank",
-    Header: "Banco",
-    render: ({ cell }) => <img src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} width={70} alt={cell.value.toLowerCase()} />,
-  },
-  {
-    accessor: "currency",
-    Header: "Moneda",
-  },
   {
     accessor: "account_number",
     Header: "Número de cuenta",
+    Cell: ({ cell, row }) => (
+      <p className={`m-0 ${userDetailsClasses.whiteCellText}`}>
+        {cell.value} <span className={userDetailsClasses.grayCellText}>-</span> {row.original.currency}
+        <span className={`d-block ${userDetailsClasses.textMuted}`}>{row.original.balance || "Sin fondos"}</span>
+      </p>
+    ),
   },
   {
-    accessor: "account_type",
-    Header: "Tipo de cuenta",
+    accessor: "bank",
+    Header: "Banco",
+    Cell: ({ cell }) => <img src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} width={85} alt={cell.value.toLowerCase()} className={`mx-auto ${userAccountsClasses.bankImage}`} />,
+  },
+];
+
+export const userAffiliatesColumns = [
+  {
+    accessor: "full_name",
+    Header: "Nombre",
+    Cell: ({ cell, row }) => (
+      <p className={`m-0 ${userDetailsClasses.whiteCellText}`}>
+        {cell.value}
+        <span className={`d-block ${userDetailsClasses.textMuted}`}>{row.original.email}</span>
+      </p>),
+  },
+  {
+    accessor: "status",
+    Header: "Estado",
+    Cell: ({ cell }) => <span className="d-block text-center text-white">{cell.value}</span>,
+  },
+  {
+    accessor: "date",
+    Header: "Fecha de registro",
+    Cell: ({ cell }) => <span className="d-block text-center text-white">{cell.value}</span>,
   },
 ];
 
@@ -449,7 +474,7 @@ export const oldExchangesColumns = [
     ),
   },
   {
-    Header: "Recibibo",
+    Header: "Recibido",
     accessor: "amountReceived",
     Cell: ({ cell, row }) => (
       <div className="d-flex align-items-center">

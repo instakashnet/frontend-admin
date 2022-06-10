@@ -30,6 +30,16 @@ export const getClientAccountsSuccess = (accounts) => ({
   accounts,
 });
 
+export const getClientAffiliates = (userId) => ({
+  type: actionTypes.GET_CLIENT_AFFILIATES,
+  userId,
+});
+
+export const getAffiliatesSuccess = (affiliates) => ({
+  type: actionTypes.GET_CLIENT_AFFILIATES_SUCCESS,
+  affiliates,
+});
+
 export const addProfileInit = (values, closeModal) => ({
   type: actionTypes.ADD_PROFILE_INIT,
   values,

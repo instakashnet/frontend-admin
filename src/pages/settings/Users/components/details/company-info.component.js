@@ -2,9 +2,8 @@ import React from "react";
 import { Card, CardBody, CardTitle, Col } from "reactstrap";
 // ASSETS
 import BuildingIcon from "../../../../../assets/images/profile-company.svg";
+// REDUX ACTIONS
 import { deleteProfileInit } from "../../../../../store/actions";
-// CLASSES
-import sharedClasses from "../modules/details/user-details.module.scss";
 // COMPONENTS
 import CompanyActions from "./company-actions.component";
 
@@ -22,13 +21,13 @@ const CompanyInfo = ({ details, openModal, dispatch }) => {
   const deleteProfile = (profileId) => dispatch(deleteProfileInit(userId, profileId));
 
   return (
-    <Col lg='6'>
+    <Col lg="6">
       <Card>
         <CardBody>
-          <CardTitle className={`mb-4 ${sharedClasses.CardTitle}`}>Cuentas de empresa</CardTitle>
+          <CardTitle className="mb-4">Cuentas de empresa</CardTitle>
           <figure className="text-center m-0">
             <img src={BuildingIcon} alt="Ícono de edificio" className="mx-auto" />
-            <figcaption className="mt-3 mb-2">Empresas: {profiles.length}/3</figcaption>
+            <figcaption className="mt-3 mb-2" style={{ color: "#e4e4e4" }}>Empresas: {profiles.length}/3</figcaption>
           </figure>
           <p className="text-center">El usuario actualmente posee<br />
             {qtyCompanies[profiles.length]}.</p>

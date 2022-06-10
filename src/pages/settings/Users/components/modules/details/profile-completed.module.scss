@@ -1,0 +1,36 @@
+.loaderCompleted {
+  position: relative;
+  display: inline-flex;
+
+  .circularProgressCntr {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .circularProgressBg {
+      position: absolute;
+      color: #fff;
+    }
+  }
+
+  .labelPercentage {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .labelTypography {
+      font-size: 1.5rem;
+      font-weight: bolder;
+    }
+  }
+}
+
+.captionStatusCompleted {
+  font-size: 0.875rem;
+}

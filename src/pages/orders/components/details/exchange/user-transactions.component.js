@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardBody, Button } from "reactstrap";
 import moment from "moment-timezone";
+import React, { useEffect, useState } from "react";
+import { Button, Card, CardBody } from "reactstrap";
+import { Table } from "../../../../../components/UI/tables/table.component";
 import { formatAmount } from "../../../../../helpers/functions";
 import { oldExchangesColumns } from "../../../../../helpers/tables/columns";
 
-import { Table } from "../../../../../components/UI/tables/table.component";
 
 const PAGE_SIZE = 5;
 
@@ -37,7 +37,9 @@ export const UserTransactions = ({ orders, isLoading, details, getTransactions }
       </Button>
       <Card>
         <CardBody>
-          <Table title="Operaciones realizadas" columns={oldExchangesColumns} isLoading={isLoading} data={data} pagination={{ pageSize: PAGE_SIZE, async: false }} />
+          <div className="table-responsive">
+            <Table title="Operaciones realizadas" columns={oldExchangesColumns} isLoading={isLoading} data={data} pagination={{ pageSize: PAGE_SIZE, async: false }} />
+          </div>
         </CardBody>
       </Card>
     </>

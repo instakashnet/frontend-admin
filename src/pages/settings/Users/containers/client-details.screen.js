@@ -5,19 +5,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 // REACTSTRAP
 import { Col, Container, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
+import { useClientData } from "../../../../hooks/useClientData";
 // REDUX ACTIONS
-import { disableClientInit, getClientAccounts, getClientDetails, getClientExchanges } from "../../../../store/actions";
+import { disableClientInit, getClientAccounts, getClientAffiliates, getClientDetails, getClientExchanges } from "../../../../store/actions";
 // COMPONENTS
 import LoadingPage from "../../../LoadingPage";
 import { UserTransactions } from "../../../orders/components/details/exchange/user-transactions.component";
 import CompanyInfo from "../components/details/company-info.component";
+import { ProfileCompleted } from "../components/details/profile-completed.component";
 import ProfileInfo from "../components/details/profile-info.component";
+import UserDocuments from "../components/details/user-documents.component";
 import BasicInfo from "../components/details/user-info.component";
 import { AddDocument } from "../components/forms/add-document.component";
 import EditCompanyProfile from "../components/forms/edit-company.component";
 import EditUserInfo from "../components/forms/edit-info.component";
 import EditUserProfile from "../components/forms/edit-profile.component";
 import { UserAccounts } from "../components/tables/user-accounts-table.component";
+import UserAffiliates from "../components/tables/user-affiliates.component";
 
 
 export const ClientDetailsScreen = (props) => {
@@ -28,7 +32,8 @@ export const ClientDetailsScreen = (props) => {
     [profileDetails, setProfileDetails] = useState({}),
     [documentType, setDocumentType] = useState(""),
     { id } = props.match.params,
-    { details, accounts, exchanges, isProcessing, isLoading } = useSelector((state) => state.Clients);
+    { details, accounts, affiliates, exchanges, isProcessing, isLoading } = useSelector((state) => state.Clients),
+    { completed, color } = useClientData(details);
 
   const openModal = (modalType, profileData = {}, document = "") => {
     setProfileDetails(profileData);
@@ -40,6 +45,7 @@ export const ClientDetailsScreen = (props) => {
   useEffect(() => {
     dispatch(getClientDetails(id));
     dispatch(getClientAccounts(id));
+    dispatch(getClientAffiliates(id));
   }, [dispatch, id]);
 
   const closeModal = () => {
@@ -68,19 +74,26 @@ export const ClientDetailsScreen = (props) => {
             </button>
             <Row>
               {details && <BasicInfo user={details} onDisable={disableClientHandler} openModal={openModal} />}
-              {details?.completed && <ProfileInfo user={details} openModal={openModal} />}
+              <Col lg="6" xl="4">
+                {details?.completed && <ProfileInfo user={details} openModal={openModal} />}
+                <UserDocuments user={details} openModal={openModal} />
+              </Col>
+              {details && <ProfileCompleted user={details} completed={completed} color={color} />}
             </Row>
             <Row>
               {details?.profiles?.length > 0 && details?.profiles?.length <= 3 && (
                 <CompanyInfo details={details} openModal={openModal} dispatch={dispatch} />
               )}
+              {accounts.length > 0 && (
+                <UserAccounts accounts={accounts} isLoading={isLoading} />
+              )}
             </Row>
             <Row>
-              {accounts.length > 0 && (
-                <Col lg="6">
-                  <UserAccounts accounts={accounts} isLoading={isLoading} />
-                </Col>
+              {affiliates.length > 0 && (
+                <UserAffiliates affiliates={affiliates} isLoading={isLoading} />
               )}
+            </Row>
+            <Row>
               <Col lg="12">
                 <UserTransactions orders={exchanges} isLoading={isLoading} getTransactions={getTransactions} />
               </Col>

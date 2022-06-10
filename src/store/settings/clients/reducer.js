@@ -4,6 +4,7 @@ const initialState = {
   accounts: [],
   exchanges: [],
   widthdrawals: [],
+  affiliates: [],
   isLoading: false,
   isProcessing: false,
 };
@@ -13,6 +14,7 @@ export default function clientsReducer(state = initialState, action) {
 
   switch (type) {
     case actionTypes.GET_CLIENT_DETAILS:
+    case actionTypes.GET_CLIENT_AFFILIATES:
       return { ...state, isLoading: true };
 
     case actionTypes.ADD_PROFILE_INIT:
@@ -25,6 +27,8 @@ export default function clientsReducer(state = initialState, action) {
 
     case actionTypes.GET_CLIENT_DETAILS_SUCCESS:
       return { ...state, details: payload.data, isLoading: false };
+    case actionTypes.GET_CLIENT_AFFILIATES_SUCCESS:
+      return { ...state, affiliates: action.affiliates, isLoading: false };
 
     case actionTypes.GET_CLIENT_EXCHANGES:
       return { ...state, exchanges: [], isLoading: true };

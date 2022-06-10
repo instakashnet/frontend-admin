@@ -13,7 +13,7 @@ const BasicInfo = ({ user, openModal, onDisable }) => {
   if (user.identitySex === "female") Avatar = Female;
 
   return (
-    <Col lg="6">
+    <Col lg="6" xl="4">
       <Card>
         <CardBody>
           <div className="d-flex justify-end items-center">

@@ -2,13 +2,23 @@ import fileDownload from "js-file-download";
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
 import Swal from "sweetalert2";
 import { editInterplazaSvc, getClientAccountsSvc } from "../../../api/services/accounts.service";
-import { addClientProfileSvc, deleteClientProfileSvc, disableClientSvc, downloadClientsSvc, editClientInfoSvc, editClientProfileSvc, getClientDetailsSvc, uploadDocumentSvc } from "../../../api/services/auth.service";
+import { addClientProfileSvc, deleteClientProfileSvc, disableClientSvc, downloadClientsSvc, editClientInfoSvc, editClientProfileSvc, getAffiliatesSvc, getClientDetailsSvc, uploadDocumentSvc } from "../../../api/services/auth.service";
 import { getClientExchangesSvc } from "../../../api/services/exchange.service";
 import { setAlert } from "../../actions";
 import { getExchangeDetails } from "../../transactions/currencyExchange/actions";
 import { getWithdrawalDetailsInit } from "../../transactions/withdrawals/actions";
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
+
+function* getClientAffiliates({ userId }) {
+  try {
+    const res = yield call(getAffiliatesSvc, parseFloat(userId));
+    yield put(actions.getAffiliatesSuccess(res));
+  } catch (error) {
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
 
 function* getClientDetails({ userId }) {
   try {
@@ -176,6 +186,10 @@ function* deleteClientProfile({ userId, profileId }) {
   }
 }
 
+export function* watchGetClientAffiliates() {
+  yield takeEvery(actionTypes.GET_CLIENT_AFFILIATES, getClientAffiliates);
+}
+
 export function* watchGetClientExchanges() {
   yield takeEvery(actionTypes.GET_CLIENT_EXCHANGES, getClientExchanges);
 }
@@ -222,6 +236,7 @@ export function* watchDeleteClientProfile() {
 
 export default function* clientsSaga() {
   yield all([
+    fork(watchGetClientAffiliates),
     fork(watchGetClientDetails),
     fork(watchAddClientProfile),
     fork(watchEditClientProfile),

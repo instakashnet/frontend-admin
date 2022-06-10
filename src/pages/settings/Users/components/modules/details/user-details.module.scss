@@ -4,17 +4,27 @@
 * company-info.component.js
 * profile-info.component.js
 * user-info.component.js
+* columns.js
 */
 
-.CardTitle.CardTitle {
-  font-size: 1.0625rem;
+p {
+  color: #e4e4e4;
 }
 
 .editBtn {
-  color: #34C38F;
+  color: #34c38f;
+}
+
+.whiteCellText {
+  color: #f8fafb;
+  font-size: 0.96875rem;
+}
+
+.grayCellText {
+  color: #74788d;
 }
 
 .textMuted {
-  color: #74788D;
+  @extend .grayCellText;
   font-size: 0.813rem;
 }

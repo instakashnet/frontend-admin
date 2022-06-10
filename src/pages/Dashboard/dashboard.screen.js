@@ -12,6 +12,9 @@ import { DailyEarning } from "./components/daily-earning.component";
 
 
 export const DashboardScreen = () => {
+  // PROVISIONAL
+  console.log("TOKEN:", useSelector(state => state.Login.token));
+  // PROVISIONAL
   const dispatch = useDispatch();
   const { currencyBarData } = useSelector((state) => state.Charts);
   const { user } = useSelector((state) => state.Login);
