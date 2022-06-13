@@ -1,6 +1,7 @@
 import fileDownload from "js-file-download";
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
 import Swal from "sweetalert2";
+import { sendNotificationSvc } from "../../../api/lib/notification";
 import { editInterplazaSvc, getClientAccountsSvc } from "../../../api/services/accounts.service";
 import { addClientProfileSvc, disableClientSvc, downloadClientsSvc, editClientInfoSvc, editClientProfileSvc, getClientDetailsSvc, uploadDocumentSvc } from "../../../api/services/auth.service";
 import { getClientExchangesSvc } from "../../../api/services/exchange.service";
@@ -149,6 +150,18 @@ function* disableClient({ userId, active }) {
   }
 }
 
+function* sendNotification({ values, closeModal }) {
+  try {
+    yield call(sendNotificationSvc, values);
+    yield Swal.fire("Exitoso", "Notificación enviada a todos los usuarios.", "success");
+    yield call(closeModal);
+    yield put(actions.sendNotificationSuccess());
+  } catch (error) {
+    yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
+
 export function* watchGetClientExchanges() {
   yield takeEvery(actionTypes.GET_CLIENT_EXCHANGES, getClientExchanges);
 }
@@ -189,6 +202,10 @@ export function* watchDisableClient() {
   yield takeLatest(actionTypes.DISABLE_CLIENT_INIT, disableClient);
 }
 
+export function* watchSendNotification() {
+  yield takeLatest(actionTypes.SEND_NOTIFICATION_INIT, sendNotification);
+}
+
 export default function* clientsSaga() {
   yield all([
     fork(watchGetClientDetails),
@@ -201,5 +218,6 @@ export default function* clientsSaga() {
     fork(watchDownloadClients),
     fork(watchEditInterplaza),
     fork(watchDisableClient),
+    fork(watchSendNotification),
   ]);
 }
