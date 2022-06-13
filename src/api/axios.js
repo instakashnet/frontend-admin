@@ -27,15 +27,3 @@ export const getAxiosInstance = (instanceName, version) => {
 
   return instance;
 };
-
-// const exchangeInstance = axios.create({
-//   baseURL: EXCHANGE_URL,
-//   withCredentials: true,
-// });
-// setAxiosInterceptor(exchangeInstance);
-
-// const accountsInstance = axios.create({
-//   baseURL: ACCOUNT_URL,
-//   withCredentials: true,
-// });
-// setAxiosInterceptor(accountsInstance);
