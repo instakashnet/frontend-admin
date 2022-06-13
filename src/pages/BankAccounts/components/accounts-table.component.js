@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col, Card, CardBody } from "reactstrap";
+import React, { useEffect, useState } from "react";
+import { Card, CardBody, Col, Row } from "reactstrap";
 import { companyAccountsColumns } from "../../../helpers/tables/columns";
 
 import { Table } from "../../../components/UI/tables/table.component";
@@ -13,7 +13,7 @@ const AccountsTable = ({ accounts, isLoading, onShowForm }) => {
         accounts.map((account) => ({
           id: account.id,
           bankName: account.bank.name,
-          accNumber: account.account_number,
+          accNumber: account.accountNumber,
           cci: account.cci,
           balanceNumber: account.balance,
           balance: `${account.currency.Symbol} ${account.balance.toFixed(2)}`,
@@ -34,26 +34,26 @@ const AccountsTable = ({ accounts, isLoading, onShowForm }) => {
                   data={data}
                   columns={companyAccountsColumns(onShowForm)}
                   isLoading={isLoading}
-                  // actions={[
-                  //   {
-                  //     icon: "edit",
-                  //     iconProps: { style: { color: "#f1b44c" } },
-                  //     tooltip: "Editar cuenta",
-                  //     onClick: (e, rowData) => onShowForm("edit", rowData),
-                  //   },
-                  //   {
-                  //     icon: () => <AccountBalanceWallet htmlColor="#f1b44c" />,
-                  //     tooltip: "Agregar balance",
-                  //     onClick: (e, rowData) => onShowForm("balance", rowData),
-                  //   },
-                  //   {
-                  //     icon: "add",
-                  //     iconProps: { style: { color: "#fff" } },
-                  //     tooltip: "Agregar cuenta",
-                  //     onClick: () => onShowForm("add"),
-                  //     isFreeAction: true,
-                  //   },
-                  // ]}
+                // actions={[
+                //   {
+                //     icon: "edit",
+                //     iconProps: { style: { color: "#f1b44c" } },
+                //     tooltip: "Editar cuenta",
+                //     onClick: (e, rowData) => onShowForm("edit", rowData),
+                //   },
+                //   {
+                //     icon: () => <AccountBalanceWallet htmlColor="#f1b44c" />,
+                //     tooltip: "Agregar balance",
+                //     onClick: (e, rowData) => onShowForm("balance", rowData),
+                //   },
+                //   {
+                //     icon: "add",
+                //     iconProps: { style: { color: "#fff" } },
+                //     tooltip: "Agregar cuenta",
+                //     onClick: () => onShowForm("add"),
+                //     isFreeAction: true,
+                //   },
+                // ]}
                 />
               </div>
             </CardBody>
