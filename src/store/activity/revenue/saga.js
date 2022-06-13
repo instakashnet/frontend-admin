@@ -1,12 +1,12 @@
-import { put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
+import { getRevenueSvc } from "../../../api/services/exchange.service";
 import * as actions from "./actions";
 import * as types from "./types";
-import { exchangeInstance } from "../../../api/axios";
 
 function* getRevenue({ rate }) {
   try {
-    const res = yield exchangeInstance.get(`/order/revenue?priceMarket=${rate}`);
-    if (res.status === 200) yield put(actions.getRevenueSuccess(res.data));
+    const res = yield call(getRevenueSvc, rate);
+    yield put(actions.getRevenueSuccess(res));
   } catch (error) {
     yield put(actions.apiError());
   }

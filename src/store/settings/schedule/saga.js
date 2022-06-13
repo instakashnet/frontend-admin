@@ -1,13 +1,13 @@
-import { put, all, fork, takeEvery, call } from "redux-saga/effects";
-import * as actionTypes from "./actionTypes";
-import * as actions from "./actions";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { editScheduleSvc, getScheduleSvc } from "../../../api/services/exchange.service";
 import { setAlert } from "../../actions";
-import { exchangeInstance } from "../../../api/axios";
+import * as actions from "./actions";
+import * as actionTypes from "./actionTypes";
 
 function* getSchedule() {
   try {
-    const res = yield exchangeInstance.get("/schedules");
-    if (res.status === 200) yield put(actions.getScheduleSuccess(res.data));
+    const res = yield call(getScheduleSvc);
+    yield put(actions.getScheduleSuccess(res));
   } catch (error) {
     yield put(actions.apiError());
     yield put(setAlert("danger", error.message));
@@ -16,13 +16,11 @@ function* getSchedule() {
 
 function* editSchedule({ values, id, setState }) {
   try {
-    const res = yield exchangeInstance.put(`/schedules/${id}`, values);
-    if (res.status === 200) {
-      yield put(actions.getSchedule());
-      yield call(setState, false);
-      yield put(setAlert("success", "Horario actualizado correctamente."));
-      yield put(actions.editScheduleSuccess());
-    }
+    yield call(editScheduleSvc, id, values);
+    yield put(actions.getSchedule());
+    yield call(setState, false);
+    yield put(setAlert("success", "Horario actualizado correctamente."));
+    yield put(actions.editScheduleSuccess());
   } catch (error) {
     yield put(actions.apiError());
     yield put(setAlert("danger", error.message));

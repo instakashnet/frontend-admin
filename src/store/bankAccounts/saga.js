@@ -1,14 +1,14 @@
-import { put, all, fork, takeEvery, call } from "redux-saga/effects";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import Swal from "sweetalert2";
-import * as actionTypes from "./actionTypes";
-import * as actions from "./actions";
+import { addAcbAccountSvc, closeBalanceSvc, editCbAccountSvc, editCbBalanceSvc, getCbAccountsSvc } from "../../api/services/accounts.service";
 import { setAlert } from "../actions";
-import { accountsInstance, exchangeInstance } from "../../api/axios";
+import * as actions from "./actions";
+import * as actionTypes from "./actionTypes";
 
 function* getCbAccounts() {
   try {
-    const res = yield accountsInstance.get("/accounts?type=company");
-    if (res.status === 200) yield put(actions.getCbAccountsSuccess(res.data.accounts));
+    const res = yield call(getCbAccountsSvc);
+    yield put(actions.getCbAccountsSuccess(res));
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -22,13 +22,11 @@ function* addAcbAccount({ values, setState }) {
   };
 
   try {
-    const res = yield accountsInstance.post("/accounts", accValues);
-    if (res.status === 201) {
-      yield put(actions.addCbAccountSuccess());
-      yield call(getCbAccounts);
-      yield Swal.fire("Exitoso", "La cuenta fue agregada correctamente.", "success");
-      yield call(setState);
-    }
+    yield call(addAcbAccountSvc, accValues);
+    yield call(getCbAccounts);
+    yield Swal.fire("Exitoso", "La cuenta fue agregada correctamente.", "success");
+    yield put(actions.addCbAccountSuccess());
+    yield call(setState);
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -37,13 +35,11 @@ function* addAcbAccount({ values, setState }) {
 
 function* editCbAccount({ values, setState }) {
   try {
-    const res = yield accountsInstance.put("/accounts", values);
-    if (res.status === 200) {
-      yield put(actions.editCbAccountSuccess());
-      yield call(getCbAccounts);
-      yield Swal.fire("Cuenta editada", "Los datos de la cuenta fueron editados correctamente.", "success");
-      yield call(setState);
-    }
+    yield call(editCbAccountSvc, values);
+    yield call(getCbAccounts);
+    yield Swal.fire("Cuenta editada", "Los datos de la cuenta fueron editados correctamente.", "success");
+    yield put(actions.editCbAccountSuccess());
+    yield call(setState);
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -52,13 +48,12 @@ function* editCbAccount({ values, setState }) {
 
 function* editCbBalance({ values, accountId, setState }) {
   try {
-    const res = yield accountsInstance.put(`/accounts/funds/${accountId}`, values);
-    if (res.status === 200) {
-      yield put(actions.editCbBalanceSuccess());
-      yield call(getCbAccounts);
-      yield Swal.fire("Exitoso", "Se agregó el balance correctamente.", "success");
-      yield call(setState);
-    }
+    yield call(editCbBalanceSvc, values, accountId);
+    yield call(getCbAccounts);
+
+    yield Swal.fire("Exitoso", "Se agregó el balance correctamente.", "success");
+    yield put(actions.editCbBalanceSuccess());
+    yield call(setState);
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -67,11 +62,9 @@ function* editCbBalance({ values, accountId, setState }) {
 
 function* closeBalance({ open }) {
   try {
-    const res = yield exchangeInstance.get("/closing-balances");
-    if (res.status === 200) {
-      yield put(actions.closeBalanceSuccess(res.data));
-      yield call(open);
-    }
+    const res = yield call(closeBalanceSvc);
+    yield put(actions.closeBalanceSuccess(res));
+    yield call(open);
   } catch (error) {
     yield put(setAlert("danger", error.message));
     yield put(actions.apiError());

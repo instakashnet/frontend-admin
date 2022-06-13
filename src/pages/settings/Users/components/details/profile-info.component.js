@@ -1,7 +1,7 @@
-import React from "react";
 import { Photo } from "@material-ui/icons";
 import moment from "moment";
-import { Col, Card, CardBody, CardTitle, Button, Table } from "reactstrap";
+import React from "react";
+import { Button, Card, CardBody, CardTitle, Col, Table } from "reactstrap";
 
 const ProfileInfo = ({ user, openModal }) => {
   return (
@@ -20,12 +20,12 @@ const ProfileInfo = ({ user, openModal }) => {
               <tbody>
                 <tr>
                   <th scope="row">Nombre completo:</th>
-                  <td>{`${user.first_name} ${user.last_name}`}</td>
+                  <td>{`${user.firstName} ${user.lastName}`}</td>
                 </tr>
-                {user.date_birth && (
+                {user.dateBirth && (
                   <tr>
                     <th scope="row">Fecha de nacimiento</th>
-                    <td>{moment(user.date_birth).format("Do MMMM YYYY")}</td>
+                    <td>{moment(user.dateBirth).format("Do MMMM YYYY")}</td>
                   </tr>
                 )}
                 <tr>
@@ -46,7 +46,7 @@ const ProfileInfo = ({ user, openModal }) => {
                 </tr>
                 <tr>
                   <th scope="row">Documento</th>
-                  <td>{`${user.document_type} ${user.document_identification}`}</td>
+                  <td>{`${user.documentType} ${user.documentIdentification}`}</td>
                 </tr>
               </tbody>
             </Table>
@@ -55,7 +55,7 @@ const ProfileInfo = ({ user, openModal }) => {
 
           {user.identityDocumentValidation !== "success" ? (
             <div className="flex flex-wrap items-center justify-center mt-4">
-              {user.document_type !== "pasaporte" ? (
+              {user.documentType !== "pasaporte" ? (
                 <>
                   <button className="underline mx-6" onClick={() => openModal("addDocument", user, "identity_photo")}>
                     Agregar foto frontal
@@ -72,10 +72,10 @@ const ProfileInfo = ({ user, openModal }) => {
             </div>
           ) : (
             <div className="flex flex-wrap items-center justify-center mt-4">
-              {user.document_type !== "pasaporte" ? (
+              {user.documentType !== "pasaporte" ? (
                 <>
                   <div className="flex flex-col items-center mx-6">
-                    <a className="flex flex-col items-center justify-center" href={user.identity_photo_front} target="_blank" rel="noopener noreferrer">
+                    <a className="flex flex-col items-center justify-center" href={user.identityPhotoFront} target="_blank" rel="noopener noreferrer">
                       <Photo size={35} />
                       <p className="text-muted mb-1">Foto frontal</p>
                     </a>
@@ -84,7 +84,7 @@ const ProfileInfo = ({ user, openModal }) => {
                     </button>
                   </div>
                   <div className="flex flex-col items-center mx-6">
-                    <a className="flex flex-col items-center justify-center" href={user.identity_photo_back} target="_blank" rel="noopener noreferrer">
+                    <a className="flex flex-col items-center justify-center" href={user.identityPhotoBack} target="_blank" rel="noopener noreferrer">
                       <Photo size={35} />
                       <p className="text-muted mb-1">Foto trasera</p>
                     </a>
@@ -95,7 +95,7 @@ const ProfileInfo = ({ user, openModal }) => {
                 </>
               ) : (
                 <div className="flex flex-col items-center mx-6">
-                  <a className="flex flex-col items-center justify-center" href={user.identity_photo_front} target="_blank" rel="noopener noreferrer">
+                  <a className="flex flex-col items-center justify-center" href={user.identityPhotoFront} target="_blank" rel="noopener noreferrer">
                     <Photo size={35} />
                     <p className="text-muted mb-1">Foto pasaporte</p>
                   </a>

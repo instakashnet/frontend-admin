@@ -1,12 +1,14 @@
-import { put, all, fork, takeEvery } from "redux-saga/effects";
-import * as actionTypes from "./actionTypes";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { getTotalKashSvc } from "../../../api/services/accounts.service";
+import { getCountersSvc } from "../../../api/services/exchange.service";
 import * as actions from "./actions";
-import { exchangeInstance, accountsInstance } from "../../../api/axios";
+import * as actionTypes from "./actionTypes";
 
 function* getCounters() {
   try {
-    const res = yield exchangeInstance.get("/order/data/today");
-    if (res.status === 200) yield put(actions.getCountersSuccess(res.data));
+    const res = yield call(getCountersSvc);
+    yield put(actions.getCountersSuccess(res));
+
   } catch (error) {
     yield put(actions.apiError(error.message));
   }
@@ -14,8 +16,9 @@ function* getCounters() {
 
 function* getTotalKash() {
   try {
-    const res = yield accountsInstance.get("/accounts/users/kash-total");
-    if (res.status === 200) yield put(actions.getTotalKashSuccess(res.data.totalKashAcumulated));
+    const res = yield call(getTotalKashSvc);
+    yield put(actions.getTotalKashSuccess(res));
+
   } catch (error) {
     yield put(actions.apiError(error.message));
   }

@@ -1,12 +1,12 @@
-import { put, all, takeEvery, fork, call } from "redux-saga/effects";
-import * as actionTypes from "./actionTypes";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { editStatusSvc, getStatusSvc } from "../../../api/services/exchange.service";
 import * as actions from "./actions";
-import { exchangeInstance } from "../../../api/axios";
+import * as actionTypes from "./actionTypes";
 
 function* getStatus() {
   try {
-    const res = yield exchangeInstance.get("/status");
-    if (res.status === 200) yield put(actions.getStatusSuccess(res.data));
+    const res = yield call(getStatusSvc);
+    yield put(actions.getStatusSuccess(res));
   } catch (error) {
     yield put(actions.apiError(error.message));
   }
@@ -14,12 +14,10 @@ function* getStatus() {
 
 function* editStatus({ values, id, setState }) {
   try {
-    const res = yield exchangeInstance.put(`/status/${id}`, values);
-    if (res.status === 200) {
-      yield put(actions.editStatusSuccess("Estado actualizado correctamente!"));
-      yield put(actions.getStatus());
-      yield call(setState, null);
-    }
+    yield call(editStatusSvc, id, values);
+    yield put(actions.editStatusSuccess("¡Estado actualizado correctamente!"));
+    yield put(actions.getStatus());
+    yield call(setState, null);
   } catch (error) {
     yield put(actions.apiError(error.message));
   }

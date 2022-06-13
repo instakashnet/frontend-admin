@@ -1,12 +1,12 @@
 import React from "react";
-import { Col, Card, CardBody, Button } from "reactstrap";
-
-import Male from "../../../../../assets/images/profile-male.svg";
+import { Button, Card, CardBody, Col } from "reactstrap";
 import Female from "../../../../../assets/images/profile-female.svg";
+import Male from "../../../../../assets/images/profile-male.svg";
+
 
 const BasicInfo = ({ user, openModal, onDisable }) => {
   let Avatar = Male;
-  if (user.identity_sex === "female") Avatar = Female;
+  if (user.identitySex === "female") Avatar = Female;
 
   return (
     <Col lg="6">
@@ -19,7 +19,7 @@ const BasicInfo = ({ user, openModal, onDisable }) => {
             KASH acumulados = <b>{user.kashAcumulated || 0}</b>
           </p>
           <div className="flex items-center justify-center">
-            {!user.document_type && (
+            {!user.documentType && (
               <Button type="button" className="btn-primary mr-3" onClick={() => openModal("editUser")}>
                 Agregar datos
               </Button>

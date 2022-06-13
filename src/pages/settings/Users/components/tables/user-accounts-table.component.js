@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardBody } from "reactstrap";
+import { Table } from "../../../../../components/UI/tables/table.component";
 import { userAccountsColumns } from "../../../../../helpers/tables/columns";
 
-import { Table } from "../../../../../components/UI/tables/table.component";
 
 const PAGE_SIZE = 10;
 
@@ -15,8 +15,8 @@ export const UserAccounts = ({ accounts, isLoading }) => {
         accounts.map((account) => ({
           bank: account.bank.name,
           currency: account.currency.Symbol,
-          account_number: account.account_number || account.cci,
-          account_type: account.account_type === "savings" ? "De ahorros" : "Corriente",
+          account_number: account.accountNumber || account.cci,
+          account_type: account.accountType === "savings" ? "De ahorros" : "Corriente",
         }))
       );
     }

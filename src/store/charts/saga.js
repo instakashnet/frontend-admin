@@ -1,31 +1,30 @@
-import { all, fork, put, takeEvery } from "redux-saga/effects";
-import * as actionTypes from "./actionTypes";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { getAdvanceBarChartSvc, getCurrencyBarChartSvc, getUsersChartSvc } from "../../api/services/exchange.service";
 import * as actions from "./actions";
-
-import { exchangeInstance } from "../../api/axios";
+import * as actionTypes from "./actionTypes";
 
 function* getCurrencyBarChart({ chartType }) {
   try {
-    const res = yield exchangeInstance.get(`/order/data/orders?type=${chartType}`);
-    if (res.status === 200) yield put(actions.getCurrencyBarChartSuccess(res.data));
+    const res = yield call(getCurrencyBarChartSvc, chartType);
+    yield put(actions.getCurrencyBarChartSuccess(res));
   } catch (error) {
     yield put(actions.apiError());
   }
 }
 
 function* getAdvanceBarChart() {
-  // try {
-  //   const res = yield axios.get("Estadisticas/GraficosAE");
-  //   if (res.status === 200) yield put(actions.getAdvanceBarChartSuccess(res.data));
-  // } catch (error) {
-  //   yield put(actions.apiError());
-  // }
+  try {
+    const res = yield call(getAdvanceBarChartSvc);
+    yield put(actions.getAdvanceBarChartSuccess(res));
+  } catch (error) {
+    yield put(actions.apiError());
+  }
 }
 
 function* getUsersChart() {
   try {
-    const res = yield exchangeInstance.get("/order/data/users");
-    if (res.status === 200) yield put(actions.getUsersChartSuccess(res.data));
+    const res = yield call(getUsersChartSvc);
+    yield put(actions.getUsersChartSuccess(res));
   } catch (error) {
     yield put(actions.apiError(error.message));
   }

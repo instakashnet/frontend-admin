@@ -1,12 +1,12 @@
-import * as types from "./types";
-import { put, fork, takeEvery, all } from "redux-saga/effects";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { getCountriesSvc, getCurrenciesSvc } from "../../../api/services/accounts.service";
 import * as actions from "./actions";
-import { accountsInstance } from "../../../api/axios";
+import * as types from "./types";
 
 function* getCountries() {
   try {
-    const res = yield accountsInstance.get("/countries");
-    if (res.status === 200) yield put(actions.getCountriesSuccess(res.data.countries));
+    const res = yield call(getCountriesSvc);
+    yield put(actions.getCountriesSuccess(res));
   } catch (error) {
     yield put(actions.apiError());
   }
@@ -14,8 +14,8 @@ function* getCountries() {
 
 function* getCurrencies() {
   try {
-    const res = yield accountsInstance.get("/currencies");
-    if (res.status === 200) yield put(actions.getCurrenciesSuccess(res.data.currencies));
+    const res = yield call(getCurrenciesSvc);
+    yield put(actions.getCurrenciesSuccess(res));
   } catch (error) {
     yield put(actions.apiError());
   }
