@@ -1,4 +1,4 @@
-import { CloudDownload } from "@material-ui/icons";
+import { CloudDownload, Send } from "@material-ui/icons";
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Card, CardBody } from "reactstrap";
 import { getClients } from "../../../../../api/services/auth.service";
@@ -8,7 +8,7 @@ import { downloadClientsInit, setAlert } from "../../../../../store/actions";
 
 const PAGE_SIZE = 10;
 
-const Completed = ({ dispatch }) => {
+const Completed = ({ dispatch, openModal }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
 
@@ -51,6 +51,9 @@ const Completed = ({ dispatch }) => {
         </Button>
         <Button type="button" className="btn-primary ml-3 mb-3" onClick={() => dispatch(downloadClientsInit("clients"))}>
           Obtener clientes <CloudDownload fontSize="small" className="ml-2" />
+        </Button>
+        <Button type="button" className="btn-primary ml-3 mb-3" onClick={() => openModal("notification")}>
+          Enviar notificación <Send fontSize="small" className="ml-2" />
         </Button>
       </div>
       <Card>
