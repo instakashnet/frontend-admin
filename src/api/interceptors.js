@@ -28,7 +28,8 @@ export const setAxiosInterceptor = (instance) => {
 
       if (status === 418 && !originalRequest._retry) {
         originalRequest._retry = true;
-        return store.dispatch(logoutUserSuccess());
+        store.dispatch(logoutUserSuccess());
+        return Promise.reject();
       } else {
         let message;
         let code;
