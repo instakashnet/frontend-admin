@@ -97,3 +97,12 @@ export const couponValidations = Yup.object().shape({
     otherwise: Yup.number().notRequired(),
   }),
 });
+
+export const sendNotificationValidations = Yup.object().shape({
+  title: Yup.string()
+    .required("Es obligatorio el título de la notificación.")
+    .max(40, "El título puede tener máximo 40 caracteres."),
+  body: Yup.string()
+    .required("Es obligatorio el mensaje de la notificación.")
+    .max(144, "El mensaje puede tener máximo 144 caracteres."),
+});
