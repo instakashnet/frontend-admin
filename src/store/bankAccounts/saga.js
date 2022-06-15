@@ -10,7 +10,7 @@ function* getCbAccounts() {
     const res = yield call(getCbAccountsSvc);
     yield put(actions.getCbAccountsSuccess(res));
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -28,7 +28,7 @@ function* addAcbAccount({ values, setState }) {
     yield put(actions.addCbAccountSuccess());
     yield call(setState);
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -41,7 +41,7 @@ function* editCbAccount({ values, setState }) {
     yield put(actions.editCbAccountSuccess());
     yield call(setState);
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -55,7 +55,7 @@ function* editCbBalance({ values, accountId, setState }) {
     yield put(actions.editCbBalanceSuccess());
     yield call(setState);
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -66,7 +66,7 @@ function* closeBalance({ open }) {
     yield put(actions.closeBalanceSuccess(res));
     yield call(open);
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }

@@ -10,7 +10,7 @@ function* getWithdrawalDetails({ id }) {
     const res = yield call(getWithdrawalDetailsSvc, id);
     yield put(actions.getWithdrawalDetailsSuccess(res));
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.withdrawalsError());
   }
 }
@@ -45,7 +45,7 @@ function* changeWithdrawalStatus({ id, statusId, values, toggle }) {
       yield Swal.fire("Exitoso", `El retiro fue ${statusId === 5 ? "cancelado" : "aprobado"} correctamente.`, "success");
     } else yield put(actions.withdrawalsError());
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.withdrawalsError());
   }
 }

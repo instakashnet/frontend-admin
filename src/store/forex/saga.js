@@ -49,7 +49,7 @@ function* addCurrencyPrice({ values }) {
     yield put(setAlert("success", "Se ha actualizado el precio correctamente."));
     yield put(actions.addCurrencyPriceSuccess());
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
   }
 }
 
