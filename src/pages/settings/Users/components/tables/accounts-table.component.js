@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Card, CardBody } from "reactstrap";
 import { getClientsAccounts } from "../../../../../api/services/accounts.service";
 import { Table } from "../../../../../components/UI/tables/table.component";
@@ -18,8 +18,6 @@ export const AccountsTable = ({ dispatch }) => {
 
       try {
         const tableData = await getClientsAccounts(pageCount, search);
-
-        console.log(tableData);
 
         const accounts = tableData.map((acc) => ({
           accountNumber: acc.accountNumber || acc.accountNumberCCI,
