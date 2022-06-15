@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardBody, Col } from "reactstrap";
+// COMPONENTS
 import { Table } from "../../../../../components/UI/tables/table.component";
+// HELPERS
 import { userAccountsColumns } from "../../../../../helpers/tables/columns";
 
 
 const PAGE_SIZE = 10;
 
-export const UserAccounts = ({ accounts, isLoading }) => {
+const UserAccounts = ({ accounts, isLoading }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -27,10 +29,12 @@ export const UserAccounts = ({ accounts, isLoading }) => {
       <Card>
         <CardBody>
           <div className="table-responsive">
-            <Table title="Cuentas bancarias" data={data} columns={userAccountsColumns} isLoading={isLoading} pagination={{ pageSize: PAGE_SIZE, async: false }} borderless />
+            <Table title="Cuentas bancarias" data={data} columns={userAccountsColumns} isLoading={isLoading} pagination={{ pageSize: PAGE_SIZE, async: false }} backupText="No posee cuentas bancarias" borderless />
           </div>
         </CardBody>
       </Card>
     </Col>
   );
 };
+
+export default UserAccounts;

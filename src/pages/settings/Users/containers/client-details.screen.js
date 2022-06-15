@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+// HOOKS
+import { useEffect, useState } from "react";
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 // HISTORY
 import { useHistory } from "react-router-dom";
 // REACTSTRAP
 import { Col, Container, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
+// CUSTOM HOOK
 import { useClientData } from "../../../../hooks/useClientData";
 // REDUX ACTIONS
 import { disableClientInit, getClientAccounts, getClientAffiliates, getClientDetails, getClientExchanges } from "../../../../store/actions";
@@ -12,15 +14,16 @@ import { disableClientInit, getClientAccounts, getClientAffiliates, getClientDet
 import LoadingPage from "../../../LoadingPage";
 import { UserTransactions } from "../../../orders/components/details/exchange/user-transactions.component";
 import CompanyInfo from "../components/details/company-info.component";
-import { ProfileCompleted } from "../components/details/profile-completed.component";
+import ProfileCompleted from "../components/details/profile-completed.component";
 import ProfileInfo from "../components/details/profile-info.component";
 import UserDocuments from "../components/details/user-documents.component";
 import BasicInfo from "../components/details/user-info.component";
-import { AddDocument } from "../components/forms/add-document.component";
-import EditCompanyProfile from "../components/forms/edit-company.component";
+import UserKash from "../components/details/user-kash.component";
+import AddDocument from "../components/forms/add-document.component";
+import CompanyProfile from "../components/forms/edit-company.component";
 import EditUserInfo from "../components/forms/edit-info.component";
 import EditUserProfile from "../components/forms/edit-profile.component";
-import { UserAccounts } from "../components/tables/user-accounts-table.component";
+import UserAccounts from "../components/tables/user-accounts-table.component";
 import UserAffiliates from "../components/tables/user-affiliates.component";
 
 
@@ -58,7 +61,7 @@ export const ClientDetailsScreen = (props) => {
   let ModalComponent;
 
   if (modalType === "editUser") ModalComponent = <EditUserProfile userId={id} details={details} isProcessing={isProcessing} closeModal={closeModal} />;
-  if (modalType === "editProfile") ModalComponent = <EditCompanyProfile userId={id} isProcessing={isProcessing} closeModal={closeModal} details={profileDetails} />;
+  if (modalType === "companyProfile") ModalComponent = <CompanyProfile userId={id} isProcessing={isProcessing} closeModal={closeModal} details={profileDetails} />;
 
   if (modalType === "editInfo") ModalComponent = <EditUserInfo userId={id} isProcessing={isProcessing} details={details} closeModal={closeModal} />;
   if (modalType === "addDocument") ModalComponent = <AddDocument userId={id} type={documentType} isProcessing={isProcessing} closeModal={closeModal} />;
@@ -81,17 +84,12 @@ export const ClientDetailsScreen = (props) => {
               {details && <ProfileCompleted user={details} completed={completed} color={color} />}
             </Row>
             <Row>
-              {details?.profiles?.length > 0 && details?.profiles?.length <= 3 && (
-                <CompanyInfo details={details} openModal={openModal} dispatch={dispatch} />
-              )}
-              {accounts.length > 0 && (
-                <UserAccounts accounts={accounts} isLoading={isLoading} />
-              )}
+              <CompanyInfo details={details} openModal={openModal} dispatch={dispatch} />
+              <UserAccounts accounts={accounts} isLoading={isLoading} />
             </Row>
             <Row>
-              {affiliates.length > 0 && (
-                <UserAffiliates affiliates={affiliates} isLoading={isLoading} />
-              )}
+              <UserAffiliates affiliates={affiliates} isLoading={isLoading} />
+              <UserKash />
             </Row>
             <Row>
               <Col lg="12">
@@ -101,7 +99,7 @@ export const ClientDetailsScreen = (props) => {
           </Container>
 
           <Modal isOpen={modal} role="dialog" autoFocus={true} centered={true} tabIndex="-1" toggle={closeModal}>
-            <ModalHeader toggle={closeModal}>Editar perfil</ModalHeader>
+            <ModalHeader toggle={closeModal}>{profileDetails.id ? "Editar perfil" : "Crear perfil"}</ModalHeader>
             <ModalBody>{ModalComponent}</ModalBody>
           </Modal>
         </>

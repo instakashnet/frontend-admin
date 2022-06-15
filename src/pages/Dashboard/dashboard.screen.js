@@ -1,8 +1,8 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+// CUSTOM HOOKS
 import { useRole } from "../../hooks/useRole";
 // COMPONENTS
 import ExchangesChart from "./components/charts/exchanges-chart.component";
@@ -12,9 +12,6 @@ import { DailyEarning } from "./components/daily-earning.component";
 
 
 export const DashboardScreen = () => {
-  // PROVISIONAL
-  console.log("TOKEN:", useSelector(state => state.Login.token));
-  // PROVISIONAL
   const dispatch = useDispatch();
   const { currencyBarData } = useSelector((state) => state.Charts);
   const { user } = useSelector((state) => state.Login);

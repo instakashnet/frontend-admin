@@ -1,12 +1,11 @@
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import { Check, ErrorOutline, Remove } from "@material-ui/icons";
-import React from "react";
 import { Card, CardBody, CardTitle, Col } from "reactstrap";
 // CLASSES
 import classes from "../modules/details/profile-completed.module.scss";
 
 
-export const ProfileCompleted = ({ user, color, completed }) => {
+const ProfileCompleted = ({ user, color, completed }) => {
   return (
     <Col lg="12" xl="4">
       <Card>
@@ -45,7 +44,8 @@ export const ProfileCompleted = ({ user, color, completed }) => {
               {!user.phone ? "Debe añadir sus datos personales" :
                 user.identityDocumentValidation === "pending" ? "Verificación de identidad en curso" :
                   user.identityDocumentValidation === "failed" ? "Verificación de identidad fallida" :
-                    !user.address && !user.dateBirth ? "Debe añadir los datos adicionales" : "Debe subir la foto del documento de identidad"}
+                    user.identityDocumentValidation === "none" ? "Debe subir la foto del documento de identidad" :
+                      !user.address && !user.dateBirth ? "Debe añadir los datos adicionales" : null}
             </p>
           </div>
         </CardBody>
@@ -53,3 +53,5 @@ export const ProfileCompleted = ({ user, color, completed }) => {
     </Col>
   );
 };
+
+export default ProfileCompleted;

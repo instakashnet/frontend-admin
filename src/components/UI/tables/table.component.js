@@ -2,13 +2,13 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { ImportExport, VerticalAlignBottom, VerticalAlignTop } from "@material-ui/icons";
 import Pagination from "@material-ui/lab/Pagination";
 import PropTypes from "prop-types";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { usePagination, useSortBy, useTable } from "react-table";
 import { CardTitle } from "reactstrap";
 import { Search } from "./search.component";
 
 
-export const Table = ({ title, columns, data, sorted, search, setSearch, isLoading, pagination, getData, borderless }) => {
+export const Table = ({ title, columns, data, sorted, search, setSearch, isLoading, pagination, getData, backupText, borderless }) => {
   const tableColumns = useMemo(() => columns, [columns]);
   const tableData = useMemo(() => data, [data]);
   const [page, setPage] = useState(pagination ? 1 : 0);
@@ -57,7 +57,11 @@ export const Table = ({ title, columns, data, sorted, search, setSearch, isLoadi
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {pagination
+          {data.length < 1 ? (
+            <tr>
+              <td colSpan="100%" className={`text-center ${borderless ? "border-bottom border-secondary" : ""}`}>{backupText}</td>
+            </tr>
+          ) : pagination
             ? currentPage.map((row) => {
               prepareRow(row);
               return (

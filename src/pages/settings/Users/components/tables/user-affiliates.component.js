@@ -1,7 +1,9 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Card, CardBody, Col } from "reactstrap";
+// COMPONENTS
 import { Table } from "../../../../../components/UI/tables/table.component";
+// HELPERS
 import { userAffiliatesColumns } from "../../../../../helpers/tables/columns";
 
 
@@ -24,11 +26,11 @@ const UserAffiliates = ({ affiliates, isLoading }) => {
   }, [affiliates]);
 
   return (
-    <Col lg="12">
+    <Col lg="6">
       <Card>
         <CardBody>
           <div className="table-responsive">
-            <Table title="Afiliados" data={data} columns={userAffiliatesColumns} isLoading={isLoading} pagination={{ pageSize: PAGE_SIZE, async: false }} borderless />
+            <Table title="Afiliados" data={data} columns={userAffiliatesColumns} isLoading={isLoading} pagination={{ pageSize: PAGE_SIZE, async: false }} backupText="No posee afiliados" borderless />
           </div>
         </CardBody>
       </Card>

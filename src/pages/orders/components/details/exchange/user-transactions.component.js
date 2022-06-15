@@ -1,5 +1,5 @@
 import moment from "moment-timezone";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, CardBody } from "reactstrap";
 import { Table } from "../../../../../components/UI/tables/table.component";
 import { formatAmount } from "../../../../../helpers/functions";

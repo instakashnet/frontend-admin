@@ -2,8 +2,6 @@ import { Photo } from "@material-ui/icons";
 import { Card, CardBody, CardTitle } from "reactstrap";
 
 const UserDocuments = ({ user, openModal }) => {
-  console.log("EL USUARIO OBTENIDO EN UserDocuments:", user);
-
   return (
     <Card>
       <CardBody>
