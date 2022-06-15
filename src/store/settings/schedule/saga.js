@@ -10,7 +10,7 @@ function* getSchedule() {
     yield put(actions.getScheduleSuccess(res));
   } catch (error) {
     yield put(actions.apiError());
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
   }
 }
 
@@ -23,7 +23,7 @@ function* editSchedule({ values, id, setState }) {
     yield put(actions.editScheduleSuccess());
   } catch (error) {
     yield put(actions.apiError());
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
   }
 }
 
