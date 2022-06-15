@@ -10,7 +10,7 @@ function* getBanks() {
     const res = yield call(getBanksSvc);
     yield put(actions.getBanksSuccess(res));
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -23,7 +23,7 @@ function* addBank({ values, setState }) {
     yield call(setState);
     yield Swal.fire("Exitoso", "El banco ha sido agregado correctamente.", "success");
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -36,7 +36,7 @@ function* editBank({ id, values, close }) {
     yield put(setAlert("success", `El banco fue editado correctamente.`));
     yield put(actions.editBankSuccess());
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -48,7 +48,7 @@ function* toggleBank({ id, enabled }) {
     yield put(setAlert("success", `El banco fue ${enabled ? "habilitado" : "deshabilitado"} correctamente.`));
     yield put(actions.toggleBankSuccess());
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }

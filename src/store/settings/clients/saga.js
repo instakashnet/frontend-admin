@@ -16,7 +16,7 @@ function* getClientDetails({ userId }) {
     const res = yield call(getClientDetailsSvc, userId);
     yield put(actions.getClientDetailsSuccess(res));
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -26,7 +26,7 @@ function* getClientExchanges({ userId }) {
     const res = yield call(getClientExchangesSvc, userId);
     yield put(actions.getClientExchangesSuccess(res));
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -39,7 +39,7 @@ function* addClientProfile({ values, closeModal }) {
     yield Swal.fire("Exitoso", "El perfil fue agregado correctamente.", "success");
     yield put(actions.addProfileSuccess());
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -56,7 +56,7 @@ function* editClientInfo({ userId, values, closeModal }) {
     yield Swal.fire("Exitoso", "Los datos del usuario fueron editados correctamente.", "success");
     yield put(actions.editClientInfoSuccess());
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -69,7 +69,7 @@ function* editClientProfile({ values, closeModal }) {
     yield Swal.fire("Exitoso", "Los datos del perfil fueron editados correctamente.", "success");
     yield put(actions.editProfileSuccess());
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -85,7 +85,7 @@ function* uploadDocument({ values, userId, uploadType, close, setPercentage }) {
     yield call([Swal, "fire"], "Exitoso", `El documento fue agregado correctamente.`, "success");
     yield put(actions.uploadDocumentSuccess());
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -95,7 +95,7 @@ function* getClientAccounts({ id }) {
     const res = yield call(getClientAccountsSvc, id);
     yield put(actions.getClientAccountsSuccess(res));
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -109,7 +109,7 @@ function* downloadClients({ fileType }) {
     const res = yield call(downloadClientsSvc, URL);
     fileDownload(res, `${fileType}.xlsx`);
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -123,7 +123,7 @@ function* editInterplaza({ values, detailsType, id, setState }) {
     yield Swal.fire("Exitoso", `Cuenta editada correctamente.`, "success");
     yield put(actions.editInterplazaSuccess());
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -145,7 +145,7 @@ function* disableClient({ userId, active }) {
       yield put(actions.disableClientSuccess());
     } else yield put(actions.apiError());
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -157,7 +157,7 @@ function* sendNotification({ values, closeModal }) {
     yield call(closeModal);
     yield put(actions.sendNotificationSuccess());
   } catch (error) {
-    if (error.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
