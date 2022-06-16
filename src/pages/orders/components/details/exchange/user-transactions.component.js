@@ -16,7 +16,7 @@ export const UserTransactions = ({ orders, isLoading, details, getTransactions }
       const filteredOrders = details ? orders.filter((order) => order.id !== details.id) : orders;
 
       setData(
-        filteredOrders.reverse().map((order) => ({
+        filteredOrders.sort((a, b) => b.id - a.id).map((order) => ({
           id: order.id,
           date: moment(order.created).format("DD/MM/YYYY HH:mm a"),
           bankSent: order.bankSent,
@@ -32,7 +32,7 @@ export const UserTransactions = ({ orders, isLoading, details, getTransactions }
 
   return (
     <>
-      <Button type="buttom" color="primary" onClick={getTransactions} className="my-3">
+      <Button type="button" color="primary" onClick={getTransactions} className="my-3">
         Obtener operaciones
       </Button>
       <Card>

@@ -20,6 +20,16 @@ export const getClientExchangesSuccess = (orders) => ({
   orders,
 });
 
+export const getClientWithdrawals = (userId) => ({
+  type: actionTypes.GET_CLIENT_WITHDRAWALS,
+  userId,
+});
+
+export const getClientWithdrawalsSuccess = (withdrawals) => ({
+  type: actionTypes.GET_CLIENT_WITHDRAWALS_SUCCESS,
+  withdrawals,
+});
+
 export const getClientAccounts = (id) => ({
   type: actionTypes.GET_CLIENT_ACCOUNTS,
   id,

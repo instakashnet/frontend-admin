@@ -9,10 +9,11 @@ import { Col, Container, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
 // CUSTOM HOOK
 import { useClientData } from "../../../../hooks/useClientData";
 // REDUX ACTIONS
-import { disableClientInit, getClientAccounts, getClientAffiliates, getClientDetails, getClientExchanges } from "../../../../store/actions";
+import { disableClientInit, getClientAccounts, getClientAffiliates, getClientDetails, getClientExchanges, getClientWithdrawals } from "../../../../store/actions";
 // COMPONENTS
 import LoadingPage from "../../../LoadingPage";
 import { UserTransactions } from "../../../orders/components/details/exchange/user-transactions.component";
+import { UserWithdrawals } from "../../../orders/components/details/withdrawal/user-withdrawals.component";
 import CompanyInfo from "../components/details/company-info.component";
 import ProfileCompleted from "../components/details/profile-completed.component";
 import ProfileInfo from "../components/details/profile-info.component";
@@ -28,6 +29,7 @@ import UserAffiliates from "../components/tables/user-affiliates.component";
 
 
 export const ClientDetailsScreen = (props) => {
+  // VARIABLES & HOOKS
   const history = useHistory(),
     dispatch = useDispatch(),
     [modal, setModal] = useState(false),
@@ -35,9 +37,17 @@ export const ClientDetailsScreen = (props) => {
     [profileDetails, setProfileDetails] = useState({}),
     [documentType, setDocumentType] = useState(""),
     { id } = props.match.params,
-    { details, accounts, affiliates, exchanges, isProcessing, isLoading } = useSelector((state) => state.Clients),
+    { details, accounts, affiliates, exchanges, withdrawals, isProcessing, isLoading } = useSelector((state) => state.Clients),
     { completed, color } = useClientData(details);
 
+  // EFFECTS
+  useEffect(() => {
+    dispatch(getClientDetails(id));
+    dispatch(getClientAccounts(id));
+    dispatch(getClientAffiliates(id));
+  }, [dispatch, id]);
+
+  // HANDLERS
   const openModal = (modalType, profileData = {}, document = "") => {
     setProfileDetails(profileData);
     setModalType(modalType);
@@ -45,18 +55,13 @@ export const ClientDetailsScreen = (props) => {
     setDocumentType(document);
   };
 
-  useEffect(() => {
-    dispatch(getClientDetails(id));
-    dispatch(getClientAccounts(id));
-    dispatch(getClientAffiliates(id));
-  }, [dispatch, id]);
-
   const closeModal = () => {
     setProfileDetails({});
     setModal(false);
   };
   const disableClientHandler = (id, active) => dispatch(disableClientInit(id, active));
   const getTransactions = () => dispatch(getClientExchanges(id));
+  const getWithdrawals = () => dispatch(getClientWithdrawals(id));
 
   let ModalComponent;
 
@@ -89,11 +94,14 @@ export const ClientDetailsScreen = (props) => {
             </Row>
             <Row>
               <UserAffiliates affiliates={affiliates} isLoading={isLoading} />
-              <UserKash />
+              <UserKash kashQty={details?.kashAcumulated} />
             </Row>
             <Row>
-              <Col lg="12">
+              <Col lg="6">
                 <UserTransactions orders={exchanges} isLoading={isLoading} getTransactions={getTransactions} />
+              </Col>
+              <Col lg="6">
+                <UserWithdrawals withdrawals={withdrawals} isLoading={isLoading} getWithdrawals={getWithdrawals} />
               </Col>
             </Row>
           </Container>

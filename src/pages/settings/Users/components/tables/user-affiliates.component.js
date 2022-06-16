@@ -13,16 +13,14 @@ const UserAffiliates = ({ affiliates, isLoading }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    if (affiliates.length > 0) {
-      setData(
-        affiliates.map((affiliate) => ({
-          full_name: `${affiliate.firstName} ${affiliate.lastName}`,
-          email: affiliate.email,
-          status: affiliate.orderSuccess === 1 ? "Completado" : "Registrado",
-          date: moment(affiliate.createdAt).format("DD-MM-YYYY hh:mm a"),
-        }))
-      )
-    }
+    setData(
+      affiliates.map((affiliate) => ({
+        full_name: `${affiliate.firstName} ${affiliate.lastName}`,
+        email: affiliate.email,
+        status: affiliate.orderSuccess === 1 ? "Completado" : "Registrado",
+        date: moment(affiliate.createdAt).format("DD-MM-YYYY hh:mm a"),
+      }))
+    )
   }, [affiliates]);
 
   return (

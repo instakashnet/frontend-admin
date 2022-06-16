@@ -618,3 +618,45 @@ export const withdrawalsColumns = [
     ),
   },
 ];
+
+export const userWithdrawalsColumns = [
+  {
+    Header: "Fecha",
+    accessor: "date",
+  },
+  {
+    Header: "Recibe",
+    accessor: "destinationBank",
+    Cell: ({ cell }) => <img width={45} src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} alt={cell.value} />,
+  },
+  {
+    Header: "KASH solicitados",
+    accessor: "kashQty",
+    Cell: ({ cell }) => <p className="font-bold text-white">{cell.value}</p>,
+  },
+  {
+    Header: "Estado",
+    accessor: "status",
+    Cell: ({ row }) => (
+      <Badge
+        className="font-size-13 capitalize py-2"
+        style={{
+          color: shadeColor(row.original.statusColor, 40),
+          backgroundColor: convertHexToRGBA(row.original.statusColor, 24),
+        }}
+        pill
+      >
+        {row.original.statusName.toLowerCase()}
+      </Badge>
+    ),
+  },
+  {
+    Header: "Acción",
+    accessor: "id",
+    Cell: ({ cell }) => (
+      <Link className="btn py-1 px-2 max-w-sm btn-rounded btn-action" to={`/withdrawal-details/${cell.value}`}>
+        Ver más
+      </Link>
+    ),
+  },
+];

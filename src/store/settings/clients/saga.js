@@ -3,7 +3,7 @@ import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects"
 import Swal from "sweetalert2";
 import { editInterplazaSvc, getClientAccountsSvc } from "../../../api/services/accounts.service";
 import { addClientProfileSvc, deleteClientProfileSvc, disableClientSvc, downloadClientsSvc, editClientInfoSvc, editClientProfileSvc, getAffiliatesSvc, getClientDetailsSvc, uploadDocumentSvc } from "../../../api/services/auth.service";
-import { getClientExchangesSvc } from "../../../api/services/exchange.service";
+import { getClientExchangesSvc, getClientWithdrawalsSvc } from "../../../api/services/exchange.service";
 import { setAlert } from "../../actions";
 import { getExchangeDetails } from "../../transactions/currencyExchange/actions";
 import { getWithdrawalDetailsInit } from "../../transactions/withdrawals/actions";
@@ -36,6 +36,16 @@ function* getClientExchanges({ userId }) {
     yield put(actions.getClientExchangesSuccess(res));
   } catch (error) {
     yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
+
+function* getClientWithdrawals({ userId }) {
+  try {
+    const res = yield call(getClientWithdrawalsSvc, userId);
+    yield put(actions.getClientWithdrawalsSuccess(res));
+  } catch (error) {
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -194,6 +204,10 @@ export function* watchGetClientExchanges() {
   yield takeEvery(actionTypes.GET_CLIENT_EXCHANGES, getClientExchanges);
 }
 
+export function* watchGetClientWithdrawals() {
+  yield takeEvery(actionTypes.GET_CLIENT_WITHDRAWALS, getClientWithdrawals);
+}
+
 export function* watchGetClientActivity() {
   yield takeEvery(actionTypes.GET_CLIENT_ACCOUNTS, getClientAccounts);
 }
@@ -244,6 +258,7 @@ export default function* clientsSaga() {
     fork(watchUploadDocument),
     fork(watchGetClientActivity),
     fork(watchGetClientExchanges),
+    fork(watchGetClientWithdrawals),
     fork(watchDownloadClients),
     fork(watchEditInterplaza),
     fork(watchDisableClient),
