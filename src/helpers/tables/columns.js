@@ -75,15 +75,18 @@ export const usersAccountsColumns = [
 ];
 
 // COLUMNS SEEN IN CLIENT DETAILS SCREEN
-export const userAccountsColumns = [
+export const userAccountsColumns = (setUserBankAccountEdit) => [
   {
     accessor: "account_number",
     Header: "Número de cuenta",
     Cell: ({ cell, row }) => (
-      <p className={`m-0 ${userDetailsClasses.whiteCellText}`}>
-        {cell.value} <span className={userDetailsClasses.grayCellText}>-</span> {row.original.currency}
-        <span className={`d-block ${userDetailsClasses.textMuted}`}>{row.original.balance || "Sin fondos"}</span>
-      </p>
+      <div className="flex items-start">
+        <input type="radio" name="clientAccount" id="clientAcc" className="mt-1 mr-2" onChange={() => setUserBankAccountEdit(row.original)} />
+        <p className={`m-0 ${userDetailsClasses.whiteCellText}`}>
+          {cell.value} <span className={userDetailsClasses.grayCellText}>-</span> {row.original.currency}
+          <span className={`d-block ${userDetailsClasses.textMuted}`}>{row.original.balance || "Sin fondos"}</span>
+        </p>
+      </div>
     ),
   },
   {

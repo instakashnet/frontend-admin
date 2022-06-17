@@ -36,6 +36,7 @@ export const ClientDetailsScreen = (props) => {
     [modalType, setModalType] = useState(null),
     [profileDetails, setProfileDetails] = useState({}),
     [documentType, setDocumentType] = useState(""),
+    [userBankAccEdit, setUserBankAccEdit] = useState({}),
     { id } = props.match.params,
     { details, accounts, affiliates, exchanges, withdrawals, isProcessing, isLoading } = useSelector((state) => state.Clients),
     { completed, color } = useClientData(details);
@@ -90,7 +91,7 @@ export const ClientDetailsScreen = (props) => {
             </Row>
             <Row>
               <CompanyInfo details={details} openModal={openModal} dispatch={dispatch} />
-              <UserAccounts accounts={accounts} isLoading={isLoading} />
+              <UserAccounts accounts={accounts} isLoading={isLoading} userBankAccEdit={userBankAccEdit} setUserBankAccEdit={setUserBankAccEdit} />
             </Row>
             <Row>
               <UserAffiliates affiliates={affiliates} isLoading={isLoading} />

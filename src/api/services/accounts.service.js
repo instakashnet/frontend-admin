@@ -92,6 +92,7 @@ export const getCurrenciesSvc = async () => {
   }
 };
 
+// ADD AN ACCOUNT TO THE COMPANY
 export const addAcbAccountSvc = async (accValues) => {
   try {
     const response = await getAxiosInstance("accounts", "v1").post("/accounts", accValues);
@@ -112,6 +113,7 @@ export const addBankSvc = async (values) => {
   }
 };
 
+// EDIT A COMPANY ACCOUNT
 export const editCbAccountSvc = async (values) => {
   try {
     const response = await getAxiosInstance("accounts", "v1").put("/accounts", values);
