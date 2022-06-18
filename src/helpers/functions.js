@@ -1,5 +1,5 @@
-import moment from "moment";
 import camelize from "camelize";
+import moment from "moment";
 
 export const convertHexToRGBA = (hexCode, opacity) => {
   let hex = hexCode.replace("#", "");
@@ -63,8 +63,8 @@ export const formatOrders = (ordersData, type) => {
       statusColor: order.stateColor,
     }));
   } else {
-    const revisedOrders = ordersInfo.filter((ords) => ords.orderNotes).sort((o1, o2) => new Date(o2.created) - new Date(o1.created)),
-      notRevisedOrders = ordersInfo.filter((o) => !o.orderNotes),
+    const revisedOrders = ordersInfo.filter((ords) => ords.inReview).sort((o1, o2) => new Date(o2.created) - new Date(o1.created)),
+      notRevisedOrders = ordersInfo.filter((o) => !o.inReview),
       arrangedOrders = revisedOrders.concat(notRevisedOrders);
 
     orders = arrangedOrders.map((order) => ({
@@ -72,7 +72,7 @@ export const formatOrders = (ordersData, type) => {
       pedidoId: order.uuid,
       date: order.completedAt ? moment(order.completedAt).format("DD/MM/YY hh:mm a") : "Sin completar",
       user: order.firstName + " " + order.lastName,
-      revision: order.orderNotes,
+      revision: order.inReview,
       amountSent: order.amountSent > 0 ? `${order.currencySentSymbol} ${formatAmount(order.amountSent)}` : `${order.kashUsed} KASH`,
       amountReceived: `${order.currencyReceivedSymbol} ${formatAmount(order.amountReceived)}`,
       originBank: order.amountSent > 0 ? order.bankFromName : "kash",

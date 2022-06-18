@@ -5,7 +5,7 @@ import { Col, Container, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
 // CUSTOM HOOKS
 import { useRole } from "../../../hooks/useRole";
 // REDUX ACTIONS
-import { approveExchange, changeOrderStatus, createInvoice, declineExchange, getClientExchanges, getExchangeDetails, validateExchange } from "../../../store/actions";
+import { approveExchange, changeOrderStatus, createInvoice, declineExchange, getClientExchanges, getExchangeDetails, setRevisionInit, validateExchange } from "../../../store/actions";
 // COMPONENTS
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
@@ -59,6 +59,14 @@ export const ExchangeDetailsScreen = (props) => {
   );
   const onApproveExchange = (values) => dispatch(approveExchange(id, values, showFormHandler));
   const onCreateInvoice = () => dispatch(createInvoice(id));
+  const onSetReview = () => {
+    let valuesRevision = {
+      note: details.orderNotes,
+      inReview: !details.inReview,
+    };
+
+    dispatch(setRevisionInit(valuesRevision, id));
+  };
 
   useEffect(() => {
     dispatch(getExchangeDetails(id));
@@ -69,7 +77,7 @@ export const ExchangeDetailsScreen = (props) => {
   if (formType === "edit") FormComponent = <EditOrder details={details} isProcessing={isProcessing} onShowForm={showFormHandler} orderItemToEdit={orderItemEdit} />;
   if (formType === "reassign") FormComponent = <ReassignOrder details={details} onShowForm={showFormHandler} isProcessing={isProcessing} />;
   if (formType === "complete") FormComponent = <CompleteOrder isProcessing={isProcessing} orderId={id} onShowForm={showFormHandler} onApprove={onApproveExchange} />;
-  if (formType === "revision") FormComponent = <SetRevision note={details.orderNotes} isProcessing={isProcessing} onShowForm={showFormHandler} orderId={id} />;
+  if (formType === "revision") FormComponent = <SetRevision note={details.orderNotes} inReview={details.inReview} isProcessing={isProcessing} onShowForm={showFormHandler} orderId={id} />;
 
   return (
     <div className="relative">
@@ -84,9 +92,11 @@ export const ExchangeDetailsScreen = (props) => {
                 billCreated={details.billAssigned}
                 onCreateInvoice={onCreateInvoice}
                 onChangeStatus={changeStatusHandler}
+                onSetReview={onSetReview}
                 isProcessing={isProcessing}
                 role={role}
                 hasInvoice
+                inReview={details.inReview}
               />
               {details.user && <UserInfo user={details.user} role={role} isLoading={isLoading} />}
             </Col>

@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Spinner } from "reactstrap";
 
 // COMPONENTS
 import Select from "../../../../components/UI/FormItems/Select";
 
-export const ActionButtons = ({ goBack, statusId, billCreated, role, onCreateInvoice, onChangeStatus, isProcessing, hasInvoice = false }) => {
+export const ActionButtons = ({ goBack, statusId, billCreated, role, onCreateInvoice, onChangeStatus, onSetReview, isProcessing, hasInvoice = false, inReview }) => {
   const [status, setStatus] = useState(null);
 
   const statusOptions = [
@@ -43,13 +43,18 @@ export const ActionButtons = ({ goBack, statusId, billCreated, role, onCreateInv
           </button>
         )}
         {(statusId === 3 || statusId === 4) && (
-          <button type="button" disabled={isProcessing} onClick={() => onChangeStatus(statusId === 3 ? 4 : 6)} className="btn btn-success waves-effect ml-3 btn-label waves-light">
+          <button type="button" disabled={isProcessing} onClick={() => onChangeStatus(statusId === 3 ? 4 : 6)} className="btn btn-success waves-effect ml-2 btn-label waves-light">
             <ButtonInfo icon="fa-check" info={statusId === 3 ? "Validar" : "Aprobar"} isProcessing={isProcessing} />
           </button>
         )}
         {statusId === 6 && !billCreated && hasInvoice && (
           <button type="button" disabled={isProcessing} onClick={onCreateInvoice} className="btn btn-success waves-effect btn-label waves-light">
             <ButtonInfo icon="fa-file-invoice" info="Generar factura" isProcessing={isProcessing} />
+          </button>
+        )}
+        {statusId !== 6 && (
+          <button type="button" disabled={isProcessing} onClick={onSetReview} className={`btn btn-${inReview ? "danger" : "success"} waves-effect btn-label waves-light ml-2`}>
+            <ButtonInfo icon="fa-pen-square" info={inReview ? "Eliminar revisión" : "Agregar a revisión"} isProcessing={isProcessing} />
           </button>
         )}
       </div>

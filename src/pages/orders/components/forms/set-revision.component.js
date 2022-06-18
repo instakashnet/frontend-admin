@@ -1,7 +1,7 @@
-import React from "react";
 import { useFormik } from "formik";
-import { Button, Card, CardBody, Spinner } from "reactstrap";
+import { memo } from "react";
 import { useDispatch } from "react-redux";
+import { Button, Card, CardBody, Spinner } from "reactstrap";
 import * as Yup from "yup";
 import { setRevisionInit } from "../../../../store/actions";
 
@@ -11,15 +11,15 @@ const validation = Yup.object().shape({
   note: Yup.string().required("Debes escribir una nota").max(1000, "Máximo 1000 caracteres."),
 });
 
-const Revision = ({ note, orderId, onShowForm, isProcessing }) => {
+const Revision = ({ note, inReview, orderId, onShowForm, isProcessing }) => {
   const dispatch = useDispatch();
-  const formik = useFormik({ initialValues: { note: note || "" }, validationSchema: validation, onSubmit: (values) => dispatch(setRevisionInit(values, orderId, onShowForm)) });
+  const formik = useFormik({ initialValues: { note: note || "", inReview }, validationSchema: validation, onSubmit: (values) => dispatch(setRevisionInit(values, orderId, onShowForm)) });
 
-  const deleteNoteHandler = () => dispatch(setRevisionInit({ note: "" }, orderId, onShowForm));
+  const deleteNoteHandler = () => dispatch(setRevisionInit({ note: "", inReview }, orderId, onShowForm));
 
   return (
     <>
-      <h4 className="my-2">Nota para revisión</h4>
+      <h4 className="my-2">Nota para el pedido</h4>
       <Card>
         <CardBody>
           <form onSubmit={formik.handleSubmit} className="text-center">
@@ -39,4 +39,4 @@ const Revision = ({ note, orderId, onShowForm, isProcessing }) => {
   );
 };
 
-export default React.memo(Revision);
+export default memo(Revision);
