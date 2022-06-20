@@ -13,9 +13,9 @@ const validation = Yup.object().shape({
 
 const Revision = ({ note, inReview, orderId, onShowForm, isProcessing }) => {
   const dispatch = useDispatch();
-  const formik = useFormik({ initialValues: { note: note || "", inReview }, validationSchema: validation, onSubmit: (values) => dispatch(setRevisionInit(values, orderId, onShowForm)) });
+  const formik = useFormik({ initialValues: { note: note || "", inReview: inReview ? true : false }, validationSchema: validation, onSubmit: (values) => dispatch(setRevisionInit(values, orderId, onShowForm)) });
 
-  const deleteNoteHandler = () => dispatch(setRevisionInit({ note: "", inReview }, orderId, onShowForm));
+  const deleteNoteHandler = () => dispatch(setRevisionInit({ note: "", inReview: inReview ? true : false }, orderId, onShowForm));
 
   return (
     <>

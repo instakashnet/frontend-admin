@@ -54,7 +54,7 @@ export const ActionButtons = ({ goBack, statusId, billCreated, role, onCreateInv
         )}
         {statusId !== 6 && (
           <button type="button" disabled={isProcessing} onClick={onSetReview} className={`btn btn-${inReview ? "danger" : "success"} waves-effect btn-label waves-light ml-2`}>
-            <ButtonInfo icon="fa-pen-square" info={inReview ? "Eliminar revisión" : "Agregar a revisión"} isProcessing={isProcessing} />
+            <ButtonInfo icon="fa-pen-square" info={inReview ? "Eliminar de revisión" : "Agregar a revisión"} isProcessing={isProcessing} />
           </button>
         )}
       </div>
