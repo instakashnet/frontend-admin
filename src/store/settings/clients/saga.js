@@ -16,7 +16,7 @@ function* getClientAffiliates({ userId }) {
     const res = yield call(getAffiliatesSvc, parseFloat(userId));
     yield put(actions.getAffiliatesSuccess(res));
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -246,7 +246,7 @@ function* deleteClientProfile({ userId, profileId }) {
       yield Swal.fire("Exitoso", "Perfil eliminado.", "success");
     } else yield put(actions.apiError());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
