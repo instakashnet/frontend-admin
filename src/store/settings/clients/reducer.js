@@ -18,11 +18,14 @@ export default function clientsReducer(state = initialState, action) {
       return { ...state, isLoading: true };
 
     case actionTypes.ADD_PROFILE_INIT:
+    case actionTypes.ADD_CLIENT_BANK_ACCOUNT_INIT:
+    case actionTypes.EDIT_CLIENT_BANK_ACCOUNT_INIT:
     case actionTypes.EDIT_PROFILE_INIT:
     case actionTypes.EDIT_INFO_INIT:
     case actionTypes.DISABLE_CLIENT_INIT:
     case actionTypes.UPLOAD_DOCUMENT_INIT:
     case actionTypes.DELETE_PROFILE_INIT:
+    case actionTypes.DELETE_CLIENT_BANK_ACCOUNT_INIT:
       return { ...state, isProcessing: true };
 
     case actionTypes.GET_CLIENT_DETAILS_SUCCESS:
@@ -46,11 +49,14 @@ export default function clientsReducer(state = initialState, action) {
       return { ...state, accounts: action.accounts, isLoading: false };
 
     case actionTypes.ADD_PROFILE_SUCCESS:
+    case actionTypes.ADD_CLIENT_BANK_ACCOUNT_SUCCESS:
+    case actionTypes.EDIT_CLIENT_BANK_ACCOUNT_SUCCESS:
     case actionTypes.EDIT_PROFILE_SUCCESS:
     case actionTypes.EDIT_INFO_SUCCESS:
     case actionTypes.DISABLE_CLIENT_SUCCESS:
     case actionTypes.UPLOAD_DOCUMENT_SUCCESS:
     case actionTypes.DELETE_PROFILE_SUCCESS:
+    case actionTypes.DELETE_CLIENT_BANK_ACCOUNT_SUCCESS:
       return { ...state, isProcessing: false };
 
     case actionTypes.API_ERROR:

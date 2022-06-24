@@ -1,7 +1,9 @@
 import moment from "moment-timezone";
 import { useEffect, useState } from "react";
 import { Button, Card, CardBody } from "reactstrap";
+// COMPONENTS
 import { Table } from "../../../../../components/UI/tables/table.component";
+// HELPERS
 import { userWithdrawalsColumns } from "../../../../../helpers/tables/columns";
 
 const PAGE_SIZE = 5;
@@ -16,7 +18,7 @@ export const UserWithdrawals = ({ withdrawals, isLoading, details, getWithdrawal
       setData(
         filteredWithdrawals.sort((a, b) => b.id - a.id).map((withdrawal) => ({
           id: withdrawal.id,
-          date: moment(withdrawal.createdAt).format("DD-MM-YYYY HH:mm"),
+          date: moment(withdrawal.createdAt).format("DD/MM/YYYY hh:mm a"),
           destinationBank: withdrawal.bankName.toLowerCase(),
           statusColor: withdrawal.statusColor,
           statusName: withdrawal.statusName,

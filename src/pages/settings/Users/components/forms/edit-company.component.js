@@ -1,5 +1,4 @@
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
 import { Button, Spinner } from "reactstrap";
 // COMPONENTS
 import Input from "../../../../../components/UI/FormItems/Input";
@@ -7,9 +6,7 @@ import Input from "../../../../../components/UI/FormItems/Input";
 import { addProfileInit, editProfileInit } from "../../../../../store/actions";
 
 
-const CompanyProfile = ({ details, isProcessing, closeModal, userId }) => {
-  const dispatch = useDispatch();
-
+const CompanyProfile = ({ dispatch, userId, details, isProcessing, closeModal }) => {
   const formik = useFormik({
     initialValues: { userId: +userId, profileId: details.id || "", type: "juridica", razon_social: details.razonSocial || "", ruc: details.ruc || "", address: details.address || "" },
     onSubmit: (values) => dispatch(details.id ? editProfileInit(values, closeModal) : addProfileInit(values, closeModal)),

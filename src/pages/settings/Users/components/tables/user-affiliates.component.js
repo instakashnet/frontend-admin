@@ -7,7 +7,7 @@ import { Table } from "../../../../../components/UI/tables/table.component";
 import { userAffiliatesColumns } from "../../../../../helpers/tables/columns";
 
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 const UserAffiliates = ({ affiliates, isLoading }) => {
   const [data, setData] = useState([]);
@@ -18,7 +18,7 @@ const UserAffiliates = ({ affiliates, isLoading }) => {
         full_name: `${affiliate.firstName} ${affiliate.lastName}`,
         email: affiliate.email,
         status: affiliate.orderSuccess === 1 ? "Completado" : "Registrado",
-        date: moment(affiliate.createdAt).format("DD-MM-YYYY hh:mm a"),
+        date: moment(affiliate.createdAt).format("DD/MM/YYYY hh:mm a"),
       }))
     )
   }, [affiliates]);

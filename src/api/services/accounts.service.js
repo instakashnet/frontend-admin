@@ -113,6 +113,26 @@ export const addBankSvc = async (values) => {
   }
 };
 
+export const addClientBankAccSvc = async (userId, values) => {
+  try {
+    const response = await getAxiosInstance("accounts", "v1").post(`/accounts/account/${userId}`, values);
+    if (response.status >= 400) throw new Error(response.errors[0]);
+
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const editClientBankAccSvc = async (accountId, values) => {
+  try {
+    const response = await getAxiosInstance("accounts", "v1").put(`/accounts/account/${accountId}`, values);
+    if (response.status >= 400) throw new Error(response.errors[0]);
+
+  } catch (error) {
+    throw error;
+  }
+};
+
 // EDIT A COMPANY ACCOUNT
 export const editCbAccountSvc = async (values) => {
   try {
@@ -155,6 +175,16 @@ export const editInterplazaSvc = async (values) => {
 export const editCbBalanceSvc = async (values, accountId) => {
   try {
     const response = await getAxiosInstance("accounts", "v1").put(`/accounts/funds/${accountId}`, values);
+    if (response.status >= 400) throw new Error(response.errors[0]);
+
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteClientBankAccSvc = async (accountId) => {
+  try {
+    const response = await getAxiosInstance("accounts", "v1").delete(`/accounts/account/${accountId}`, { data: { enabled: false } });
     if (response.status >= 400) throw new Error(response.errors[0]);
 
   } catch (error) {

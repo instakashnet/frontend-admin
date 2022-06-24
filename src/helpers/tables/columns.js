@@ -81,9 +81,17 @@ export const userAccountsColumns = (setUserBankAccountEdit) => [
     Header: "Número de cuenta",
     Cell: ({ cell, row }) => (
       <div className="flex items-start">
-        <input type="radio" name="clientAccount" id="clientAcc" className="mt-1 mr-2" onChange={() => setUserBankAccountEdit(row.original)} />
+        <label className={`mt-1 mr-2 ${userAccountsClasses.inputRadioLabel}`}>
+          <input
+            type="radio"
+            name="clientAccount"
+            onChange={() => setUserBankAccountEdit(row.original)}
+            checked={row.original.selected_account === row.original.account_number || row.original.selected_account === row.original.cci}
+          />
+          <i></i>
+        </label>
         <p className={`m-0 ${userDetailsClasses.whiteCellText}`}>
-          {cell.value} <span className={userDetailsClasses.grayCellText}>-</span> {row.original.currency}
+          {cell.value || row.original.cci} <span className={userDetailsClasses.grayCellText}>-</span> {row.original.currency}
           <span className={`d-block ${userDetailsClasses.textMuted}`}>{row.original.balance || "Sin fondos"}</span>
         </p>
       </div>
@@ -94,6 +102,11 @@ export const userAccountsColumns = (setUserBankAccountEdit) => [
     Header: "Banco",
     Cell: ({ cell }) => <img src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} width={85} alt={cell.value.toLowerCase()} className={`mx-auto ${userAccountsClasses.bankImage}`} />,
   },
+  {
+    accessor: "thirdParty",
+    Header: "Cuenta",
+    Cell: ({ cell }) => <p className="text-center text-white">{cell.value ? "De terceros" : "Personal"}</p>,
+  }
 ];
 
 export const userAffiliatesColumns = [
@@ -340,7 +353,7 @@ export const clientsCompletedColumns = [
   {
     accessor: "date",
     Header: "Fecha registrado",
-    Cell: ({ cell }) => moment(cell.value).format("DD/MM/YY HH:mm a"),
+    Cell: ({ cell }) => moment(cell.value).format("DD/MM/YY hh:mm a"),
   },
   {
     accessor: "status",
@@ -372,7 +385,7 @@ export const clientsNotCompletedColumns = [
   {
     accessor: "date",
     Header: "Fecha registrado",
-    Cell: ({ cell }) => moment(cell.value).format("DD/MM/YY HH:mm a"),
+    Cell: ({ cell }) => moment(cell.value).format("DD/MM/YY hh:mm a"),
   },
   {
     accessor: "status",
@@ -593,7 +606,7 @@ export const withdrawalsColumns = [
   {
     Header: "KASH solicitados",
     accessor: "kashQty",
-    Cell: ({ cell }) => <p className="font-bold text-white">{cell.value}</p>,
+    Cell: ({ cell }) => <p className="font-bold text-white mb-0">{cell.value}</p>,
   },
   {
     Header: "Estado",

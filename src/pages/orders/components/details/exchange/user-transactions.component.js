@@ -1,7 +1,9 @@
 import moment from "moment-timezone";
 import { useEffect, useState } from "react";
 import { Button, Card, CardBody } from "reactstrap";
+// COMPONENTS
 import { Table } from "../../../../../components/UI/tables/table.component";
+// HELPERS
 import { formatAmount } from "../../../../../helpers/functions";
 import { oldExchangesColumns } from "../../../../../helpers/tables/columns";
 
@@ -18,7 +20,7 @@ export const UserTransactions = ({ orders, isLoading, details, getTransactions }
       setData(
         filteredOrders.sort((a, b) => b.id - a.id).map((order) => ({
           id: order.id,
-          date: moment(order.created).format("DD/MM/YYYY HH:mm a"),
+          date: moment(order.created).format("DD/MM/YYYY hh:mm a"),
           bankSent: order.bankSent,
           bankReceive: order.bankReceive,
           amountSent: `${order.currencySentSymbol} ${formatAmount(order.amountSent)}`,

@@ -50,6 +50,17 @@ export const getAffiliatesSuccess = (affiliates) => ({
   affiliates,
 });
 
+export const addClientBankAccInit = (userId, values, closeModal) => ({
+  type: actionTypes.ADD_CLIENT_BANK_ACCOUNT_INIT,
+  userId,
+  values,
+  closeModal,
+});
+
+export const addClientBankAccSuccess = () => ({
+  type: actionTypes.ADD_CLIENT_BANK_ACCOUNT_SUCCESS,
+});
+
 export const addProfileInit = (values, closeModal) => ({
   type: actionTypes.ADD_PROFILE_INIT,
   values,
@@ -66,6 +77,10 @@ export const editProfileInit = (values, closeModal) => ({
   closeModal,
 });
 
+export const editProfileSuccess = () => ({
+  type: actionTypes.EDIT_PROFILE_SUCCESS,
+});
+
 export const editClientInfoInit = (values, userId, closeModal) => ({
   type: actionTypes.EDIT_INFO_INIT,
   values,
@@ -77,8 +92,15 @@ export const editClientInfoSuccess = () => ({
   type: actionTypes.EDIT_INFO_SUCCESS,
 });
 
-export const editProfileSuccess = () => ({
-  type: actionTypes.EDIT_PROFILE_SUCCESS,
+export const editClientBankAccInit = (account, values, closeModal) => ({
+  type: actionTypes.EDIT_CLIENT_BANK_ACCOUNT_INIT,
+  account,
+  values,
+  closeModal,
+});
+
+export const editClientBankAccSuccess = () => ({
+  type: actionTypes.EDIT_CLIENT_BANK_ACCOUNT_SUCCESS,
 });
 
 export const downloadClientsInit = (fileType) => ({
@@ -123,6 +145,16 @@ export const disableClientInit = (userId, active) => ({
 
 export const disableClientSuccess = () => ({
   type: actionTypes.DISABLE_CLIENT_SUCCESS,
+});
+
+export const deleteClientBankAccInit = (account, unselectAccs) => ({
+  type: actionTypes.DELETE_CLIENT_BANK_ACCOUNT_INIT,
+  account,
+  unselectAccs,
+});
+
+export const deleteClientBankAccSuccess = () => ({
+  type: actionTypes.DELETE_CLIENT_BANK_ACCOUNT_SUCCESS,
 });
 
 export const deleteProfileInit = (userId, profileId) => ({
