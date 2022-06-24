@@ -8,7 +8,6 @@ import { useRole } from "../../../hooks/useRole";
 import { approveExchange, changeOrderStatus, createInvoice, declineExchange, getClientExchanges, getExchangeDetails, setRevisionInit, validateExchange } from "../../../store/actions";
 // COMPONENTS
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
-
 import { ActionButtons } from "../components/details/action-buttons.component";
 import Received from "../components/details/exchange/received.component";
 import { StatusInfo } from "../components/details/exchange/status.component";
@@ -22,6 +21,7 @@ import ReassignOrder from "../components/forms/reassign-order.component";
 import SetRevision from "../components/forms/set-revision.component";
 
 export const ExchangeDetailsScreen = (props) => {
+  // VARIABLES & HOOKS
   const { id } = props.match.params;
   const { details, isLoading, isProcessing } = useSelector((state) => state.CurrencyExchange);
   const { exchanges, isLoading: dataLoading } = useSelector((state) => state.Clients);
@@ -34,6 +34,7 @@ export const ExchangeDetailsScreen = (props) => {
   const [orderItemEdit, setOrderItemEdit] = useState("");
   const [role] = useRole(user);
 
+  // HANDLERS
   const showFormHandler = (formType = null, orderItemEdit = "") => {
     setModal((prev) => !prev);
     setFormType(formType);
@@ -68,6 +69,7 @@ export const ExchangeDetailsScreen = (props) => {
     dispatch(setRevisionInit(valuesRevision, id));
   };
 
+  // EFFECTS
   useEffect(() => {
     dispatch(getExchangeDetails(id));
   }, [dispatch, id]);
@@ -88,6 +90,7 @@ export const ExchangeDetailsScreen = (props) => {
             <Col lg="8">
               <ActionButtons
                 goBack={() => history.goBack()}
+                orderUuid={details.uuid}
                 statusId={details.stateId}
                 billCreated={details.billAssigned}
                 onCreateInvoice={onCreateInvoice}

@@ -4,7 +4,7 @@ import { Spinner } from "reactstrap";
 // COMPONENTS
 import Select from "../../../../components/UI/FormItems/Select";
 
-export const ActionButtons = ({ goBack, statusId, billCreated, role, onCreateInvoice, onChangeStatus, onSetReview, isProcessing, hasInvoice = false, inReview }) => {
+export const ActionButtons = ({ goBack, orderUuid, statusId, billCreated, role, onCreateInvoice, onChangeStatus, onSetReview, isProcessing, hasInvoice = false, inReview }) => {
   const [status, setStatus] = useState(null);
 
   const statusOptions = [
@@ -52,7 +52,7 @@ export const ActionButtons = ({ goBack, statusId, billCreated, role, onCreateInv
             <ButtonInfo icon="fa-file-invoice" info="Generar factura" isProcessing={isProcessing} />
           </button>
         )}
-        {statusId !== 6 && (
+        {(orderUuid?.includes("E") && statusId !== 6) && (
           <button type="button" disabled={isProcessing} onClick={onSetReview} className={`btn btn-${inReview ? "danger" : "success"} waves-effect btn-label waves-light ml-2`}>
             <ButtonInfo icon="fa-pen-square" info={inReview ? "Eliminar de revisión" : "Agregar a revisión"} isProcessing={isProcessing} />
           </button>
