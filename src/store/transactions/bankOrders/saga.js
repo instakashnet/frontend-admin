@@ -20,7 +20,7 @@ function* createBankOrder({ values, getData, closeModal }) {
     }
   } catch (error) {
     yield put(actions.apiError());
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
   }
 }
 
@@ -30,7 +30,7 @@ function* getBankOrderDetails({ id }) {
     if (res.status === 200) yield put(actions.getBankOrderDetailsSuccess(res.data));
   } catch (error) {
     yield put(actions.apiError());
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
   }
 }
 
@@ -55,7 +55,7 @@ function* changeBankOrderStatus({ id, statusId }) {
     } else yield put(actions.apiError());
   } catch (error) {
     yield put(actions.apiError());
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
   }
 }
 

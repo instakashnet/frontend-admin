@@ -26,6 +26,7 @@ export default function clientsReducer(state = initialState, action) {
     case actionTypes.UPLOAD_DOCUMENT_INIT:
     case actionTypes.DELETE_PROFILE_INIT:
     case actionTypes.DELETE_CLIENT_BANK_ACCOUNT_INIT:
+    case actionTypes.SEND_NOTIFICATION_INIT:
       return { ...state, isProcessing: true };
 
     case actionTypes.GET_CLIENT_DETAILS_SUCCESS:
@@ -57,6 +58,7 @@ export default function clientsReducer(state = initialState, action) {
     case actionTypes.UPLOAD_DOCUMENT_SUCCESS:
     case actionTypes.DELETE_PROFILE_SUCCESS:
     case actionTypes.DELETE_CLIENT_BANK_ACCOUNT_SUCCESS:
+    case actionTypes.SEND_NOTIFICATION_SUCCESS:
       return { ...state, isProcessing: false };
 
     case actionTypes.API_ERROR:

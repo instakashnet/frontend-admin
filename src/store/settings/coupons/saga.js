@@ -32,7 +32,7 @@ function* addCoupon({ values, closeModal }) {
     yield call([Swal, "fire"], "Exitoso", "Cupón agregado correctamente", "success");
     yield put(actions.addCouponSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.couponsError());
   }
 }
@@ -64,7 +64,7 @@ function* editCoupon({ id, values, active, closeModal }) {
     yield call([Swal, "fire"], "Exitoso", "Cupón editado correctamente", "success");
     yield put(actions.editCouponSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.couponsError());
   }
 }

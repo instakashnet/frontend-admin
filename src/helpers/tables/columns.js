@@ -423,7 +423,7 @@ export const exchangesColumns = [
     Cell: ({ cell, row }) => <p className="text-white capitalize">{row.original.companyName.toLowerCase() || cell.value.toLowerCase()}</p>,
   },
   {
-    Header: "Envia",
+    Header: "Envía",
     accessor: "amountSent",
     Cell: ({ cell }) => <p className="font-bold text-white">{cell.value}</p>,
   },
@@ -450,7 +450,7 @@ export const exchangesColumns = [
         className="font-size-13 capitalize py-2"
         style={{
           color: "#fff",
-          backgroundColor: row.original.revision ? "#BA55D3" : row.original.statusColor,
+          backgroundColor: row.original.revision ? "#ba55d3" : row.original.statusColor,
         }}
         pill
       >

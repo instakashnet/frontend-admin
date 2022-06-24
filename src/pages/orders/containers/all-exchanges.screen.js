@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Card, CardBody, Col, Row, Container, Spinner, Button, Modal, ModalHeader, ModalBody } from "reactstrap";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRole } from "../../../hooks/useRole";
+import { Button, Card, CardBody, Col, Container, Modal, ModalBody, ModalHeader, Row, Spinner } from "reactstrap";
 import { getAllOrders } from "../../../api/services/exchange.service";
-import { exchangesColumns } from "../../../helpers/tables/columns";
-import { setAlert } from "../../../store/actions";
 import { formatOrders } from "../../../helpers/functions";
+import { exchangesColumns } from "../../../helpers/tables/columns";
+import { useRole } from "../../../hooks/useRole";
+import { setAlert } from "../../../store/actions";
 
 //Components
-import { CreateExcel } from "../components/forms/create-excel.component";
-import { BankReconciliation } from "../components/forms/bank-reconciliation.component";
 import { Table } from "../../../components/UI/tables/table.component";
+import { BankReconciliation } from "../components/forms/bank-reconciliation.component";
+import { CreateExcel } from "../components/forms/create-excel.component";
 
 const PAGE_SIZE = 50;
 
@@ -40,7 +40,7 @@ export const AllExchangesScreen = () => {
 
         setData(orders);
       } catch (error) {
-        dispatch(setAlert("danger", "Ha ocurrido un error obteniendo la lista de ordenes. Por favor intenta de nuevo o contacta a soporte."));
+        dispatch(setAlert("danger", "Ha ocurrido un error obteniendo la lista de órdenes. Por favor intenta de nuevo o contacta a soporte."));
       } finally {
         setIsLoading(false);
       }
@@ -82,7 +82,7 @@ export const AllExchangesScreen = () => {
               <CardBody>
                 <div className="table-responsive">
                   <Table
-                    title="Ordenes recibidas"
+                    title="Órdenes recibidas"
                     columns={exchangesColumns}
                     data={data}
                     isLoading={isLoading}

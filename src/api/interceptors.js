@@ -28,7 +28,8 @@ export const setAxiosInterceptor = (instance) => {
 
       if (status === 418 && !originalRequest._retry) {
         originalRequest._retry = true;
-        return store.dispatch(logoutUserSuccess());
+        store.dispatch(logoutUserSuccess());
+        return Promise.reject();
       } else {
         let message;
         let code;
@@ -41,6 +42,7 @@ export const setAxiosInterceptor = (instance) => {
         } else if (error.request) message = "Se ha caido la conexión, por favor revise su conexión a internet. Si el problema persiste contacte a soporte.";
 
         error.code = code;
+        error.message = message;
 
         if (!originalRequest.url.includes("/refresh")) store.dispatch(setAlert("danger", message));
       }

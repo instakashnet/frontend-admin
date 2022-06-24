@@ -167,6 +167,16 @@ export const deleteProfileSuccess = () => ({
   type: actionTypes.DELETE_PROFILE_SUCCESS,
 });
 
+export const sendNotificationInit = (values, closeModal) => ({
+  type: actionTypes.SEND_NOTIFICATION_INIT,
+  values,
+  closeModal,
+});
+
+export const sendNotificationSuccess = () => ({
+  type: actionTypes.SEND_NOTIFICATION_SUCCESS,
+});
+
 export const apiError = () => ({
   type: actionTypes.API_ERROR,
 });

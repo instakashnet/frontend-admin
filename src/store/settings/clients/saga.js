@@ -1,6 +1,7 @@
 import fileDownload from "js-file-download";
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
 import Swal from "sweetalert2";
+import { sendNotificationSvc } from "../../../api/lib/notification";
 import { addClientBankAccSvc, deleteClientBankAccSvc, editClientBankAccSvc, editInterplazaSvc, getClientAccountsSvc } from "../../../api/services/accounts.service";
 import { addClientProfileSvc, deleteClientProfileSvc, disableClientSvc, downloadClientsSvc, editClientInfoSvc, editClientProfileSvc, getAffiliatesSvc, getClientDetailsSvc, uploadDocumentSvc } from "../../../api/services/auth.service";
 import { getClientExchangesSvc, getClientWithdrawalsSvc } from "../../../api/services/exchange.service";
@@ -35,7 +36,7 @@ function* getClientDetails({ userId }) {
     const res = yield call(getClientDetailsSvc, userId);
     yield put(actions.getClientDetailsSuccess(res));
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -45,7 +46,7 @@ function* getClientExchanges({ userId }) {
     const res = yield call(getClientExchangesSvc, userId);
     yield put(actions.getClientExchangesSuccess(res));
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -68,7 +69,7 @@ function* addClientProfile({ values, closeModal }) {
     yield Swal.fire("Exitoso", "El perfil fue agregado correctamente.", "success");
     yield put(actions.addProfileSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -113,7 +114,7 @@ function* editClientInfo({ userId, values, closeModal }) {
     yield Swal.fire("Exitoso", "Los datos del usuario fueron editados correctamente.", "success");
     yield put(actions.editClientInfoSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -126,7 +127,7 @@ function* editClientProfile({ values, closeModal }) {
     yield Swal.fire("Exitoso", "Los datos del perfil fueron editados correctamente.", "success");
     yield put(actions.editProfileSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -142,7 +143,7 @@ function* uploadDocument({ values, userId, uploadType, close, setPercentage }) {
     yield call([Swal, "fire"], "Exitoso", `El documento fue agregado correctamente.`, "success");
     yield put(actions.uploadDocumentSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -156,7 +157,7 @@ function* downloadClients({ fileType }) {
     const res = yield call(downloadClientsSvc, URL);
     fileDownload(res, `${fileType}.xlsx`);
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -170,7 +171,7 @@ function* editInterplaza({ values, detailsType, id, setState }) {
     yield Swal.fire("Exitoso", `Cuenta editada correctamente.`, "success");
     yield put(actions.editInterplazaSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -192,7 +193,7 @@ function* disableClient({ userId, active }) {
       yield put(actions.disableClientSuccess());
     } else yield put(actions.apiError());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -246,6 +247,18 @@ function* deleteClientProfile({ userId, profileId }) {
     } else yield put(actions.apiError());
   } catch (error) {
     yield put(setAlert("danger", error.message));
+    yield put(actions.apiError());
+  }
+}
+
+function* sendNotification({ values, closeModal }) {
+  try {
+    yield call(sendNotificationSvc, values);
+    yield Swal.fire("Exitoso", "Notificación enviada a todos los usuarios.", "success");
+    yield call(closeModal);
+    yield put(actions.sendNotificationSuccess());
+  } catch (error) {
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -313,6 +326,9 @@ export function* watchDeleteClientBankAccount() {
 export function* watchDeleteClientProfile() {
   yield takeEvery(actionTypes.DELETE_PROFILE_INIT, deleteClientProfile);
 }
+export function* watchSendNotification() {
+  yield takeLatest(actionTypes.SEND_NOTIFICATION_INIT, sendNotification);
+}
 
 export default function* clientsSaga() {
   yield all([
@@ -332,5 +348,6 @@ export default function* clientsSaga() {
     fork(watchDisableClient),
     fork(watchDeleteClientBankAccount),
     fork(watchDeleteClientProfile),
+    fork(watchSendNotification),
   ]);
 }

@@ -34,7 +34,7 @@ function* getExchangesRelation({ values, excelType }) {
     yield call(fileDownload, res, `relacion_ordenes_${moment(values.start).format("DD-MM-YYYY HH:mm")}_${moment(values.end).format("DD-MM-YYYY HH:mm")}.xlsx`);
     yield put(actions.getExchangesRelationSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -73,7 +73,7 @@ function* getExchangeDetails({ id }) {
     yield put(getClientExchangesSuccess([]));
     return yield put(actions.getExchangeDetailsSuccess(res));
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -86,7 +86,7 @@ function* editExchange({ id, values, closeModal }) {
     yield call(closeModal);
     yield Swal.fire("Operación editada", "Los datos de la operación han sido editados.", "success");
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -98,7 +98,7 @@ function* changeOrderStatus({ status, id }) {
     yield Swal.fire("Exitoso", `La operación ha cambiado de estado.`, "success");
     yield put(actions.changeOrderStatusSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -121,7 +121,7 @@ function* validateExchange({ orderId }) {
       yield put(actions.validateExchangeSuccess());
     } else yield put(actions.apiError());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -143,7 +143,7 @@ function* declineExchange({ orderId }) {
       yield put(actions.declineExchangeSuccess());
     } else yield put(actions.apiError());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -166,7 +166,7 @@ function* uploadVoucher({ orderId, values, closeModal }) {
       yield call(approveExchange, { orderId, transactionCode: values.transactionCodeFinalized, closeModal });
     } else yield put(actions.apiError());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -190,7 +190,7 @@ function* createInvoice({ orderId }) {
     yield put(setAlert("success", "La factura se ha generado correctamente."));
     yield put(actions.createInvoiceSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
@@ -207,21 +207,25 @@ function* reassignOrder({ values, orderId, closeModal }) {
     yield call([Swal, "fire"], "Exitoso", "Orden reasignada correctamente", "success");
     yield put(actions.reassignOrderSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
 
 function* setRevision({ values, closeModal, orderId }) {
-  const noteValues = { note: values.note || null };
+  const modalMessage = closeModal ?
+    "La nota de la orden ha sido actualizada."
+    : "La revisión de orden ha sido actualizada.",
+    noteValues = { note: values.note || null, inReview: values.inReview };
+
   try {
     yield call(setRevisionSvc, orderId, noteValues);
     yield call(getExchangeDetails, { id: orderId });
-    yield call(closeModal);
-    yield call([Swal, "fire"], "Exitoso", "La revisión de orden ha sido actualizada.", "success");
+    if (closeModal) yield call(closeModal);
+    yield call([Swal, "fire"], "Exitoso", modalMessage, "success");
     yield put(actions.setRevisionSuccess());
   } catch (error) {
-    yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
