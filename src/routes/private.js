@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
+import CustomErrorBoundary from "../hoc/error-boundary.component";
 
 export const PrivateRoute = ({ component: Component, isSignedIn, layout: Layout, ...rest }) => {
   return (
@@ -11,9 +11,11 @@ export const PrivateRoute = ({ component: Component, isSignedIn, layout: Layout,
         }
 
         return (
-          <Layout>
-            <Component {...props} />
-          </Layout>
+          <CustomErrorBoundary>
+            <Layout>
+              <Component {...props} />
+            </Layout>
+          </CustomErrorBoundary>
         );
       }}
     />
