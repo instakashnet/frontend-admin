@@ -1,35 +1,37 @@
-import React from 'react';
-import { Button, Card, CardBody, CardTitle, Col, Table } from 'reactstrap';
+import { Card, CardBody, CardTitle, Col } from "reactstrap";
+// ASSETS
+import BuildingIcon from "../../../../../assets/images/profile-company.svg";
+// REDUX ACTIONS
+import { deleteProfileInit } from "../../../../../store/actions";
+// COMPONENTS
+import CompanyActions from "./company-actions.component";
 
-const CompanyInfo = ({ company, openModal }) => {
+const CompanyInfo = ({ details, openModal, dispatch }) => {
+  const qtyCompanies = {
+    0: "ninguna empresa registrada",
+    1: "una empresa registrada",
+    2: "dos empresas registradas",
+    3: "tres empresas registradas",
+  };
+
+  // HANDLERS
+  const deleteProfile = (profileId) => dispatch(deleteProfileInit(details.id, profileId));
+
   return (
-    <Col lg='6'>
+    <Col lg="6">
       <Card>
         <CardBody>
-          <div className='d-flex align-items-center justify-content-between mb-4'>
-            <CardTitle>Información de empresa</CardTitle>
-            <Button onClick={() => openModal('editProfile', company)}>
-              <span className='bx bx-edit mr-2' /> Editar
-            </Button>
-          </div>
-
-          <div className='table-responsive'>
-            <Table className='table-nowrap mb-0'>
-              <tbody>
-                <tr>
-                  <th scope='row'>Empresa</th>
-                  <td>{company.razonSocial}</td>
-                </tr>
-                <tr>
-                  <th scope='row'>RUC</th>
-                  <td>{company.ruc}</td>
-                </tr>
-                <tr>
-                  <th scope='row'>Dirección fiscal</th>
-                  <td>{company.address}</td>
-                </tr>
-              </tbody>
-            </Table>
+          <CardTitle className="mb-4">Cuentas de empresa</CardTitle>
+          <figure className="text-center m-0">
+            <img src={BuildingIcon} alt="Ícono de edificio" className="mx-auto" />
+            <figcaption className="mt-3 mb-2" style={{ color: "#e4e4e4" }}>Empresas: {details?.profiles.length}/3</figcaption>
+          </figure>
+          <p className="text-center">El usuario actualmente {details?.profiles.length === 0 && "no"} posee<br />
+            {qtyCompanies[details?.profiles.length]}.</p>
+          <div className="d-flex justify-around flex-wrap items-start mt-5">
+            <CompanyActions company={details?.profiles[0]} openModal={openModal} deleteProfile={deleteProfile} />
+            <CompanyActions company={details?.profiles[1]} openModal={openModal} deleteProfile={deleteProfile} />
+            <CompanyActions company={details?.profiles[2]} openModal={openModal} deleteProfile={deleteProfile} />
           </div>
         </CardBody>
       </Card>

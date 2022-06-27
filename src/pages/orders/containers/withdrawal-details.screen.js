@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Container, Row, Col, Badge, Modal, ModalBody, ModalHeader } from "reactstrap";
-import { getWithdrawalDetailsInit, changeWithdrawalStatusInit } from "../../../store/actions";
-
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Badge, Col, Container, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
+// REDUX ACTIONS
+import { changeWithdrawalStatusInit, getWithdrawalDetailsInit } from "../../../store/actions";
+// COMPONENTS
+import LoadingPage from "../../LoadingPage";
+import { ActionButtons } from "../components/details/action-buttons.component";
 import UserInfo from "../components/details/user-details.component";
 import WithdrawalInfo from "../components/details/withdrawal/withdrawal-info.component";
-import LoadingPage from "../../LoadingPage";
 import CompleteOrder from "../components/forms/complete-order.component";
-import { ActionButtons } from "../components/details/action-buttons.component";
 
 export const WithdrawalDetailsScreen = ({ match, history }) => {
+  // VARIABLES & HOOKS
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
   const { id } = match.params;
 
-  const toggleModal = () => setModal((prev) => !prev);
-
   const { details, isLoading, isProcessing } = useSelector((state) => state.Withdrawals);
 
+  // EFFECTS
   useEffect(() => {
     dispatch(getWithdrawalDetailsInit(id));
   }, [dispatch, id]);
+
+  // HANDLERS
+  const toggleModal = () => setModal((prev) => !prev);
 
   const handleChangeStatus = (statusId, values = {}) => {
     if (statusId === 5) return dispatch(changeWithdrawalStatusInit(details.id, 5));
@@ -38,7 +42,7 @@ export const WithdrawalDetailsScreen = ({ match, history }) => {
         <Container fluid>
           <Row>
             <Col lg="8" xl="6">
-              <ActionButtons goBack={() => history.goBack()} statusId={details.statusID} onChangeStatus={handleChangeStatus} isProcessing={isProcessing} />
+              <ActionButtons goBack={() => history.goBack()} orderUuid={details.uuid} statusId={details.statusID} onChangeStatus={handleChangeStatus} isProcessing={isProcessing} />
               <UserInfo user={details.user} />
             </Col>
           </Row>

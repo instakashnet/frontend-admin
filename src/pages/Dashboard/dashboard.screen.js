@@ -1,8 +1,8 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+// CUSTOM HOOKS
 import { useRole } from "../../hooks/useRole";
 // COMPONENTS
 import ExchangesChart from "./components/charts/exchanges-chart.component";

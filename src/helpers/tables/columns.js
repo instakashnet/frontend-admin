@@ -1,11 +1,15 @@
+import { AccountBalanceWallet, Block, Check, Clear, Close, Edit, PowerSettingsNewOutlined } from "@material-ui/icons";
+import moment from "moment-timezone";
 import { Link } from "react-router-dom";
 import { Badge } from "reactstrap";
-import { Edit, AccountBalanceWallet, Check, Block, Clear, Close, PowerSettingsNewOutlined } from "@material-ui/icons";
-import moment from "moment-timezone";
-import { convertHexToRGBA, shadeColor } from "../functions";
-
 // COMPONENTS
 import { ConnectedStatus } from "../../components/CommonForBoth/connected.component";
+// CLASSES
+import userAccountsClasses from "../../pages/settings/Users/components/modules/details/user-accounts-table.module.scss";
+import userDetailsClasses from "../../pages/settings/Users/components/modules/details/user-details.module.scss";
+// FUNCTIONS
+import { convertHexToRGBA, shadeColor } from "../functions";
+
 
 export const companyAccountsColumns = (showForm) => [
   {
@@ -70,23 +74,60 @@ export const usersAccountsColumns = [
   },
 ];
 
-export const userAccountsColumns = [
-  {
-    accessor: "bank",
-    Header: "Banco",
-    render: ({ cell }) => <img src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} width={70} alt={cell.value.toLowerCase()} />,
-  },
-  {
-    accessor: "currency",
-    Header: "Moneda",
-  },
+// COLUMNS SEEN IN CLIENT DETAILS SCREEN
+export const userAccountsColumns = (setUserBankAccountEdit) => [
   {
     accessor: "account_number",
     Header: "Número de cuenta",
+    Cell: ({ cell, row }) => (
+      <div className="flex items-start">
+        <label className={`mt-1 mr-2 ${userAccountsClasses.inputRadioLabel}`}>
+          <input
+            type="radio"
+            name="clientAccount"
+            onChange={() => setUserBankAccountEdit(row.original)}
+            checked={row.original.selected_account === row.original.account_number || row.original.selected_account === row.original.cci}
+          />
+          <i></i>
+        </label>
+        <p className={`m-0 ${userDetailsClasses.whiteCellText}`}>
+          {cell.value || row.original.cci} <span className={userDetailsClasses.grayCellText}>-</span> {row.original.currency}
+          <span className={`d-block ${userDetailsClasses.textMuted}`}>{row.original.balance || "Sin fondos"}</span>
+        </p>
+      </div>
+    ),
   },
   {
-    accessor: "account_type",
-    Header: "Tipo de cuenta",
+    accessor: "bank",
+    Header: "Banco",
+    Cell: ({ cell }) => <img src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} width={85} alt={cell.value.toLowerCase()} className={`mx-auto ${userAccountsClasses.bankImage}`} />,
+  },
+  {
+    accessor: "thirdParty",
+    Header: "Cuenta",
+    Cell: ({ cell }) => <p className="text-center text-white">{cell.value ? "De terceros" : "Personal"}</p>,
+  }
+];
+
+export const userAffiliatesColumns = [
+  {
+    accessor: "full_name",
+    Header: "Nombre",
+    Cell: ({ cell, row }) => (
+      <p className={`m-0 ${userDetailsClasses.whiteCellText}`}>
+        {cell.value}
+        <span className={`d-block ${userDetailsClasses.textMuted}`}>{row.original.email}</span>
+      </p>),
+  },
+  {
+    accessor: "status",
+    Header: "Estado",
+    Cell: ({ cell }) => <span className="d-block text-center text-white">{cell.value}</span>,
+  },
+  {
+    accessor: "date",
+    Header: "Fecha de registro",
+    Cell: ({ cell }) => <span className="d-block text-center text-white">{cell.value}</span>,
   },
 ];
 
@@ -312,7 +353,7 @@ export const clientsCompletedColumns = [
   {
     accessor: "date",
     Header: "Fecha registrado",
-    Cell: ({ cell }) => moment(cell.value).format("DD/MM/YY HH:mm a"),
+    Cell: ({ cell }) => moment(cell.value).format("DD/MM/YY hh:mm a"),
   },
   {
     accessor: "status",
@@ -344,7 +385,7 @@ export const clientsNotCompletedColumns = [
   {
     accessor: "date",
     Header: "Fecha registrado",
-    Cell: ({ cell }) => moment(cell.value).format("DD/MM/YY HH:mm a"),
+    Cell: ({ cell }) => moment(cell.value).format("DD/MM/YY hh:mm a"),
   },
   {
     accessor: "status",
@@ -382,7 +423,7 @@ export const exchangesColumns = [
     Cell: ({ cell, row }) => <p className="text-white capitalize">{row.original.companyName.toLowerCase() || cell.value.toLowerCase()}</p>,
   },
   {
-    Header: "Envia",
+    Header: "Envía",
     accessor: "amountSent",
     Cell: ({ cell }) => <p className="font-bold text-white">{cell.value}</p>,
   },
@@ -409,7 +450,7 @@ export const exchangesColumns = [
         className="font-size-13 capitalize py-2"
         style={{
           color: "#fff",
-          backgroundColor: row.original.revision ? "#BA55D3" : row.original.statusColor,
+          backgroundColor: row.original.revision ? "#ba55d3" : row.original.statusColor,
         }}
         pill
       >
@@ -449,7 +490,7 @@ export const oldExchangesColumns = [
     ),
   },
   {
-    Header: "Recibibo",
+    Header: "Recibido",
     accessor: "amountReceived",
     Cell: ({ cell, row }) => (
       <div className="d-flex align-items-center">
@@ -561,6 +602,48 @@ export const withdrawalsColumns = [
     Header: "Recibe",
     accessor: "destinationBank",
     Cell: ({ cell }) => <img width={70} src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} alt={cell.value} />,
+  },
+  {
+    Header: "KASH solicitados",
+    accessor: "kashQty",
+    Cell: ({ cell }) => <p className="font-bold text-white mb-0">{cell.value}</p>,
+  },
+  {
+    Header: "Estado",
+    accessor: "status",
+    Cell: ({ row }) => (
+      <Badge
+        className="font-size-13 capitalize py-2"
+        style={{
+          color: shadeColor(row.original.statusColor, 40),
+          backgroundColor: convertHexToRGBA(row.original.statusColor, 24),
+        }}
+        pill
+      >
+        {row.original.statusName.toLowerCase()}
+      </Badge>
+    ),
+  },
+  {
+    Header: "Acción",
+    accessor: "id",
+    Cell: ({ cell }) => (
+      <Link className="btn py-1 px-2 max-w-sm btn-rounded btn-action" to={`/withdrawal-details/${cell.value}`}>
+        Ver más
+      </Link>
+    ),
+  },
+];
+
+export const userWithdrawalsColumns = [
+  {
+    Header: "Fecha",
+    accessor: "date",
+  },
+  {
+    Header: "Recibe",
+    accessor: "destinationBank",
+    Cell: ({ cell }) => <img width={45} src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} alt={cell.value} />,
   },
   {
     Header: "KASH solicitados",

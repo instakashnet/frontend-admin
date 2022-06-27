@@ -1,10 +1,10 @@
-import React, { useEffect, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
 import moment from "moment";
-import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import { setAlert } from "../../../store/actions";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
 import { getAllWithdrawals } from "../../../api/services/exchange.service";
 import { withdrawalsColumns } from "../../../helpers/tables/columns";
+import { setAlert } from "../../../store/actions";
 
 import { Table } from "../../../components/UI/tables/table.component";
 
@@ -34,7 +34,7 @@ export const WithdrawalsScreen = () => {
 
         setData(withdrawals);
       } catch (error) {
-        dispatch(setAlert("danger", "Ha ocurrido un nerror obteniendo los retiros. Por favor intente más tarde."));
+        dispatch(setAlert("danger", "Ha ocurrido un error obteniendo los retiros. Por favor intente más tarde."));
       } finally {
         setIsLoading(false);
       }

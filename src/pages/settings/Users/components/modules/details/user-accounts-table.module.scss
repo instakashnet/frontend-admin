@@ -1,0 +1,47 @@
+.bankImage {
+  background-color: #fff;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.inputRadioLabel {
+  cursor: pointer;
+
+  input[type="radio"] {
+    appearance: none;
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+  }
+
+  input[type="radio"]+i {
+    position: relative;
+    display: block;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #adb5bd;
+    border-radius: 4px;
+    background-color: #fff;
+  }
+
+  input[type="radio"]+i:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    font-size: 0.8125rem;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1;
+  }
+
+  input[type="radio"]:checked+i:before {
+    content: "✓";
+    background-color: #00ad97;
+  }
+}

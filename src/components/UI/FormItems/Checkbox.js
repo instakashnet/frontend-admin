@@ -1,12 +1,14 @@
-import React from 'react';
-import { FormGroup, Label } from 'reactstrap';
+import { FormGroup, Label } from "reactstrap";
 
-const Checkbox = (props) => {
+const Checkbox = ({ name, label, value, onChange, onBlur, error, ...rest }) => {
   return (
     <FormGroup>
-      <Label className='flex items-center self-center mx-2'>
-        <input type='checkbox' name={props.name} checked={props.value} onChange={props.onChange} onBlur={props.onBlur} />
-        <span className='ml-2 text-sm'>{props.label}</span>
+      <Label>
+        <div className="flex items-center self-center mx-2">
+          <input type="checkbox" name={name} checked={value} onChange={onChange} onBlur={onBlur} {...rest} />
+          <span className="ml-2 text-sm">{label}</span>
+        </div>
+        {error && <span className="d-block invalid-feedback">{error}</span>}
       </Label>
     </FormGroup>
   );

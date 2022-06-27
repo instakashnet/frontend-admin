@@ -1,4 +1,3 @@
-import React from "react";
 import { FormGroup, Label } from "reactstrap";
 
 const Select = ({ touched, error, name, label, options, ...rest }) => {
@@ -13,7 +12,7 @@ const Select = ({ touched, error, name, label, options, ...rest }) => {
           </option>
         ))}
       </select>
-      {touched && error && <span className='invalid-feedback'>{error}</span>}
+      {touched && error && <span className="invalid-feedback">{error}</span>}
     </FormGroup>
   );
 };

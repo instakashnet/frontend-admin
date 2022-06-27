@@ -1,17 +1,15 @@
 import { useFormik } from "formik";
-import React from "react";
-import { useDispatch } from "react-redux";
 import { Button, Spinner } from "reactstrap";
+// COMPONENTS
 import Input from "../../../../../components/UI/FormItems/Input";
-import { editProfileInit } from "../../../../../store/actions";
+// REDUX ACTIONS
+import { addProfileInit, editProfileInit } from "../../../../../store/actions";
 
 
-const EditCompanyProfile = ({ details, isProcessing, closeModal, userId }) => {
-  const dispatch = useDispatch();
-
+const CompanyProfile = ({ dispatch, userId, details, isProcessing, closeModal }) => {
   const formik = useFormik({
-    initialValues: { userId: +userId, profileId: details.id, type: "juridica", razon_social: details.razonSocial, ruc: details.ruc, address: details.address },
-    onSubmit: (values) => dispatch(editProfileInit(values, closeModal)),
+    initialValues: { userId: +userId, profileId: details.id || "", type: "juridica", razon_social: details.razonSocial || "", ruc: details.ruc || "", address: details.address || "" },
+    onSubmit: (values) => dispatch(details.id ? editProfileInit(values, closeModal) : addProfileInit(values, closeModal)),
   });
 
   return (
@@ -24,11 +22,13 @@ const EditCompanyProfile = ({ details, isProcessing, closeModal, userId }) => {
 
       <div className="flex justify-center">
         <Button className="btn-primary" type="submit" disabled={!formik.isValid || isProcessing}>
-          {isProcessing ? <Spinner size="sm" /> : "Edtiar datos de empresa"}
+          {isProcessing ? <Spinner size="sm" /> :
+            details.id ? "Editar datos de empresa"
+              : "Crear perfil de empresa"}
         </Button>
       </div>
     </form>
   );
 };
 
-export default EditCompanyProfile;
+export default CompanyProfile;

@@ -10,7 +10,7 @@ function* getCounters() {
     yield put(actions.getCountersSuccess(res));
 
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(actions.apiError(error?.message));
   }
 }
 
@@ -20,7 +20,7 @@ function* getTotalKash() {
     yield put(actions.getTotalKashSuccess(res));
 
   } catch (error) {
-    yield put(actions.apiError(error.message));
+    yield put(actions.apiError(error?.message));
   }
 }
 

@@ -213,12 +213,16 @@ function* reassignOrder({ values, orderId, closeModal }) {
 }
 
 function* setRevision({ values, closeModal, orderId }) {
-  const noteValues = { note: values.note || null };
+  const modalMessage = closeModal ?
+    "La nota de la orden ha sido actualizada."
+    : "La revisión de orden ha sido actualizada.",
+    noteValues = { note: values.note || null, inReview: values.inReview };
+
   try {
     yield call(setRevisionSvc, orderId, noteValues);
     yield call(getExchangeDetails, { id: orderId });
-    yield call(closeModal);
-    yield call([Swal, "fire"], "Exitoso", "La revisión de orden ha sido actualizada.", "success");
+    if (closeModal) yield call(closeModal);
+    yield call([Swal, "fire"], "Exitoso", modalMessage, "success");
     yield put(actions.setRevisionSuccess());
   } catch (error) {
     if (error?.message) yield put(setAlert("danger", error.message));

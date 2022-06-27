@@ -1,6 +1,5 @@
-import React from "react";
-import { Row, Col, Badge } from "reactstrap";
 import { Edit } from "@material-ui/icons";
+import { Badge, Col, Row } from "reactstrap";
 
 import { SkeletonComponent } from "../../../../../components/UI/skeleton.component";
 
@@ -13,7 +12,7 @@ export const StatusInfo = ({ details, isLoading, onShowForm }) => {
         ) : (
           <>
             <Badge className="py-2 font-size-15 w-full max-w-xs" style={{ color: "#fff", backgroundColor: details.stateColor }}>
-              {`${details.stateNme} ${details.orderNotes ? " - EN REVISIÓN" : ""}`}
+              {`${details.stateNme} ${details.inReview ? " - EN REVISIÓN" : ""}`}
             </Badge>
             <div className="flex flex-col items-end">
               <p className="mb-2">
@@ -21,7 +20,7 @@ export const StatusInfo = ({ details, isLoading, onShowForm }) => {
               </p>
               {details.stateId !== 6 && (
                 <button type="button" className="mt-1 border-2 border-gray-400 py-2 px-4 text-sm rounded-md" onClick={onShowForm}>
-                  <Edit fontSize="small" className="mr-1" /> {details.orderNotes ? "Editar" : "Agregar"} revisión
+                  <Edit fontSize="small" className="mr-1" /> {details.orderNotes ? "Editar" : "Agregar"} nota
                 </button>
               )}
             </div>

@@ -1,4 +1,3 @@
-import React from "react";
 import { FormGroup, Label } from "reactstrap";
 
 const Input = ({ label, name, type, touched, error, ...rest }) => {

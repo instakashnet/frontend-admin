@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardBody, Button } from "reactstrap";
 import moment from "moment-timezone";
+import { useEffect, useState } from "react";
+import { Button, Card, CardBody } from "reactstrap";
+// COMPONENTS
+import { Table } from "../../../../../components/UI/tables/table.component";
+// HELPERS
 import { formatAmount } from "../../../../../helpers/functions";
 import { oldExchangesColumns } from "../../../../../helpers/tables/columns";
 
-import { Table } from "../../../../../components/UI/tables/table.component";
 
 const PAGE_SIZE = 5;
 
@@ -16,9 +18,9 @@ export const UserTransactions = ({ orders, isLoading, details, getTransactions }
       const filteredOrders = details ? orders.filter((order) => order.id !== details.id) : orders;
 
       setData(
-        filteredOrders.reverse().map((order) => ({
+        filteredOrders.sort((a, b) => b.id - a.id).map((order) => ({
           id: order.id,
-          date: moment(order.created).format("DD/MM/YYYY HH:mm a"),
+          date: moment(order.created).format("DD/MM/YYYY hh:mm a"),
           bankSent: order.bankSent,
           bankReceive: order.bankReceive,
           amountSent: `${order.currencySentSymbol} ${formatAmount(order.amountSent)}`,
@@ -32,12 +34,14 @@ export const UserTransactions = ({ orders, isLoading, details, getTransactions }
 
   return (
     <>
-      <Button type="buttom" color="primary" onClick={getTransactions} className="my-3">
+      <Button type="button" color="primary" onClick={getTransactions} className="my-3">
         Obtener operaciones
       </Button>
       <Card>
         <CardBody>
-          <Table title="Operaciones realizadas" columns={oldExchangesColumns} isLoading={isLoading} data={data} pagination={{ pageSize: PAGE_SIZE, async: false }} />
+          <div className="table-responsive">
+            <Table title="Operaciones realizadas" columns={oldExchangesColumns} isLoading={isLoading} data={data} pagination={{ pageSize: PAGE_SIZE, async: false }} />
+          </div>
         </CardBody>
       </Card>
     </>

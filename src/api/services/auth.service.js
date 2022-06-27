@@ -1,6 +1,17 @@
 import camelize from "camelize";
 import { getAxiosInstance } from "../axios";
 
+export const getAffiliatesSvc = async (userId) => {
+  try {
+    const response = await getAxiosInstance("auth", "v1").get(`/users/affiliates/${userId}`);
+    if (response.status >= 400) throw new Error(response.errors[0]);
+
+    return camelize(response.data.affiliates);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getClients = async (page, search, completed) => {
   let URL = `/users?type=client&page=${page}&qty=50&completed=${completed}`;
   if (search) URL = `${URL}&search=${search.toLowerCase()}`;
@@ -179,6 +190,15 @@ export const editClientProfileSvc = async (values) => {
 export const disableClientSvc = async (values) => {
   try {
     const response = await getAxiosInstance("auth", "v1").put("/users/access", values);
+    if (response.status >= 400) throw new Error(response.errors[0]);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteClientProfileSvc = async (profileId, values) => {
+  try {
+    const response = await getAxiosInstance("auth", "v1").delete(`/users/active/${profileId}`, { data: { ...values, active: false } });
     if (response.status >= 400) throw new Error(response.errors[0]);
   } catch (error) {
     throw error;
