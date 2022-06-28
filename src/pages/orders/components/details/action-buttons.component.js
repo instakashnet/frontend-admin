@@ -53,7 +53,7 @@ export const ActionButtons = ({ goBack, orderUuid, statusId, billCreated, role, 
           </button>
         )}
         {(orderUuid?.includes("E") && statusId !== 6) && (
-          <button type="button" disabled={isProcessing} onClick={onSetReview} className={`btn btn-${inReview ? "danger" : "success"} waves-effect btn-label waves-light ml-2`}>
+          <button type="button" disabled={isProcessing} onClick={onSetReview} className={`btn btn-${inReview ? "danger" : "blue"} waves-effect btn-label waves-light ml-2`}>
             <ButtonInfo icon="fa-pen-square" info={inReview ? "Eliminar de revisión" : "Agregar a revisión"} isProcessing={isProcessing} />
           </button>
         )}
