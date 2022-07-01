@@ -40,7 +40,7 @@ export const ClientDetailsScreen = (props) => {
     [documentType, setDocumentType] = useState(""),
     [userBankAccEdit, setUserBankAccEdit] = useState({}),
     { id } = props.match.params,
-    { details, accounts, affiliates, exchanges, withdrawals, isProcessing, isLoading } = useSelector((state) => state.Clients),
+    { details, accounts, affiliates, exchanges, withdrawals, isProcessing, isLoading, isDataLoading } = useSelector((state) => state.Clients),
     { completed, color } = useClientData(details);
 
   // EFFECTS
@@ -110,10 +110,10 @@ export const ClientDetailsScreen = (props) => {
                   </Row>
                   <Row>
                     <Col lg="6">
-                      <UserTransactions orders={exchanges} isLoading={isLoading} getTransactions={getTransactions} />
+                      <UserTransactions orders={exchanges} isLoading={isDataLoading} getTransactions={getTransactions} />
                     </Col>
                     <Col lg="6">
-                      <UserWithdrawals withdrawals={withdrawals} isLoading={isLoading} getWithdrawals={getWithdrawals} />
+                      <UserWithdrawals withdrawals={withdrawals} isLoading={isDataLoading} getWithdrawals={getWithdrawals} />
                     </Col>
                   </Row>
                 </>

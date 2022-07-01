@@ -86,3 +86,8 @@ export const formatOrders = (ordersData, type) => {
 
   return orders;
 };
+
+export const allowOnlyNumbers = (value) => {
+  const re = /^[0-9\b]+$/;
+  return value === "" || re.test(value);
+};

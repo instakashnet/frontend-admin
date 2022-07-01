@@ -118,6 +118,34 @@ export const addPersonalAccountValidation = Yup.object().shape({
   alias: Yup.string().required("Debes ingresar un alias.").min(5, "Debe ser mínimo de 5 caracteres.").max(40, "No deben ser más de 40 caracteres."),
   accType: Yup.string().required("Debes seleccionar un tipo de cuenta."),
   accept: Yup.boolean().oneOf([true], "Debes declarar que esta cuenta es válida y pertenece al usuario."),
+  // Validaciones de cuenta mancomunada
+  firstNameJoint: Yup.string().when("joint", {
+    is: "true",
+    then: Yup.string().required("Debes colocar el nombre."),
+    otherwise: Yup.string().notRequired(),
+  }),
+  fatherSurname: Yup.string().when("joint", {
+    is: "true",
+    then: Yup.string().required("Debes colocar el apellido paterno."),
+    otherwise: Yup.string().notRequired(),
+  }),
+  motherSurname: Yup.string().when("joint", {
+    is: "true",
+    then: Yup.string().required("Debes colocar el apellido materno."),
+    otherwise: Yup.string().notRequired(),
+  }),
+  documentTypeJoint: Yup.string().when("joint", {
+    is: "true",
+    then: Yup.string().required("Debes seleccionar un tipo de documento."),
+    otherwise: Yup.string().notRequired(),
+  }),
+  documentNumberJoint: Yup.string().when("joint", {
+    is: "true",
+    then: Yup.string()
+      .required("Debes colocar un nro. de documento.")
+      .matches(/^[0-9]{8,13}$/, "Número de documento ingresado inválido."),
+    otherwise: Yup.string().notRequired(),
+  }),
 });
 
 export const addThirdPartyAccountSchema = Yup.object().shape({

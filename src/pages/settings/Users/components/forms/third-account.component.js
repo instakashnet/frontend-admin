@@ -9,10 +9,11 @@ import Radio from "../../../../../components/UI/FormItems/Radio";
 import Select from "../../../../../components/UI/FormItems/Select";
 // HELPERS
 import { addThirdPartyAccountSchema } from "../../../../../helpers/forms/validation";
+import { allowOnlyNumbers } from "../../../../../helpers/functions";
 // REDUX ACTIONS
 import { addClientBankAccInit } from "../../../../../store/actions";
 
-const ThirdPartyAccount = ({ userId, banks, currencies, accountTypes, value, index, closeModal }) => {
+const ThirdPartyAccount = ({ userId, banks, currencies, documents, accountTypes, value, index, closeModal }) => {
   // VARIABLES & HOOKS
   const dispatch = useDispatch(),
     { isProcessing } = useSelector((state) => state.Clients),
@@ -49,14 +50,6 @@ const ThirdPartyAccount = ({ userId, banks, currencies, accountTypes, value, ind
       },
     });
 
-  const documentOptions = [
-    { value: "DNI", label: "DNI" },
-    { value: "CE", label: "CE" },
-    { value: "PTP", label: "PTP" },
-    { value: "pasaporte", label: "Pasaporte" },
-    { value: "RUC", label: "RUC" },
-  ];
-
   // HANDLERS
   const onBankChangeHandler = (e) => {
     const { target: { value } } = e;
@@ -79,8 +72,9 @@ const ThirdPartyAccount = ({ userId, banks, currencies, accountTypes, value, ind
       if (value === "juridica") {
         formik.setFieldValue("documentType", "RUC");
       } else formik.setFieldValue("documentType", "");
-    };
+    },
 
+    numberDocumentHandler = ({ target: { value } }) => (allowOnlyNumbers(value) ? formik.setFieldValue("documentIdentity", value) : null);
 
   return (
     <div hidden={value !== index} className="mt-4">
@@ -114,7 +108,7 @@ const ThirdPartyAccount = ({ userId, banks, currencies, accountTypes, value, ind
               value={formik.values.documentType}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              options={documentOptions}
+              options={documents}
               error={formik.errors.documentType}
               touched={formik.touched.documentType}
               disabled={formik.values.thirdPartyAccType === "juridica"}
@@ -126,7 +120,7 @@ const ThirdPartyAccount = ({ userId, banks, currencies, accountTypes, value, ind
               type="text"
               label="Nro. de documento"
               value={formik.values.documentIdentity}
-              onChange={formik.handleChange}
+              onChange={numberDocumentHandler}
               onBlur={formik.handleBlur}
               error={formik.errors.documentIdentity}
               touched={formik.touched.documentIdentity}
@@ -188,6 +182,7 @@ const ThirdPartyAccount = ({ userId, banks, currencies, accountTypes, value, ind
           value={formik.values.bankId}
           options={banks}
           onChange={onBankChangeHandler}
+          onBlur={formik.handleBlur}
           error={formik.errors.bankId}
           touched={formik.touched.bankId}
         />
@@ -218,6 +213,7 @@ const ThirdPartyAccount = ({ userId, banks, currencies, accountTypes, value, ind
           name="accType"
           label="Tipo de cuenta"
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           value={formik.values.accType}
           options={accountTypes}
           error={formik.errors.accType}
@@ -228,6 +224,7 @@ const ThirdPartyAccount = ({ userId, banks, currencies, accountTypes, value, ind
           label="Moneda"
           value={formik.values.currencyId}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           options={currencies}
           error={formik.errors.currencyId}
           touched={formik.touched.currencyId}

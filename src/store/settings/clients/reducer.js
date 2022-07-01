@@ -7,6 +7,7 @@ const initialState = {
   affiliates: [],
   isLoading: false,
   isProcessing: false,
+  isDataLoading: false,
 };
 
 export default function clientsReducer(state = initialState, action) {
@@ -35,14 +36,14 @@ export default function clientsReducer(state = initialState, action) {
       return { ...state, affiliates: action.affiliates, isLoading: false };
 
     case actionTypes.GET_CLIENT_EXCHANGES:
-      return { ...state, exchanges: [], isLoading: true };
+      return { ...state, exchanges: [], isDataLoading: true };
     case actionTypes.GET_CLIENT_EXCHANGES_SUCCESS:
-      return { ...state, exchanges: action.orders, isLoading: false };
+      return { ...state, exchanges: action.orders, isDataLoading: false };
 
     case actionTypes.GET_CLIENT_WITHDRAWALS:
-      return { ...state, withdrawals: [], isLoading: true };
+      return { ...state, withdrawals: [], isDataLoading: true };
     case actionTypes.GET_CLIENT_WITHDRAWALS_SUCCESS:
-      return { ...state, withdrawals: action.withdrawals, isLoading: false };
+      return { ...state, withdrawals: action.withdrawals, isDataLoading: false };
 
     case actionTypes.GET_CLIENT_ACCOUNTS:
       return { ...state, accounts: [], isLoading: true };
