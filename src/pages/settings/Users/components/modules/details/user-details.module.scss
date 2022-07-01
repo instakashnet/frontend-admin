@@ -1,0 +1,36 @@
+/*
+* File imported by:
+* company-actions.component.js
+* company-info.component.js
+* profile-info.component.js
+* user-info.component.js
+* user-accounts-table.component.js
+* columns.js
+*/
+
+p {
+  color: #e4e4e4;
+}
+
+.addBtn {
+  background-color: #34c38f;
+  border: 1px solid #34c38f;
+}
+
+.editBtn {
+  color: #34c38f;
+}
+
+.whiteCellText {
+  color: #f8fafb;
+  font-size: 0.96875rem;
+}
+
+.grayCellText {
+  color: #74788d;
+}
+
+.textMuted {
+  @extend .grayCellText;
+  font-size: 0.813rem;
+}

@@ -1,15 +1,14 @@
-import React, { useState, useMemo } from "react";
-import PropTypes from "prop-types";
-import { useTable, useSortBy, usePagination } from "react-table";
-import Pagination from "@material-ui/lab/Pagination";
-import { CardTitle } from "reactstrap";
-import { ImportExport, VerticalAlignBottom, VerticalAlignTop } from "@material-ui/icons";
-
 import LinearProgress from "@material-ui/core/LinearProgress";
-
+import { ImportExport, VerticalAlignBottom, VerticalAlignTop } from "@material-ui/icons";
+import Pagination from "@material-ui/lab/Pagination";
+import PropTypes from "prop-types";
+import { useMemo, useState } from "react";
+import { usePagination, useSortBy, useTable } from "react-table";
+import { CardTitle } from "reactstrap";
 import { Search } from "./search.component";
 
-export const Table = ({ title, columns, data, sorted, search, setSearch, isLoading, pagination, getData }) => {
+
+export const Table = ({ title, columns, data, sorted, search, setSearch, isLoading, pagination, getData, backupText, borderless }) => {
   const tableColumns = useMemo(() => columns, [columns]);
   const tableData = useMemo(() => data, [data]);
   const [page, setPage] = useState(pagination ? 1 : 0);
@@ -40,8 +39,8 @@ export const Table = ({ title, columns, data, sorted, search, setSearch, isLoadi
         {search && <Search onSearch={getData} setSearch={setSearch} isLoading={isLoading} />}
       </div>
       {isLoading && <LinearProgress />}
-      <table className="table table-bordered table-centered mb-0" {...getTableProps()}>
-        <thead className="thead-light">
+      <table className={`table ${borderless ? "" : "table-bordered"} table-centered mb-0`} {...getTableProps()}>
+        <thead className={`thead-light ${borderless && "text-center"}`}>
           {headerGroups.map((group) => (
             <tr {...group.getHeaderGroupProps()}>
               {group.headers.map((column) => (
@@ -58,27 +57,31 @@ export const Table = ({ title, columns, data, sorted, search, setSearch, isLoadi
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {pagination
+          {data.length < 1 ? (
+            <tr>
+              <td colSpan="100%" className={`text-center ${borderless ? "border-bottom border-secondary" : ""}`}>{backupText}</td>
+            </tr>
+          ) : pagination
             ? currentPage.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()} className="pt-2">
-                    {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    ))}
-                  </tr>
-                );
-              })
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()} className="pt-2">
+                  {row.cells.map((cell) => (
+                    <td className={borderless ? "border-bottom border-secondary" : ""} {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  ))}
+                </tr>
+              );
+            })
             : rows.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()} className="pt-2">
-                    {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    ))}
-                  </tr>
-                );
-              })}
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()} className="pt-2">
+                  {row.cells.map((cell) => (
+                    <td className={borderless ? "border-bottom border-secondary" : ""} {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  ))}
+                </tr>
+              );
+            })}
         </tbody>
       </table>
       {isLoading && <LinearProgress />}

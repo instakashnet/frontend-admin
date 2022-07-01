@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { Button, Spinner } from "reactstrap";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { Button, Spinner } from "reactstrap";
+// REDUX ACTIONS
 import { uploadDocumentInit } from "../../../../../store/actions";
-
+// COMPONENTS
 import { FileUpload } from "../../../../../components/UI/FormItems/FileUpload";
 
-export const AddDocument = ({ type, userId, closeModal, isProcessing }) => {
-  const dispatch = useDispatch();
+const AddDocument = ({ dispatch, userId, type, isProcessing, closeModal }) => {
   const [percentage, setPercentage] = useState(0);
 
   const formik = useFormik({ initialValues: { [type]: "" }, onSubmit: (values) => dispatch(uploadDocumentInit(values, type, userId, closeModal, setPercentage)) });
@@ -39,3 +38,5 @@ export const AddDocument = ({ type, userId, closeModal, isProcessing }) => {
     </form>
   );
 };
+
+export default AddDocument;

@@ -1,25 +1,27 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Container, Row, Col, Modal, ModalBody, ModalHeader } from "reactstrap";
-import { getExchangeDetails, getClientExchanges, createInvoice, approveExchange, validateExchange, declineExchange, changeOrderStatus } from "../../../store/actions";
+import { Col, Container, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
+// CUSTOM HOOKS
 import { useRole } from "../../../hooks/useRole";
-
+// REDUX ACTIONS
+import { approveExchange, changeOrderStatus, createInvoice, declineExchange, getClientExchanges, getExchangeDetails, setRevisionInit, validateExchange } from "../../../store/actions";
+// COMPONENTS
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
-
-import UserInfo from "../components/details/user-details.component";
+import { ActionButtons } from "../components/details/action-buttons.component";
 import Received from "../components/details/exchange/received.component";
+import { StatusInfo } from "../components/details/exchange/status.component";
 import ToSend from "../components/details/exchange/to-send.component";
 import { UserTransactions } from "../components/details/exchange/user-transactions.component";
-import { StatusInfo } from "../components/details/exchange/status.component";
+import { RevisionNote } from "../components/details/revision-note.component";
+import UserInfo from "../components/details/user-details.component";
 import CompleteOrder from "../components/forms/complete-order.component";
 import EditOrder from "../components/forms/edit-order.component";
 import ReassignOrder from "../components/forms/reassign-order.component";
 import SetRevision from "../components/forms/set-revision.component";
-import { ActionButtons } from "../components/details/action-buttons.component";
-import { RevisionNote } from "../components/details/revision-note.component";
 
 export const ExchangeDetailsScreen = (props) => {
+  // VARIABLES & HOOKS
   const { id } = props.match.params;
   const { details, isLoading, isProcessing } = useSelector((state) => state.CurrencyExchange);
   const { exchanges, isLoading: dataLoading } = useSelector((state) => state.Clients);
@@ -29,11 +31,14 @@ export const ExchangeDetailsScreen = (props) => {
   const history = useHistory();
   const [modal, setModal] = useState(false);
   const [formType, setFormType] = useState(null);
+  const [orderItemEdit, setOrderItemEdit] = useState("");
   const [role] = useRole(user);
 
-  const showFormHandler = (formType = null) => {
+  // HANDLERS
+  const showFormHandler = (formType = null, orderItemEdit = "") => {
     setModal((prev) => !prev);
     setFormType(formType);
+    setOrderItemEdit(orderItemEdit);
   };
 
   const changeStatusHandler = useCallback(
@@ -55,17 +60,26 @@ export const ExchangeDetailsScreen = (props) => {
   );
   const onApproveExchange = (values) => dispatch(approveExchange(id, values, showFormHandler));
   const onCreateInvoice = () => dispatch(createInvoice(id));
+  const onSetReview = () => {
+    let valuesRevision = {
+      note: details.orderNotes,
+      inReview: !details.inReview,
+    };
 
+    dispatch(setRevisionInit(valuesRevision, id));
+  };
+
+  // EFFECTS
   useEffect(() => {
     dispatch(getExchangeDetails(id));
   }, [dispatch, id]);
 
   let FormComponent;
 
-  if (formType === "edit") FormComponent = <EditOrder details={details} isProcessing={isProcessing} onShowForm={showFormHandler} />;
+  if (formType === "edit") FormComponent = <EditOrder details={details} isProcessing={isProcessing} onShowForm={showFormHandler} orderItemToEdit={orderItemEdit} />;
   if (formType === "reassign") FormComponent = <ReassignOrder details={details} onShowForm={showFormHandler} isProcessing={isProcessing} />;
   if (formType === "complete") FormComponent = <CompleteOrder isProcessing={isProcessing} orderId={id} onShowForm={showFormHandler} onApprove={onApproveExchange} />;
-  if (formType === "revision") FormComponent = <SetRevision note={details.orderNotes} isProcessing={isProcessing} onShowForm={showFormHandler} orderId={id} />;
+  if (formType === "revision") FormComponent = <SetRevision note={details.orderNotes} inReview={details.inReview} isProcessing={isProcessing} onShowForm={showFormHandler} orderId={id} />;
 
   return (
     <div className="relative">
@@ -92,7 +106,7 @@ export const ExchangeDetailsScreen = (props) => {
               </Col>
             )}
           </Row>
-          <StatusInfo onShowForm={() => showFormHandler("revision")} details={details} isLoading={isLoading} />
+          <StatusInfo onShowForm={() => showFormHandler("revision")} details={details} isProcessing={isProcessing} isLoading={isLoading} onSetReview={onSetReview} />
 
           <Row>
             <Received details={details} onShowForm={showFormHandler} isLoading={isLoading} />

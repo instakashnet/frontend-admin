@@ -128,6 +128,17 @@ export const getClientExchangesSvc = async (userId) => {
   }
 };
 
+export const getClientWithdrawalsSvc = async (userId) => {
+  try {
+    const response = await getAxiosInstance("exchange", "v1").get(`/withdrawals/user/${userId}`);
+    if (response.status >= 400) throw new Error(response.errors[0]);
+
+    return camelize(response.data);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getCouponsSvc = async () => {
   try {
     const response = await getAxiosInstance("exchange", "v1").get("/coupons");

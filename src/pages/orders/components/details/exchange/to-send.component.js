@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Card, CardBody, Row, Col, Button } from "reactstrap";
 import { useFormik } from "formik";
+import { memo, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { formatAmount, convertRate, checkInterplaza } from "../../../../../helpers/functions";
+import { Button, Card, CardBody, Col, Row } from "reactstrap";
+// HELPERS
+import { checkInterplaza, convertRate, formatAmount } from "../../../../../helpers/functions";
+// REDUX ACTIONS
 import { editInterplazaInit } from "../../../../../store/actions";
-
+// COMPONENTS
 import CopyButton from "../../../../../components/UI/CopyButton";
 import Radio from "../../../../../components/UI/FormItems/Radio";
 import { SkeletonComponent } from "../../../../../components/UI/skeleton.component";
@@ -50,9 +52,16 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
             <CardBody>
               <Row>
                 <Col sm="6">
-                  <div>
-                    <p className="text-muted mb-2">Tasa ofrecida</p>
-                    <h5>{convertRate(details.rate)}</h5>
+                  <div className="flex justify-start items-start">
+                    <div>
+                      <p className="text-muted mb-2">Tasa ofrecida</p>
+                      <h5>{convertRate(details.rate)}</h5>
+                    </div>
+                    {details.stateId !== 6 && details.stateId !== 5 && (
+                      <button className="edit-button ml-3" onClick={() => onShowForm("edit", "rate")}>
+                        <i className="bx bx-edit" />
+                      </button>
+                    )}
                   </div>
                 </Col>
                 <Col sm="6">
@@ -155,4 +164,4 @@ const ToSendSkeleton = () => {
   );
 };
 
-export default React.memo(Sent);
+export default memo(Sent);
