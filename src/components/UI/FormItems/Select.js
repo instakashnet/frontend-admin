@@ -5,7 +5,7 @@ const Select = ({ touched, error, name, label, options, ...rest }) => {
     <FormGroup>
       <Label>{label}</Label>
       <select {...rest} name={name} className={`custom-select ${touched && error ? "is-invalid" : ""}`}>
-        <option defaultValue>Selecciona una opción</option>
+        <option value="" defaultValue>Selecciona una opción</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

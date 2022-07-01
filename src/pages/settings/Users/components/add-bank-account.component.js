@@ -25,7 +25,14 @@ const AddBankAccount = ({ userId, closeModal }) => {
     currencyOptions = currencies.map(({ id, name, Symbol }) => ({
       label: `${name} ${Symbol}`,
       value: id,
-    }));
+    })),
+    documentOptions = [
+      { value: "DNI", label: "DNI" },
+      { value: "CE", label: "CE" },
+      { value: "PTP", label: "PTP" },
+      { value: "pasaporte", label: "Pasaporte" },
+      { value: "RUC", label: "RUC" },
+    ];
 
   // HANDLERS
   const changeHandler = (_, newValue) => setValue(newValue);
@@ -36,8 +43,8 @@ const AddBankAccount = ({ userId, closeModal }) => {
         <Tab label="Cuenta personal" classes={{ root: classes.addAccountTab }} />
         <Tab label="Cuenta de terceros" classes={{ root: classes.addAccountTab }} />
       </Tabs>
-      <PersonalAccount userId={userId} banks={bankOptions} currencies={currencyOptions} accountTypes={accountTypeOptions} value={value} index={0} closeModal={closeModal} />
-      <ThirdPartyAccount userId={userId} banks={bankOptions} currencies={currencyOptions} accountTypes={accountTypeOptions} value={value} index={1} closeModal={closeModal} />
+      <PersonalAccount userId={userId} banks={bankOptions} currencies={currencyOptions} documents={documentOptions} accountTypes={accountTypeOptions} value={value} index={0} closeModal={closeModal} />
+      <ThirdPartyAccount userId={userId} banks={bankOptions} currencies={currencyOptions} documents={documentOptions} accountTypes={accountTypeOptions} value={value} index={1} closeModal={closeModal} />
     </>
   );
 }

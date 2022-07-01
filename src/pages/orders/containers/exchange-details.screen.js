@@ -90,16 +90,13 @@ export const ExchangeDetailsScreen = (props) => {
             <Col lg="8">
               <ActionButtons
                 goBack={() => history.goBack()}
-                orderUuid={details.uuid}
                 statusId={details.stateId}
                 billCreated={details.billAssigned}
                 onCreateInvoice={onCreateInvoice}
                 onChangeStatus={changeStatusHandler}
-                onSetReview={onSetReview}
                 isProcessing={isProcessing}
                 role={role}
                 hasInvoice
-                inReview={details.inReview}
               />
               {details.user && <UserInfo user={details.user} role={role} isLoading={isLoading} />}
             </Col>
@@ -109,7 +106,7 @@ export const ExchangeDetailsScreen = (props) => {
               </Col>
             )}
           </Row>
-          <StatusInfo onShowForm={() => showFormHandler("revision")} details={details} isLoading={isLoading} />
+          <StatusInfo onShowForm={() => showFormHandler("revision")} details={details} isProcessing={isProcessing} isLoading={isLoading} onSetReview={onSetReview} />
 
           <Row>
             <Received details={details} onShowForm={showFormHandler} isLoading={isLoading} />
