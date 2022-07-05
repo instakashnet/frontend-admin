@@ -4,7 +4,18 @@ import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects"
 import Swal from "sweetalert2";
 import { downloadBankConciliationSvc, uploadBankConciliationSvc } from "../../../api/lib/conciliation";
 import { getExchangesRelationSvc } from "../../../api/services/auth.service";
-import { approveExchangeSvc, changeOrderStatusSvc, createInvoiceSvc, declineExchangeSvc, editExchangeSvc, getExchangeDetailsSvc, reassignOrderSvc, setRevisionSvc, uploadVoucherSvc, validateExchangeSvc } from "../../../api/services/exchange.service";
+import {
+  approveExchangeSvc,
+  changeOrderStatusSvc,
+  createInvoiceSvc,
+  declineExchangeSvc,
+  editExchangeSvc,
+  getExchangeDetailsSvc,
+  reassignOrderSvc,
+  setRevisionSvc,
+  uploadVoucherSvc,
+  validateExchangeSvc,
+} from "../../../api/services/exchange.service";
 import { getClientExchangesSuccess, setAlert } from "../../actions";
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
@@ -22,16 +33,27 @@ function base64ToArrayBuffer(base64) {
 }
 
 function* getExchangesRelation({ values, excelType }) {
+  let start, end;
+
+  if (values.isDay) {
+    start = moment(values.start).format("YYYY-MM-DD [01:00:00]");
+    end = moment(values.end).format("YYYY-MM-DD [01:00:00]");
+  } else {
+    start = moment(values.start).format("YYYY-MM-DD hh:mm:ss");
+    end = moment(values.end).format("YYYY-MM-DD hh:mm:ss");
+  }
+
   let URL;
   if (excelType === "coupon" && values.couponName) {
     URL = `/users/clients/coupons/${values.couponName.toUpperCase()}/download`;
-  } else URL = `/users/clients/orders/download?isDay=${values.isDay}&start=${values.start}&end=${values.end}`;
+  } else URL = `/users/clients/orders/download?start=${start}&end=${end}`;
 
   if (values.bank) URL += `&bank=${values.bank}`;
   if (values.statusId) URL += `&status=${values.statusId}`;
+
   try {
     const res = yield call(getExchangesRelationSvc, URL);
-    yield call(fileDownload, res, `relacion_ordenes_${moment(values.start).format("DD-MM-YYYY HH:mm")}_${moment(values.end).format("DD-MM-YYYY HH:mm")}.xlsx`);
+    yield call(fileDownload, res, `relacion_ordenes_${start}_${end}.xlsx`);
     yield put(actions.getExchangesRelationSuccess());
   } catch (error) {
     if (error?.message) yield put(setAlert("danger", error.message));
@@ -213,9 +235,7 @@ function* reassignOrder({ values, orderId, closeModal }) {
 }
 
 function* setRevision({ values, closeModal, orderId }) {
-  const modalMessage = closeModal ?
-    "La nota de la orden ha sido actualizada."
-    : "La revisión de orden ha sido actualizada.",
+  const modalMessage = closeModal ? "La nota de la orden ha sido actualizada." : "La revisión de orden ha sido actualizada.",
     noteValues = { note: values.note || null, inReview: values.inReview };
 
   try {
