@@ -91,3 +91,7 @@ export const allowOnlyNumbers = (value) => {
   const re = /^[0-9\b]+$/;
   return value === "" || re.test(value);
 };
+
+export const isDate = (date) => {
+  return new Date(date) !== "Invalid Date" && !isNaN(new Date(date));
+};

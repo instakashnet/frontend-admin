@@ -1,10 +1,9 @@
-import React from "react";
-import { Button, Spinner } from "reactstrap";
 import { useFormik } from "formik";
+import { Button, Spinner } from "reactstrap";
 import { getExchangesRelationInit } from "../../../../store/actions";
 
-import { DateInput } from "../../../../components/UI/FormItems/date-picker.component";
 import Checkbox from "../../../../components/UI/FormItems/Checkbox";
+import { DateInput } from "../../../../components/UI/FormItems/date-picker.component";
 import Input from "../../../../components/UI/FormItems/Input";
 import Select from "../../../../components/UI/FormItems/Select";
 
@@ -32,11 +31,16 @@ export const CreateExcel = ({ isProcessing, excelType, dispatch }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {excelType === "coupon" ? (
+      {excelType === "coupon" ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input name="couponName" label="Nombre del cupón" value={formik.values.couponName} onChange={formik.handleChange} onBlur={formik.handleBlur} />
-        ) : (
-          <>
+        </div>
+      ) : (
+        <>
+          <div className="flex items-center justify-center">
+            <Checkbox name="isDay" value={formik.values.isDay} onChange={formik.handleChange} onBlur={formik.handleBlur} label="Descargar dia completo" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <DateInput
               value={formik.values.start}
               error={formik.errors.start}
@@ -57,16 +61,13 @@ export const CreateExcel = ({ isProcessing, excelType, dispatch }) => {
               label="Fecha hasta"
               dateFormat="dd-MM-yyyy HH:mm"
             />
-          </>
-        )}
-      </div>
-      <div className="grid md:grid-cols-2">
-        <Select label="Banco (opcional)" name="bank" options={bankOptions} onChange={formik.handleChange} onBlur={formik.handleBlur} />
-        <Select label="Estado (opcional)" name="statusId" options={statusOptions} onChange={formik.handleChange} onBlur={formik.handleBlur} />
-      </div>
-      <div className="grid place-items-center">
-        <Checkbox name="isDay" value={formik.values.isDay} onChange={formik.handleChange} onBlur={formik.handleBlur} label="Descargar dia completo" />
-      </div>
+          </div>
+          <div className="grid md:grid-cols-2">
+            <Select label="Banco (opcional)" name="bank" options={bankOptions} onChange={formik.handleChange} onBlur={formik.handleBlur} />
+            <Select label="Estado (opcional)" name="statusId" options={statusOptions} onChange={formik.handleChange} onBlur={formik.handleBlur} />
+          </div>
+        </>
+      )}
       <div className="flex justify-center mt-1 mb-3">
         <Button type="submit" disabled={!formik.isValid || isProcessing} className="btn-primary">
           {isProcessing ? <Spinner size="sm" /> : "Descargar relación"}
