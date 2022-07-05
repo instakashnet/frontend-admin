@@ -36,8 +36,8 @@ function* getExchangesRelation({ values, excelType }) {
   let start, end;
 
   if (values.isDay) {
-    start = moment(values.start).format("YYYY-MM-DD [01:00:00]");
-    end = moment(values.end).format("YYYY-MM-DD [01:00:00]");
+    start = moment(values.start).format("YYYY-MM-DD [00:00:00]");
+    end = moment(values.end).format("YYYY-MM-DD [00:00:00]");
   } else {
     start = moment(values.start).format("YYYY-MM-DD hh:mm:ss");
     end = moment(values.end).format("YYYY-MM-DD hh:mm:ss");
