@@ -19,7 +19,7 @@ const AddDocument = ({ dispatch, userId, type, isProcessing, closeModal }) => {
         fileType={type === "identity_photo" ? "frontal" : "trasera"}
         label={`Agregar foto ${type === "identity_photo" ? "frontal" : "trasera"}`}
         placeholder="Selecciona un archivo"
-        accept="image/jpeg,image/png,application/pdf"
+        accept="image/jpeg,image/png,image/jpg"
         name={type}
         onChange={onFileChange}
         onBlur={onFileChange}
