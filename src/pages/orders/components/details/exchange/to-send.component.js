@@ -39,9 +39,14 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
               <h5>Datos para enviar</h5>
               <div className="flex items-center justify-between">
                 <div className="mb-2 flex items-center">
-                  <img src={`${process.env.PUBLIC_URL}/images/banks/${details.bankSent?.toLowerCase()}.svg`} alt={details.bankSent} width={80} className="mr-2" />
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/banks/${details.banksInfo.bankSent?.toLowerCase()}.svg`}
+                    alt={details.banksInfo.bankSent}
+                    width={80}
+                    className="mr-2"
+                  />
                   <span className="text-muted">
-                    {details.currencyReceivedSymbol} - {details.accTypeTo === "savings" ? "ahorros" : "corriente"}
+                    {details.currencyInfo.currencyReceivedSymbol} - {details.accountsInfo.accTypeTo === "savings" ? "ahorros" : "corriente"}
                   </span>
                 </div>
               </div>
@@ -57,7 +62,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                       <p className="text-muted mb-2">Tasa ofrecida</p>
                       <h5>{convertRate(details.rate)}</h5>
                     </div>
-                    {details.stateId !== 6 && details.stateId !== 5 && (
+                    {details.stateInfo.stateId !== 6 && details.stateInfo.stateId !== 5 && (
                       <button className="edit-button ml-3" onClick={() => onShowForm("edit", "rate")}>
                         <i className="bx bx-edit" />
                       </button>
@@ -67,7 +72,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                 <Col sm="6">
                   <div className="text-sm-right mt-4 mt-sm-0">
                     <p className="text-muted mb-2">Factura generada</p>
-                    <h5 className={`${details.billAssigned ? "text-success" : "text-warning"}`}>{details.billAssigned ? "Generada" : "No generada"}</h5>
+                    <h5 className={`${details.billInfo.billAssigned ? "text-success" : "text-warning"}`}>{details.billInfo.billAssigned ? "Generada" : "No generada"}</h5>
                   </div>
                 </Col>
               </Row>
@@ -76,15 +81,15 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                   <div>
                     <p className="text-muted mb-2">Monto a enviar</p>
                     <h5>
-                      {`${details.currencyReceivedSymbol} ${formatAmount(details.amountReceived)}`} <CopyButton textToCopy={details.amountReceived?.toFixed(2)} />
+                      {`${details.currencyInfo.currencyReceivedSymbol} ${formatAmount(details.amountReceived)}`} <CopyButton textToCopy={details.amountReceived?.toFixed(2)} />
                     </h5>
                   </div>
                 </Col>
                 <Col sm="6">
                   <div className="text-sm-right mt-4 mt-sm-0">
-                    <p className="text-muted mb-2">Cuenta {details.thirdParty ? "de tercero" : ""} no.</p>
+                    <p className="text-muted mb-2">Cuenta {details.accountsInfo.thirdParty ? "de tercero" : details.accountsInfo.jointAccount ? "mancomunada" : ""} no.</p>
                     <h5>
-                      {details.accountToRaw} <CopyButton textToCopy={details.accountToRaw} />
+                      {details.accountsInfo.accountToRaw} <CopyButton textToCopy={details.accountsInfo.accountToRaw} />
                     </h5>
                     {editState && (
                       <form onSubmit={formik.handleSubmit}>
@@ -101,33 +106,49 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                     )}
                     {interplaza ? (
                       <small className="text-danger">* Esta cuenta es de provincia.</small>
-                    ) : checkInterplaza(details.bankSent, details.accountToRaw) ? (
+                    ) : checkInterplaza(details.banksInfo.bankSent, details.accountsInfo.accountToRaw) ? (
                       <small className="text-danger">* Parece ser que esta cuenta es de provincia.</small>
                     ) : null}
-                    {(checkInterplaza(details.bankSent, details.accountToRaw) || interplaza) && (
+                    {(checkInterplaza(details.banksInfo.bankSent, details.accountsInfo.accountToRaw) || interplaza) && (
                       <button className="text-success mt-1 block ml-auto" onClick={() => setEditState((prev) => !prev)}>
                         editar <i className="fas fa-edit" />
                       </button>
                     )}
                   </div>
                 </Col>
-                {details.thirdParty && (
+                {details.accountsInfo.thirdParty && (
                   <>
                     <Col sm="6" className="mt-3">
                       <p className="text-muted mb-2">Nombre del titular</p>
-                      <h5>{details.thirdParty.name || details.thirdParty.razonSocial}</h5>
+                      <h5>{details.accountsInfo.thirdParty.name || details.accountsInfo.thirdParty.razonSocial}</h5>
                     </Col>
                     <Col sm="6" className="mt-3">
                       <div className="text-sm-right">
                         <p className="text-muted mb-2">Documento</p>
                         <h5>
-                          {details.thirdParty.documentType} {details.thirdParty.documentNumber}
+                          {details.accountsInfo.thirdParty.documentType} {details.accountsInfo.thirdParty.documentNumber}
                         </h5>
                       </div>
                     </Col>
                     <Col className="mt-3">
                       <p className="text-muted mb-2">Correo de contacto</p>
                       <h5>{details.thirdParty.email}</h5>
+                    </Col>
+                  </>
+                )}
+                {details.accountsInfo.jointAccount && (
+                  <>
+                    <Col sm="6" className="mt-3">
+                      <p className="text-muted mb-2">Nombre del titular</p>
+                      <h5>{details.accountsInfo.jointAccount.firstName + " " + details.accountsInfo.jointAccount.lastName}</h5>
+                    </Col>
+                    <Col sm="6" className="mt-3">
+                      <div className="text-sm-right">
+                        <p className="text-muted mb-2">Documento</p>
+                        <h5>
+                          {details.accountsInfo.jointAccount.documentType} {details.accountsInfo.jointAccount.documentNumber}
+                        </h5>
+                      </div>
                     </Col>
                   </>
                 )}
