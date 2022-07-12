@@ -1,13 +1,13 @@
-import React from "react";
-import { Card, CardBody, Media } from "reactstrap";
 import { Person } from "@material-ui/icons";
+import React from "react";
 import { Link } from "react-router-dom";
+import { Card, CardBody, Media } from "reactstrap";
 
-import { SkeletonComponent } from "../../../../components/UI/skeleton.component";
-import Male from "../../../../assets/images/profile-male.svg";
-import Female from "../../../../assets/images/profile-female.svg";
 import Company from "../../../../assets/images/profile-company.svg";
+import Female from "../../../../assets/images/profile-female.svg";
+import Male from "../../../../assets/images/profile-male.svg";
 import CopyButton from "../../../../components/UI/CopyButton";
+import { SkeletonComponent } from "../../../../components/UI/skeleton.component";
 
 const User = ({ user, role, isLoading }) => {
   let Avatar;

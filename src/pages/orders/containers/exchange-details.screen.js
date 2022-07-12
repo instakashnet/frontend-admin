@@ -5,7 +5,16 @@ import { Col, Container, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
 // CUSTOM HOOKS
 import { useRole } from "../../../hooks/useRole";
 // REDUX ACTIONS
-import { approveExchange, changeOrderStatus, createInvoice, declineExchange, getClientExchanges, getExchangeDetails, setRevisionInit, validateExchange } from "../../../store/actions";
+import {
+  approveExchange,
+  changeOrderStatus,
+  createInvoice,
+  declineExchange,
+  getClientExchanges,
+  getExchangeDetails,
+  setRevisionInit,
+  validateExchange,
+} from "../../../store/actions";
 // COMPONENTS
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import { ActionButtons } from "../components/details/action-buttons.component";
@@ -74,12 +83,15 @@ export const ExchangeDetailsScreen = (props) => {
     dispatch(getExchangeDetails(id));
   }, [dispatch, id]);
 
+  console.log(details);
+
   let FormComponent;
 
   if (formType === "edit") FormComponent = <EditOrder details={details} isProcessing={isProcessing} onShowForm={showFormHandler} orderItemToEdit={orderItemEdit} />;
   if (formType === "reassign") FormComponent = <ReassignOrder details={details} onShowForm={showFormHandler} isProcessing={isProcessing} />;
   if (formType === "complete") FormComponent = <CompleteOrder isProcessing={isProcessing} orderId={id} onShowForm={showFormHandler} onApprove={onApproveExchange} />;
-  if (formType === "revision") FormComponent = <SetRevision note={details.orderNotes} inReview={details.inReview} isProcessing={isProcessing} onShowForm={showFormHandler} orderId={id} />;
+  if (formType === "revision")
+    FormComponent = <SetRevision note={details.orderNotes} inReview={details.inReview} isProcessing={isProcessing} onShowForm={showFormHandler} orderId={id} />;
 
   return (
     <div className="relative">
@@ -90,15 +102,15 @@ export const ExchangeDetailsScreen = (props) => {
             <Col lg="8">
               <ActionButtons
                 goBack={() => history.goBack()}
-                statusId={details.stateId}
-                billCreated={details.billAssigned}
+                statusId={details.stateInfo?.stateId}
+                billCreated={details.billInfo?.billAssigned}
                 onCreateInvoice={onCreateInvoice}
                 onChangeStatus={changeStatusHandler}
                 isProcessing={isProcessing}
                 role={role}
                 hasInvoice
               />
-              {details.user && <UserInfo user={details.user} role={role} isLoading={isLoading} />}
+              {details.userInfo && <UserInfo user={details.userInfo} role={role} isLoading={isLoading} />}
             </Col>
             {details.orderNotes && (
               <Col lg="4">
@@ -106,7 +118,16 @@ export const ExchangeDetailsScreen = (props) => {
               </Col>
             )}
           </Row>
-          <StatusInfo onShowForm={() => showFormHandler("revision")} details={details} isProcessing={isProcessing} isLoading={isLoading} onSetReview={onSetReview} />
+          <StatusInfo
+            onShowForm={() => showFormHandler("revision")}
+            status={details.stateInfo}
+            operator={details.operatorInfo}
+            inReview={details.inReview}
+            note={details.orderNotes}
+            isProcessing={isProcessing}
+            isLoading={isLoading}
+            onSetReview={onSetReview}
+          />
 
           <Row>
             <Received details={details} onShowForm={showFormHandler} isLoading={isLoading} />
