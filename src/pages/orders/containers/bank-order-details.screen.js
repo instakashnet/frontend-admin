@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Row, Col } from "reactstrap";
-import { getBankOrderDetails, changeBankOrderStatus } from "../../../store/actions";
+import { Col, Container, Row } from "reactstrap";
+import { changeBankOrderStatus, getBankOrderDetails } from "../../../store/actions";
 
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
-import { ToSend } from "../components/details/bankOrders/to-send.component";
-import { Received } from "../components/details/bankOrders/received.component";
 import { ActionButtons } from "../components/details/action-buttons.component";
+import { Received } from "../components/details/bankOrders/received.component";
 import { StatusInfo } from "../components/details/bankOrders/status.component";
+import { ToSend } from "../components/details/bankOrders/to-send.component";
 
 export const BankOrderDetailsScreen = ({ match, history }) => {
   const { id } = match.params;
@@ -16,8 +16,11 @@ export const BankOrderDetailsScreen = ({ match, history }) => {
 
   const dispatch = useDispatch();
 
-  const onDeclineOrder = () => dispatch(changeBankOrderStatus(id, 5));
-  const onApproveOrder = () => dispatch(changeBankOrderStatus(id, 6));
+  const onChangeStatus = (status) => {
+    console.log("changing to", status);
+
+    dispatch(changeBankOrderStatus(id, status));
+  };
 
   useEffect(() => {
     dispatch(getBankOrderDetails(id));
@@ -33,8 +36,7 @@ export const BankOrderDetailsScreen = ({ match, history }) => {
               goBack={() => history.goBack()}
               statusId={bankOrderDetails.stateID}
               billCreated={bankOrderDetails.billAssigned}
-              onDecline={onDeclineOrder}
-              onChangeStatus={onApproveOrder}
+              onChangeStatus={onChangeStatus}
               isProcessing={isProcessing}
             />
           </Col>

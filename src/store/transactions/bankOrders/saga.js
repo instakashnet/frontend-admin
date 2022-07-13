@@ -42,7 +42,7 @@ function* changeBankOrderStatus({ id, statusId }) {
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: `Si, continuar.`,
-      cancelButtonText: "No, cancelar.",
+      cancelButtonText: "No, regresar.",
       cancelButtonColor: "#f46a6a",
     });
     if (result.isConfirmed) {
