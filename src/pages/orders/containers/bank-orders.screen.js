@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Container, Row, Col, Modal, ModalBody, ModalHeader, Button, Card, CardBody, Spinner } from "reactstrap";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Card, CardBody, Col, Container, Modal, ModalBody, ModalHeader, Row, Spinner } from "reactstrap";
+import { getBankOrders } from "../../../api/services/exchange.service";
+import { Table } from "../../../components/UI/tables/table.component";
+import { formatOrders } from "../../../helpers/functions";
 import { bankOrdersColumns } from "../../../helpers/tables/columns";
 import { getCbAccounts, setAlert } from "../../../store/actions";
-import { getAllOrders } from "../../../services/orders/exchanges.service";
-
-import { Table } from "../../../components/UI/tables/table.component";
 import { CreateOrder } from "../components/forms/create-order.component";
 
 const PAGE_SIZE = 20;
@@ -30,8 +30,9 @@ export const BankOrdersScreen = () => {
       setIsLoading(true);
 
       try {
-        const tableData = await getAllOrders({ search, pageCount, type: "bank-orders" });
-        setData(tableData);
+        const tableData = await getBankOrders(pageCount, search),
+          orders = formatOrders(tableData, "bank-orders");
+        setData(orders);
       } catch (error) {
         console.log(error);
         dispatch(setAlert("danger", "Ha ocurrido un error obteniendo la lista de ordenes. Por favor intenta de nuevo o contacta a soporte."));
@@ -45,6 +46,8 @@ export const BankOrdersScreen = () => {
   useEffect(() => {
     getTableData();
   }, [getTableData]);
+
+  console.log(data);
 
   return (
     <div className="page-content">

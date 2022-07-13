@@ -10,7 +10,6 @@ import userDetailsClasses from "../../pages/settings/Users/components/modules/de
 // FUNCTIONS
 import { convertHexToRGBA, shadeColor } from "../functions";
 
-
 export const companyAccountsColumns = (showForm) => [
   {
     Header: "Banco",
@@ -100,13 +99,20 @@ export const userAccountsColumns = (setUserBankAccountEdit) => [
   {
     accessor: "bank",
     Header: "Banco",
-    Cell: ({ cell }) => <img src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} width={85} alt={cell.value.toLowerCase()} className={`mx-auto ${userAccountsClasses.bankImage}`} />,
+    Cell: ({ cell }) => (
+      <img
+        src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`}
+        width={85}
+        alt={cell.value.toLowerCase()}
+        className={`mx-auto ${userAccountsClasses.bankImage}`}
+      />
+    ),
   },
   {
     accessor: "thirdParty",
     Header: "Cuenta",
     Cell: ({ cell }) => <p className="text-center text-white">{cell.value ? "De terceros" : "Personal"}</p>,
-  }
+  },
 ];
 
 export const userAffiliatesColumns = [
@@ -117,7 +123,8 @@ export const userAffiliatesColumns = [
       <p className={`m-0 ${userDetailsClasses.whiteCellText}`}>
         {cell.value}
         <span className={`d-block ${userDetailsClasses.textMuted}`}>{row.original.email}</span>
-      </p>),
+      </p>
+    ),
   },
   {
     accessor: "status",
@@ -536,12 +543,12 @@ export const bankOrdersColumns = [
     accessor: "date",
   },
   {
-    Header: "Monto a recibir",
-    accessor: "amountToSend",
-  },
-  {
     Header: "Monto enviado",
     accessor: "amountToReceive",
+  },
+  {
+    Header: "Monto a recibir",
+    accessor: "amountToSend",
   },
   {
     Header: "Origen",

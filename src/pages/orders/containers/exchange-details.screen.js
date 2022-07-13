@@ -83,8 +83,6 @@ export const ExchangeDetailsScreen = (props) => {
     dispatch(getExchangeDetails(id));
   }, [dispatch, id]);
 
-  console.log(details);
-
   let FormComponent;
 
   if (formType === "edit") FormComponent = <EditOrder details={details} isProcessing={isProcessing} onShowForm={showFormHandler} orderItemToEdit={orderItemEdit} />;
@@ -135,7 +133,7 @@ export const ExchangeDetailsScreen = (props) => {
           </Row>
           <Row>
             <Col lg="10" xl="8">
-              <UserTransactions getTransactions={() => dispatch(getClientExchanges(details.userId))} isLoading={dataLoading || isLoading} orders={exchanges} />
+              <UserTransactions getTransactions={() => dispatch(getClientExchanges(details.userInfo?.userId))} isLoading={dataLoading || isLoading} orders={exchanges} />
             </Col>
           </Row>
         </Container>
