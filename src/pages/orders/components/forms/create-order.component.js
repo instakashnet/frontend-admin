@@ -1,6 +1,5 @@
-import React from "react";
-import { Button, Spinner } from "reactstrap";
 import { useFormik } from "formik";
+import { Button, Spinner } from "reactstrap";
 import { createBankOrder } from "../../../../store/actions";
 
 import CustomSelect from "../../../../components/UI/FormItems/CustomSelect";
@@ -15,7 +14,7 @@ export const CreateOrder = ({ isProcessing, dispatch, accounts, currencies, getT
 
   const accountOptions = accounts.map((account) => ({
     value: account.id,
-    label: `${account.bank.name.toUpperCase()} ${account.account_number} - ${account.currency.Symbol}`,
+    label: `${account.bank.name.toUpperCase()} ${account.accountNumber} - ${account.currency.Symbol}`,
     image: `${process.env.PUBLIC_URL}/images/banks/${account.bank.name.toLowerCase()}.svg`,
   }));
   const currencyOptions = currencies.map((currency) => ({ label: `${currency.name} (${currency.Symbol})`, value: currency.id }));
