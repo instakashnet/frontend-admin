@@ -23,7 +23,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
 
   // FORMIK
   const formik = useFormik({
-    initialValues: { interbank: null, accountId: details.accountToId },
+    initialValues: { interbank: null, accountId: details.accountsInfo?.accountToId },
     enableReinitialize: true,
     onSubmit: (values) => dispatch(editInterplazaInit(values, "exchange", details.id, setEditState)),
   });
@@ -132,7 +132,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                     </Col>
                     <Col className="mt-3">
                       <p className="text-muted mb-2">Correo de contacto</p>
-                      <h5>{details.thirdParty.email}</h5>
+                      <h5>{details.accountsInfo.thirdParty.email}</h5>
                     </Col>
                   </>
                 )}

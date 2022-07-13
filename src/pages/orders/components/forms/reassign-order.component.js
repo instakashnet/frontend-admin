@@ -6,18 +6,17 @@ import CustomSelect from "../../../../components/UI/FormItems/CustomSelect";
 import Select from "../../../../components/UI/FormItems/Select";
 import { getClientAccounts, getOperatorsInit, reassignOrderInit } from "../../../../store/actions";
 
-
 const ReassignOrder = ({ details, isProcessing, onShowForm }) => {
   const dispatch = useDispatch();
   const { operators, isLoading } = useSelector((state) => state.AdminUsers);
-  const { userId } = details;
+  const { userInfo } = details;
   const clientAccounts = useSelector((state) => state.Clients.accounts);
   const formik = useFormik({ initialValues: { operatorAssigned: "", accountId: "" }, onSubmit: (values) => dispatch(reassignOrderInit(values, details.id, onShowForm)) });
 
   useEffect(() => {
     dispatch(getOperatorsInit(true));
-    dispatch(getClientAccounts(userId));
-  }, [dispatch, userId]);
+    dispatch(getClientAccounts(userInfo.userId));
+  }, [dispatch, userInfo]);
 
   const operatorOptions = operators.map((operator) => ({ label: `${operator.name} - ${operator.email}`, value: operator.userId }));
   const clientAccountOptions = clientAccounts.map((clientAccount) => ({

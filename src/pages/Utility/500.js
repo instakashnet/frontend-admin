@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import Error from "../../assets/images/error-img.png";
 
 const Error500 = () => {
@@ -10,7 +9,9 @@ const Error500 = () => {
         </h1>
         <p className="md:text-base">Ha ocurrido un error inesperado. Disculpa las molestias.</p>
         <p className="md:text-base">No te preocupes, lo solucionaremos lo antes posible.</p>
-        <Link to="/dashboard" className="btn btn-primary mt-4">Regresar</Link>
+        <a href="/" onClick={() => window.location.reload()} className="btn btn-primary mt-4">
+          Volver al inicio
+        </a>
       </div>
       <img
         src={Error}
@@ -19,6 +20,6 @@ const Error500 = () => {
       />
     </section>
   );
-}
+};
 
 export default Error500;

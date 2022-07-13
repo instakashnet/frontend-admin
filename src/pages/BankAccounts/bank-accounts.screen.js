@@ -43,7 +43,7 @@ export const BankAccountsScreen = () => {
     <div className="page-content">
       <Container fluid>
         <Button type="button" color="secondary" className="mb-3 ml-3" onClick={() => dispatch(updateBalance(activeBalance))}>
-          {isProcessing ? <Spinner size="sm" /> : !activeBalance ? "Desactivar saldo" : "Activar saldo real"}
+          {isProcessing || isLoading ? <Spinner size="sm" /> : !activeBalance ? "Desactivar saldo" : "Activar saldo real"}
         </Button>
         <Row>
           <Col lg="8">
