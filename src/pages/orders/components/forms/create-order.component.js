@@ -21,6 +21,8 @@ export const CreateOrder = ({ isProcessing, dispatch, accounts, currencies, getT
   const banksOptions = [
     { label: "Caja Raíz", value: "caja raiz" },
     { label: "Caja Centro", value: "caja centro" },
+    { label: "Mi banco", value: "mi banco" },
+    { label: "Otras casas de cambio", value: "otras casas de cambio" },
   ];
   const onSelectChange = (option, name) => formik.setFieldValue([name], option.value);
 
