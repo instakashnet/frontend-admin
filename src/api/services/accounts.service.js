@@ -31,18 +31,7 @@ export const getCbAccountsSvc = async () => {
     const response = await getAxiosInstance("accounts", "v1").get("/accounts?type=company");
     if (response.status >= 400) throw new Error(response.errors[0]);
 
-    return camelize(response.data.accounts);
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const closeBalanceSvc = async () => {
-  try {
-    const response = await getAxiosInstance("accounts", "v1").get("/closing-balances");
-    if (response.status >= 400) throw new Error(response.errors[0]);
-
-    return response.data;
+    return camelize(response.data);
   } catch (error) {
     throw error;
   }
@@ -97,7 +86,6 @@ export const addAcbAccountSvc = async (accValues) => {
   try {
     const response = await getAxiosInstance("accounts", "v1").post("/accounts", accValues);
     if (response.status >= 400) throw new Error(response.errors[0]);
-
   } catch (error) {
     throw error;
   }
@@ -107,7 +95,6 @@ export const addBankSvc = async (values) => {
   try {
     const response = await getAxiosInstance("accounts", "v1").post("/banks", values);
     if (response.status >= 400) throw new Error(response.errors[0]);
-
   } catch (error) {
     throw error;
   }
@@ -117,7 +104,6 @@ export const addClientBankAccSvc = async (userId, values) => {
   try {
     const response = await getAxiosInstance("accounts", "v1").post(`/accounts/account/${userId}`, values);
     if (response.status >= 400) throw new Error(response.errors[0]);
-
   } catch (error) {
     throw error;
   }
@@ -127,7 +113,6 @@ export const editClientBankAccSvc = async (accountId, values) => {
   try {
     const response = await getAxiosInstance("accounts", "v1").put(`/accounts/account/${accountId}`, values);
     if (response.status >= 400) throw new Error(response.errors[0]);
-
   } catch (error) {
     throw error;
   }
@@ -138,7 +123,6 @@ export const editCbAccountSvc = async (values) => {
   try {
     const response = await getAxiosInstance("accounts", "v1").put("/accounts", values);
     if (response.status >= 400) throw new Error(response.errors[0]);
-
   } catch (error) {
     throw error;
   }
@@ -176,7 +160,6 @@ export const editCbBalanceSvc = async (values, accountId) => {
   try {
     const response = await getAxiosInstance("accounts", "v1").put(`/accounts/funds/${accountId}`, values);
     if (response.status >= 400) throw new Error(response.errors[0]);
-
   } catch (error) {
     throw error;
   }
@@ -186,7 +169,6 @@ export const deleteClientBankAccSvc = async (accountId) => {
   try {
     const response = await getAxiosInstance("accounts", "v1").delete(`/accounts/account/${accountId}`, { data: { enabled: false } });
     if (response.status >= 400) throw new Error(response.errors[0]);
-
   } catch (error) {
     throw error;
   }

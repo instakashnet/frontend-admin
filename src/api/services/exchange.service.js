@@ -7,9 +7,25 @@ export const getAllOrders = async (page, search) => {
 
   try {
     const response = await getAxiosInstance("exchange", "v2").get(URL);
+
     if (response.status >= 400) throw new Error(response.errors[0]);
 
     return camelize(response.data.orders);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getBankOrders = async (page, search) => {
+  let URL = `/order?page=${page}&qty=50`;
+  if (search) URL = `${URL}&search=${search.toLowerCase()}`;
+
+  try {
+    const response = await getAxiosInstance("exchange", "v1").get(URL);
+
+    if (response.status >= 400) throw new Error(response.errors[0]);
+
+    return camelize(response.data.cashWithdrawals);
   } catch (error) {
     throw error;
   }
@@ -198,7 +214,6 @@ export const addCurrencyPriceSvc = async (ratesValues) => {
   try {
     const response = await getAxiosInstance("exchange", "v1").post("/rates", ratesValues);
     if (response.status >= 400) throw new Error(response.errors[0]);
-
   } catch (error) {
     throw error;
   }
@@ -353,6 +368,17 @@ export const deleteCouponSvc = async (id) => {
   try {
     const response = await getAxiosInstance("exchange", "v1").delete(`/coupons/${id}`);
     if (response.status >= 400) throw new Error(response.errors[0]);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateBalanceSvc = async (enabled) => {
+  try {
+    const response = await getAxiosInstance("exchange", "v1").put("/order/active-balance/update", { enabled });
+    if (response.status >= 400) throw new Error(response.errors[0]);
+
+    return response.data.enabled;
   } catch (error) {
     throw error;
   }

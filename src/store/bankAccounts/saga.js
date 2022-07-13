@@ -1,6 +1,7 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import Swal from "sweetalert2";
-import { addAcbAccountSvc, closeBalanceSvc, editCbAccountSvc, editCbBalanceSvc, getCbAccountsSvc } from "../../api/services/accounts.service";
+import { addAcbAccountSvc, editCbAccountSvc, editCbBalanceSvc, getCbAccountsSvc } from "../../api/services/accounts.service";
+import { updateBalanceSvc } from "../../api/services/exchange.service";
 import { setAlert } from "../actions";
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
@@ -60,11 +61,10 @@ function* editCbBalance({ values, accountId, setState }) {
   }
 }
 
-function* closeBalance({ open }) {
+function* updateBalance({ enabled }) {
   try {
-    const res = yield call(closeBalanceSvc);
-    yield put(actions.closeBalanceSuccess(res));
-    yield call(open);
+    const res = yield call(updateBalanceSvc, !enabled);
+    yield put(actions.updateBalanceSuccess(res));
   } catch (error) {
     if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
@@ -87,10 +87,10 @@ export function* watchEditCbBalance() {
   yield takeEvery(actionTypes.EDIT_CB_BALANCE, editCbBalance);
 }
 
-function* watchCloseBalance() {
-  yield takeEvery(actionTypes.CLOSE_BALANCE_INIT, closeBalance);
+function* watchUpdateBalance() {
+  yield takeEvery(actionTypes.UPDATE_BALANCE_INIT, updateBalance);
 }
 
 export default function* bankAccountsSaga() {
-  yield all([fork(watchGetCbAccounts), fork(watchAddCbAccount), fork(watchEditCbBalance), fork(watchEditCbAccount), fork(watchCloseBalance)]);
+  yield all([fork(watchGetCbAccounts), fork(watchAddCbAccount), fork(watchEditCbBalance), fork(watchEditCbAccount), fork(watchUpdateBalance)]);
 }

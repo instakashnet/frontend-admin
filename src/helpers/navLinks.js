@@ -13,12 +13,12 @@ export const generalLinks = [
     label: "Cuentas bancarias",
     roles: ["admin", "officers", "manager", "accountant"],
   },
-  // {
-  //   path: "/bank-orders",
-  //   icon: "bx bx-dollar",
-  //   label: "Pedidos a caja",
-  //   roles: ["admin", "officers"],
-  // },
+  {
+    path: "/bank-orders",
+    icon: "bx bx-dollar",
+    label: "Pedidos a caja",
+    roles: ["admin", "officers", "manager", "accountant"],
+  },
   {
     path: "/forex",
     icon: "bx bx-dollar-circle",

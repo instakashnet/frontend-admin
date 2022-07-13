@@ -40,14 +40,14 @@ export const editCbBalanceSuccess = () => ({
   type: actionTypes.EDIT_CB_BALANCE_SUCCESS,
 });
 
-export const closeBalance = (open) => ({
-  type: actionTypes.CLOSE_BALANCE_INIT,
-  open,
+export const updateBalance = (enabled) => ({
+  type: actionTypes.UPDATE_BALANCE_INIT,
+  enabled,
 });
 
-export const closeBalanceSuccess = (data) => ({
-  type: actionTypes.CLOSE_BALANCE_SUCCESS,
-  data,
+export const updateBalanceSuccess = (active) => ({
+  type: actionTypes.UPDATE_BALANCE_SUCCESS,
+  active,
 });
 
 export const apiError = () => ({
