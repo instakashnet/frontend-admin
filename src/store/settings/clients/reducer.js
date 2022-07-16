@@ -31,7 +31,7 @@ export default function clientsReducer(state = initialState, action) {
       return { ...state, isProcessing: true };
 
     case actionTypes.GET_CLIENT_DETAILS_SUCCESS:
-      return { ...state, details: payload.data, isLoading: false };
+      return { ...state, details: payload.data, exchanges: [], withdrawals: [], isLoading: false };
     case actionTypes.GET_CLIENT_AFFILIATES_SUCCESS:
       return { ...state, affiliates: action.affiliates, isLoading: false };
 

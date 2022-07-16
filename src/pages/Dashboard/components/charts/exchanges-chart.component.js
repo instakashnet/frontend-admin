@@ -76,11 +76,18 @@ const StackedColumnChart = ({ data, title, isLoading }) => {
 
     colors: ["#34c38f", "#556ee6"],
     xaxis: {
-      typ: "category",
+      type: "category",
       categories,
       labels: {
         formatter: function (value) {
           return `${value.label} C${qtyBuy ? qtyBuy[value.date] : 0} - V${qtySell ? qtySell[value.date] : 0}`;
+        },
+      },
+    },
+    yaxis: {
+      labels: {
+        formatter: (value) => {
+          return Number(value).toFixed(2);
         },
       },
     },
@@ -102,14 +109,8 @@ const StackedColumnChart = ({ data, title, isLoading }) => {
   useEffect(() => {
     if (buy || sell) {
       setSeries([
-        {
-          name: "Compras",
-          data: buy || [],
-        },
-        {
-          name: "Ventas",
-          data: sell || [],
-        },
+        { name: "Compras", data: buy || [] },
+        { name: "Ventas", data: sell || [] },
       ]);
     }
   }, [buy, sell]);
