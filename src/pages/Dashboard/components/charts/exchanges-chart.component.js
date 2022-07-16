@@ -1,25 +1,56 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getCurrencyBarChart } from "../../../../store/charts/actions";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import { Button, Card, CardBody, CardTitle } from "reactstrap";
+import { useDispatch } from "react-redux";
+import { Button, Card, CardBody, CardTitle, Spinner } from "reactstrap";
+import { getCurrencyBarChart } from "../../../../store/charts/actions";
 
-const StackedColumnChart = (props) => {
-  const dispatch = useDispatch();
-  const { pen, usd } = props.data;
-
-  const [type, setType] = useState("week");
-  const [categories, setCategories] = useState(["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]);
+const StackedColumnChart = ({ data, title, isLoading }) => {
+  const dispatch = useDispatch(),
+    { buy, sell, qtyBuy, qtySell } = data,
+    [type, setType] = useState("week"),
+    [categories, setCategories] = useState([]);
 
   useEffect(() => {
     dispatch(getCurrencyBarChart(type));
   }, [dispatch, type]);
 
   useEffect(() => {
-    type === "week"
-      ? setCategories(["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"])
-      : setCategories(["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]);
-  }, [type]);
+    if (qtyBuy?.length && qtySell?.length) {
+      if (type === "week") {
+        setCategories([
+          { date: 0, label: "Lunes" },
+          { date: 1, label: "Martes" },
+          { date: 2, label: "Miercoles" },
+          { date: 3, label: "Jueves" },
+          { date: 4, label: "Viernes" },
+          { date: 5, label: "Sábado" },
+          { date: 6, label: "Domingo" },
+        ]);
+      }
+
+      if (type === "month") {
+        setCategories([
+          { date: 0, label: "Ene" },
+          { date: 1, label: "Feb" },
+          { date: 2, label: "Mar" },
+          { date: 3, label: "Abr" },
+          { date: 4, label: "May" },
+          { date: 5, label: "Jun" },
+          { date: 6, label: "Jul" },
+          { date: 7, label: "Ago" },
+          { date: 8, label: "Sep" },
+          { date: 9, label: "Oct" },
+          { date: 10, label: "Nov" },
+          { date: 11, label: "Dic" },
+        ]);
+      }
+    }
+  }, [type, qtyBuy, qtySell]);
+
+  const handleGetDataByType = (type) => {
+    setType(type);
+    dispatch(getCurrencyBarChart(type));
+  };
 
   const options = {
     chart: {
@@ -43,13 +74,14 @@ const StackedColumnChart = (props) => {
       colors: ["transparent"],
     },
 
-    colors: ["#34c38f", "#556ee6", "#f46a6a"],
+    colors: ["#34c38f", "#556ee6"],
     xaxis: {
+      typ: "category",
       categories,
-    },
-    yaxis: {
-      title: {
-        text: "Montos cambiados",
+      labels: {
+        formatter: function (value) {
+          return `${value.label} C${qtyBuy ? qtyBuy[value.date] : 0} - V${qtySell ? qtySell[value.date] : 0}`;
+        },
       },
     },
     grid: {
@@ -60,7 +92,7 @@ const StackedColumnChart = (props) => {
     },
     tooltip: {
       custom: function ({ series, seriesIndex, dataPointIndex }) {
-        return `<div style="padding: 7px">${seriesIndex === 1 ? "$ " : "s/. "} ${series[seriesIndex][dataPointIndex]}</div>`;
+        return `<div style="padding: 7px">$ ${series[seriesIndex][dataPointIndex]}</div>`;
       },
     },
   };
@@ -68,31 +100,31 @@ const StackedColumnChart = (props) => {
   const [series, setSeries] = useState([]);
 
   useEffect(() => {
-    if (pen || usd) {
+    if (buy || sell) {
       setSeries([
         {
-          name: "Soles",
-          data: pen || [],
+          name: "Compras",
+          data: buy || [],
         },
         {
-          name: "Dólares",
-          data: usd || [],
+          name: "Ventas",
+          data: sell || [],
         },
       ]);
     }
-  }, [pen, usd]);
+  }, [buy, sell]);
 
   return (
     <Card>
       <CardBody>
         <div className="d-flex justify-content-end">
-          <CardTitle className="mb-4 mr-auto float-sm-left">{props.title}</CardTitle>
-          <Button className="mr-3" onClick={() => setType("week")}>
+          <CardTitle className="mb-4 mr-auto float-sm-left">{title}</CardTitle>
+          <Button className="mr-3" onClick={() => handleGetDataByType("week")}>
             Semana
           </Button>
-          <Button onClick={() => setType("month")}>Mes</Button>
+          {/* <Button onClick={() => setType("month")}>Mes</Button> */}
         </div>
-        <ReactApexChart options={options} series={series} type="bar" height="359" />
+        {isLoading ? <Spinner size="large" color="primary" /> : <ReactApexChart options={options} series={series} type="bar" height="359" />}
       </CardBody>
     </Card>
   );

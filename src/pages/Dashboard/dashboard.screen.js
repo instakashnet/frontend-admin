@@ -1,22 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
-//Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-// CUSTOM HOOKS
-import { useRole } from "../../hooks/useRole";
-// COMPONENTS
 import ExchangesChart from "./components/charts/exchanges-chart.component";
 import UsersChart from "./components/charts/users-chart.component";
 import Counters from "./components/counters.component";
-import { DailyEarning } from "./components/daily-earning.component";
-
 
 export const DashboardScreen = () => {
-  const dispatch = useDispatch();
-  const { currencyBarData } = useSelector((state) => state.Charts);
-  const { user } = useSelector((state) => state.Login);
+  const dispatch = useDispatch(),
+    { currencyBarData, isLoading } = useSelector((state) => state.Charts);
 
-  const [role] = useRole(user);
   return (
     <div className="page-content">
       <Container fluid>
@@ -26,16 +18,16 @@ export const DashboardScreen = () => {
             <Counters dispatch={dispatch} />
           </Col>
         </Row>
-        {role === "admin" && (
+        {/* {role === "admin" && (
           <Row>
             <Col lg="6" xl="4">
               <DailyEarning dispatch={dispatch} />
             </Col>
           </Row>
-        )}
+        )} */}
         <Row>
           <Col xl="6">
-            <ExchangesChart data={currencyBarData} title="Movimiento cambios de divisa" />
+            <ExchangesChart isLoading={isLoading} data={currencyBarData} title="Movimiento cambios de divisa" />
           </Col>
           <Col xl="6">
             <UsersChart />

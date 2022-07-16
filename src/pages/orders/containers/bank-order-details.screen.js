@@ -17,8 +17,6 @@ export const BankOrderDetailsScreen = ({ match, history }) => {
   const dispatch = useDispatch();
 
   const onChangeStatus = (status) => {
-    console.log("changing to", status);
-
     dispatch(changeBankOrderStatus(id, status));
   };
 
