@@ -18,13 +18,13 @@ const StackedColumnChart = ({ data, title, isLoading }) => {
     if (qtyBuy?.length && qtySell?.length) {
       if (type === "week") {
         setCategories([
-          { date: 0, label: "Lunes" },
-          { date: 1, label: "Martes" },
-          { date: 2, label: "Miercoles" },
-          { date: 3, label: "Jueves" },
-          { date: 4, label: "Viernes" },
-          { date: 5, label: "Sábado" },
-          { date: 6, label: "Domingo" },
+          { date: 0, label: "Lun" },
+          { date: 1, label: "Mar" },
+          { date: 2, label: "Mie" },
+          { date: 3, label: "Jue" },
+          { date: 4, label: "Vie" },
+          { date: 5, label: "Sab" },
+          { date: 6, label: "Dom" },
         ]);
       }
 
@@ -87,7 +87,7 @@ const StackedColumnChart = ({ data, title, isLoading }) => {
     yaxis: {
       labels: {
         formatter: (value) => {
-          return Number(value).toFixed(2);
+          return !isNaN(Number(value)) ? Number(value).toFixed(2) : 0;
         },
       },
     },
@@ -99,7 +99,7 @@ const StackedColumnChart = ({ data, title, isLoading }) => {
     },
     tooltip: {
       custom: function ({ series, seriesIndex, dataPointIndex }) {
-        return `<div style="padding: 7px">$ ${series[seriesIndex][dataPointIndex]}</div>`;
+        return `<div style="padding: 7px">$ ${!isNaN(Number(series[seriesIndex][dataPointIndex])) ? Number(series[seriesIndex][dataPointIndex]).toFixed(2) : 0}</div>`;
       },
     },
   };
