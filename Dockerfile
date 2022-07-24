@@ -1,4 +1,4 @@
-FROM 160743850946.dkr.ecr.us-east-2.amazonaws.com/docker-library:node14-alpine-arm64 as build
+FROM 160743850946.dkr.ecr.us-east-2.amazonaws.com/docker-library:node14-alpine as build
 
 ## Docker argunments for build:
 
