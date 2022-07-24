@@ -11,7 +11,7 @@ ENV REACT_APP_STAGE=$REACT_APP_STAGE
 RUN \
     apk update && \
     apk add build-base gcc wget git && \
-    apk add --no-cache python2 py-pip && \
+    apk add --no-cache python3 py-pip && \
     pip install --upgrade pip
 
 WORKDIR  /usr/src/app
