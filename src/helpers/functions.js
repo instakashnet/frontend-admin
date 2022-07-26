@@ -45,7 +45,7 @@ export const checkInterplaza = (bank, accNumber) => {
 
 export const formatAmount = (amount) => Number(amount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-export const formatOrders = (ordersData, type) => {
+export const formatOrders = (ordersData, type, role) => {
   let orders = [];
   const ordersInfo = camelize(ordersData);
 
@@ -75,12 +75,15 @@ export const formatOrders = (ordersData, type) => {
       revision: order.inReview,
       amountSent: order.amountSent > 0 ? `${order.currencySentSymbol} ${formatAmount(order.amountSent)}` : `${order.kashUsed} KASH`,
       amountReceived: `${order.currencyReceivedSymbol} ${formatAmount(order.amountReceived)}`,
+      rate: order.rate || 0,
       originBank: order.amountSent > 0 ? order.bankFromName : "kash",
       destinationBank: order.accToBankName,
+      statusId: order.stateID,
       statusName: order.stateName,
       statusColor: order.stateColor,
       invoice: order.billAssigned,
       companyName: order.razonSocial || "",
+      role,
     }));
   }
 

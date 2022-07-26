@@ -1,5 +1,5 @@
-import * as actionTypes from "./actionTypes";
 import { EDIT_INTERPLAZA_INIT, EDIT_INTERPLAZA_SUCCESS } from "../../settings/clients/actionTypes";
+import * as actionTypes from "./actionTypes";
 
 const initialState = {
   allOrders: [],
@@ -12,9 +12,8 @@ export default function currencyExchangeReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case actionTypes.VALIDATE_EXCHANGE:
-    case actionTypes.APPROVE_EXCHANGE:
-    case actionTypes.DECLINE_EXCHANGE:
+    case actionTypes.CHANGE_STATUS.INIT:
+    case actionTypes.PROCESS_ORDER.INIT:
     case actionTypes.EDIT_EXCHANGE:
     case actionTypes.CREATE_INVOICE:
     case EDIT_INTERPLAZA_INIT:
@@ -26,9 +25,8 @@ export default function currencyExchangeReducer(state = initialState, action) {
     case actionTypes.DOWNLOAD_CONCILIATION.INIT:
       return { ...state, isProcessing: true };
 
-    case actionTypes.VALIDATE_EXCHANGE_SUCCESS:
-    case actionTypes.APPROVE_EXCHANGE_SUCCESS:
-    case actionTypes.DECLINE_EXCHANGE_SUCCESS:
+    case actionTypes.CHANGE_STATUS.SUCCESS:
+    case actionTypes.PROCESS_ORDER.SUCCESS:
     case actionTypes.EDIT_EXCHANGE_SUCCESS:
     case EDIT_INTERPLAZA_SUCCESS:
     case actionTypes.SET_REVISION_SUCCESS:
@@ -46,6 +44,7 @@ export default function currencyExchangeReducer(state = initialState, action) {
       return { ...state, details: payload.details, isLoading: false };
 
     case actionTypes.CREATE_INVOICE_SUCCESS:
+    case actionTypes.CHANGE_STATUS.CANCELLED:
       return { ...state, isProcessing: false };
 
     case actionTypes.API_ERROR:

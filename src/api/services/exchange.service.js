@@ -309,18 +309,9 @@ export const changeOrderStatusSvc = async (id, status) => {
   }
 };
 
-export const validateExchangeSvc = async (orderId) => {
+export const ChangeStatusSvc = async (orderId, status) => {
   try {
-    const response = await getAxiosInstance("exchange", "v1").put(`/order/status/${orderId}`, { status: 4 });
-    if (response.status >= 400) throw new Error(response.errors[0]);
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const declineExchangeSvc = async (orderId) => {
-  try {
-    const response = await getAxiosInstance("exchange", "v1").put(`/order/status/${orderId}`, { status: 5 });
+    const response = await getAxiosInstance("exchange", "v1").put(`/order/status/${orderId}`, { status });
     if (response.status >= 400) throw new Error(response.errors[0]);
   } catch (error) {
     throw error;
