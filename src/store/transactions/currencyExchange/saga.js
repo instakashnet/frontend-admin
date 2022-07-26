@@ -7,18 +7,25 @@ import { getExchangesRelationSvc } from "../../../api/services/auth.service";
 import {
   approveExchangeSvc,
   changeOrderStatusSvc,
+  ChangeStatusSvc,
   createInvoiceSvc,
-  declineExchangeSvc,
   editExchangeSvc,
   getExchangeDetailsSvc,
   reassignOrderSvc,
   setRevisionSvc,
   uploadVoucherSvc,
-  validateExchangeSvc,
 } from "../../../api/services/exchange.service";
 import { getClientExchangesSuccess, setAlert } from "../../actions";
 import * as actions from "./actions";
 import * as actionTypes from "./actionTypes";
+
+const ORDER_STATUS = {
+  3: "VALIDANDO",
+  4: "PROCESANDO",
+  5: "CANCELADA",
+  6: "EXITOSA",
+  7: "VALIDAR TASA",
+};
 
 // UTILS
 function base64ToArrayBuffer(base64) {
@@ -125,52 +132,30 @@ function* changeOrderStatus({ status, id }) {
   }
 }
 
-function* validateExchange({ orderId }) {
+function* changeStatus({ orderId, statusId }) {
   try {
     const result = yield Swal.fire({
-      title: `¿Deseas validar esta operación?`,
+      title: `¿Deseas pasar esta operación a: ${ORDER_STATUS[statusId]}?`,
       text: "Al continuar no podrás revertir este estado.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: `Sí, continuar`,
-      cancelButtonText: "No, cancelar",
+      cancelButtonText: "No, regresar",
       cancelButtonColor: "#f46a6a",
     });
     if (result.isConfirmed) {
-      yield call(validateExchangeSvc, orderId);
+      yield call(ChangeStatusSvc, orderId, statusId);
       yield call(getExchangeDetails, { id: orderId });
-      yield Swal.fire("Exitoso", `La operación fue validada correctamente.`, "success");
-      yield put(actions.validateExchangeSuccess());
-    } else yield put(actions.apiError());
+      yield Swal.fire("Exitoso", `La operación pasó a ${ORDER_STATUS[statusId]} correctamente.`, "success");
+      yield put(actions.changeStatusSuccess());
+    } else yield put(actions.changeStatusCancelled());
   } catch (error) {
     if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
   }
 }
 
-function* declineExchange({ orderId }) {
-  try {
-    const result = yield Swal.fire({
-      title: `¿Deseas cancelar esta operación?`,
-      text: "Al continuar no podrás revertir este estado.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: `Sí, continuar.`,
-      cancelButtonText: "No, cancelar.",
-      cancelButtonColor: "#f46a6a",
-    });
-    if (result.isConfirmed) {
-      yield call(declineExchangeSvc, orderId);
-      yield call(getExchangeDetails, { id: orderId });
-      yield put(actions.declineExchangeSuccess());
-    } else yield put(actions.apiError());
-  } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
-    yield put(actions.apiError());
-  }
-}
-
-function* uploadVoucher({ orderId, values, closeModal }) {
+function* processOrder({ orderId, values, closeModal }) {
   const formData = new FormData();
   formData.append("file", values.file);
   try {
@@ -185,23 +170,16 @@ function* uploadVoucher({ orderId, values, closeModal }) {
     });
     if (result.isConfirmed) {
       yield call(uploadVoucherSvc, orderId, formData);
-      yield call(approveExchange, { orderId, transactionCode: values.transactionCodeFinalized, closeModal });
+      yield call(approveExchangeSvc, orderId, values.transactionCodeFinalized);
+      yield call(closeModal);
+      yield call(getExchangeDetails, { id: orderId });
+
+      yield Swal.fire("Exitoso", `La operación fue aprobada correctamente.`, "success");
+      yield put(actions.processOrderSuccess());
     } else yield put(actions.apiError());
   } catch (error) {
     if (error?.message) yield put(setAlert("danger", error.message));
     yield put(actions.apiError());
-  }
-}
-
-function* approveExchange({ orderId, transactionCode, closeModal }) {
-  try {
-    yield call(approveExchangeSvc, orderId, transactionCode);
-    yield call(getExchangeDetails, { id: orderId });
-    yield call(closeModal);
-    yield Swal.fire("Exitoso", `La operación fue aprobada correctamente.`, "success");
-    yield put(actions.approveExchangeSuccess());
-  } catch (error) {
-    throw error;
   }
 }
 
@@ -274,16 +252,12 @@ export function* watchChangeOrderStatus() {
   yield takeLatest(actionTypes.CHANGE_ORDER_STATUS_INIT, changeOrderStatus);
 }
 
-export function* watchValidateExchange() {
-  yield takeEvery(actionTypes.VALIDATE_EXCHANGE, validateExchange);
+export function* watchChangeStatus() {
+  yield takeEvery(actionTypes.CHANGE_STATUS.INIT, changeStatus);
 }
 
-export function* watchApproveExchange() {
-  yield takeEvery(actionTypes.APPROVE_EXCHANGE, uploadVoucher);
-}
-
-export function* watchDeclineExchange() {
-  yield takeEvery(actionTypes.DECLINE_EXCHANGE, declineExchange);
+export function* watchProcessOrder() {
+  yield takeEvery(actionTypes.PROCESS_ORDER.INIT, processOrder);
 }
 
 export function* watchCreateInvoice() {
@@ -304,9 +278,8 @@ export default function* currencyExchangeSaga() {
     fork(watchExchangesRelation),
     fork(watchUploadBankConciliation),
     fork(watchDownloadBankConciliation),
-    fork(watchApproveExchange),
-    fork(watchValidateExchange),
-    fork(watchDeclineExchange),
+    fork(watchProcessOrder),
+    fork(watchChangeStatus),
     fork(watchChangeOrderStatus),
     fork(watchEditExchange),
     fork(watchCreateInvoice),

@@ -5,16 +5,7 @@ import { Col, Container, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
 // CUSTOM HOOKS
 import { useRole } from "../../../hooks/useRole";
 // REDUX ACTIONS
-import {
-  approveExchange,
-  changeOrderStatus,
-  createInvoice,
-  declineExchange,
-  getClientExchanges,
-  getExchangeDetails,
-  setRevisionInit,
-  validateExchange,
-} from "../../../store/actions";
+import { changeOrderStatus, changeStatusInit, createInvoice, getClientExchanges, getExchangeDetails, processOrderInit, setRevisionInit } from "../../../store/actions";
 // COMPONENTS
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import { ActionButtons } from "../components/details/action-buttons.component";
@@ -54,20 +45,13 @@ export const ExchangeDetailsScreen = (props) => {
     (status, type = null) => {
       if (type === "change") return dispatch(changeOrderStatus(details.id, status));
 
-      switch (status) {
-        case 4:
-          return dispatch(validateExchange(details.id, history));
-        case 5:
-          return dispatch(declineExchange(details.id, history));
-        case 6:
-          return showFormHandler("complete");
-        default:
-          break;
-      }
+      if (status === 6) return showFormHandler("complete");
+
+      return dispatch(changeStatusInit(details.id, status, setModal));
     },
-    [details, dispatch, history]
+    [details, dispatch]
   );
-  const onApproveExchange = (values) => dispatch(approveExchange(id, values, showFormHandler));
+  const onApproveExchange = (values) => dispatch(processOrderInit(id, values, showFormHandler));
   const onCreateInvoice = () => dispatch(createInvoice(id));
   const onSetReview = () => {
     let valuesRevision = {
