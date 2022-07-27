@@ -39,44 +39,29 @@ export const getExchangeDetailsSuccess = (details) => ({
   payload: { details },
 });
 
-export const validateExchange = (orderId, history) => ({
-  type: actionTypes.VALIDATE_EXCHANGE,
+export const changeStatusInit = (orderId, statusId) => ({
+  type: actionTypes.CHANGE_STATUS.INIT,
   orderId,
-  history,
+  statusId,
 });
 
-export const validateExchangeSuccess = () => ({
-  type: actionTypes.VALIDATE_EXCHANGE_SUCCESS,
+export const changeStatusSuccess = () => ({
+  type: actionTypes.CHANGE_STATUS.SUCCESS,
 });
 
-export const approveExchange = (orderId, values, closeModal) => ({
-  type: actionTypes.APPROVE_EXCHANGE,
+export const changeStatusCancelled = () => ({
+  type: actionTypes.CHANGE_STATUS.CANCELLED,
+});
+
+export const processOrderInit = (orderId, values, closeModal) => ({
+  type: actionTypes.PROCESS_ORDER.INIT,
   orderId,
   values,
   closeModal,
 });
 
-export const approveExchangeSuccess = () => ({
-  type: actionTypes.APPROVE_EXCHANGE_SUCCESS,
-});
-
-export const approveExchangeCancel = () => ({
-  type: actionTypes.APPROVE_EXCHANGE_CANCELED,
-});
-
-export const declineExchange = (orderId, history, closeModal) => ({
-  type: actionTypes.DECLINE_EXCHANGE,
-  orderId,
-  history,
-  closeModal,
-});
-
-export const declineExchangeSuccess = () => ({
-  type: actionTypes.DECLINE_EXCHANGE_SUCCESS,
-});
-
-export const declineExchangeCancel = () => ({
-  type: actionTypes.DECLINE_EXCHANGE_CANCELED,
+export const processOrderSuccess = () => ({
+  type: actionTypes.PROCESS_ORDER.SUCCESS,
 });
 
 export const editExchange = (id, values, closeModal) => ({

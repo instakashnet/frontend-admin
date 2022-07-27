@@ -5,7 +5,7 @@ import { getAllOrders } from "../../../api/services/exchange.service";
 import { formatOrders } from "../../../helpers/functions";
 import { exchangesColumns } from "../../../helpers/tables/columns";
 import { useRole } from "../../../hooks/useRole";
-import { setAlert } from "../../../store/actions";
+import { changeStatusInit, setAlert } from "../../../store/actions";
 
 //Components
 import { Table } from "../../../components/UI/tables/table.component";
@@ -36,7 +36,7 @@ export const AllExchangesScreen = () => {
 
       try {
         const tableData = await getAllOrders(pageCount, search),
-          orders = formatOrders(tableData, "orders");
+          orders = formatOrders(tableData, "orders", role);
 
         setData(orders);
       } catch (error) {
@@ -45,13 +45,15 @@ export const AllExchangesScreen = () => {
         setIsLoading(false);
       }
     },
-    [dispatch, search]
+    [dispatch, search, role]
   );
 
   // EFFECTS
   useEffect(() => {
     getTableData();
   }, [getTableData]);
+
+  const onChangeStatus = (orderId, statusId) => dispatch(changeStatusInit(orderId, statusId));
 
   return (
     <div className="page-content">
@@ -83,7 +85,7 @@ export const AllExchangesScreen = () => {
                 <div className="table-responsive">
                   <Table
                     title="Órdenes recibidas"
-                    columns={exchangesColumns}
+                    columns={exchangesColumns({ onChangeStatus })}
                     data={data}
                     isLoading={isLoading}
                     getData={getTableData}

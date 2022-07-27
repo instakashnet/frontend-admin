@@ -335,6 +335,12 @@ export const banksColumns = ({ onForm, onToggle }) => [
         <button className="mx-2" onClick={() => onToggle(row.original.id, !row.original.enabled)}>
           {row.original.enabled ? <Block color="error" /> : <PowerSettingsNewOutlined htmlColor="#20a2a5" />}
         </button>
+        <button className="mx-2" onClick={() => onToggle(row.original.id, !row.original.enabled)}>
+          {row.original.enabled ? <Block color="error" /> : <PowerSettingsNewOutlined htmlColor="#20a2a5" />}
+        </button>
+        <button className="mx-2" onClick={() => onToggle(row.original.id, !row.original.enabled)}>
+          {row.original.enabled ? <Block color="error" /> : <PowerSettingsNewOutlined htmlColor="#20a2a5" />}
+        </button>
       </div>
     ),
   },
@@ -412,7 +418,7 @@ export const clientsNotCompletedColumns = [
   },
 ];
 
-export const exchangesColumns = [
+export const exchangesColumns = ({ onChangeStatus }) => [
   {
     Header: "Nro. de orden",
     accessor: "pedidoId",
@@ -440,6 +446,11 @@ export const exchangesColumns = [
     Cell: ({ cell }) => <p className="font-bold text-white">{cell.value}</p>,
   },
   {
+    Header: "TC",
+    accessor: "rate",
+    Cell: ({ cell }) => <p className="font-bold text-white">{cell.value}</p>,
+  },
+  {
     Header: "Origen",
     accessor: "originBank",
     Cell: ({ cell }) => <img width={cell.value === "kash" ? 40 : 70} src={`${process.env.PUBLIC_URL}/images/banks/${cell.value.toLowerCase()}.svg`} alt={cell.value} />,
@@ -461,7 +472,7 @@ export const exchangesColumns = [
         }}
         pill
       >
-        {row.original.revision ? "En Revisión" : row.original.statusName.toLowerCase()}
+        <span style={{ textShadow: "1px .5px 3px #999" }}>{row.original.revision ? "En Revisión" : row.original.statusName.toLowerCase()}</span>
       </Badge>
     ),
   },
@@ -473,10 +484,30 @@ export const exchangesColumns = [
   {
     Header: "Acción",
     accessor: "id",
-    Cell: ({ cell }) => (
-      <Link className="btn py-1 px-2 btn-action w-20" to={`/exchange-details/${cell.value}`}>
-        Ver más
-      </Link>
+    Cell: ({ cell, row }) => (
+      <div className="flex flex-col items-center justify-center">
+        <Link className="btn py-1 px-2 my-2 btn-blue waves-effect waves-light w-20" to={`/exchange-details/${cell.value}`}>
+          Ver más
+        </Link>
+        {(row.original.role === "officers" || row.original.role === "admin") && row.original.statusId === 7 && (
+          <>
+            <button
+              onClick={() => onChangeStatus(row.original.id, 4)}
+              className="btn py-1 px-2 my-2 btn-success waves-effect waves-light w-20"
+              to={`/exchange-details/${cell.value}`}
+            >
+              validar
+            </button>
+            <button
+              onClick={() => onChangeStatus(row.original.id, 5)}
+              className="btn py-1 px-2 my-2 btn-danger waves-effect waves-light w-20"
+              to={`/exchange-details/${cell.value}`}
+            >
+              cancelar
+            </button>
+          </>
+        )}
+      </div>
     ),
   },
 ];

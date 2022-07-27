@@ -21,7 +21,6 @@ COPY ./ ./
 RUN yarn build:$REACT_APP_STAGE
 
 FROM 160743850946.dkr.ecr.us-east-2.amazonaws.com/docker-library:nginx-alpine
-
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
 COPY container /
 RUN \

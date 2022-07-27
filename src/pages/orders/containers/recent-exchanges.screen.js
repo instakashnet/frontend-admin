@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Card, CardBody, Col, Row, Container } from "reactstrap";
+import React, { useEffect, useRef, useState } from "react";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
 // REDUX
-import { useSelector } from "react-redux";
-import { setAlert } from "../../../store/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { useRole } from "../../../hooks/useRole";
+import { changeStatusInit, setAlert } from "../../../store/actions";
 
 // HELPERS
 import { formatOrders } from "../../../helpers/functions";
@@ -17,9 +18,12 @@ const WS_URL = process.env.REACT_APP_STAGE === "prod" ? "wss://ws.instakash.net"
 
 export const RecentExchangesScreen = () => {
   const websocket = useRef(null),
+    dispatch = useDispatch(),
     [isLoading, setIsLoading] = useState(true),
     [data, setData] = useState([]),
-    { token } = useSelector((state) => state.Login);
+    { token } = useSelector((state) => state.Login),
+    user = useSelector((state) => state.Login.user),
+    [role] = useRole(user);
 
   useEffect(() => {
     websocket.current = new WebSocket(`${WS_URL}/ws?token=${token}&service=orders`);
@@ -45,12 +49,14 @@ export const RecentExchangesScreen = () => {
       setIsLoading(true);
 
       const data = JSON.parse(event.data),
-        orders = formatOrders(JSON.parse(data.data), "orders");
+        orders = formatOrders(JSON.parse(data.data), "orders", role);
 
       setData(orders);
       setIsLoading(false);
     };
   });
+
+  const onChangeStatus = (orderId, statusId) => dispatch(changeStatusInit(orderId, statusId));
 
   return (
     <div className="page-content">
@@ -60,7 +66,13 @@ export const RecentExchangesScreen = () => {
             <Card>
               <CardBody>
                 <div className="table-responsive">
-                  <Table title="Ordenes recibidas" columns={exchangesColumns} data={data} isLoading={isLoading} pagination={{ pageSize: PAGE_SIZE, async: false }} />
+                  <Table
+                    title="Ordenes recibidas"
+                    columns={exchangesColumns({ onChangeStatus })}
+                    data={data}
+                    isLoading={isLoading}
+                    pagination={{ pageSize: PAGE_SIZE, async: false }}
+                  />
                 </div>
               </CardBody>
             </Card>
