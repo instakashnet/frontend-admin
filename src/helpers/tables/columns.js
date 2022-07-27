@@ -472,7 +472,7 @@ export const exchangesColumns = ({ onChangeStatus }) => [
         }}
         pill
       >
-        {row.original.revision ? "En Revisión" : row.original.statusName.toLowerCase()}
+        <span style={{ textShadow: "1px .5px 3px #999" }}>{row.original.revision ? "En Revisión" : row.original.statusName.toLowerCase()}</span>
       </Badge>
     ),
   },
