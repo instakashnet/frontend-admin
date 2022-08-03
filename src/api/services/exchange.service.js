@@ -6,7 +6,7 @@ export const getAllOrders = async (page, search) => {
   if (search) URL = `${URL}&search=${search.toLowerCase()}`;
 
   try {
-    const response = await getAxiosInstance("exchange", "v2").get(URL);
+    const response = await getAxiosInstance("exchange", "v1").get(URL);
 
     if (response.status >= 400) throw new Error(response.errors[0]);
 
