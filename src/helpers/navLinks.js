@@ -63,19 +63,19 @@ export const configLinks = [
     path: "/!#",
     icon: "bx bx-user",
     label: "Usuarios",
-    roles: ["admin", "manager", "marketing"],
+    roles: ["admin", "manager", "marketing", "accountant"],
     subNavs: [
       {
         path: "/users-list",
         icon: "bx bx-id-card",
         label: "Lista de usuarios",
-        roles: ["admin", "manager", "marketing"],
+        roles: ["admin", "manager", "marketing", "accountant"],
       },
       {
         path: "/users-accounts",
         icon: "bx bx-list-ol",
         label: "Cuentas de usuarios",
-        roles: ["admin", "manager"],
+        roles: ["admin", "manager", "accountant"],
       },
     ],
   },
