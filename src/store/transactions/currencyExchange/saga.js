@@ -57,6 +57,8 @@ function* getExchangesRelation({ values, excelType }) {
 
   if (values.bank) URL += `&bank=${values.bank}`;
   if (values.statusId) URL += `&status=${values.statusId}`;
+  if (values.isDay && values.balanceFlag)
+    URL += `&balanceFlag=${values.balanceFlag}&initialAmountPEN=${values.initialAmountPEN}&initialAmountUSD=${values.initialAmountUSD}&rateInit=${values.rateInit}&rateEnd=${values.rateEnd}`;
 
   try {
     const res = yield call(getExchangesRelationSvc, URL);

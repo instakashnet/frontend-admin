@@ -9,7 +9,19 @@ import Select from "../../../../components/UI/FormItems/Select";
 
 export const CreateExcel = ({ isProcessing, excelType, dispatch }) => {
   const formik = useFormik({
-    initialValues: { start: "", statusId: "", end: "", bank: "", couponName: "", isDay: false },
+    initialValues: {
+      start: "",
+      statusId: "",
+      end: "",
+      bank: "",
+      couponName: "",
+      isDay: false,
+      balanceFlag: false,
+      initialAmountPEN: "",
+      initialAmountUSD: "",
+      rateInit: 0,
+      rateEnd: 0,
+    },
     onSubmit: (values) => dispatch(getExchangesRelationInit(values, excelType)),
   });
 
@@ -62,10 +74,42 @@ export const CreateExcel = ({ isProcessing, excelType, dispatch }) => {
               dateFormat="dd-MM-yyyy HH:mm"
             />
           </div>
-          <div className="grid md:grid-cols-2">
+          <div className="grid md:grid-cols-2 gap-4">
             <Select label="Banco (opcional)" name="bank" options={bankOptions} onChange={formik.handleChange} onBlur={formik.handleBlur} />
             <Select label="Estado (opcional)" name="statusId" options={statusOptions} onChange={formik.handleChange} onBlur={formik.handleBlur} />
           </div>
+          {formik.values.isDay && (
+            <div className="flex items-center justify-center">
+              <Checkbox name="balanceFlag" value={formik.values.balanceFlag} onChange={formik.handleChange} onBlur={formik.handleBlur} label="Agregar utilidad diaria" />
+            </div>
+          )}
+
+          {formik.values.balanceFlag && formik.values.isDay && (
+            <>
+              <div className="grid md:grid-cols-2 gap-4">
+                <Input
+                  name="initialAmountPEN"
+                  label="Saldo inicial soles"
+                  value={formik.values.initialAmountPEN}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  type="number"
+                />
+                <Input
+                  name="initialAmountUSD"
+                  label="Saldo inicial dólares"
+                  value={formik.values.initialAmountUSD}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  type="number"
+                />
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <Input name="rateInit" label="Tasa apertura" value={formik.values.rateInit} onChange={formik.handleChange} onBlur={formik.handleBlur} type="number" />
+                <Input name="rateEnd" label="Tasa cierre" value={formik.values.rateEnd} onChange={formik.handleChange} onBlur={formik.handleBlur} type="number" />
+              </div>
+            </>
+          )}
         </>
       )}
       <div className="flex justify-center mt-1 mb-3">
