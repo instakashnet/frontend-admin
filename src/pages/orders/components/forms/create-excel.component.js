@@ -17,8 +17,10 @@ export const CreateExcel = ({ isProcessing, excelType, dispatch }) => {
       couponName: "",
       isDay: false,
       balanceFlag: false,
-      initialAmountPEN: "",
-      initialAmountUSD: "",
+      initialAmountPENBCP: "",
+      initialAmountUSDBCP: "",
+      initialAmountPENIBK: "",
+      initialAmountUSDIBK: "",
       rateInit: 0,
       rateEnd: 0,
     },
@@ -86,19 +88,39 @@ export const CreateExcel = ({ isProcessing, excelType, dispatch }) => {
 
           {formik.values.balanceFlag && formik.values.isDay && (
             <>
+              <p>Saldos iniciales BCP</p>
               <div className="grid md:grid-cols-2 gap-4">
                 <Input
-                  name="initialAmountPEN"
-                  label="Saldo inicial soles"
-                  value={formik.values.initialAmountPEN}
+                  name="initialAmountPENBCP"
+                  label="Soles S/."
+                  value={formik.values.initialAmountPENBCP}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   type="number"
                 />
                 <Input
-                  name="initialAmountUSD"
-                  label="Saldo inicial dólares"
-                  value={formik.values.initialAmountUSD}
+                  name="initialAmountUSDBCP"
+                  label="Dólares $"
+                  value={formik.values.initialAmountUSDBCP}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  type="number"
+                />
+              </div>
+              <p>Saldos iniciales INTERBANK</p>
+              <div className="grid md:grid-cols-2 gap-4">
+                <Input
+                  name="initialAmountPENIBK"
+                  label="Soles S/."
+                  value={formik.values.initialAmountPENIBK}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  type="number"
+                />
+                <Input
+                  name="initialAmountUSDIBK"
+                  label="Dólares $"
+                  value={formik.values.initialAmountUSDIBK}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   type="number"
