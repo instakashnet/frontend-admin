@@ -1,5 +1,6 @@
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { getAdminsWorkerSvc, getOperatorsWorkerSvc, setOperatorOnlineSvc } from "../../../api/services/auth.service";
+import { getOpenedStatusSvc, updateOpenedStatusSvc } from "../../../api/services/exchange.service";
 import * as actions from "./actions";
 import * as types from "./types";
 
@@ -30,10 +31,32 @@ function* setOperatorOnline({ userId }) {
   }
 }
 
+function* getOpenedStatusWorker() {
+  try {
+    const res = yield getOpenedStatusSvc();
+
+    yield put(actions.getOpenedStatusSuccess(res.isOpen));
+  } catch (error) {
+    yield put(actions.getOpenedStatusError());
+  }
+}
+
+function* updateOpenedStatusWorker({ status }) {
+  try {
+    const res = yield updateOpenedStatusSvc({ open: status });
+
+    yield put(actions.updateOpenedStatusSuccess(res.value));
+  } catch (error) {
+    yield put(actions.getOpenedStatusError());
+  }
+}
+
 export function* adminsSaga() {
   yield all([
     yield takeEvery(types.GET_ADMINS.INIT, getAdminsWorker),
     yield takeEvery(types.GET_OPERATORS.INIT, getOperatorsWorker),
     yield takeEvery(types.SET_ONLINE.INIT, setOperatorOnline),
+    yield takeEvery(types.GET_OPENED_STATUS.INIT, getOpenedStatusWorker),
+    yield takeLatest(types.UPDATE_OPENED_STATUS.INIT, updateOpenedStatusWorker),
   ]);
 }

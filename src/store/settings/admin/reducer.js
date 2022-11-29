@@ -3,6 +3,7 @@ import * as types from "./types";
 const initialState = {
   admins: [],
   operators: [],
+  opened: null,
   isLoading: true,
   isProcessing: false,
   error: null,
@@ -25,6 +26,18 @@ const usersReducer = (state = initialState, action) => {
       return { ...state, isProcessing: true };
     case types.SET_ONLINE.SUCCESS:
     case types.SET_ONLINE.ERROR:
+      return { ...state, isProcessing: false };
+    case types.GET_OPENED_STATUS.INIT:
+      return { ...state, isProcessing: true };
+    case types.GET_OPENED_STATUS.SUCCESS:
+      return { ...state, isProcessing: false, opened: action.payload };
+    case types.GET_OPENED_STATUS.ERROR:
+      return { ...state, isProcessing: false, opened: null };
+    case types.UPDATE_OPENED_STATUS.INIT:
+      return { ...state, isProcessing: true };
+    case types.UPDATE_OPENED_STATUS.SUCCESS:
+      return { ...state, isProcessing: false, opened: action.payload };
+    case types.UPDATE_OPENED_STATUS.ERROR:
       return { ...state, isProcessing: false };
     default:
       return state;

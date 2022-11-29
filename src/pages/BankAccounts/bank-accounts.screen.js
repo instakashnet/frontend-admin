@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Col, Container, Row, Spinner } from "reactstrap";
-import { getCbAccounts, updateBalance } from "../../store/actions";
+import { getCbAccounts, getOpenedStatusInit, updateBalance, updateOpenedStatusInit } from "../../store/actions";
 
 import AccountsTable from "./components/accounts-table.component";
 import AddAccount from "./components/forms/add-account.component";
@@ -14,9 +14,11 @@ export const BankAccountsScreen = () => {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const dispatch = useDispatch();
   const { accounts, isLoading, isProcessing, activeBalance } = useSelector((state) => state.BankAccounts);
+  const { opened, isProcessing: statusProcessing } = useSelector((state) => state.AdminUsers);
 
   useEffect(() => {
     dispatch(getCbAccounts());
+    dispatch(getOpenedStatusInit());
   }, [dispatch]);
 
   let FormComponent;
@@ -44,6 +46,9 @@ export const BankAccountsScreen = () => {
       <Container fluid>
         <Button type="button" color="secondary" className="mb-3 ml-3" onClick={() => dispatch(updateBalance(activeBalance))}>
           {isProcessing || isLoading ? <Spinner size="sm" /> : !activeBalance ? "Desactivar saldo" : "Activar saldo real"}
+        </Button>
+        <Button type="button" color={!opened ? "success" : "danger"} className="mb-3 ml-3" onClick={() => dispatch(updateOpenedStatusInit(!opened))}>
+          {statusProcessing || isLoading ? <Spinner size="sm" /> : !opened ? "Abrir casa de cambio" : "Cerrar casa de cambio"}
         </Button>
         <Row>
           <Col lg="8">

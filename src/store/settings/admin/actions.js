@@ -46,3 +46,38 @@ export const setOperatorOnlineSuccess = () => ({
 export const setOperatorOnlineError = () => ({
   type: types.SET_ONLINE.ERROR,
 });
+
+// --------------- //
+
+// GET OPENED STATUS
+
+export const getOpenedStatusInit = () => ({
+  type: types.GET_OPENED_STATUS.INIT,
+});
+
+export const getOpenedStatusSuccess = (status) => ({
+  type: types.GET_OPENED_STATUS.SUCCESS,
+  payload: status,
+});
+
+export const getOpenedStatusError = () => ({
+  type: types.GET_OPENED_STATUS.ERROR,
+});
+
+// --------------- //
+
+// UPDATE OPENED STATUS
+
+export const updateOpenedStatusInit = (status) => ({
+  type: types.UPDATE_OPENED_STATUS.INIT,
+  status,
+});
+
+export const updateOpenedStatusSuccess = (status) => ({
+  type: types.UPDATE_OPENED_STATUS.SUCCESS,
+  payload: status,
+});
+
+export const updateOpenedStatusError = () => ({
+  type: types.UPDATE_OPENED_STATUS.ERROR,
+});
