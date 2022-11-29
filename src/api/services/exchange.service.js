@@ -210,6 +210,28 @@ export const getExchangeDetailsSvc = async (id) => {
   }
 };
 
+export const getOpenedStatusSvc = async () => {
+  try {
+    const response = await getAxiosInstance("exchange", "v1").get("/order/money-exchange/get");
+    if (response.status >= 400) throw new Error(response.errors[0]);
+
+    return camelize(response.data);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateOpenedStatusSvc = async (values) => {
+  try {
+    const response = await getAxiosInstance("exchange", "v1").put("/order/money-exchange/update", values);
+    if (response.status >= 400) throw new Error(response.errors[0]);
+
+    return camelize(response.data);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const addCurrencyPriceSvc = async (ratesValues) => {
   try {
     const response = await getAxiosInstance("exchange", "v1").post("/rates", ratesValues);
