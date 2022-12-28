@@ -4,6 +4,7 @@ metadata:
   labels:
     app: frontend-admin
   name: frontend-admin
+  namespace: instakash-production
 spec:
   ports:
     - name: http

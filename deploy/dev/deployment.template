@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-admin
-  namespace: app
+  namespace: instakash-dev
   labels:
     app: frontend-admin
 spec:
@@ -20,15 +20,7 @@ spec:
       labels:
         app: frontend-admin
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nodegroup
-                operator: In
-                values:
-                - app
+      affinity: {}
       restartPolicy: Always
       dnsPolicy: ClusterFirst
       containers:
