@@ -29,7 +29,7 @@ phases:
       - envsubst < deployment.template > deployment.yaml
       - cat deployment.yaml
       - rm deployment.template
-      - aws eks update-kubeconfig --region us-east-2 --name $K8S_CLUSTER 
+      - aws eks update-kubeconfig --region us-east-1 --name instakash-core
       - kubectl apply -f . -n $K8S_NAMESPACE
 
 
