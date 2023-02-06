@@ -1,4 +1,4 @@
-import * as actionTypes from "./actionTypes";
+import * as actionTypes from './actionTypes';
 
 export const getClientDetails = (userId) => ({
   type: actionTypes.GET_CLIENT_DETAILS,
@@ -124,12 +124,11 @@ export const editInterplazaSuccess = () => ({
   type: actionTypes.EDIT_INTERPLAZA_SUCCESS,
 });
 
-export const uploadDocumentInit = (values, uploadType, userId, close, setPercentage) => ({
+export const uploadDocumentInit = (values, userId, docType, setPercentage) => ({
   type: actionTypes.UPLOAD_DOCUMENT_INIT,
   values,
-  uploadType,
   userId,
-  close,
+  docType,
   setPercentage,
 });
 
