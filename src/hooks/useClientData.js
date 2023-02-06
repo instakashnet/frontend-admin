@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export const useClientData = (user) => {
   const [completed, setCompleted] = useState(0);
-  const [color, setColor] = useState("");
+  const [color, setColor] = useState('');
+
+  const level = +user?.level;
 
   useEffect(() => {
-    if (user?.level === 1) {
-      setCompleted(33);
-      setColor("#ff4b55");
-    } else if (user?.level === 2) {
+    if (level === 2) {
       setCompleted(66);
-      setColor("#eb9824");
-    } else if (user?.level === 3) {
+      setColor('#eb9824');
+    } else if (level === 3) {
       setCompleted(100);
-      setColor("#20a2a5");
+      setColor('#20a2a5');
     } else {
-      setCompleted(0);
+      setCompleted(33);
+      setColor('#ff4b55');
     }
-  }, [user]);
+  }, [level]);
 
   return { completed, color };
 };

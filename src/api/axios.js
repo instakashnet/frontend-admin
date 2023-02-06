@@ -1,7 +1,7 @@
-import axios from "axios";
-import { setAxiosInterceptor } from "./interceptors";
+import axios from 'axios';
+import { setAxiosInterceptor } from './interceptors';
 
-const BASE_URL = process.env.REACT_APP_STAGE === "prod" ? "https://api.instakash.net" : "https://api.dev.instakash.net";
+const BASE_URL = process.env.REACT_APP_STAGE === 'prod' ? 'https://api.instakash.net' : 'https://api.dev.instakash.net';
 
 const instancesURL = {
   exchange: {
@@ -13,6 +13,9 @@ const instancesURL = {
   },
   accounts: {
     v1: `${BASE_URL}/accounts-service/api/v1/admin`,
+  },
+  base: {
+    v1: BASE_URL,
   },
 };
 
