@@ -5,7 +5,7 @@
 // topbar.scss
 
 .navbar-header {
-  padding: 0 0 0 calc(math.div(#{$grid-gutter-width}, 2));
+  padding: 0 0 0 calc(#{$grid-gutter-width} / 2);
 }
 
 .main-content {

@@ -1,4 +1,3 @@
-@use 'sass:math';
 // _header.scss
 //
 
@@ -19,7 +18,7 @@
   align-items: center;
   margin: 0 auto;
   height: $header-height;
-  padding: 0 calc(math.div(#{$grid-gutter-width}, 2)) 0 0;
+  padding: 0 calc(#{$grid-gutter-width} / 2) 0 0;
 
   .dropdown.show {
     .header-item {
@@ -100,7 +99,7 @@
 }
 
 .page-content {
-  padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(math.div(#{$grid-gutter-width}, 2)) $footer-height calc(math.div(#{$grid-gutter-width}, 2));
+  padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} / 2) $footer-height calc(#{$grid-gutter-width} / 2);
 }
 
 .header-item {
@@ -273,7 +272,7 @@ body[data-layout='horizontal'] {
   }
   .page-content {
     margin-top: $header-height;
-    padding: calc(55px + #{$grid-gutter-width}) calc(math.div(#{$grid-gutter-width}, 2)) $footer-height calc(math.div(#{$grid-gutter-width}, 2));
+    padding: calc(55px + #{$grid-gutter-width}) calc(#{$grid-gutter-width} / 2) $footer-height calc(#{$grid-gutter-width} / 2);
   }
 }
 

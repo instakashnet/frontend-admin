@@ -1,10 +1,9 @@
-@use 'sass:math';
 // _horizontal.scss
 //
 
 .topnav {
   background: $topnav-bg;
-  padding: 0 calc(math.div(#{$grid-gutter-width}, 2));
+  padding: 0 calc(#{$grid-gutter-width} / 2);
   box-shadow: $box-shadow;
   margin-top: $header-height;
   position: fixed;

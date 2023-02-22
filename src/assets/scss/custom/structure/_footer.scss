@@ -1,10 +1,9 @@
-@use 'sass:math';
 // _footer.scss
 //
 
 .footer {
   bottom: 0;
-  padding: 20px calc(math.div(#{$grid-gutter-width}, 2));
+  padding: 20px calc(#{$grid-gutter-width} / 2);
   position: absolute;
   right: 0;
   color: $footer-color;
