@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const uploadBankConciliationSvc = async (formData) => {
   try {
-    const response = await axios.post("https://instacash-api.openplata.com/api/v1/banco/procesos/archivo-cargar", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+    const response = await axios.post('https://instacash-api.openplata.com/api/v1/banco/procesos/archivo-cargar', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
       onUploadProgress: (progressEvent) => console.log(progressEvent),
     });
 

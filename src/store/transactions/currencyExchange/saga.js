@@ -1,9 +1,9 @@
-import fileDownload from "js-file-download";
-import moment from "moment";
-import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
-import Swal from "sweetalert2";
-import { downloadBankConciliationSvc, uploadBankConciliationSvc } from "../../../api/lib/conciliation";
-import { getExchangesRelationSvc } from "../../../api/services/auth.service";
+import fileDownload from 'js-file-download';
+import moment from 'moment';
+import { all, call, fork, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import Swal from 'sweetalert2';
+import { downloadBankConciliationSvc, uploadBankConciliationSvc } from '../../../api/lib/conciliation';
+import { getExchangesRelationSvc } from '../../../api/services/auth.service';
 import {
   approveExchangeSvc,
   changeOrderStatusSvc,
@@ -14,17 +14,17 @@ import {
   reassignOrderSvc,
   setRevisionSvc,
   uploadVoucherSvc,
-} from "../../../api/services/exchange.service";
-import { getClientExchangesSuccess, setAlert } from "../../actions";
-import * as actions from "./actions";
-import * as actionTypes from "./actionTypes";
+} from '../../../api/services/exchange.service';
+import { getClientExchangesSuccess, setAlert } from '../../actions';
+import * as actions from './actions';
+import * as actionTypes from './actionTypes';
 
 const ORDER_STATUS = {
-  3: "VALIDANDO",
-  4: "PROCESANDO",
-  5: "CANCELADA",
-  6: "EXITOSA",
-  7: "VALIDAR TASA",
+  3: 'VALIDANDO',
+  4: 'PROCESANDO',
+  5: 'CANCELADA',
+  6: 'EXITOSA',
+  7: 'VALIDAR TASA',
 };
 
 // UTILS
@@ -43,15 +43,15 @@ function* getExchangesRelation({ values, excelType }) {
   let start, end;
 
   if (values.isDay) {
-    start = moment(values.start).format("YYYY-MM-DD [00:00:00]");
-    end = moment(values.end).format("YYYY-MM-DD [00:00:00]");
+    start = moment(values.start).format('YYYY-MM-DD [00:00:00]');
+    end = moment(values.end).format('YYYY-MM-DD [00:00:00]');
   } else {
-    start = moment(values.start).format("YYYY-MM-DD hh:mm:ss");
-    end = moment(values.end).format("YYYY-MM-DD hh:mm:ss");
+    start = moment(values.start).format('YYYY-MM-DD hh:mm:ss');
+    end = moment(values.end).format('YYYY-MM-DD hh:mm:ss');
   }
 
   let URL;
-  if (excelType === "coupon" && values.couponName) {
+  if (excelType === 'coupon' && values.couponName) {
     URL = `/users/clients/coupons/${values.couponName.toUpperCase()}/download`;
   } else URL = `/users/clients/orders/download?start=${start}&end=${end}`;
 
@@ -69,7 +69,7 @@ function* getExchangesRelation({ values, excelType }) {
     yield call(fileDownload, res, `relacion_ordenes_${start}_${end}.xlsx`);
     yield put(actions.getExchangesRelationSuccess());
   } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert('danger', error.message));
     yield put(actions.apiError());
   }
 }
@@ -80,35 +80,35 @@ function* uploadBankConciliation({ values, setUploaded }) {
   conciliationFiles.forEach((file) => formData.append(file.name, file));
   try {
     yield call(uploadBankConciliationSvc, formData);
-    yield put(setAlert("success", "Todos los archivos fueron cargados correctamente."));
+    yield put(setAlert('success', 'Todos los archivos fueron cargados correctamente.'));
     yield call(setUploaded, true);
     yield put(actions.uploadBankConciliationSuccess());
   } catch (error) {
-    yield put(setAlert("danger", "Ha ocurrido un error subiendo los archivos de conciliación"));
+    yield put(setAlert('danger', 'Ha ocurrido un error subiendo los archivos de conciliación'));
     yield put(actions.apiError());
   }
 }
 
 function* downloadBankConciliation({ date }) {
-  const formattedDate = moment(date).format("YYYY-MM-DD");
+  const formattedDate = moment(date).format('YYYY-MM-DD');
   try {
     const res = yield call(downloadBankConciliationSvc, formattedDate);
     const fileArray = base64ToArrayBuffer(res.contentByte);
     yield call(fileDownload, fileArray, res.fileName);
     yield put(actions.downloadBankConciliationSuccess());
   } catch (error) {
-    yield put(setAlert("danger", "Ha ocurrido un error descargando la conciliación. Verifica la fecha correcta."));
+    yield put(setAlert('danger', 'Ha ocurrido un error descargando la conciliación. Verifica la fecha correcta.'));
     yield put(actions.apiError());
   }
 }
 
 function* getExchangeDetails({ id }) {
   try {
-    const res = yield call(getExchangeDetailsSvc, id);
+    const data = yield call(getExchangeDetailsSvc, id);
     yield put(getClientExchangesSuccess([]));
-    return yield put(actions.getExchangeDetailsSuccess(res));
+    return yield put(actions.getExchangeDetailsSuccess(data));
   } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert('danger', error.message));
     yield put(actions.apiError());
   }
 }
@@ -119,9 +119,9 @@ function* editExchange({ id, values, closeModal }) {
     yield put(actions.editExchangeSuccess());
     yield call(getExchangeDetails, { id });
     yield call(closeModal);
-    yield Swal.fire("Operación editada", "Los datos de la operación han sido editados.", "success");
+    yield Swal.fire('Operación editada', 'Los datos de la operación han sido editados.', 'success');
   } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert('danger', error.message));
     yield put(actions.apiError());
   }
 }
@@ -130,10 +130,10 @@ function* changeOrderStatus({ status, id }) {
   try {
     yield call(changeOrderStatusSvc, id, status);
     yield call(getExchangeDetails, { id });
-    yield Swal.fire("Exitoso", `La operación ha cambiado de estado.`, "success");
+    yield Swal.fire('Exitoso', `La operación ha cambiado de estado.`, 'success');
     yield put(actions.changeOrderStatusSuccess());
   } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert('danger', error.message));
     yield put(actions.apiError());
   }
 }
@@ -142,37 +142,37 @@ function* changeStatus({ orderId, statusId }) {
   try {
     const result = yield Swal.fire({
       title: `¿Deseas pasar esta operación a: ${ORDER_STATUS[statusId]}?`,
-      text: "Al continuar no podrás revertir este estado.",
-      icon: "warning",
+      text: 'Al continuar no podrás revertir este estado.',
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonText: `Sí, continuar`,
-      cancelButtonText: "No, regresar",
-      cancelButtonColor: "#f46a6a",
+      cancelButtonText: 'No, regresar',
+      cancelButtonColor: '#f46a6a',
     });
     if (result.isConfirmed) {
       yield call(ChangeStatusSvc, orderId, statusId);
       yield call(getExchangeDetails, { id: orderId });
-      yield Swal.fire("Exitoso", `La operación pasó a ${ORDER_STATUS[statusId]} correctamente.`, "success");
+      yield Swal.fire('Exitoso', `La operación pasó a ${ORDER_STATUS[statusId]} correctamente.`, 'success');
       yield put(actions.changeStatusSuccess());
     } else yield put(actions.changeStatusCancelled());
   } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert('danger', error.message));
     yield put(actions.apiError());
   }
 }
 
 function* processOrder({ orderId, values, closeModal }) {
   const formData = new FormData();
-  formData.append("file", values.file);
+  formData.append('file', values.file);
   try {
     const result = yield Swal.fire({
       title: `¿Deseas aprobar esta operación?`,
-      text: "Al continuar no podrás revertir este estado.",
-      icon: "warning",
+      text: 'Al continuar no podrás revertir este estado.',
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonText: `Sí, continuar`,
-      cancelButtonText: "No, cancelar",
-      cancelButtonColor: "#f46a6a",
+      cancelButtonText: 'No, cancelar',
+      cancelButtonColor: '#f46a6a',
     });
     if (result.isConfirmed) {
       yield call(uploadVoucherSvc, orderId, formData);
@@ -180,11 +180,11 @@ function* processOrder({ orderId, values, closeModal }) {
       yield call(closeModal);
       yield call(getExchangeDetails, { id: orderId });
 
-      yield Swal.fire("Exitoso", `La operación fue aprobada correctamente.`, "success");
+      yield Swal.fire('Exitoso', `La operación fue aprobada correctamente.`, 'success');
       yield put(actions.processOrderSuccess());
     } else yield put(actions.apiError());
   } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert('danger', error.message));
     yield put(actions.apiError());
   }
 }
@@ -193,10 +193,10 @@ function* createInvoice({ orderId }) {
   try {
     yield call(createInvoiceSvc, orderId);
     yield call(getExchangeDetails, { id: orderId });
-    yield put(setAlert("success", "La factura se ha generado correctamente."));
+    yield put(setAlert('success', 'La factura se ha generado correctamente.'));
     yield put(actions.createInvoiceSuccess());
   } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert('danger', error.message));
     yield put(actions.apiError());
   }
 }
@@ -210,26 +210,26 @@ function* reassignOrder({ values, orderId, closeModal }) {
     yield call(reassignOrderSvc, orderId, reassignValues);
     yield call(getExchangeDetails, { id: orderId });
     yield call(closeModal);
-    yield call([Swal, "fire"], "Exitoso", "Orden reasignada correctamente", "success");
+    yield call([Swal, 'fire'], 'Exitoso', 'Orden reasignada correctamente', 'success');
     yield put(actions.reassignOrderSuccess());
   } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert('danger', error.message));
     yield put(actions.apiError());
   }
 }
 
 function* setRevision({ values, closeModal, orderId }) {
-  const modalMessage = closeModal ? "La nota de la orden ha sido actualizada." : "La revisión de orden ha sido actualizada.",
+  const modalMessage = closeModal ? 'La nota de la orden ha sido actualizada.' : 'La revisión de orden ha sido actualizada.',
     noteValues = { note: values.note || null, inReview: values.inReview };
 
   try {
     yield call(setRevisionSvc, orderId, noteValues);
     yield call(getExchangeDetails, { id: orderId });
     if (closeModal) yield call(closeModal);
-    yield call([Swal, "fire"], "Exitoso", modalMessage, "success");
+    yield call([Swal, 'fire'], 'Exitoso', modalMessage, 'success');
     yield put(actions.setRevisionSuccess());
   } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
+    if (error?.message) yield put(setAlert('danger', error.message));
     yield put(actions.apiError());
   }
 }
