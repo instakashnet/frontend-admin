@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const uploadBankConciliationSvc = async (formData) => {
   try {
-    const response = await axios.post('https://instacash-api.openplata.com/api/v1/banco/procesos/archivo-cargar', formData, {
+    const response = await axios.post('https://openplata.instakash.net/api/v1/banco/procesos/archivo-cargar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
       onUploadProgress: (progressEvent) => console.log(progressEvent),
     });
@@ -15,7 +15,7 @@ export const uploadBankConciliationSvc = async (formData) => {
 
 export const downloadBankConciliationSvc = async (formattedDate) => {
   try {
-    const response = await axios.get(`https://instacash-api.openplata.com/api/v1/banco/procesos/conciliacion-xlsx-descargar?CuentaId=0&Fecha=${formattedDate}`, {
+    const response = await axios.get(`https://openplata.instakash.net/api/v1/banco/procesos/conciliacion-xlsx-descargar?CuentaId=0&Fecha=${formattedDate}`, {
       onDownloadProgress: ({ loaded, total }) => {
         console.log(loaded, total);
       },
