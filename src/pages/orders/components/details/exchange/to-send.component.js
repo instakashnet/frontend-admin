@@ -46,7 +46,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                     className='mr-2'
                   />
                   <span className='text-muted'>
-                    {details.currencyInfo.currencyReceivedSymbol} - {details.accountToInfo.accTypeTo === 'savings' ? 'ahorros' : 'corriente'}
+                    {details.currencyInfo.currencyReceivedSymbol} - {details.accountToInfo.accType === 'savings' ? 'ahorros' : 'corriente'}
                   </span>
                 </div>
               </div>
