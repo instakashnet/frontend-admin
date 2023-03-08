@@ -14,38 +14,25 @@ const UserDocuments = ({ user, isProcessing }) => {
   const formik = useFormik({
     initialValues: {
       front: '',
-      back: '',
     },
-    onSubmit: (values) => dispatch(uploadDocumentInit(values, user?.id, user?.documentType?.toLowerCase(), setPercentage)),
+    onSubmit: (values) => dispatch(uploadDocumentInit(values, user?.id, setPercentage)),
   });
 
   return (
     <Card>
       <CardBody>
-        <CardTitle className='text-center'>Fotos de documento</CardTitle>
+        <CardTitle className='text-center'>Foto del documento</CardTitle>
         <form onSubmit={formik.handleSubmit}>
           <div className='flex flex-wrap items-center justify-center mt-4'>
             <FileUpload
               fileType='frontal'
-              label={`Agregar foto ${user?.documentType?.toLowerCase() !== 'pasaporte' ? 'frontal' : 'pasaporte'}`}
+              label={`Agregar foto del ${user?.documentType}`}
               placeholder='Selecciona un archivo'
               accept='image/jpeg,image/png,image/jpg'
               name='front'
               onChange={(value) => formik.setFieldValue('front', value)}
               onBlur={(value) => formik.setFieldValue('front', value)}
             />
-
-            {user?.documentType?.toLowerCase() !== 'pasaporte' && (
-              <FileUpload
-                fileType='trasera'
-                label='Agregar foto trasera'
-                placeholder='Selecciona un archivo'
-                accept='image/jpeg,image/png,image/jpg'
-                name='back'
-                onChange={(value) => formik.setFieldValue('back', value)}
-                onBlur={(value) => formik.setFieldValue('back', value)}
-              />
-            )}
           </div>
 
           <div className='w-full flex items-center justify-center mt-4'>
@@ -55,7 +42,7 @@ const UserDocuments = ({ user, isProcessing }) => {
                   <Spinner size='sm' /> Cargando {percentage}%{' '}
                 </>
               ) : (
-                'Agregar fotos'
+                'Agregar foto'
               )}
             </Button>
           </div>

@@ -143,7 +143,7 @@ function* editClientProfile({ values, closeModal }) {
   }
 }
 
-function* uploadDocument({ values, userId, docType, setPercentage }) {
+function* uploadDocument({ values, userId, setPercentage }) {
   let options = {
     timeout: 99999,
     onUploadProgress: ({ loaded, total }) => {
@@ -155,14 +155,10 @@ function* uploadDocument({ values, userId, docType, setPercentage }) {
   try {
     const urls = yield getAxiosInstance('base', 'v1').get(`/documents-service/v1/presigned-url/admin/uploads?userId=${userId}`);
 
-    if (docType === 'pasaporte') {
-      yield axios.put(urls.data.presignedFrontUrl, values.front, options);
-    } else {
-      yield Promise.all([axios.put(urls.data.presignedFrontUrl, values.front, options), axios.put(urls.data.presignedBackUrl, values.back, options)]);
-    }
+    yield axios.put(urls.data.presignedFrontUrl, values.front, options);
 
     yield call(getClientDetails, { userId });
-    yield call([Swal, 'fire'], 'Exitoso', `El documento fue agregado correctamente.`, 'success');
+    yield call([Swal, 'fire'], 'Exitoso', `La foto fue subída correctamente.`, 'success');
     yield put(actions.uploadDocumentSuccess());
   } catch (error) {
     if (error?.message) yield put(setAlert('danger', error.message));
