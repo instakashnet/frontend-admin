@@ -1,20 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Card, CardBody, Col, Container, Row } from "reactstrap";
+import React, { useEffect, useRef, useState } from 'react';
+import { Card, CardBody, Col, Container, Row } from 'reactstrap';
 
 // REDUX
-import { useDispatch, useSelector } from "react-redux";
-import { useRole } from "../../../hooks/useRole";
-import { changeStatusInit, setAlert } from "../../../store/actions";
+import { useDispatch, useSelector } from 'react-redux';
+import { useRole } from '../../../hooks/useRole';
+import { changeStatusInit, setAlert } from '../../../store/actions';
 
 // HELPERS
-import { formatOrders } from "../../../helpers/functions";
-import { exchangesColumns } from "../../../helpers/tables/columns";
+import { formatOrders } from '../../../helpers/functions';
+import { exchangesColumns } from '../../../helpers/tables/columns';
 
 // COMPONENTS
-import { Table } from "../../../components/UI/tables/table.component";
+import { Table } from '../../../components/UI/tables/table.component';
 
 const PAGE_SIZE = 50;
-const WS_URL = process.env.REACT_APP_STAGE === "prod" ? "wss://ws.instakash.net" : "wss://ws.dev.instakash.net";
+const WS_URL = process.env.REACT_APP_STAGE === 'prod' ? 'wss://ws.instakash.net' : 'wss://ws.dev.instakash.net';
 
 export const RecentExchangesScreen = () => {
   const websocket = useRef(null),
@@ -28,16 +28,18 @@ export const RecentExchangesScreen = () => {
   useEffect(() => {
     websocket.current = new WebSocket(`${WS_URL}/ws?token=${token}&service=orders`);
 
-    websocket.current.onopen = () => console.log("WebSocket connection established.");
+    websocket.current.onopen = () => {
+      console.log('WebSocket connection established.');
+    };
 
     websocket.current.onclose = () => {
-      console.log("connection closed.");
+      console.log('connection closed.');
       setIsLoading(false);
     };
 
     websocket.current.onerror = (event) => {
-      setAlert("error", "Ha ocurrido un error inesperado obteniendo la lista de ordenes. Intenta de nuevo o contacta a soporte.");
-      console.log("connection error received: ", event);
+      setAlert('error', 'Ha ocurrido un error inesperado obteniendo la lista de ordenes. Intenta de nuevo o contacta a soporte.');
+      console.log('connection error received: ', event);
       setIsLoading(false);
     };
 
@@ -45,11 +47,12 @@ export const RecentExchangesScreen = () => {
   }, [token]);
 
   useEffect(() => {
-    websocket.current.onmessage = (event) => {
+    websocket.current.onmessage = ({ data }) => {
       setIsLoading(true);
 
-      const data = JSON.parse(event.data),
-        orders = formatOrders(JSON.parse(data.data), "orders", role);
+      const parsedData = JSON.parse(data);
+      console.log(parsedData);
+      const orders = formatOrders(JSON.parse(parsedData.data), 'orders', role);
 
       setData(orders);
       setIsLoading(false);
@@ -59,15 +62,15 @@ export const RecentExchangesScreen = () => {
   const onChangeStatus = (orderId, statusId) => dispatch(changeStatusInit(orderId, statusId));
 
   return (
-    <div className="page-content">
+    <div className='page-content'>
       <Container fluid>
         <Row>
-          <Col lg="12">
+          <Col lg='12'>
             <Card>
               <CardBody>
-                <div className="table-responsive">
+                <div className='table-responsive'>
                   <Table
-                    title="Ordenes recibidas"
+                    title='Ordenes recibidas'
                     columns={exchangesColumns({ onChangeStatus })}
                     data={data}
                     isLoading={isLoading}
