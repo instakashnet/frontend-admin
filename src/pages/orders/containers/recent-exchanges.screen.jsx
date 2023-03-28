@@ -14,10 +14,9 @@ import { exchangesColumns } from '../../../helpers/tables/columns'
 import { Table } from '../../../components/UI/tables/table.component'
 
 const PAGE_SIZE = 50
-const WS_URL =
-  process.env.REACT_APP_STAGE === 'prod'
-    ? 'wss://ws.instakash.net'
-    : 'wss://ws.dev.instakash.net'
+const WS_URL = import.meta.env.PROD
+  ? 'wss://ws.instakash.net'
+  : 'wss://ws.dev.instakash.net'
 
 export const RecentExchangesScreen = () => {
   const websocket = useRef(null)
