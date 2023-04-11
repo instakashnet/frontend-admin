@@ -1,36 +1,38 @@
-import React, { useEffect } from 'react';
-import { Switch } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCountriesInit, getBanks, getCurrenciesInit } from './store/actions';
+import React, { useEffect } from 'react'
+import { Switch } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCountriesInit, getBanks, getCurrenciesInit } from './store/actions'
 
 // Import Routes
-import { Route } from 'react-router-dom';
-import { routes } from './routes';
-import { PrivateRoute } from './routes/private';
-import { LoginScreen } from './pages/Authentication/login.screen';
+import { Route } from 'react-router-dom'
+import { routes } from './routes'
+import { PrivateRoute } from './routes/private'
+import { LoginScreen } from './pages/Authentication/login.screen'
 
 // layouts & components
-import VerticalLayout from './components/VerticalLayout';
-import NonAuthLayout from './components/NonAuthLayout';
-import { CustomAlert } from './components/UI/Alert';
-import { RefreshSession } from './hoc/refresh-session.component';
+import VerticalLayout from './components/VerticalLayout'
+import NonAuthLayout from './components/NonAuthLayout'
+import { CustomAlert } from './components/UI/Alert'
+import { RefreshSession } from './hoc/refresh-session.component'
 
 // Import scss
-import './assets/css/app.css';
-import './assets/scss/theme.scss';
-import './assets/scss/custom.scss';
+import './assets/css/app.css'
+import './assets/scss/theme.scss'
+import './assets/scss/custom.scss'
+
+console.log({ stage: import.meta.env.REACT_APP_STAGE })
 
 const App = () => {
   const { isSignedIn } = useSelector((state) => state.Login),
-    dispatch = useDispatch();
+    dispatch = useDispatch()
 
   useEffect(() => {
     if (isSignedIn) {
-      dispatch(getCountriesInit());
-      dispatch(getCurrenciesInit());
-      dispatch(getBanks());
+      dispatch(getCountriesInit())
+      dispatch(getCurrenciesInit())
+      dispatch(getBanks())
     }
-  }, [isSignedIn, dispatch]);
+  }, [isSignedIn, dispatch])
 
   return (
     <RefreshSession>
@@ -46,7 +48,7 @@ const App = () => {
       </Switch>
       <CustomAlert className='fixed-alert' />
     </RefreshSession>
-  );
-};
+  )
+}
 
-export default App;
+export default App

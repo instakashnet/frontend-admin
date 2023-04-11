@@ -1,16 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 
 export const useRole = (user) => {
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState(null)
 
   useEffect(() => {
     if (user && user.roles) {
-      let roleName = user.roles;
-      if (user.roles === "ROLE_OPERATOR" || user.roles === "ROLE_ANALYST") roleName = "orders";
-      if (user.roles === "ROLE_APPRAISER" || user.roles === "ROLE_OFFICER") roleName = "officers";
-      setRole(roleName.replace("ROLE_", "").toLowerCase());
+      let roleName = user.roles
+      setRole(roleName.replace('ROLE_', '').toLowerCase())
     }
-  }, [user]);
+  }, [user])
 
-  return [role];
-};
+  return [role]
+}

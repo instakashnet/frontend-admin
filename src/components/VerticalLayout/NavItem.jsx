@@ -1,18 +1,23 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
+import React, { useState } from 'react'
+import { NavLink } from 'react-router-dom'
 
-export const NavItem = ({ path, subNavs, icon, label, isRole }) => {
-  const [subMenu, setSubMenu] = useState(false);
+export const NavItem = ({ path, subNavs, icon, label, role }) => {
+  const [subMenu, setSubMenu] = useState(false)
 
   const showSubMenuHnadler = (e) => {
-    e.preventDefault();
-    setSubMenu((prev) => !prev);
-  };
+    e.preventDefault()
+    setSubMenu((prev) => !prev)
+  }
 
   return (
     <li className='my-2'>
-      <NavLink to={path} activeClassName='active' className={subNavs ? 'waves-effect' : ''} onClick={subNavs ? (e) => showSubMenuHnadler(e) : null}>
+      <NavLink
+        to={path}
+        activeClassName='active'
+        className={subNavs ? 'waves-effect' : ''}
+        onClick={subNavs ? (e) => showSubMenuHnadler(e) : null}
+      >
         <div className='flex items-center'>
           {icon}
           <span className='ml-2'>{label}</span>
@@ -22,6 +27,8 @@ export const NavItem = ({ path, subNavs, icon, label, isRole }) => {
       {subMenu && (
         <ul className='sub-menu'>
           {subNavs.map((sub) => {
+            const isRole = Boolean(!subNavs.roles ? true : subNavs.roles.find((subRole) => subRole === role))
+
             return isRole ? (
               <li key={sub.path}>
                 <NavLink to={sub.path}>
@@ -31,10 +38,10 @@ export const NavItem = ({ path, subNavs, icon, label, isRole }) => {
                   </div>
                 </NavLink>
               </li>
-            ) : null;
+            ) : null
           })}
         </ul>
       )}
     </li>
-  );
-};
+  )
+}
