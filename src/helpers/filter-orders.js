@@ -19,7 +19,9 @@ export function arrangeOrdersByRole(orders = [], role) {
     let restOfOrders = ordersList.filter((o) => o.statusId !== 3)
 
     ordersList = [...validatingOrders, ...restOfOrders]
-  } else if (role === 'signatory') {
+  }
+
+  if (role === 'signatory') {
     let processingOrders = ordersList.filter((o) => o.statusId === 4).sort((o1, o2) => new Date(o1.date) - new Date(o2.date))
     let successOrders = ordersList.filter((o) => o.statusId === 6)
 
@@ -33,6 +35,8 @@ export function arrangeOrdersByRole(orders = [], role) {
     const notRevisedOrders = orders.filter((o) => !o.inReview)
     ordersList = revisedOrders.concat(notRevisedOrders)
   }
+
+  console.log({ ordersList, role })
 
   return ordersList
 }
@@ -67,22 +71,23 @@ export const formatBankOrders = (orders) =>
 
 export function filterOrders(data, orders = [], role) {
   let ordersList = []
-  let ordersArray = []
 
   if (Boolean(Array.isArray(data) && data.length)) {
-    ordersArray = camelize(data)
-    ordersArray = formatOrders(ordersArray)
+    const ordersArray = camelize(data)
+    ordersList = formatOrders(ordersArray)
   }
 
   if (!Array.isArray(data)) {
     const singleOrder = camelize(data)
-    ordersArray = setNewOrderList(singleOrder, orders)
+    ordersList = setNewOrderList(singleOrder, orders)
   }
 
-  ordersArray.sort((o1, o2) => new Date(o2.date) - new Date(o1.date))
-  ordersList = arrangeOrdersByRole(ordersArray, role)
+  // ordersArray.sort((o1, o2) => new Date(o2.date) - new Date(o1.date))
+  const ordersData = arrangeOrdersByRole(ordersList, role)
 
-  return ordersList
+  console.log({ ordersData })
+
+  return ordersData
 }
 
 const createOrderObject = (order) => ({

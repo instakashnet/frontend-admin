@@ -20,8 +20,6 @@ import './assets/css/app.css'
 import './assets/scss/theme.scss'
 import './assets/scss/custom.scss'
 
-console.log({ stage: import.meta.env.REACT_APP_STAGE })
-
 const App = () => {
   const { isSignedIn } = useSelector((state) => state.Login),
     dispatch = useDispatch()
