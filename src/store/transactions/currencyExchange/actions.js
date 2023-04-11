@@ -1,122 +1,123 @@
-import * as actionTypes from "./actionTypes";
+import * as actionTypes from './actionTypes'
 
 export const getExchangesRelationInit = (values, excelType) => ({
   type: actionTypes.GET_EXCHANGES_RELATION_INIT,
   values,
-  excelType,
-});
+  excelType
+})
 
 export const getExchangesRelationSuccess = () => ({
-  type: actionTypes.GET_EXCHANGES_RELATION_SUCCESS,
-});
+  type: actionTypes.GET_EXCHANGES_RELATION_SUCCESS
+})
 
 export const uploadBankConciliation = (values, setUploaded) => ({
   type: actionTypes.UPLOAD_CONCILIATION.INIT,
   values,
-  setUploaded,
-});
+  setUploaded
+})
 
 export const uploadBankConciliationSuccess = () => ({
-  type: actionTypes.UPLOAD_CONCILIATION.SUCCESS,
-});
+  type: actionTypes.UPLOAD_CONCILIATION.SUCCESS
+})
 
 export const downloadBankConciliation = (date) => ({
   type: actionTypes.DOWNLOAD_CONCILIATION.INIT,
-  date,
-});
+  date
+})
 
 export const downloadBankConciliationSuccess = () => ({
-  type: actionTypes.DOWNLOAD_CONCILIATION.SUCCESS,
-});
+  type: actionTypes.DOWNLOAD_CONCILIATION.SUCCESS
+})
 
 export const getExchangeDetails = (id) => ({
   type: actionTypes.GET_EXCHANGE_DETAILS,
-  id,
-});
+  id
+})
 
 export const getExchangeDetailsSuccess = (details) => ({
   type: actionTypes.GET_EXCHANGE_DETAILS_SUCCESS,
-  payload: { details },
-});
+  payload: { details }
+})
 
-export const changeStatusInit = (orderId, statusId) => ({
+export const changeStatusInit = (orderId, statusId, setWarning) => ({
   type: actionTypes.CHANGE_STATUS.INIT,
   orderId,
   statusId,
-});
+  setWarning
+})
 
 export const changeStatusSuccess = () => ({
-  type: actionTypes.CHANGE_STATUS.SUCCESS,
-});
+  type: actionTypes.CHANGE_STATUS.SUCCESS
+})
 
 export const changeStatusCancelled = () => ({
-  type: actionTypes.CHANGE_STATUS.CANCELLED,
-});
+  type: actionTypes.CHANGE_STATUS.CANCELLED
+})
 
 export const processOrderInit = (orderId, values, closeModal) => ({
   type: actionTypes.PROCESS_ORDER.INIT,
   orderId,
   values,
-  closeModal,
-});
+  closeModal
+})
 
 export const processOrderSuccess = () => ({
-  type: actionTypes.PROCESS_ORDER.SUCCESS,
-});
+  type: actionTypes.PROCESS_ORDER.SUCCESS
+})
 
 export const editExchange = (id, values, closeModal) => ({
   type: actionTypes.EDIT_EXCHANGE,
   id,
   values,
-  closeModal,
-});
+  closeModal
+})
 
 export const editExchangeSuccess = () => ({
-  type: actionTypes.EDIT_EXCHANGE_SUCCESS,
-});
+  type: actionTypes.EDIT_EXCHANGE_SUCCESS
+})
 
 export const changeOrderStatus = (id, status) => ({
   type: actionTypes.CHANGE_ORDER_STATUS_INIT,
   id,
-  status,
-});
+  status
+})
 
 export const changeOrderStatusSuccess = () => ({
-  type: actionTypes.CHANGE_ORDER_STATUS_SUCCESS,
-});
+  type: actionTypes.CHANGE_ORDER_STATUS_SUCCESS
+})
 
 export const createInvoice = (orderId) => ({
   type: actionTypes.CREATE_INVOICE,
-  orderId,
-});
+  orderId
+})
 
 export const createInvoiceSuccess = (msg) => ({
   type: actionTypes.CREATE_INVOICE_SUCCESS,
-  msg,
-});
+  msg
+})
 
 export const reassignOrderInit = (values, orderId, closeModal) => ({
   type: actionTypes.REASSIGN_ORDER_INIT,
   values,
   orderId,
-  closeModal,
-});
+  closeModal
+})
 
 export const reassignOrderSuccess = () => ({
-  type: actionTypes.REASSIGN_ORDER_SUCCESS,
-});
+  type: actionTypes.REASSIGN_ORDER_SUCCESS
+})
 
 export const setRevisionInit = (values, orderId, closeModal) => ({
   type: actionTypes.SET_REVISION_INIT,
   values,
   orderId,
-  closeModal,
-});
+  closeModal
+})
 
 export const setRevisionSuccess = () => ({
-  type: actionTypes.SET_REVISION_SUCCESS,
-});
+  type: actionTypes.SET_REVISION_SUCCESS
+})
 
 export const apiError = () => ({
-  type: actionTypes.API_ERROR,
-});
+  type: actionTypes.API_ERROR
+})

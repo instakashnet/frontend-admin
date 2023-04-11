@@ -1,70 +1,38 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardBody, Col, Container, Row } from 'reactstrap'
 
 // REDUX
 import { useDispatch, useSelector } from 'react-redux'
 import { useRole } from '../../../hooks/useRole'
-import { changeStatusInit, setAlert } from '../../../store/actions'
+import { changeStatusInit } from '../../../store/actions'
 
 // HELPERS
-import { formatOrders } from '../../../helpers/functions'
 import { exchangesColumns } from '../../../helpers/tables/columns'
 
 // COMPONENTS
 import { Table } from '../../../components/UI/tables/table.component'
+import { filterOrders } from '../../../helpers/filter-orders'
+import { useWebsocket } from '../../../hooks/useWebsocket'
 
 const PAGE_SIZE = 50
-const WS_URL = 'wss://ws.instakash.net'
-
 export const RecentExchangesScreen = () => {
-  const websocket = useRef(null)
   const dispatch = useDispatch()
-  const [isLoading, setIsLoading] = useState(true)
-  const [data, setData] = useState([])
+  const [orders, setOrders] = useState([])
   const { token } = useSelector((state) => state.Login)
   const user = useSelector((state) => state.Login.user)
   const [role] = useRole(user)
+  const { data, isLoading } = useWebsocket(token)
 
   useEffect(() => {
-    websocket.current = new WebSocket(
-      `${WS_URL}/ws?token=${token}&service=orders`
-    )
+    const parsedData = JSON.parse(data)
 
-    websocket.current.onopen = () => {
-      console.log('WebSocket connection established.')
+    if (parsedData) {
+      const filteredOrders = filterOrders(parsedData, orders, role)
+      setOrders(filteredOrders)
     }
+  }, [data, role])
 
-    websocket.current.onclose = () => {
-      console.log('connection closed.')
-      setIsLoading(false)
-    }
-
-    websocket.current.onerror = (event) => {
-      setAlert(
-        'error',
-        'Ha ocurrido un error inesperado obteniendo la lista de ordenes. Intenta de nuevo o contacta a soporte.'
-      )
-      console.log('connection error received: ', event)
-      setIsLoading(false)
-    }
-
-    return () => websocket.current.close()
-  }, [token])
-
-  useEffect(() => {
-    websocket.current.onmessage = ({ data }) => {
-      setIsLoading(true)
-
-      const parsedData = JSON.parse(data)
-      const orders = formatOrders(JSON.parse(parsedData.data), 'orders', role)
-
-      setData(orders)
-      setIsLoading(false)
-    }
-  })
-
-  const onChangeStatus = (orderId, statusId) =>
-    dispatch(changeStatusInit(orderId, statusId))
+  const onChangeStatus = (orderId, statusId) => dispatch(changeStatusInit(orderId, statusId))
 
   return (
     <div className='page-content'>
@@ -77,7 +45,7 @@ export const RecentExchangesScreen = () => {
                   <Table
                     title='Ordenes recibidas'
                     columns={exchangesColumns({ onChangeStatus })}
-                    data={data}
+                    data={orders}
                     isLoading={isLoading}
                     pagination={{ pageSize: PAGE_SIZE, async: false }}
                   />

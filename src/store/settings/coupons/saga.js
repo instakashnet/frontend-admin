@@ -1,16 +1,15 @@
-import { all, call, fork, put, select, takeEvery, takeLatest } from "redux-saga/effects";
-import Swal from "sweetalert2";
-import { addCouponSvc, deleteCouponSvc, disableCouponSvc, editCouponSvc, getCouponsSvc } from "../../../api/services/exchange.service";
-import { setAlert } from "../../actions";
-import * as actions from "./actions";
-import * as types from "./types";
+import { all, call, fork, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
+import { addCouponSvc, deleteCouponSvc, disableCouponSvc, editCouponSvc, getCouponsSvc } from '../../../api/services/exchange.service'
+import { setAlert } from '../../actions'
+import * as actions from './actions'
+import * as types from './types'
 
 function* getCoupons() {
   try {
-    const res = yield call(getCouponsSvc);
-    yield put(actions.getCouponsSuccess(res));
+    const res = yield call(getCouponsSvc)
+    yield put(actions.getCouponsSuccess(res))
   } catch (error) {
-    yield put(actions.couponsError());
+    yield put(actions.couponsError())
   }
 }
 
@@ -23,27 +22,28 @@ function* addCoupon({ values, closeModal }) {
     minAmountBuy: values.minAmountBuy || 0,
     minAmountSell: values.minAmountSell || 0,
     qty_uses: values.qty_uses || 0,
-    users: values.users && values.users.length > 0 ? values.users : [0],
-  };
+    users: values.users && values.users.length > 0 ? values.users : [0]
+  }
   try {
-    yield call(addCouponSvc, couponValues);
-    yield call(getCoupons);
-    yield call(closeModal);
-    yield call([Swal, "fire"], "Exitoso", "Cupón agregado correctamente", "success");
-    yield put(actions.addCouponSuccess());
+    yield call(addCouponSvc, couponValues)
+    yield call(getCoupons)
+    yield call(closeModal)
+    yield put(setAlert('success', 'Cupón agregado correctamente'))
+
+    yield put(actions.addCouponSuccess())
   } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
-    yield put(actions.couponsError());
+    if (error?.message) yield put(setAlert('danger', error.message))
+    yield put(actions.couponsError())
   }
 }
 
 function* getCouponDetails({ id }) {
   try {
-    let details = {};
-    if (id) details = yield select((state) => state.Coupons.coupons.find((c) => c.Id === id));
-    if (details) yield put(actions.getCouponsDetailsSuccess(details));
+    let details = {}
+    if (id) details = yield select((state) => state.Coupons.coupons.find((c) => c.Id === id))
+    if (details) yield put(actions.getCouponsDetailsSuccess(details))
   } catch (error) {
-    yield put(actions.couponsError());
+    yield put(actions.couponsError())
   }
 }
 
@@ -55,83 +55,74 @@ function* editCoupon({ id, values, active, closeModal }) {
     forexId: 1,
     minAmountBuy: values.minAmountBuy || 0,
     minAmountSell: values.minAmountSell || 0,
-    endDate: values.endDate ? new Date(values.endDate).getTime() : 0,
-  };
+    endDate: values.endDate ? new Date(values.endDate).getTime() : 0
+  }
   try {
-    yield call(editCouponSvc, id, couponValues);
-    yield call(getCoupons);
-    yield call(closeModal);
-    yield call([Swal, "fire"], "Exitoso", "Cupón editado correctamente", "success");
-    yield put(actions.editCouponSuccess());
+    yield call(editCouponSvc, id, couponValues)
+    yield call(getCoupons)
+    yield call(closeModal)
+    yield put(setAlert('success', 'Cupón editado correctamente'))
+
+    yield put(actions.editCouponSuccess())
   } catch (error) {
-    if (error?.message) yield put(setAlert("danger", error.message));
-    yield put(actions.couponsError());
+    if (error?.message) yield put(setAlert('danger', error.message))
+    yield put(actions.couponsError())
   }
 }
 
 function* deleteCoupon({ id }) {
   try {
-    const result = yield call([Swal, "fire"], {
-      icon: "warning",
-      title: "¿Deseas eliminar este cupón?",
-      showCancelButton: true,
-      cancelButtonText: "Cancelar",
-      confirmButtonText: "Sí, eliminar",
-    });
-    if (result.isConfirmed) {
-      yield call(deleteCouponSvc, id);
-      yield call(getCoupons);
-      yield call([Swal, "fire"], "Exitoso", "El cupón ha sido eliminado.", "success");
-      yield put(actions.deleteCouponSuccess());
-    } else yield put(actions.couponsError());
+    yield call(deleteCouponSvc, id)
+    yield call(getCoupons)
+    yield put(setAlert('success', 'El cupón ha sido eliminado.'))
+
+    yield put(actions.deleteCouponSuccess())
   } catch (error) {
-    yield put(actions.couponsError());
+    yield put(actions.couponsError())
   }
 }
 
 function* disableCoupon({ id, active }) {
   try {
-    const result = yield call([Swal, "fire"], {
-      icon: "warning",
-      title: `¿Deseas ${active ? "habilitar" : "deshabilitar"} este cupón?`,
-      showCancelButton: true,
-      cancelButtonText: "Cancelar",
-      confirmButtonText: `Sí, ${active ? "habilitar" : "deshabilitar"}`,
-    });
-    if (result.isConfirmed) {
-      yield call(disableCouponSvc, id, active);
-      yield call(getCoupons);
-      yield call([Swal, "fire"], "Exitoso", `El cupón ha sido ${active ? "habilitado" : "deshabilitado"}.`, "success");
-    } else yield put(actions.couponsError());
+    yield call(disableCouponSvc, id, active)
+    yield call(getCoupons)
+    yield put(setAlert('success', `El cupón ha sido ${active ? 'habilitado' : 'deshabilitado'}.`))
   } catch (error) {
-    yield put(actions.couponsError());
+    yield put(actions.couponsError())
   }
 }
 
 export function* watchGetCoupons() {
-  yield takeEvery(types.GET_COUPONS_INIT, getCoupons);
+  yield takeEvery(types.GET_COUPONS_INIT, getCoupons)
 }
 
 export function* watchAddCoupon() {
-  yield takeLatest(types.ADD_COUPON_INIT, addCoupon);
+  yield takeLatest(types.ADD_COUPON_INIT, addCoupon)
 }
 
 export function* watchDisableCoupon() {
-  yield takeLatest(types.DISABLE_COUPON_INIT, disableCoupon);
+  yield takeLatest(types.DISABLE_COUPON_INIT, disableCoupon)
 }
 
 export function* watchDeleteCoupon() {
-  yield takeLatest(types.DELETE_COUPON_INIT, deleteCoupon);
+  yield takeLatest(types.DELETE_COUPON_INIT, deleteCoupon)
 }
 
 export function* watchEditCoupon() {
-  yield takeLatest(types.EDIT_COUPON_INIT, editCoupon);
+  yield takeLatest(types.EDIT_COUPON_INIT, editCoupon)
 }
 
 export function* watchGetCouponDetails() {
-  yield takeLatest(types.GET_COUPONS_DETAILS_INIT, getCouponDetails);
+  yield takeLatest(types.GET_COUPONS_DETAILS_INIT, getCouponDetails)
 }
 
 export default function* getCouponsSaga() {
-  yield all([fork(watchGetCoupons), fork(watchDisableCoupon), fork(watchAddCoupon), fork(watchDeleteCoupon), fork(watchGetCouponDetails), fork(watchEditCoupon)]);
+  yield all([
+    fork(watchGetCoupons),
+    fork(watchDisableCoupon),
+    fork(watchAddCoupon),
+    fork(watchDeleteCoupon),
+    fork(watchGetCouponDetails),
+    fork(watchEditCoupon)
+  ])
 }
