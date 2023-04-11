@@ -14,16 +14,18 @@ export function arrangeOrdersByRole(orders = [], role) {
 
   if (arrangeOrders) ordersList = arrangeOrders(orders)
 
+  const notRevisedOrders = ordersList.filter((o) => !o.inReview)
+
   if (role === 'analyst') {
-    let validatingOrders = ordersList.filter((o) => o.statusId === 3).sort((o1, o2) => new Date(o1.date) - new Date(o2.date))
-    let restOfOrders = ordersList.filter((o) => o.statusId !== 3)
+    let validatingOrders = notRevisedOrders.filter((o) => o.statusId === 3).sort((o1, o2) => new Date(o1.date) - new Date(o2.date))
+    let restOfOrders = notRevisedOrders.filter((o) => o.statusId !== 3)
 
     ordersList = [...validatingOrders, ...restOfOrders]
   }
 
   if (role === 'signatory') {
-    let processingOrders = ordersList.filter((o) => o.statusId === 4).sort((o1, o2) => new Date(o1.date) - new Date(o2.date))
-    let successOrders = ordersList.filter((o) => o.statusId === 6)
+    let processingOrders = notRevisedOrders.filter((o) => o.statusId === 4).sort((o1, o2) => new Date(o1.date) - new Date(o2.date))
+    let successOrders = notRevisedOrders.filter((o) => o.statusId === 6)
 
     ordersList = [...processingOrders, ...successOrders]
   }
@@ -32,11 +34,8 @@ export function arrangeOrdersByRole(orders = [], role) {
 
   if (revisedOrders.length) {
     revisedOrders.sort((o1, o2) => new Date(o2.date) - new Date(o1.date))
-    const notRevisedOrders = orders.filter((o) => !o.inReview)
-    ordersList = revisedOrders.concat(notRevisedOrders)
+    ordersList = revisedOrders.concat(ordersList)
   }
-
-  console.log({ ordersList, role })
 
   return ordersList
 }
@@ -82,10 +81,7 @@ export function filterOrders(data, orders = [], role) {
     ordersList = setNewOrderList(singleOrder, orders)
   }
 
-  // ordersArray.sort((o1, o2) => new Date(o2.date) - new Date(o1.date))
   const ordersData = arrangeOrdersByRole(ordersList, role)
-
-  console.log({ ordersData })
 
   return ordersData
 }
