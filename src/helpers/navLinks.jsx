@@ -7,25 +7,25 @@ export const generalLinks = {
       path: '/dashboard',
       icon: <Icon.ChartBarSquareIcon className='w-5 h-5' />,
       label: 'Actividad',
-      roles: ['admin', 'officers', 'manager', 'accountant', 'marketing']
+      roles: ['admin', 'appraiser', 'manager', 'accountant', 'marketing']
     },
     {
       path: '/bank-accounts',
       icon: <Icon.BanknotesIcon className='w-5 h-5' />,
       label: 'Cuentas bancarias',
-      roles: ['admin', 'officers', 'manager', 'accountant']
+      roles: ['admin', 'appraiser', 'manager', 'accountant']
     },
     {
       path: '/bank-orders',
       icon: <Icon.BuildingOffice2Icon className='w-5 h-5' />,
       label: 'Pedidos a caja',
-      roles: ['admin', 'officers', 'manager', 'accountant']
+      roles: ['admin', 'appraiser', 'manager', 'accountant']
     },
     {
       path: '/forex',
       icon: <Icon.CurrencyDollarIcon className='w-5 h-5' />,
       label: 'Precio del dolar',
-      roles: ['admin', 'officers', 'accountant']
+      roles: ['admin', 'appraiser', 'accountant']
     }
   ]
 }
@@ -99,7 +99,7 @@ export const configLinks = {
       path: '/banks',
       icon: <Icon.BuildingLibraryIcon className='w-5 h-5' />,
       label: 'Bancos aceptados',
-      roles: ['admin', 'officers', 'accountant']
+      roles: ['admin', 'appraiser', 'accountant']
     },
     {
       path: '/status',

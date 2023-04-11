@@ -44,7 +44,7 @@ export const RecentExchangesScreen = () => {
                 <div className='table-responsive'>
                   <Table
                     title='Ordenes recibidas'
-                    columns={exchangesColumns({ onChangeStatus })}
+                    columns={exchangesColumns({ onChangeStatus, role })}
                     data={orders}
                     isLoading={isLoading}
                     pagination={{ pageSize: PAGE_SIZE, async: false }}
