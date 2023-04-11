@@ -490,8 +490,6 @@ export const exchangesColumns = ({ onChangeStatus, role }) => [
     Header: 'Acción',
     accessor: 'id',
     Cell: ({ cell, row }) => {
-      console.log({ row })
-
       return (
         <div className='flex flex-col items-center justify-center'>
           <Link className='btn py-1 px-2 my-2 btn-blue waves-effect waves-light w-20' to={`/exchange-details/${cell.value}`}>
