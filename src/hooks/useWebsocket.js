@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setAlert } from '../store/actions'
 
-const WS_URL = import.meta.env.REACT_APP_STAGE === 'prod' ? 'wss://ws.instakash.net' : 'wss://ws.dev.instakash.net'
+const WS_URL = import.meta.env.REACT_APP_STAGE === 'dev' ? 'wss://ws.instakash.net' : 'wss://ws.dev.instakash.net'
 
 export function useWebsocket(token) {
   const [isSocketLoading, setIsSocketLoading] = useState(true)

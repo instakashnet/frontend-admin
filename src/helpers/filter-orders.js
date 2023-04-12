@@ -8,7 +8,7 @@ const ORDERS_BY_ROL = {
     const validatingOrders = analystOrders.filter((o) => o.statusId === 3).sort((o1, o2) => new Date(o1.date) - new Date(o2.date))
     const restOfOrders = analystOrders.filter((o) => o.statusId !== 3)
 
-    return (ordersList = [...validatingOrders, ...restOfOrders])
+    return [...validatingOrders, ...restOfOrders]
   },
   operator: (orders) => orders.filter((o) => o.statusId === 4),
   signatory: (orders) => {
@@ -16,7 +16,7 @@ const ORDERS_BY_ROL = {
     const processingOrders = signatoryOrders.filter((o) => o.statusId === 4).sort((o1, o2) => new Date(o1.date) - new Date(o2.date))
     const successOrders = signatoryOrders.filter((o) => o.statusId === 6)
 
-    return (ordersList = [...processingOrders, ...successOrders])
+    return [...processingOrders, ...successOrders]
   }
 }
 
