@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { setAxiosInterceptor } from './interceptors'
 
-const BASE_URL = import.meta.env.REACT_APP_STAGE === 'prod' ? 'https://api.instakash.net' : 'https://api.dev.instakash.net'
+const BASE_URL = import.meta.env.REACT_APP_STAGE === 'dev' ? 'https://api.instakash.net' : 'https://api.dev.instakash.net'
 
 const instancesURL = {
   exchange: {

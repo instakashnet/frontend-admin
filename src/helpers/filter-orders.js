@@ -3,39 +3,31 @@ import { formatAmount } from './functions'
 import camelize from 'camelize'
 
 const ORDERS_BY_ROL = {
-  analyst: (orders) => orders.filter((o) => o.statusId !== 5),
+  analyst: (orders) => {
+    const analystOrders = orders.filter((o) => o.statusId !== 5)
+    const validatingOrders = analystOrders.filter((o) => o.statusId === 3).sort((o1, o2) => new Date(o1.date) - new Date(o2.date))
+    const restOfOrders = analystOrders.filter((o) => o.statusId !== 3)
+
+    return (ordersList = [...validatingOrders, ...restOfOrders])
+  },
   operator: (orders) => orders.filter((o) => o.statusId === 4),
-  signatory: (orders) => orders.filter((o) => o.statusId === 4 || o.statusId === 6)
+  signatory: (orders) => {
+    const signatoryOrders = orders.filter((o) => o.statusId === 4 || o.statusId === 6)
+    const processingOrders = signatoryOrders.filter((o) => o.statusId === 4).sort((o1, o2) => new Date(o1.date) - new Date(o2.date))
+    const successOrders = signatoryOrders.filter((o) => o.statusId === 6)
+
+    return (ordersList = [...processingOrders, ...successOrders])
+  }
 }
 
 export function arrangeOrdersByRole(orders = [], role) {
-  let ordersList = orders
   const arrangeOrders = ORDERS_BY_ROL[role]
+  const ordersInRevision = orders.filter((ords) => ords.inReview)
+  let ordersList = orders.filter((o) => !o.inReview)
 
-  if (arrangeOrders) ordersList = arrangeOrders(orders)
+  if (arrangeOrders) ordersList = arrangeOrders(ordersList)
 
-  const notRevisedOrders = ordersList.filter((o) => !o.inReview)
-
-  if (role === 'analyst') {
-    let validatingOrders = notRevisedOrders.filter((o) => o.statusId === 3).sort((o1, o2) => new Date(o1.date) - new Date(o2.date))
-    let restOfOrders = notRevisedOrders.filter((o) => o.statusId !== 3)
-
-    ordersList = [...validatingOrders, ...restOfOrders]
-  }
-
-  if (role === 'signatory') {
-    let processingOrders = notRevisedOrders.filter((o) => o.statusId === 4).sort((o1, o2) => new Date(o1.date) - new Date(o2.date))
-    let successOrders = notRevisedOrders.filter((o) => o.statusId === 6)
-
-    ordersList = [...processingOrders, ...successOrders]
-  }
-
-  const revisedOrders = orders.filter((ords) => ords.inReview)
-
-  if (revisedOrders.length) {
-    revisedOrders.sort((o1, o2) => new Date(o2.date) - new Date(o1.date))
-    ordersList = revisedOrders.concat(ordersList)
-  }
+  if (ordersInRevision.length > 0) ordersList = ordersInRevision.concat(ordersList)
 
   return ordersList
 }
@@ -68,20 +60,24 @@ export const formatBankOrders = (orders) =>
     statusColor: order.stateColor
   }))
 
+// FIRST FILTER FUNCTION CALLED
 export function filterOrders(data, orders = [], role) {
   let ordersList = []
 
   if (Boolean(Array.isArray(data) && data.length)) {
     const ordersArray = camelize(data)
+    // FORMAT ORDERS ARRAY
     ordersList = formatOrders(ordersArray)
   }
 
   if (!Array.isArray(data)) {
     const singleOrder = camelize(data)
+    // ADD OR REPLACE ORDER RECEIVED
     ordersList = setNewOrderList(singleOrder, orders)
   }
 
-  const ordersData = arrangeOrdersByRole(ordersList, role)
+  // ARRANGE ORDERS BY ROL CONNECTED
+  let ordersData = arrangeOrdersByRole(ordersList, role)
 
   return ordersData
 }
