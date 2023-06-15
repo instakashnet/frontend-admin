@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, CardBody, Col, Container, Modal, ModalBody, ModalHeader, Row, Spinner } from 'reactstrap'
-import { getAllOrders } from '../../../api/services/exchange.service'
+import { getOrders } from '../../../api/services/exchange.service'
 import { exchangesColumns } from '../../../helpers/tables/columns'
 import { useRole } from '../../../hooks/useRole'
 import { changeStatusInit, setAlert } from '../../../store/actions'
@@ -18,7 +18,6 @@ export const AllExchangesScreen = () => {
   const dispatch = useDispatch(),
     [modal, setModal] = useState(false),
     [isLoading, setIsLoading] = useState(true),
-    [search, setSearch] = useState(null),
     [modalType, setModalType] = useState(''),
     [data, setData] = useState([]),
     isProcessing = useSelector((state) => state.CurrencyExchange.isProcessing),
@@ -30,30 +29,25 @@ export const AllExchangesScreen = () => {
     setModal(true)
   }
 
-  const getTableData = useCallback(
-    async (_, pageCount = 1) => {
-      setIsLoading(true)
+  const getTableData = async (search, pageCount = 1) => {
+    setIsLoading(true)
 
-      try {
-        const tableData = await getAllOrders(pageCount, search),
-          orders = formatOrders(tableData)
+    try {
+      const tableData = await getOrders(pageCount, 'E', search),
+        orders = formatOrders(tableData?.orders ?? [])
 
-        setData(orders)
-      } catch (error) {
-        dispatch(
-          setAlert('danger', 'Ha ocurrido un error obteniendo la lista de órdenes. Por favor intenta de nuevo o contacta a soporte.')
-        )
-      } finally {
-        setIsLoading(false)
-      }
-    },
-    [dispatch, search, role]
-  )
+      setData(orders)
+    } catch (error) {
+      dispatch(setAlert('danger', 'Ha ocurrido un error obteniendo la lista de órdenes. Por favor intenta de nuevo o contacta a soporte.'))
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   // EFFECTS
   useEffect(() => {
     getTableData()
-  }, [getTableData])
+  }, [])
 
   const onChangeStatus = (orderId, statusId) => dispatch(changeStatusInit(orderId, statusId))
 
@@ -92,7 +86,6 @@ export const AllExchangesScreen = () => {
                     isLoading={isLoading}
                     getData={getTableData}
                     search
-                    setSearch={setSearch}
                     pagination={{ pageSize: PAGE_SIZE, async: true }}
                   />
                 </div>
