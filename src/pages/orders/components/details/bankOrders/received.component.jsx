@@ -4,7 +4,7 @@ import { formatAmount } from '../../../../../helpers/functions'
 
 import { SkeletonComponent } from '../../../../../components/UI/skeleton.component'
 
-export const Received = ({ details, isLoading }) => {
+export const Received = ({ details = {}, isLoading }) => {
   return (
     <Col lg='5' xl='4'>
       <Card>
@@ -28,7 +28,7 @@ export const Received = ({ details, isLoading }) => {
                 <p className='text-muted mb-2'>Banco a recibir</p>
                 <div className='mb-2 flex items-center'>
                   <img
-                    src={`/images/banks/${details.accToBankName.toLowerCase()}.svg`}
+                    src={`/images/banks/${details.accToBankName?.toLowerCase()}.svg`}
                     alt={details.accToBankName}
                     width={80}
                     className='mr-2'
