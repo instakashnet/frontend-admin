@@ -1,8 +1,8 @@
-import React from 'react';
-import { Col, Card, CardBody } from 'reactstrap';
-import { formatAmount } from '../../../../../helpers/functions';
+import React from 'react'
+import { Col, Card, CardBody } from 'reactstrap'
+import { formatAmount } from '../../../../../helpers/functions'
 
-import { SkeletonComponent } from '../../../../../components/UI/skeleton.component';
+import { SkeletonComponent } from '../../../../../components/UI/skeleton.component'
 
 export const Received = ({ details, isLoading }) => {
   return (
@@ -12,7 +12,7 @@ export const Received = ({ details, isLoading }) => {
           <ReceivedLoading />
         ) : (
           <CardBody>
-            <h5>Datos de recibido</h5>
+            <h5>Datos de recepción</h5>
             <div className='flex items-center justify-between'>
               <div>
                 <p className='text-muted mb-2'>Monto a recibir</p>
@@ -27,21 +27,26 @@ export const Received = ({ details, isLoading }) => {
               <section>
                 <p className='text-muted mb-2'>Banco a recibir</p>
                 <div className='mb-2 flex items-center'>
-                  <img src={`/images/banks/${details.accToBankName.toLowerCase()}.svg`} alt={details.accToBankName} width={80} className='mr-2' />
+                  <img
+                    src={`/images/banks/${details.accToBankName.toLowerCase()}.svg`}
+                    alt={details.accToBankName}
+                    width={80}
+                    className='mr-2'
+                  />
                   <span className='text-muted'>{details.currencySentSymbol}</span>
                 </div>
               </section>
               <section>
-                <p className='text-muted mb-2'>Nro. de cuenta</p>
-                <h5>{details.accountNumberTo}</h5>
+                <p className='text-muted mb-2'>No. operación de ingreso</p>
+                <h5>{details.transactionCode}</h5>
               </section>
             </div>
           </CardBody>
         )}
       </Card>
     </Col>
-  );
-};
+  )
+}
 
 const ReceivedLoading = () => {
   return (
@@ -56,5 +61,5 @@ const ReceivedLoading = () => {
         <SkeletonComponent height={35} width={180} />
       </div>
     </div>
-  );
-};
+  )
+}

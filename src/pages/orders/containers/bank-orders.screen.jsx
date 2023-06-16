@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, CardBody, Col, Container, Modal, ModalBody, ModalHeader, Row, Spinner } from 'reactstrap'
-import { getBankOrders } from '../../../api/services/exchange.service'
+import { getOrders } from '../../../api/services/exchange.service'
 import { Table } from '../../../components/UI/tables/table.component'
 import { bankOrdersColumns } from '../../../helpers/tables/columns'
 import { getCbAccounts, setAlert } from '../../../store/actions'
@@ -14,7 +14,6 @@ export const BankOrdersScreen = () => {
   const dispatch = useDispatch()
   const [modal, setModal] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [search, setSearch] = useState(null)
   const [data, setData] = useState([])
 
   const { isProcessing } = useSelector((state) => state.bankOrdersReducer)
@@ -25,29 +24,24 @@ export const BankOrdersScreen = () => {
     dispatch(getCbAccounts())
   }, [dispatch])
 
-  const getTableData = useCallback(
-    async (_, pageCount = 1) => {
-      setIsLoading(true)
+  const getTableData = async (search, pageCount = 1) => {
+    setIsLoading(true)
 
-      try {
-        const tableData = await getBankOrders(pageCount, search),
-          orders = formatBankOrders(tableData)
-        setData(orders)
-      } catch (error) {
-        console.log(error)
-        dispatch(
-          setAlert('danger', 'Ha ocurrido un error obteniendo la lista de ordenes. Por favor intenta de nuevo o contacta a soporte.')
-        )
-      } finally {
-        setIsLoading(false)
-      }
-    },
-    [dispatch, search]
-  )
+    try {
+      const tableData = await getOrders(pageCount, 'C', search),
+        orders = formatBankOrders(tableData?.cashWithdrawals ?? [])
+      setData(orders)
+    } catch (error) {
+      console.log(error)
+      dispatch(setAlert('danger', 'Ha ocurrido un error obteniendo la lista de ordenes. Por favor intenta de nuevo o contacta a soporte.'))
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
     getTableData()
-  }, [getTableData])
+  }, [])
 
   return (
     <div className='page-content'>
@@ -73,7 +67,6 @@ export const BankOrdersScreen = () => {
                     isLoading={isLoading}
                     getData={getTableData}
                     search
-                    setSearch={setSearch}
                     pagination={{ pageSize: PAGE_SIZE }}
                   />
                 </div>

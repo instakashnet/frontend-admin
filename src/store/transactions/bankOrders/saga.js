@@ -33,12 +33,17 @@ function* getBankOrderDetails({ id }) {
   }
 }
 
-function* changeBankOrderStatus({ id, statusId }) {
+function* changeBankOrderStatus({ id, statusId, values, setModal }) {
   try {
-    const res = yield getAxiosInstance('exchange', 'v1').put('/order/cashwithdraw', { id, status: statusId })
+    const res = yield getAxiosInstance('exchange', 'v1').put('/order/cashwithdraw', {
+      id,
+      status: statusId,
+      transactionCode: values?.transactionCode
+    })
     if (res.status === 200) {
       yield put(actions.getBankOrderDetails(id))
       yield put(actions.changeBankOrderStatusSuccess())
+      yield call(setModal, false)
       yield put(setAlert('success', 'Orden actualizada correctamente.'))
     }
   } catch (error) {

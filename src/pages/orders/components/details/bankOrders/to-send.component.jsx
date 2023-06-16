@@ -1,8 +1,8 @@
-import React from 'react';
-import { CardBody, Card, Col } from 'reactstrap';
-import { formatAmount } from '../../../../../helpers/functions';
+import React from 'react'
+import { CardBody, Card, Col } from 'reactstrap'
+import { formatAmount } from '../../../../../helpers/functions'
 
-import { SkeletonComponent } from '../../../../../components/UI/skeleton.component';
+import { SkeletonComponent } from '../../../../../components/UI/skeleton.component'
 
 export const ToSend = ({ details, isLoading }) => {
   return (
@@ -20,22 +20,33 @@ export const ToSend = ({ details, isLoading }) => {
               </div>
               <div>
                 <p className='text-muted mb-2'>Caja</p>
-                <h5>{details.transactionCode.toUpperCase()}</h5>
+                <h5>{details.cashName?.toUpperCase()}</h5>
               </div>
             </div>
-            <div className='mt-5'>
-              <p className='text-muted mb-2'>Banco que envia</p>
-              <div className='mb-2 flex items-center'>
-                <img src={`/images/banks/${details.accFromBankName.toLowerCase()}.svg`} alt={details.accFromBankName} width={80} className='mr-2' />
-                <span className='text-muted'>{details.currencyReceivedSymbol}</span>
+            <div className='flex items-center justify-between mt-5'>
+              <div>
+                <p className='text-muted mb-2'>Banco que envia</p>
+                <div className='mb-2 flex items-center'>
+                  <img
+                    src={`/images/banks/${details.accFromBankName?.toLowerCase()}.svg`}
+                    alt={details.accFromBankName}
+                    width={80}
+                    className='mr-2'
+                  />
+                  <span className='text-muted'>{details.currencyReceivedSymbol}</span>
+                </div>
+              </div>
+              <div>
+                <p className='text-muted mb-2'>No. de operación de envio</p>
+                <h5>{details.transactionCodeFinalized}</h5>
               </div>
             </div>
           </CardBody>
         )}
       </Card>
     </Col>
-  );
-};
+  )
+}
 
 const ToSendLoading = () => {
   return (
@@ -47,5 +58,5 @@ const ToSendLoading = () => {
       </div>
       <SkeletonComponent height={35} width={180} />
     </CardBody>
-  );
-};
+  )
+}
