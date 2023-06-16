@@ -4,7 +4,7 @@ import { formatAmount } from '../../../../../helpers/functions'
 
 import { SkeletonComponent } from '../../../../../components/UI/skeleton.component'
 
-export const ToSend = ({ details, isLoading }) => {
+export const ToSend = ({ details = {}, isLoading }) => {
   return (
     <Col lg='5' xl='4'>
       <Card>
