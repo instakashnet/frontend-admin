@@ -1,7 +1,7 @@
 import fileDownload from 'js-file-download'
 import moment from 'moment'
 import { all, call, fork, put, takeEvery, takeLatest } from 'redux-saga/effects'
-import { downloadBankConciliationSvc, uploadBankConciliationSvc } from '../../../api/lib/conciliation'
+import { conciliateBanksSvc, downloadBankConciliationSvc, uploadBankConciliationSvc } from '../../../api/lib/conciliation'
 import { getExchangesRelationSvc } from '../../../api/services/auth.service'
 import {
   approveExchangeSvc,
@@ -97,6 +97,24 @@ function* downloadBankConciliation({ date }) {
     yield put(actions.downloadBankConciliationSuccess())
   } catch (error) {
     yield put(setAlert('danger', 'Ha ocurrido un error descargando la conciliación. Verifica la fecha correcta.'))
+    yield put(actions.apiError())
+  }
+}
+
+function* conciliateBanks({ values }) {
+  const conciliationDate = new Date(values.fecha).toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' })
+
+  const formData = new FormData()
+  values.archivos?.forEach((file) => formData.append('archivos', file))
+  formData.append('fecha', conciliationDate)
+
+  try {
+    const result = yield call(conciliateBanksSvc, formData)
+    yield call(fileDownload, result, `concilacion-${conciliationDate}.xlsx`)
+
+    yield put(actions.conciliateBanksSuccess())
+  } catch (error) {
+    yield put(setAlert('danger', 'Ha ocurrido generando la conciliación. Por favor intenta mas tarde.'))
     yield put(actions.apiError())
   }
 }
@@ -230,6 +248,10 @@ export function* watchDownloadBankConciliation() {
   yield takeLatest(actionTypes.DOWNLOAD_CONCILIATION.INIT, downloadBankConciliation)
 }
 
+export function* watchConciliateBanks() {
+  yield takeLatest(actionTypes.CONCILIATE_BANKS.INIT, conciliateBanks)
+}
+
 export function* watchExchangeDetails() {
   yield takeEvery(actionTypes.GET_EXCHANGE_DETAILS, getExchangeDetails)
 }
@@ -264,6 +286,7 @@ export default function* currencyExchangeSaga() {
     fork(watchExchangesRelation),
     fork(watchUploadBankConciliation),
     fork(watchDownloadBankConciliation),
+    fork(watchConciliateBanks),
     fork(watchProcessOrder),
     fork(watchChangeStatus),
     fork(watchChangeOrderStatus),

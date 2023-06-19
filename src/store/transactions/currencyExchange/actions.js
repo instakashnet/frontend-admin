@@ -10,7 +10,16 @@ export const getExchangesRelationSuccess = () => ({
   type: actionTypes.GET_EXCHANGES_RELATION_SUCCESS
 })
 
-export const uploadBankConciliation = (values, setUploaded) => ({
+export const conciliateBanks = (values) => ({
+  type: actionTypes.CONCILIATE_BANKS.INIT,
+  values
+})
+
+export const conciliateBanksSuccess = () => ({
+  type: actionTypes.CONCILIATE_BANKS.SUCCESS
+})
+
+export const uploadBankConciliation = (values) => ({
   type: actionTypes.UPLOAD_CONCILIATION.INIT,
   values,
   setUploaded

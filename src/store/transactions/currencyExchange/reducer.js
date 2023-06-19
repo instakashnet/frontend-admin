@@ -1,15 +1,15 @@
-import { EDIT_INTERPLAZA_INIT, EDIT_INTERPLAZA_SUCCESS } from "../../settings/clients/actionTypes";
-import * as actionTypes from "./actionTypes";
+import { EDIT_INTERPLAZA_INIT, EDIT_INTERPLAZA_SUCCESS } from '../../settings/clients/actionTypes'
+import * as actionTypes from './actionTypes'
 
 const initialState = {
   allOrders: [],
   details: {},
   isLoading: true,
-  isProcessing: false,
-};
+  isProcessing: false
+}
 
 export default function currencyExchangeReducer(state = initialState, action) {
-  const { type, payload } = action;
+  const { type, payload } = action
 
   switch (type) {
     case actionTypes.CHANGE_STATUS.INIT:
@@ -23,7 +23,8 @@ export default function currencyExchangeReducer(state = initialState, action) {
     case actionTypes.CHANGE_ORDER_STATUS_INIT:
     case actionTypes.UPLOAD_CONCILIATION.INIT:
     case actionTypes.DOWNLOAD_CONCILIATION.INIT:
-      return { ...state, isProcessing: true };
+    case actionTypes.CONCILIATE_BANKS.INIT:
+      return { ...state, isProcessing: true }
 
     case actionTypes.CHANGE_STATUS.SUCCESS:
     case actionTypes.PROCESS_ORDER.SUCCESS:
@@ -35,22 +36,23 @@ export default function currencyExchangeReducer(state = initialState, action) {
     case actionTypes.CHANGE_ORDER_STATUS_SUCCESS:
     case actionTypes.UPLOAD_CONCILIATION.SUCCESS:
     case actionTypes.DOWNLOAD_CONCILIATION.SUCCESS:
-      return { ...state, isProcessing: false };
+    case actionTypes.CONCILIATE_BANKS.SUCCESS:
+      return { ...state, isProcessing: false }
 
     case actionTypes.GET_EXCHANGE_DETAILS:
-      return { ...state, isLoading: true, details: {} };
+      return { ...state, isLoading: true, details: {} }
 
     case actionTypes.GET_EXCHANGE_DETAILS_SUCCESS:
-      return { ...state, details: payload.details, isLoading: false };
+      return { ...state, details: payload.details, isLoading: false }
 
     case actionTypes.CREATE_INVOICE_SUCCESS:
     case actionTypes.CHANGE_STATUS.CANCELLED:
-      return { ...state, isProcessing: false };
+      return { ...state, isProcessing: false }
 
     case actionTypes.API_ERROR:
-      return { ...state, isLoading: false, isProcessing: false };
+      return { ...state, isLoading: false, isProcessing: false }
 
     default:
-      return state;
+      return state
   }
 }
