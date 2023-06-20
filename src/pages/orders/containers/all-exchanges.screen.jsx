@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, CardBody, Col, Container, Modal, ModalBody, ModalHeader, Row, Spinner } from 'reactstrap'
 import { getOrders } from '../../../api/services/exchange.service'
@@ -8,7 +8,8 @@ import { changeStatusInit, setAlert } from '../../../store/actions'
 
 //Components
 import { Table } from '../../../components/UI/tables/table.component'
-import { BankReconciliation } from '../components/forms/bank-reconciliation.component'
+import { BankConciliation } from '../components/forms/bank-conciliation.component'
+import { NewBankConciliation } from '../components/forms/new-bank-conciliation'
 import { CreateExcel } from '../components/forms/create-excel.component'
 import { formatOrders } from '../../../helpers/filter-orders'
 
@@ -69,9 +70,14 @@ export const AllExchangesScreen = () => {
                 )}
 
                 {(role === 'admin' || role === 'officers' || role === 'accountant') && (
-                  <Button onClick={() => onCreateExcel('conciliation')} className='mb-4 ml-4 btn-primary'>
-                    Conciliar
-                  </Button>
+                  <div className='flex items-center gap-x-2'>
+                    <Button onClick={() => onCreateExcel('conciliation')} className='mb-4 ml-4 btn-primary'>
+                      Conciliar
+                    </Button>
+                    <Button onClick={() => onCreateExcel('newConciliation')} className='mb-4 ml-4 btn-primary'>
+                      Conciliar nuevo
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>
@@ -99,8 +105,10 @@ export const AllExchangesScreen = () => {
         <ModalBody>
           {modalType === 'relation' ? (
             <CreateExcel dispatch={dispatch} isProcessing={isProcessing} excelType='orders' />
+          ) : modalType === 'conciliation' ? (
+            <BankConciliation dispatch={dispatch} isProcessing={isProcessing} />
           ) : (
-            <BankReconciliation dispatch={dispatch} isProcessing={isProcessing} />
+            <NewBankConciliation dispatch={dispatch} isProcessing={isProcessing} />
           )}
         </ModalBody>
       </Modal>
