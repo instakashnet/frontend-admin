@@ -35,7 +35,8 @@ export const downloadBankConciliationSvc = async (formattedDate) => {
 
 export const conciliateBanksSvc = async (values) => {
   const response = await getAxiosInstance('auth', 'v1').post('/users/conciliacion', values, {
-    headers: { 'Content-Type': 'multipart/form-data' }
+    headers: { 'Content-Type': 'multipart/form-data' },
+    responseType: 'arraybuffer'
   })
   if (response.status >= 400) throw new Error(response.errors[0])
 

@@ -1,4 +1,4 @@
-import Icon from '@heroicons/react/24/outline'
+import * as Icon from '@heroicons/react/24/outline'
 
 export const generalLinks = {
   title: 'Principal',
@@ -17,7 +17,7 @@ export const generalLinks = {
     },
     {
       path: '/bank-orders',
-      icon: <Icon.BuildingOffice2Icon className='w-5 h-5' />,
+      icon: <Icon.BuildingOfficeIcon className='w-5 h-5' />,
       label: 'Pedidos a caja',
       roles: ['admin', 'appraiser', 'manager', 'accountant']
     },
