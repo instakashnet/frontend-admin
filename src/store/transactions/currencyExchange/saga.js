@@ -102,15 +102,21 @@ function* downloadBankConciliation({ date }) {
 }
 
 function* conciliateBanks({ values }) {
-  const conciliationDate = new Date(values.fecha).toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' })
+  const conciliationDateInit = new Date(values.fecha_inicio)
+  const conciliationDateEnd = new Date(values.fecha_fin)
 
   const formData = new FormData()
   values.archivos?.forEach((file) => formData.append('archivos', file))
-  formData.append('fecha', conciliationDate)
+  formData.append('fecha_inicio', conciliationDateInit)
+  formData.append('fecha_fin', conciliationDateEnd)
 
   try {
     const result = yield call(conciliateBanksSvc, formData)
-    yield call(fileDownload, result, `concilacion-${conciliationDate}.xlsx`)
+    yield call(
+      fileDownload,
+      result,
+      `concilacion-${conciliationDateInit.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' })}.xlsx`
+    )
 
     yield put(actions.conciliateBanksSuccess())
   } catch (error) {
