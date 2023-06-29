@@ -13,7 +13,7 @@ const actualDate = new Date()
 
 export const NewBankConciliation = ({ dispatch, isProcessing }) => {
   const formik = useFormik({
-    initialValues: { archivos: [], fecha: '' },
+    initialValues: { archivos: [], fecha_inicio: '', fecha_fin: '' },
     onSubmit: (values) => dispatch(conciliateBanks(values))
   })
 
@@ -30,15 +30,26 @@ export const NewBankConciliation = ({ dispatch, isProcessing }) => {
           label='Arrastra aquí los archivos.'
           onDrop={onDrop}
         />
-        <div className='flex flex-col justify-center items-center mt-1 mb-3'>
+        <div className='flex items-center justify-center gap-x-4'>
           <DateInput
-            value={formik.values.fecha}
+            value={formik.values.fecha_inicio}
             name='fecha'
             maxDate={actualDate}
-            onChange={(date) => formik.setFieldValue('fecha', date)}
-            label='Fecha de conciliación'
+            onChange={(date) => formik.setFieldValue('fecha_inicio', date)}
+            label='Fecha desde'
             dateFormat='dd-MM-yyyy HH:mm'
           />
+          <DateInput
+            value={formik.values.fecha_fin}
+            name='fecha'
+            maxDate={actualDate}
+            onChange={(date) => formik.setFieldValue('fecha_fin', date)}
+            label='Fecha hasta'
+            dateFormat='dd-MM-yyyy HH:mm'
+          />
+        </div>
+
+        <div className='flex flex-col justify-center items-center mt-1 mb-3'>
           <Button type='submit' disabled={!formik.isValid || isProcessing} className='btn-secondary mx-2'>
             {isProcessing ? <Spinner size='sm' /> : 'Conciliar cuentas bancarias'}
           </Button>
