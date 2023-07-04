@@ -37,12 +37,14 @@ export const NewBankConciliation = ({ dispatch, isProcessing }) => {
             maxDate={actualDate}
             onChange={(date) => formik.setFieldValue('fecha_inicio', date)}
             label='Fecha desde'
+            showTimeSelect
             dateFormat='dd-MM-yyyy HH:mm'
           />
           <DateInput
             value={formik.values.fecha_fin}
             name='fecha'
             maxDate={actualDate}
+            showTimeSelect
             onChange={(date) => formik.setFieldValue('fecha_fin', date)}
             label='Fecha hasta'
             dateFormat='dd-MM-yyyy HH:mm'
