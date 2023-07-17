@@ -39,29 +39,22 @@ function base64ToArrayBuffer(base64) {
 }
 
 function* getExchangesRelation({ values, excelType }) {
-  let start, end
+  const start = new Date(values.start)
+  const end = new Date(values.end)
 
-  if (values.isDay) {
-    start = moment(values.start).format('YYYY-MM-DD [00:00:00]')
-    end = moment(values.end).format('YYYY-MM-DD [00:00:00]')
-  } else {
-    start = moment(values.start).format('YYYY-MM-DD hh:mm:ss')
-    end = moment(values.end).format('YYYY-MM-DD hh:mm:ss')
-  }
+  let URL = `/users/clients/orders/download?start=${start}&end=${end}`
+  // if (excelType === 'coupon' && values.couponName) {
+  //   URL = `/users/clients/coupons/${values.couponName.toUpperCase()}/download`
+  // } else URL = `/users/clients/orders/download?start=${start}&end=${end}`
 
-  let URL
-  if (excelType === 'coupon' && values.couponName) {
-    URL = `/users/clients/coupons/${values.couponName.toUpperCase()}/download`
-  } else URL = `/users/clients/orders/download?start=${start}&end=${end}`
-
-  if (values.bank) URL += `&bank=${values.bank}`
-  if (values.statusId) URL += `&status=${values.statusId}`
-  if (values.isDay && values.balanceFlag)
-    URL +=
-      `&balanceFlag=${values.balanceFlag}` +
-      `&initialAmountPENBCP=${values.initialAmountPENBCP}&initialAmountUSDBCP=${values.initialAmountUSDBCP}` +
-      `&initialAmountPENIBK=${values.initialAmountPENIBK}&initialAmountUSDIBK=${values.initialAmountUSDIBK}` +
-      `&rateInit=${values.rateInit}&rateEnd=${values.rateEnd}`
+  // if (values.bank) URL += `&bank=${values.bank}`
+  // if (values.statusId) URL += `&status=${values.statusId}`
+  // if (values.isDay && values.balanceFlag)
+  //   URL +=
+  //     `&balanceFlag=${values.balanceFlag}` +
+  //     `&initialAmountPENBCP=${values.initialAmountPENBCP}&initialAmountUSDBCP=${values.initialAmountUSDBCP}` +
+  //     `&initialAmountPENIBK=${values.initialAmountPENIBK}&initialAmountUSDIBK=${values.initialAmountUSDIBK}` +
+  //     `&rateInit=${values.rateInit}&rateEnd=${values.rateEnd}`
 
   try {
     const res = yield call(getExchangesRelationSvc, URL)
