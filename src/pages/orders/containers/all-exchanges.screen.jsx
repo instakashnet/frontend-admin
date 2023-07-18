@@ -10,7 +10,7 @@ import { changeStatusInit, setAlert } from '../../../store/actions'
 import { Table } from '../../../components/UI/tables/table.component'
 import { BankConciliation } from '../components/forms/bank-conciliation.component'
 import { NewBankConciliation } from '../components/forms/new-bank-conciliation'
-import { CreateExcel } from '../components/forms/create-excel.component'
+import { OrdersRelationForm } from '../components/forms/orders-relation.component'
 import { formatOrders } from '../../../helpers/filter-orders'
 
 const PAGE_SIZE = 50
@@ -69,7 +69,7 @@ export const AllExchangesScreen = () => {
                   </Button>
                 )}
 
-                {(role === 'admin' || role === 'officers' || role === 'accountant') && (
+                {/* {(role === 'admin' || role === 'officers' || role === 'accountant') && (
                   <div className='flex items-center gap-x-2'>
                     <Button onClick={() => onCreateExcel('conciliation')} className='mb-4 ml-4 btn-primary'>
                       Conciliar
@@ -78,7 +78,7 @@ export const AllExchangesScreen = () => {
                       Conciliar nuevo
                     </Button>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
 
@@ -104,7 +104,7 @@ export const AllExchangesScreen = () => {
         <ModalHeader>{modalType === 'relation' ? 'Descargar relación' : 'Conciliar bancos'}</ModalHeader>
         <ModalBody>
           {modalType === 'relation' ? (
-            <CreateExcel dispatch={dispatch} isProcessing={isProcessing} excelType='orders' />
+            <OrdersRelationForm dispatch={dispatch} isProcessing={isProcessing} excelType='orders' />
           ) : modalType === 'conciliation' ? (
             <BankConciliation dispatch={dispatch} isProcessing={isProcessing} />
           ) : (

@@ -38,27 +38,27 @@ function base64ToArrayBuffer(base64) {
   return bytes
 }
 
-function* getExchangesRelation({ values, excelType }) {
+function* getExchangesRelation({ values }) {
   const start = new Date(values.start)
   const end = new Date(values.end)
 
-  let URL = `/users/clients/orders/download?start=${start}&end=${end}`
+  let URL = `/users/clients/orders/download?start=${start?.toISOString()}&end=${end?.toISOString()}`
   // if (excelType === 'coupon' && values.couponName) {
   //   URL = `/users/clients/coupons/${values.couponName.toUpperCase()}/download`
   // } else URL = `/users/clients/orders/download?start=${start}&end=${end}`
 
-  // if (values.bank) URL += `&bank=${values.bank}`
-  // if (values.statusId) URL += `&status=${values.statusId}`
-  // if (values.isDay && values.balanceFlag)
-  //   URL +=
-  //     `&balanceFlag=${values.balanceFlag}` +
-  //     `&initialAmountPENBCP=${values.initialAmountPENBCP}&initialAmountUSDBCP=${values.initialAmountUSDBCP}` +
-  //     `&initialAmountPENIBK=${values.initialAmountPENIBK}&initialAmountUSDIBK=${values.initialAmountUSDIBK}` +
-  //     `&rateInit=${values.rateInit}&rateEnd=${values.rateEnd}`
+  if (values.bank) URL += `&bank=${values.bank}`
+  if (values.statusId) URL += `&status=${values.statusId}`
+  if (values.isDay && values.balanceFlag)
+    URL +=
+      `&balanceFlag=${values.balanceFlag}` +
+      `&initialAmountPENBCP=${values.initialAmountPENBCP}&initialAmountUSDBCP=${values.initialAmountUSDBCP}` +
+      `&initialAmountPENIBK=${values.initialAmountPENIBK}&initialAmountUSDIBK=${values.initialAmountUSDIBK}` +
+      `&rateInit=${values.rateInit}&rateEnd=${values.rateEnd}`
 
   try {
     const res = yield call(getExchangesRelationSvc, URL)
-    yield call(fileDownload, res, `relacion_ordenes_${start}_${end}.xlsx`)
+    yield call(fileDownload, res, `relacion_ordenes_${start?.toLocaleDateString('es-ES')}_${end?.toLocaleDateString('es-ES')}.xlsx`)
     yield put(actions.getExchangesRelationSuccess())
   } catch (error) {
     if (error?.message) yield put(setAlert('danger', error.message))
