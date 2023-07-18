@@ -49,7 +49,7 @@ function* getExchangesRelation({ values }) {
 
   if (values.bank) URL += `&bank=${values.bank}`
   if (values.statusId) URL += `&status=${values.statusId}`
-  if (values.isDay && values.balanceFlag)
+  if (values.balanceFlag)
     URL +=
       `&balanceFlag=${values.balanceFlag}` +
       `&initialAmountPENBCP=${values.initialAmountPENBCP}&initialAmountUSDBCP=${values.initialAmountUSDBCP}` +
