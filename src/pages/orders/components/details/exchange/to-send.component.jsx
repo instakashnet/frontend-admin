@@ -1,33 +1,35 @@
-import { useFormik } from 'formik';
-import { memo, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Button, Card, CardBody, Col, Row } from 'reactstrap';
+import { useFormik } from 'formik'
+import { memo, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Button, Card, CardBody, Col, Row } from 'reactstrap'
 // HELPERS
-import { checkInterplaza, convertRate, formatAmount } from '../../../../../helpers/functions';
+import { checkInterplaza, convertRate, formatAmount } from '../../../../../helpers/functions'
 // REDUX ACTIONS
-import { editInterplazaInit } from '../../../../../store/actions';
+import { editInterplazaInit } from '../../../../../store/actions'
 // COMPONENTS
-import CopyButton from '../../../../../components/UI/CopyButton';
-import Radio from '../../../../../components/UI/FormItems/Radio';
-import { SkeletonComponent } from '../../../../../components/UI/skeleton.component';
-import { PencilSquareIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import CopyButton from '../../../../../components/UI/CopyButton'
+import Radio from '../../../../../components/UI/FormItems/Radio'
+import { SkeletonComponent } from '../../../../../components/UI/skeleton.component'
+import { PencilSquareIcon, UserCircleIcon } from '@heroicons/react/24/outline'
 
 const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
   const dispatch = useDispatch(),
     [editState, setEditState] = useState(false),
-    [interplaza, setInterplaza] = useState(false);
+    [interplaza, setInterplaza] = useState(false)
 
   // EFFECTS
   useEffect(() => {
-    setInterplaza(details.accountToInfo?.accToInterbank);
-  }, [details]);
+    setInterplaza(details.accountToInfo?.accToInterbank)
+  }, [details])
 
   // FORMIK
   const formik = useFormik({
     initialValues: { interbank: null, accountId: details.accountToInfo?.accountToId },
     enableReinitialize: true,
-    onSubmit: (values) => dispatch(editInterplazaInit(values, 'exchange', details.id, setEditState)),
-  });
+    onSubmit: (values) => dispatch(editInterplazaInit(values, 'exchange', details.id, setEditState))
+  })
+
+  console.log(details)
 
   return (
     <Col lg='5' xl='4'>
@@ -38,9 +40,15 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
           <>
             <CardBody className='relative'>
               <h5>Datos para enviar</h5>
+              <hr />
               <div className='flex items-center justify-between'>
                 <div className='mb-2 flex items-center'>
-                  <img src={`/images/banks/${details.banksInfo.bankSent?.toLowerCase()}.svg`} alt={details.banksInfo.bankSent} width={80} className='mr-2' />
+                  <img
+                    src={`/images/banks/${details.banksInfo.bankSent?.toLowerCase()}.svg`}
+                    alt={details.banksInfo.bankSent}
+                    width={80}
+                    className='mr-2'
+                  />
                   <span className='text-muted'>
                     {details.currencyInfo.currencyReceivedSymbol} - {details.accountToInfo.accType === 'savings' ? 'ahorros' : 'corriente'}
                   </span>
@@ -68,16 +76,27 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                 <Col sm='6'>
                   <div className='text-sm-right mt-4 mt-sm-0'>
                     <p className='text-muted mb-2'>Factura generada</p>
-                    <h5 className={`${details.billInfo.billAssigned ? 'text-success' : 'text-warning'}`}>{details.billInfo.billAssigned ? 'Generada' : 'No generada'}</h5>
+                    <h5 className={`${details.billInfo.billAssigned ? 'text-success' : 'text-warning'}`}>
+                      {details.billInfo.billAssigned ? 'Generada' : 'No generada'}
+                    </h5>
                   </div>
                 </Col>
               </Row>
-              <Row>
+              {details.transactionCodeFinalized && (
+                <Row>
+                  <Col>
+                    <p className='text-muted mb-2'>Nro. de operación saliente</p>
+                    <h5>{details.transactionCodeFinalized}</h5>
+                  </Col>
+                </Row>
+              )}
+              <Row className='mt-3'>
                 <Col sm='6'>
                   <div>
                     <p className='text-muted mb-2'>Monto a enviar</p>
                     <h5>
-                      {`${details.currencyInfo.currencyReceivedSymbol} ${formatAmount(details.amountReceived)}`} <CopyButton textToCopy={details.amountReceived?.toFixed(2)} />
+                      {`${details.currencyInfo.currencyReceivedSymbol} ${formatAmount(details.amountReceived)}`}{' '}
+                      <CopyButton textToCopy={details.amountReceived?.toFixed(2)} />
                     </h5>
                   </div>
                 </Col>
@@ -94,7 +113,11 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                           <Radio name='interbank' value={'1'} onChange={formik.handleChange} label='SI' />
                           <Radio name='interbank' value={'0'} onChange={formik.handleChange} label='NO' />
                         </div>
-                        <Button type='submit' className={`btn-primary ld-ext-right ${isProcessing ? 'running' : ''}`} disabled={!formik.values.interbank || isProcessing}>
+                        <Button
+                          type='submit'
+                          className={`btn-primary ld-ext-right ${isProcessing ? 'running' : ''}`}
+                          disabled={!formik.values.interbank || isProcessing}
+                        >
                           <span className='ld ld-ring ld-spin' />
                           Actualizar cuenta
                         </Button>
@@ -112,28 +135,58 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                     )}
                   </div>
                 </Col>
-                {details.accountToInfo?.jointAccount?.documentNumber && (
-                  <>
-                    <Col sm='6' className='mt-3'>
-                      <p className='text-muted mb-2'>Nombre del titular</p>
-                      <h5>{details.accountToInfo?.jointAccount.firstName + ' ' + details.accountToInfo?.jointAccount.lastName}</h5>
-                    </Col>
-                    <Col sm='6' className='mt-3'>
-                      <div className='text-sm-right'>
-                        <p className='text-muted mb-2'>Documento</p>
-                        <h5>
-                          {details.accountToInfo?.jointAccount.documentType} {details.accountToInfo?.jointAccount.documentNumber}
-                        </h5>
-                      </div>
-                    </Col>
-                  </>
-                )}
               </Row>
-              {details.transactionCodeFinalized && (
+              {Boolean(details.accountsInfo?.thirdParty) && (
                 <Row>
-                  <Col>
-                    <p className='text-muted mb-2'>Nro. de operación saliente</p>
-                    <h5>{details.transactionCodeFinalized}</h5>
+                  <Col className='mt-6'>
+                    <hr />
+                    <h5>Datos del tercero</h5>
+                    <hr />
+                    <Row>
+                      <Col sm='6'>
+                        <p className='text-muted mb-2'>Nombre completo</p>
+                        <h5>
+                          {details.accountsInfo?.thirdParty.thirdPartyAccType === 'juridica'
+                            ? details.accountsInfo?.thirdParty.razonSocial
+                            : details.accountsInfo?.thirdParty.name}
+                        </h5>
+                      </Col>
+                      <Col sm='6'>
+                        <div className='text-sm-right'>
+                          <p className='text-muted mb-2'>Documento</p>
+                          <h5>
+                            {details.accountsInfo?.thirdParty.documentType} {details.accountsInfo?.thirdParty.documentNumber}
+                          </h5>
+                        </div>
+                      </Col>
+                      <Col sm='6' className='mt-3'>
+                        <p className='text-muted mb-2'>Email</p>
+                        <h5>{details.accountsInfo?.thirdParty.email}</h5>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              )}
+              {Boolean(details.accountToInfo?.jointAccount) && (
+                <Row>
+                  <Col className='mt-6'>
+                    <hr />
+                    <h5>Datos mancomunada</h5>
+                    <hr />
+                    <Row>
+                      <Col sm='6'>
+                        <p className='text-muted mb-2'>Nombre del titular</p>
+                        <h5>{details.accountToInfo?.jointAccount.firstName + ' ' + details.accountToInfo?.jointAccount.lastName}</h5>
+                      </Col>
+                      <Col sm='6'>
+                        <div className='text-sm-right'>
+                          <p className='text-muted mb-2'>Documento</p>
+                          <h5>
+                            {details.accountToInfo?.jointAccount.documentType} {details.accountToInfo?.jointAccount.documentNumber}
+                          </h5>
+                        </div>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               )}
@@ -142,8 +195,8 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
         )}
       </Card>
     </Col>
-  );
-};
+  )
+}
 
 const ToSendSkeleton = () => {
   return (
@@ -158,7 +211,7 @@ const ToSendSkeleton = () => {
         <SkeletonComponent width={100} height={35} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default memo(Sent);
+export default memo(Sent)
