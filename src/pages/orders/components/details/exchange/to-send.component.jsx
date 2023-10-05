@@ -136,7 +136,7 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                   </div>
                 </Col>
               </Row>
-              {Boolean(details.accountsInfo?.thirdParty) && (
+              {Boolean(details.accountToInfo?.thirdParty) && (
                 <Row>
                   <Col className='mt-6'>
                     <hr />
@@ -146,22 +146,22 @@ const Sent = ({ details, isLoading, isProcessing, onShowForm }) => {
                       <Col sm='6'>
                         <p className='text-muted mb-2'>Nombre completo</p>
                         <h5>
-                          {details.accountsInfo?.thirdParty.thirdPartyAccType === 'juridica'
-                            ? details.accountsInfo?.thirdParty.razonSocial
-                            : details.accountsInfo?.thirdParty.name}
+                          {details.accountToInfo?.thirdParty.thirdPartyAccType === 'juridica'
+                            ? details.accountToInfo?.thirdParty.razonSocial
+                            : details.accountToInfo?.thirdParty.name}
                         </h5>
                       </Col>
                       <Col sm='6'>
                         <div className='text-sm-right'>
                           <p className='text-muted mb-2'>Documento</p>
                           <h5>
-                            {details.accountsInfo?.thirdParty.documentType} {details.accountsInfo?.thirdParty.documentNumber}
+                            {details.accountToInfo?.thirdParty.documentType} {details.accountToInfo?.thirdParty.documentNumber}
                           </h5>
                         </div>
                       </Col>
                       <Col sm='6' className='mt-3'>
                         <p className='text-muted mb-2'>Email</p>
-                        <h5>{details.accountsInfo?.thirdParty.email}</h5>
+                        <h5>{details.accountToInfo?.thirdParty.email}</h5>
                       </Col>
                     </Row>
                   </Col>
