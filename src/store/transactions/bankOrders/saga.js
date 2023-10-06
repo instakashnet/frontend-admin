@@ -7,8 +7,10 @@ import * as types from './types'
 function* createBankOrder({ values, getData, closeModal }) {
   const orderValues = {
     ...values,
-    rate: +values.rate
+    rate: Number(values.rate)
   }
+
+  console.log({ orderValues })
   try {
     const res = yield getAxiosInstance('exchange', 'v1').post('/order/cashwithdraw', orderValues)
     if (res.status === 201) {

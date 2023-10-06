@@ -28,7 +28,9 @@ export const CreateOrder = ({ isProcessing, dispatch, accounts, currencies, getT
       cashName: '',
       transactionCodeFinalized: ''
     },
-    onSubmit: (values) => dispatch(createBankOrder(values, getTableData, closeModal))
+    onSubmit: (values) => {
+      dispatch(createBankOrder(values, getTableData, closeModal))
+    }
   })
 
   const accountOptions = accounts.map((account) => ({
@@ -43,8 +45,6 @@ export const CreateOrder = ({ isProcessing, dispatch, accounts, currencies, getT
   const onSelectChasName = (option) => {
     const { value } = option
 
-    console.log(value)
-
     if (value === 'otras') {
       formik.setFieldValue('cashName', '')
       setOtherProvider(true)
@@ -57,7 +57,14 @@ export const CreateOrder = ({ isProcessing, dispatch, accounts, currencies, getT
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-        <Input type='text' label='Tasa' value={formik.values.rate} name='rate' onChange={formik.handleChange} onBlur={formik.handleBlur} />
+        <Input
+          type='number'
+          label='Tasa'
+          value={formik.values.rate}
+          name='rate'
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
         <CustomSelect
           name='cashName'
           label='Caja a enviar'
