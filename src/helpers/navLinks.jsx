@@ -93,7 +93,7 @@ export const configLinks = {
       path: '/coupons',
       icon: <Icon.ReceiptPercentIcon className='w-5 h-5' />,
       label: 'Cupones de descuento',
-      roles: ['admin', 'manager', 'marketing']
+      roles: ['admin', 'manager']
     },
     {
       path: '/banks',
