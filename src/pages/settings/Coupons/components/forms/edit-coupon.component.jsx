@@ -1,19 +1,20 @@
-import { useFormik } from 'formik';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Card, CardBody, Spinner } from 'reactstrap';
-import AsyncSelect from '../../../../../components/UI/FormItems/AsyncSelect';
-import Checkbox from '../../../../../components/UI/FormItems/Checkbox';
-import Input from '../../../../../components/UI/FormItems/Input';
-import Select from '../../../../../components/UI/FormItems/Select';
-import { couponValidations } from '../../../../../helpers/forms/validation';
-import { addCouponInit, editCouponInit, getCouponsDetailsInit } from '../../../../../store/actions';
+import { useFormik } from 'formik'
+import moment from 'moment'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Card, CardBody, Spinner } from 'reactstrap'
+import AsyncSelect from '../../../../../components/UI/FormItems/AsyncSelect'
+import Checkbox from '../../../../../components/UI/FormItems/Checkbox'
+import Input from '../../../../../components/UI/FormItems/Input'
+import Select from '../../../../../components/UI/FormItems/Select'
+import { couponValidations } from '../../../../../helpers/forms/validation'
+import { addCouponInit, editCouponInit, getCouponsDetailsInit } from '../../../../../store/actions'
+import { format, addDays, parseISO } from 'date-fns'
 
 const EditCoupon = ({ couponId, isProcessing, onShowForm, clients }) => {
-  const dispatch = useDispatch();
-  const details = useSelector((state) => state.Coupons.couponDetails);
-  const [usersList, setUsersList] = useState(false);
+  const dispatch = useDispatch()
+  const details = useSelector((state) => state.Coupons.couponDetails)
+  const [usersList, setUsersList] = useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -27,35 +28,69 @@ const EditCoupon = ({ couponId, isProcessing, onShowForm, clients }) => {
       minAmountBuy: details.minAmountBuy || '',
       profileType: details.profileType || 'all',
       isLevelEnabled: !!details.isLevelEnabled,
-      levelName: details.levelName || '',
+      levelName: details.levelName || ''
     },
     enableReinitialize: true,
     validationSchema: couponValidations,
-    onSubmit: (values) => (couponId ? dispatch(editCouponInit(couponId, values, details.active, onShowForm)) : dispatch(addCouponInit(values, onShowForm))),
-  });
+    onSubmit: (values) => {
+      if (values.indefinite) {
+        values.endDate = 0
+      } else {
+        const date = parseISO(values.endDate)
+        const newDate = addDays(date, 1)
+        values.endDate = format(newDate, 'yyyy-MM-dd')
+      }
+
+      if (!usersList) values.users = []
+
+      couponId ? dispatch(editCouponInit(couponId, values, details.active, onShowForm)) : dispatch(addCouponInit(values, onShowForm))
+    }
+  })
 
   useEffect(() => {
-    dispatch(getCouponsDetailsInit(couponId));
-  }, [dispatch, couponId]);
+    dispatch(getCouponsDetailsInit(couponId))
+  }, [dispatch, couponId])
+
+  useEffect(() => {
+    if (details.users && details.users.length > 0) {
+      setUsersList(true)
+    }
+  }, [details])
 
   const profilesOptions = [
     { value: 'all', label: 'Todos' },
     { value: 'natural', label: 'Cliente' },
-    { value: 'juridica', label: 'empresa' },
-  ];
+    { value: 'juridica', label: 'empresa' }
+  ]
 
   const userLevelOptions = [
     { value: 'KASH JUNIOR', label: 'KASH JUNIOR' },
     { value: 'KASH SENIOR', label: 'KASH SENIOR' },
-    { value: 'KASH EXPERTO', label: 'KASH EXPERTO' },
-  ];
+    { value: 'KASH EXPERTO', label: 'KASH EXPERTO' }
+  ]
 
   const onClientChange = (options) => {
-    if (!options) return;
+    if (!options) return
 
-    const clients = options.map((option) => option.value);
-    formik.setFieldValue('users', clients);
-  };
+    const clients = options.map((option) => option.value)
+    if (clients.length === 0) return
+
+    if (details.users && details.users.length > 0) {
+      const newClients = clients.filter((client) => !details.users.includes(client))
+      const oldClients = details.users.filter((client) => !clients.includes(client))
+
+      if (newClients.length > 0) {
+        clients.push(...newClients)
+      }
+
+      if (oldClients.length > 0) {
+        const newUsers = clients.filter((client) => !oldClients.includes(client))
+        clients.push(...newUsers)
+      }
+    }
+
+    formik.setFieldValue('users', clients)
+  }
 
   return (
     <Card>
@@ -95,9 +130,20 @@ const EditCoupon = ({ couponId, isProcessing, onShowForm, clients }) => {
           </div>
           <legend className='mt-2 text-base text-gray-400'>Lógica opcional</legend>
           <hr />
-          <Checkbox name='isLevelEnabled' label='¿Usado para nivel de usuario?' onChange={formik.handleChange} value={formik.values.isLevelEnabled} />
+          <Checkbox
+            name='isLevelEnabled'
+            label='¿Usado para nivel de usuario?'
+            onChange={formik.handleChange}
+            value={formik.values.isLevelEnabled}
+          />
           {formik.values.isLevelEnabled && (
-            <Select name='levelName' label='Nivel de usuario' value={formik.values.levelName} onChange={formik.handleChange} options={userLevelOptions} />
+            <Select
+              name='levelName'
+              label='Nivel de usuario'
+              value={formik.values.levelName}
+              onChange={formik.handleChange}
+              options={userLevelOptions}
+            />
           )}
           <Input
             name='minAmountBuy'
@@ -110,14 +156,34 @@ const EditCoupon = ({ couponId, isProcessing, onShowForm, clients }) => {
             touched={formik.touched.minAmountBuy}
           />
           {!formik.values.indefinite && (
-            <Input name='endDate' type='date' label='Fecha de expiración' value={formik.values.endDate} onChange={formik.handleChange} onBlur={formik.handleBlur} />
+            <Input
+              name='endDate'
+              type='date'
+              label='Fecha de expiración'
+              value={formik.values.endDate}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
           )}
           <Checkbox name='indefinite' label='¿Fecha indefinida?' onChange={formik.handleChange} value={formik.values.indefinite} />
-          <Select name='profileType' label='Perfil de uso' value={formik.values.profileType} onChange={formik.handleChange} options={profilesOptions} />
+          <Select
+            name='profileType'
+            label='Perfil de uso'
+            value={formik.values.profileType}
+            onChange={formik.handleChange}
+            options={profilesOptions}
+          />
           <Checkbox name='indefinite' label='¿Asignado a un usuario?' onChange={() => setUsersList((prev) => !prev)} value={usersList} />
-          {usersList && (
-            <AsyncSelect placeholder='selecciona usuarios' label='Asignación a usuarios' options={clients} onChange={onClientChange} value={formik.values.clients} isMulti />
-          )}
+          {usersList ? (
+            <AsyncSelect
+              placeholder='selecciona usuarios'
+              label='Asignación a usuarios'
+              options={clients}
+              onChange={onClientChange}
+              value={formik.values.clients}
+              isMulti
+            />
+          ) : null}
 
           <div className='mt-2 flex justify-center'>
             <Button type='submit' disabled={!formik.isValid || isProcessing} color='primary'>
@@ -127,7 +193,7 @@ const EditCoupon = ({ couponId, isProcessing, onShowForm, clients }) => {
         </form>
       </CardBody>
     </Card>
-  );
-};
+  )
+}
 
-export default React.memo(EditCoupon);
+export default React.memo(EditCoupon)

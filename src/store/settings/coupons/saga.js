@@ -7,7 +7,12 @@ import * as types from './types'
 function* getCoupons() {
   try {
     const res = yield call(getCouponsSvc)
-    yield put(actions.getCouponsSuccess(res))
+    const formattedData = res
+    for (let i = 0; i < formattedData.length; i++) {
+      formattedData[i].users = formattedData[i].users.filter((u) => u !== 0)
+    }
+
+    yield put(actions.getCouponsSuccess(formattedData))
   } catch (error) {
     yield put(actions.couponsError())
   }
@@ -59,11 +64,10 @@ function* editCoupon({ id, values, active, closeModal }) {
   }
   try {
     yield call(editCouponSvc, id, couponValues)
-    yield call(getCoupons)
     yield call(closeModal)
-    yield put(setAlert('success', 'Cupón editado correctamente'))
-
+    yield call(getCoupons)
     yield put(actions.editCouponSuccess())
+    yield put(setAlert('success', 'Cupón editado correctamente'))
   } catch (error) {
     if (error?.message) yield put(setAlert('danger', error.message))
     yield put(actions.couponsError())

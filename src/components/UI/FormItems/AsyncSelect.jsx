@@ -1,6 +1,6 @@
-import React from 'react';
-import { FormGroup, Label } from 'reactstrap';
-import Select from 'react-select/async';
+import React from 'react'
+import { FormGroup, Label } from 'reactstrap'
+import Select from 'react-select/async'
 
 const styles = {
   option: (provided, state) => ({
@@ -9,30 +9,30 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'flex-start',
     fontSize: '.8rem',
-    backgroundColor: state.isFocused ? '#32394e' : 'transparent',
+    backgroundColor: state.isFocused ? '#32394e' : 'transparent'
   }),
   singleValue: (provided) => ({
     ...provided,
-    color: '#a6b0cf',
+    color: '#a6b0cf'
   }),
   menu: (provided) => ({
     ...provided,
     backgroundColor: '#2e3548',
-    color: '#fff',
+    color: '#fff'
   }),
   input: (provided) => ({
     ...provided,
-    color: '#fff',
+    color: '#fff'
   }),
   control: (provided) => ({
     ...provided,
     backgroundColor: '#2e3548',
     color: '#a6b0cf',
-    borderColor: '#32394e',
-  }),
-};
+    borderColor: '#32394e'
+  })
+}
 
-const AsyncSelect = ({ label, onChange, placeholder, options, touched, error, ...rest }) => {
+const AsyncSelect = ({ label, onChange, placeholder, options = [], touched, error, ...rest }) => {
   return (
     <FormGroup>
       <Label>{label}</Label>
@@ -48,7 +48,7 @@ const AsyncSelect = ({ label, onChange, placeholder, options, touched, error, ..
       />
       {touched && error && <span className='invalid-feedback'>{error}</span>}
     </FormGroup>
-  );
-};
+  )
+}
 
-export default AsyncSelect;
+export default AsyncSelect
