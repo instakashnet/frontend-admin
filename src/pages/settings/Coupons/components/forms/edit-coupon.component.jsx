@@ -41,7 +41,7 @@ const EditCoupon = ({ couponId, isProcessing, onShowForm, clients }) => {
         values.endDate = format(newDate, 'yyyy-MM-dd')
       }
 
-      if (!usersList) values.users = []
+      if (!usersList) values.users = [0]
 
       couponId ? dispatch(editCouponInit(couponId, values, details.active, onShowForm)) : dispatch(addCouponInit(values, onShowForm))
     }
